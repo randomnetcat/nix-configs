@@ -87,6 +87,7 @@
   environment.systemPackages = [
     pkgs.nano
     pkgs.git
+    pkgs.bindfs
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -136,6 +137,17 @@
   fileSystems."/persist" = {
     device = "/dev/mapper/vg_rcat-nixos_persist";
     fsType = "ext4";
+  };
+
+  fileSystems."/root/mountpoints/dev_projects" = {
+    device = "/dev/mapper/vg_rcat-data_dev_projects";
+    fsType = "ext4";
+  };
+
+  fileSystems."/home/randomcat/dev/projects" = {
+    device = "/root/mountpoints/dev_projects";
+    fsType = "fuse.bindfs";
+    options = [ "force-user=randomcat" "force-group=randomcat" ];
   };
 
   swapDevices = [
