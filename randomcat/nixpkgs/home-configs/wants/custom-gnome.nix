@@ -1,0 +1,47 @@
+{ config, lib, pkgs, ... }:
+
+{
+  imports = [
+    ../detail/dev-dir.nix
+  ];
+
+  options = {};
+
+  config = {
+    dconf.settings = let keybindingMaps = {
+      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+        binding = "<Primary><Alt>t";
+        command = "gnome-terminal";
+        name = "Terimnal";
+      };
+    };
+    in
+    {
+      "org/gnome/desktop/peripherals/mouse" = {
+        "natural-scroll" = false;
+      };
+
+      "org/gnome/desktop/peripherals/touchpad" = {
+        "natural-scroll" = false;
+        "tap-to-click" = true;
+        "speed" = 0.25;
+        "click-method" = "default";
+      };
+
+      "org/gnome/settings-daemon/plugins/media-keys" = {
+        "custom-keybindings" = (map (name: "/" + name + "/") (builtins.attrNames keybindingMaps));
+      };
+
+      "org/gnome/desktop/wm/keybindings" = {
+        switch-applications = [ "<Super>Tab" ];
+        switch-applications-backward = [ "<Shift><Super>Tab" ];
+        switch-windows = [ "<Alt>Tab" ];
+        switch-windows-backward = [ "<Shift><Alt>Tab" ];
+      };
+
+      "org/gnome/desktop/input-sources" = {
+        "xkb-options" = [ "lv3:ralt_alt" ]; # Disable right alt key from being interpreted as special character key
+      };
+    } // keybindingMaps;
+  };
+}
