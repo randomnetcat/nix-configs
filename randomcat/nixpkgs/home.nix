@@ -24,6 +24,8 @@
     pkgs.spotify
     pkgs.discord
     pkgs.gnome3.gnome-tweaks
+    pkgs.thunderbird
+    pkgs.jetbrains.idea-ultimate
   ];
 
   programs.git = {
@@ -68,7 +70,17 @@
       id = 0;
       isDefault = true;
       name = "randomcat";
+
+      settings = {
+        "browser.ctrlTab.sortByRecentlyUsed" = false;
+        "browser.startup.page" = 3;
+      };
     };
+
+    extensions = let addons = pkgs.nur.repos.rycee.firefox-addons; in [
+      addons.ublock-origin
+      addons.onepassword-password-manager
+    ];
   };
 
   programs.vim = {
