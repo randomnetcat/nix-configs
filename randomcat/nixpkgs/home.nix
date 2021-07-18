@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   # Let Home Manager install and manage itself.
@@ -95,5 +95,17 @@
 
   programs.vim = {
     enable = true;
+  };
+
+  home.activation = {
+    createDevDir = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      mkdir -p "$HOME/dev"
+    '';
+
+    generateStaticJdk = lib.hm.dag.entryAfter ["writeBoundary" "createDevDir"] ''
+      $DRY_RUN_CMD ln -fs $VERBOSE_ARG -T "${pkgs.jdk}" "$HOME/dev/nix_jdk_root"
+      $DRY_RUN_CMD ln -fs $VERBOSE_ARG -T "$HOME/dev/nix_jdk_root" "/nix/var/nix/gcroots/per-user/$USER/dev_jdk"
+      $DRY_RUN_CMD ln -fs $VERBOSE_ARG -T "${pkgs.jdk.home}" "$HOME/dev/nix_jdk"
+    '';
   };
 }
