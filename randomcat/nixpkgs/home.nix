@@ -34,6 +34,7 @@
     enable = true;
     userEmail = "jason.e.cobb@gmail.com";
     userName = "Jason Cobb";
+    ignores = [ ".idea/" "*~" "*.iml" "local" ];
   };
 
   dconf.settings = let keybindingMaps = {
