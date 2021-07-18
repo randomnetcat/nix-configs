@@ -26,6 +26,8 @@
     pkgs.gnome3.gnome-tweaks
     pkgs.thunderbird
     pkgs.jetbrains.idea-ultimate
+    pkgs.jdk
+    pkgs.gradle
   ];
 
   programs.git = {
