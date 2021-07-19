@@ -12,6 +12,7 @@
       pkgs.spotify
       pkgs.discord
       pkgs.thunderbird
+      pkgs.teams
     ];
 
     programs.firefox = {
