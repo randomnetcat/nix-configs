@@ -16,8 +16,7 @@
 
     home.activation = {
       generateStaticJdk = lib.hm.dag.entryAfter ["writeBoundary" "createDevDir"] ''
-        $DRY_RUN_CMD ln -fs $VERBOSE_ARG -T -- "${pkgs.jdk}" "$HOME/dev/nix_jdk_root"
-        $DRY_RUN_CMD ln -fs $VERBOSE_ARG -T -- "$HOME/dev/nix_jdk_root" "/nix/var/nix/gcroots/per-user/$USER/dev_jdk"
+        $DRY_RUN_CMD ln -fs $VERBOSE_ARG -T -- "${pkgs.jdk}" "/nix/var/nix/gcroots/per-user/$USER/dev_jdk"
         $DRY_RUN_CMD ln -fs $VERBOSE_ARG -T -- "${pkgs.jdk.home}" "$HOME/dev/nix_jdk"
       '';
     };
