@@ -42,6 +42,10 @@
       "org/gnome/desktop/input-sources" = {
         "xkb-options" = [ "lv3:ralt_alt" ]; # Disable right alt key from being interpreted as special character key
       };
+
+      "org/gnome/settings-daemon/plugins/power" = {
+        sleep-inactive-ac-type = "nothing";
+      };
     } // keybindingMaps;
   };
 }
