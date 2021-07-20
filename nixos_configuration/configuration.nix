@@ -82,6 +82,8 @@
     members = [ "randomcat" ];
   };
 
+  nixpkgs.config.allowUnfree = true;
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = [
@@ -89,6 +91,8 @@
     pkgs.git
     pkgs.bindfs
   ];
+
+  programs.steam.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -146,6 +150,17 @@
 
   fileSystems."/home/randomcat/dev/projects" = {
     device = "/root/mountpoints/dev_projects";
+    fsType = "fuse.bindfs";
+    options = [ "force-user=randomcat" "force-group=randomcat" ];
+  };
+
+  fileSystems."/root/mountpoints/games" = {
+    device = "/dev/mapper/vg_rcat-data_games";
+    fsType = "ext4";
+  };
+
+  fileSystems."/home/randomcat/games" = {
+    device = "/root/mountpoints/games";
     fsType = "fuse.bindfs";
     options = [ "force-user=randomcat" "force-group=randomcat" ];
   };
