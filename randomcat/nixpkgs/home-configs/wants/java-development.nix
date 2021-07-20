@@ -5,9 +5,12 @@
     ../detail/dev-dir.nix
   ];
 
-  options = {};
+  options = {
+  };
 
   config = {
+    randomcat.home.dev-dir.enable = true;
+
     home.packages = [
       pkgs.jetbrains.idea-ultimate
       pkgs.jdk

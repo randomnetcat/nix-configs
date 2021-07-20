@@ -1,16 +1,21 @@
 { config, lib, pkgs, ... }:
 
+let
+  cfg = config.randomcat.home.dev-dir;
+in
 {
   imports = [
   ];
 
-  options = {};
+  options = {
+    randomcat.home.dev-dir = {
+      enable = lib.mkEnableOption "~/dev dir";
+    };
+  };
 
   config = {
-    home.activation = {
-      createDevDir = lib.hm.dag.entryAfter ["writeBoundary"] ''
-        $DRY_RUN_CMD mkdir $VERBOSE_ARG -p -- "$HOME/dev"
-      '';
+    home.file."dev/.keep" = lib.mkIf cfg.enable {
+      text = "";
     };
   };
 }
