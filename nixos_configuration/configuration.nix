@@ -16,6 +16,7 @@ in
   ];
 
   nixpkgs.config.allowUnfree = true;
+  nix.autoOptimiseStore = true;
 
   environment.systemPackages = [
     pkgs.nano
