@@ -17,6 +17,10 @@
       initExtra = ''
         . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
       '';
+
+      shellAliases = {
+        ls = "ls -l";
+      };
     };
 
     home.sessionVariables = {
