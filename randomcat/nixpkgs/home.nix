@@ -7,6 +7,7 @@
     ./home-configs/wants/version-control.nix
     ./home-configs/wants/productivity-apps.nix
     ./home-configs/wants/custom-terminal.nix
+    ./home-configs/wants/ssh.nix
   ];
 
   # Let Home Manager install and manage itself.
