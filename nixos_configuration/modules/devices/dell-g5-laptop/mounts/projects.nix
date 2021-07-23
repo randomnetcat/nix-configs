@@ -20,7 +20,10 @@
     fileSystems."/home/randomcat/dev/projects" = {
       device = "/root/mountpoints/dev_projects";
       fsType = "fuse.bindfs";
-      options = [ "force-user=randomcat" "force-group=randomcat" ];
+      options = [
+        (assert (builtins.hasAttr "randomcat" config.users.users); "force-user=randomcat")
+        (assert (builtins.hasAttr "randomcat" config.users.groups); "force-group=randomcat")
+      ];
     };
   };
 }
