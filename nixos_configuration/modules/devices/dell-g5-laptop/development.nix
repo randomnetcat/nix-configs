@@ -2,13 +2,12 @@
 
 {
   imports = [
-    ./mounts/feature/games.nix
+    ./mounts/feature/projects.nix
   ];
 
   options = {
   };
 
   config = {
-    programs.steam.enable = true;
   };
 }

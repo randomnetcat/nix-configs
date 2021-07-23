@@ -7,8 +7,6 @@
     ./home.nix
     ./persist.nix
     ./swap.nix
-    ./games.nix
-    ./projects.nix
   ];
 
   options = {

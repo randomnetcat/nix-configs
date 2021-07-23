@@ -7,11 +7,16 @@ in
   imports = [
     (impl-modules + "/global.nix")
     (impl-modules + "/boot/grub-efi.nix")
+
+    ./mounts/system
+
     ./graphical.nix
     ./networking.nix
-    ./gaming.nix
     ./locale.nix
-    ./mounts
+
+    # Features
+    ./gaming.nix
+    ./development.nix
   ];
 
   options = {
