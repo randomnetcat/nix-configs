@@ -17,6 +17,7 @@ in
     # Features
     ./gaming.nix
     ./development.nix
+    ./backup.nix
   ];
 
   options = {
