@@ -18,6 +18,7 @@ in
     ./gaming.nix
     ./development.nix
     ./backup.nix
+    ./bluetooth.nix
   ];
 
   options = {
