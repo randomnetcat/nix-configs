@@ -9,10 +9,6 @@
   };
 
   config = {
-    # programs.ssh.enable = true;
-
-    home.persistence."/persist/secrets/randomcat" = {
-      directories = [ ".ssh" ];
-    };
+    programs.ssh.enable = true;
   };
 }
