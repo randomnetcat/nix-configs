@@ -2,7 +2,6 @@
 
 {
   imports = [
-    ../vendor/impermanence/home-manager.nix
   ];
 
   options = {
