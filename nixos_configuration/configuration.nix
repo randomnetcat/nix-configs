@@ -12,7 +12,7 @@ in
 {
   imports = [
     ./hardware-configuration.nix # Include the results of the hardware scan.
-    ./modules/devices/dell-g5-laptop
+    ./device-dir
   ];
 
   environment.etc."nixos" = pkgs.lib.mkIf canSelfLink {
