@@ -13,6 +13,7 @@
       pkgs.discord
       pkgs.thunderbird
       pkgs.teams
+      pkgs.slack
     ];
 
     programs.firefox = {
