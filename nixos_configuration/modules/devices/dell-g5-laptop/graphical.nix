@@ -5,7 +5,7 @@ let
 in
 {
   imports = [
-    (impl-modules + "/graphical/gnome-lightdm.nix") # NVIDIA card doesn't work under GDM for... some reason
+    (impl-modules + "/graphical/gnome-gdm.nix")
     (impl-modules + "/graphical/io/sound.nix")
     (impl-modules + "/graphical/io/touchpad.nix")
   ];
@@ -23,6 +23,7 @@ in
       nvidiaBusId = "PCI:1:0:0";
     };
 
+    hardware.nvidia.modesetting.enable = true;
     hardware.nvidia.nvidiaPersistenced = true;
   };
 }
