@@ -58,6 +58,19 @@
 
           dataVersion = 1;
         };
+
+        "secret-hitler" = {
+          package = import (builtins.fetchGit {
+            url = "https://github.com/randomnetcat/AgoraBot.git";
+            ref = "secret-hitler";
+            rev = "a45cb180d06cd2d0cbb91c884d463af99cb1fa61";
+          }) { inherit (pkgs); };
+
+          token = builtins.readFile ./secrets/discord/secret-hitler-token;
+
+          configSource = ./public-config/agorabot/secret-hitler;
+          dataVersion = 1;
+        };
       };
     };
  }
