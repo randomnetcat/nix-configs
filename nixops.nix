@@ -10,49 +10,23 @@
         ./modules/wants/ssh-access.nix
         ./modules/wants/local-root-access.nix
         ./modules/wants/agorabot.nix
+        ./modules/wants/agorabot-server.nix
       ];
 
+      services.randomcat.agorabot-server = {
+        enable = true;
+        user = "discord-bot";
+      };
+
       users.users.discord-bot = {
-        isSystemUser = true;
-        createHome = true;
         group = "discord-bot";
-        home = "/srv/discord-bot";
-        extraGroups = [ "keys" ];
       };
 
       users.groups.discord-bot = {
         members = [ "discord-bot" ];
       };
 
-      deployment.keys.discord-agora-prod = let userCfg = config.users.users.discord-bot; in {
-        text = builtins.readFile ./secrets/discord/agora-prod-token;
-        user = userCfg.name;
-        group = userCfg.group;
-        permissions = "0640";
-      };
-
-      deployment.keys.ssmtp-agora-prod = let userCfg = config.users.users.discord-bot; in {
-        text = builtins.readFile ./secrets/discord/agora-prod-ssmtp-config;
-        user = userCfg.name;
-        group = userCfg.group;
-        permissions = "0640";
-      };
-
-      systemd.services.agorabot-create-directories = let userCfg = config.users.users.discord-bot; in {
-        wantedBy = [ "multi-user.target" ];
-
-        serviceConfig = {
-          Type = "oneshot";
-          User = userCfg.name;
-          Group = userCfg.group;
-        };
-
-        script = ''
-          mkdir -p -- /srv/discord-bot/agora-prod
-        '';
-      };
-
-      services.randomcat.agorabot.instances = {
+      services.randomcat.agorabot-server.instances = {
         "agora-prod" = {
           package = import (builtins.fetchGit {
             url = "https://github.com/randomnetcat/AgoraBot.git";
@@ -60,37 +34,29 @@
             rev = "a06baa0adad3f3f4d81e09e607c3d32dc18d0538";
           }) { inherit (pkgs); };
 
-          configGeneratorPackage =
-            let
-              mailConfigText = ''
+          token = builtins.readFile ./secrets/discord/agora-prod-token;
+
+          configSource = ./public-config/agorabot/agora-prod;
+
+          secretConfigFiles = {
+            "digest/ssmtp.conf" = {
+              text = builtins.readFile ./secrets/discord/agora-prod-ssmtp-config;
+            };
+          };
+
+          extraConfigFiles = {
+            "digest/mail.json" = {
+              text = ''
                 {
                   "send_strategy": "ssmtp",
                   "ssmtp_path": "${pkgs.ssmtp}/bin/ssmtp",
-                  "ssmtp_config_path": "/run/keys/ssmtp-agora-prod"
+                  "ssmtp_config_path": "ssmtp.conf"
                 }
               '';
-            in
-            pkgs.writeShellScriptBin "generate-config" ''
-              cp -RT --no-preserve=mode -- ${pkgs.lib.escapeShellArg "${./public-config/agorabot/agora-prod}"} "$1"
-              printf "%s" ${pkgs.lib.escapeShellArg mailConfigText} > "$1"/digest/mail.json 
-            '';
-
-          dataVersion = 1;
-
-          workingDir = "/srv/discord-bot/agora-prod";
-
-          tokenFilePath = "/run/keys/discord-agora-prod";
-
-          unit = let userCfg = config.users.users.discord-bot; keyServices = [ "discord-agora-prod-key.service" "ssmtp-agora-prod-key.service" ]; in {
-            wantedBy = [ "multi-user.target" ];
-            after = [ "agorabot-create-directories.service" ] ++ keyServices;
-            wants = [] ++ keyServices;
-
-            auth = {
-              user = userCfg.name;
-              group = userCfg.group;
             };
           };
+
+          dataVersion = 1;
         };
       };
     };
