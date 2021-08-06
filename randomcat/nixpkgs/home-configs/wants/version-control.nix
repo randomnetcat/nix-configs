@@ -12,6 +12,7 @@
       userEmail = "jason.e.cobb@gmail.com";
       userName = "Jason Cobb";
       ignores = [ ".idea/" "*~" "*.iml" "local" ];
+      aliases = { fpush = "push --force-with-lease"; };
       package = pkgs.gitAndTools.gitFull;
 
       extraConfig = {
