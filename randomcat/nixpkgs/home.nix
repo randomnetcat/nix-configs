@@ -10,6 +10,7 @@
     ./home-configs/wants/ssh.nix
     ./home-configs/wants/nixops.nix
     ./home-configs/wants/sysadmin.nix
+    ./home-configs/wants/video.nix
   ];
 
   # Let Home Manager install and manage itself.
