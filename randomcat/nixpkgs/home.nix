@@ -9,6 +9,7 @@
     ./home-configs/wants/custom-terminal.nix
     ./home-configs/wants/ssh.nix
     ./home-configs/wants/nixops.nix
+    ./home-configs/wants/sysadmin.nix
   ];
 
   # Let Home Manager install and manage itself.
