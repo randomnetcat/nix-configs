@@ -14,6 +14,7 @@
       pkgs.thunderbird
       pkgs.teams
       pkgs.slack
+      pkgs.libreoffice
     ];
 
     programs.firefox = {
