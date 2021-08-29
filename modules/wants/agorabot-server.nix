@@ -183,6 +183,8 @@ in
                 group = userGroup;
               };
             };
+
+            autoRestart.enable = true;
           }
         )
       ) cfg.instances;

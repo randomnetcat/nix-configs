@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config,  ... }:
 
 let
   lib = pkgs.lib;
@@ -58,12 +58,15 @@ let
             default = "root";
           };
         };
+
       };
       
       workingDir = lib.mkOption {
         type = types.str;
         description = "Working directory of the bot.";
       };
+
+      autoRestart.enable = lib.mkEnableOption "Auto restart";
    };
   };
 in
@@ -94,6 +97,8 @@ in
             Restart = "on-failure";
             WorkingDirectory = value.workingDir;
             RestartSec = "30s";
+          } // lib.optionalAttrs value.autoRestart.enable {
+            Restart = "always";
           };
 
           script = ''
