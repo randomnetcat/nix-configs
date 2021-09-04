@@ -7,6 +7,10 @@
   options = {};
 
   config = {
+    home.packages = [
+      pkgs.killall
+    ];
+
     programs.vim = {
       enable = true;
     };
