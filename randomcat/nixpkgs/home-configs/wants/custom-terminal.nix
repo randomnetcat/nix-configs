@@ -9,6 +9,7 @@
   config = {
     home.packages = [
       pkgs.killall
+      pkgs.p7zip
     ];
 
     programs.vim = {
