@@ -14,6 +14,19 @@
 
     programs.vim = {
       enable = true;
+
+      settings = {
+        expandtab = true;
+        undodir = [ "~/.vim/undo" ];
+        undofile = true;
+      };
+
+      plugins = [ pkgs.vimPlugins.vim-sensible pkgs.vimPlugins.vim-mundo ];
+
+      extraConfig = ''
+        set hls
+        nnoremap <F5> :MundoToggle<CR>
+      '';
     };
 
     programs.bash = {
