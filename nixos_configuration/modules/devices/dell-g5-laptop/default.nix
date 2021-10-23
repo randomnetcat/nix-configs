@@ -19,6 +19,7 @@ in
     ./development.nix
     ./backup.nix
     ./bluetooth.nix
+    ./printing.nix
   ];
 
   options = {
