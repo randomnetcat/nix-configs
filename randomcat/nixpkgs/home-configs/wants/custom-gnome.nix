@@ -46,6 +46,10 @@
       "org/gnome/settings-daemon/plugins/power" = {
         sleep-inactive-ac-type = "nothing";
       };
+
+      "org/gnome/desktop/sound" = {
+        "allow-volume-above-100-percent" = true;
+      };
     } // keybindingMaps;
   };
 }
