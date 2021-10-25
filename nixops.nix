@@ -18,6 +18,9 @@
         user = "discord-bot";
       };
 
+      nix.gc.automatic = true;
+      nix.optimise.automatic = true;
+
       users.users.discord-bot = {
         group = "discord-bot";
       };
