@@ -79,4 +79,21 @@
         };
       };
     };
+
+    oracle-server = 
+    { config, pkgs, modulesPath, ... }:
+    {
+      deployment.targetHost = "158.101.116.179";
+
+      imports = [
+        (modulesPath + "/profiles/qemu-guest.nix")
+        ./modules/system-types/oracle-arch.nix
+        ./modules/wants/ssh-access.nix
+      ];
+
+      boot.cleanTmpDir = true;
+      networking.hostName = "instance-20211029-1400";
+      networking.firewall.allowPing = true;
+      services.openssh.enable = true;
+    };
  }
