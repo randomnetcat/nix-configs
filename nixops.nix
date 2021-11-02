@@ -22,6 +22,8 @@
       nix.gc.options = "--delete-older-than 30d";
       nix.optimise.automatic = true;
 
+      networking.firewall.enable = false;
+
       users.users.discord-bot = {
         group = "discord-bot";
       };
@@ -35,7 +37,7 @@
           package = import (builtins.fetchGit {
             url = "https://github.com/randomnetcat/AgoraBot.git";
             ref = "main";
-            rev = "0a815fe4bfb051ac1f4d25a0ac29089d4b9e0ce0";
+            rev = "d4a501736357a48a340609c45f3f232830608431";
           }) { inherit (pkgs); };
 
           token = builtins.readFile ./secrets/discord/agora-prod-token;
@@ -67,7 +69,7 @@
           package = import (builtins.fetchGit {
             url = "https://github.com/randomnetcat/AgoraBot.git";
             ref = "secret-hitler";
-            rev = "18ee59d9a9eaed677ea850e89398df4f486ae509";
+            rev = "944ce1b32abb5151b09eadb69493301808da7fb6";
           }) { inherit (pkgs); };
 
           token = builtins.readFile ./secrets/discord/secret-hitler-token;
