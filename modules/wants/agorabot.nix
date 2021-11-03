@@ -102,16 +102,30 @@ in
           };
 
           script = ''
-            rm -rf -- ${lib.escapeShellArg "${value.workingDir}/generated-config"}
-            mkdir -- ${lib.escapeShellArg "${value.workingDir}/generated-config"}
-            ${value.configGeneratorPackage}/bin/generate-config ${lib.escapeShellArg "${value.workingDir}/generated-config"}
+            set -eu
+            set -o pipefail
+
+            BOT_CONFIG_DIR=${lib.escapeShellArg "${value.workingDir}/generated-config"}
+            rm -rf -- "$BOT_CONFIG_DIR"
+            mkdir -- "$BOT_CONFIG_DIR"
+            chmod 700 -- "$BOT_CONFIG_DIR"
+            ${lib.escapeShellArg "${value.configGeneratorPackage}/bin/generate-config"} "$BOT_CONFIG_DIR"
+
+            BOT_STORAGE_DIR=${lib.escapeShellArg "${value.workingDir}/storage"}
+            mkdir -p -- "$BOT_STORAGE_DIR"
+            chmod 700 -- "$BOT_STORAGE_DIR"
+
+            BOT_TMP_DIR=${lib.escapeShellArg "${value.workingDir}/tmp"}
+            rm -rf -- "$BOT_TMP_DIR"
+            mkdir -- "$BOT_TMP_DIR"
+            chmod 700 -- "$BOT_TMP_DIR"
 
             ${lib.escapeShellArg "${value.package}/bin/AgoraBot"} \
               --token "$(cat ${lib.escapeShellArg value.tokenFilePath})" \
               --data-version ${lib.escapeShellArg "${builtins.toString value.dataVersion}"} \
-              --config-path ${lib.escapeShellArg "${value.workingDir}/generated-config"} \
-              --storage-path ${lib.escapeShellArg "${value.workingDir}/storage"} \
-              --temp-path ${lib.escapeShellArg "${value.workingDir}/tmp"}
+              --config-path "$BOT_CONFIG_DIR" \
+              --storage-path "$BOT_STORAGE_DIR" \
+              --temp-path "$BOT_TMP_DIR"
           '';
         };
       }
