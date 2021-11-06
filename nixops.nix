@@ -89,7 +89,7 @@
         (modulesPath + "/profiles/qemu-guest.nix")
         ./modules/system-types/oracle-arch.nix
         ./modules/wants/ssh-access.nix
-        ./zulip/module.nix
+        ./modules/wants/zulip-server.nix
       ];
 
       boot.cleanTmpDir = true;
