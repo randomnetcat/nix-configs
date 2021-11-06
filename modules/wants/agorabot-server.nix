@@ -159,6 +159,14 @@ in
 
             configGeneratorPackage = pkgs.writeShellScriptBin "generate-config" (
             ''
+              set -eu
+              set -o pipefail
+
+              if [ "$#" -lt "1" ]; then
+                exit 1
+              fi
+            '' +
+            "\n" + ''
               cp -RT --no-preserve=mode -- ${pkgs.lib.escapeShellArg "${value.configSource}"} "$1"
             '' +
             "\n" +
