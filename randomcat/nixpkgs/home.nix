@@ -11,7 +11,10 @@
     ./home-configs/wants/nixops.nix
     ./home-configs/wants/sysadmin.nix
     ./home-configs/wants/video.nix
+    ./home-configs/wants/agora-backup.nix
   ];
+
+  home.randomcat.agora-backup.enable = true;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
