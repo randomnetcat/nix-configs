@@ -1,5 +1,9 @@
 { config, pkgs, ... }:
 
+let
+  username = "randomcat";
+  homeDirectory = "/home/randomcat";
+in
 {
   imports = [
   ];
@@ -8,14 +12,21 @@
   };
 
   config = {
-    users.users.randomcat = {
+    users.users."${username}" = {
       isNormalUser = true;
       group = "randomcat";
+      home = homeDirectory;
       extraGroups = [ "users" "wheel" ]; # Enable ‘sudo’ for the user.
     };
 
-    users.groups.randomcat = {
-      members = [ "randomcat" ];
+    users.groups."${username}" = {
+      members = [ "${username}" ];
+    };
+
+    home-manager.users."${username}" = {
+      imports = [
+        (import ../home/randomcat.nix { inherit username homeDirectory; })
+      ];
     };
   };
 }

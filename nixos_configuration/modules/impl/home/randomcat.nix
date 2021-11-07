@@ -1,3 +1,4 @@
+{ username, homeDirectory }:
 { config, lib, pkgs, ... }:
 
 {
@@ -14,6 +15,8 @@
     ./home-configs/wants/agora-backup.nix
   ];
 
+  nixpkgs.config.allowUnfree = true;
+
   home.randomcat.agora-backup.enable = true;
 
   # Let Home Manager install and manage itself.
@@ -21,8 +24,8 @@
 
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
-  home.username = "randomcat";
-  home.homeDirectory = "/home/randomcat";
+  home.username = username;
+  home.homeDirectory = homeDirectory;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

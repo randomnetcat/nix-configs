@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, nurPkgs, ... }:
 
 {
   imports = [
@@ -32,7 +32,7 @@
       };
 
       extensions =
-        let addons = pkgs.nur.repos.rycee.firefox-addons;
+        let addons = nurPkgs.nur.repos.rycee.firefox-addons;
         in
         [
           addons.ublock-origin
