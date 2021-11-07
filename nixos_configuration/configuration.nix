@@ -2,6 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
+{ deviceDir }:
 { config, pkgs, ... }:
 
 let
@@ -11,8 +12,8 @@ in
 
 {
   imports = [
-    ./hardware-configuration.nix # Include the results of the hardware scan.
-    ./device-dir
+    deviceDir
+    (deviceDir + "/hardware-configuration.nix")
   ];
 
   nix = {
