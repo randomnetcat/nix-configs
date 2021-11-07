@@ -1,7 +1,6 @@
-{ pkgs, config, ... }:
+{ pkgs, lib, config, ... }:
 
 let
-  lib = pkgs.lib;
   types = lib.types;
   cfg = config.services.randomcat.agorabot-server;
   extraConfigfileModule = { name, ... }: {
@@ -99,7 +98,7 @@ in
         ;
       keyNameOfConfigFileEntry = entry: "agorabot-config-${entry.instance}-${escapeSecretConfigPath entry.configPath}";
     in
-    {
+    lib.mkIf (cfg.enable) {
       users.users."${cfg.user}" = {
         isSystemUser = true;
         createHome = true;
