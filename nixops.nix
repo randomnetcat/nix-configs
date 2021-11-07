@@ -38,7 +38,7 @@
             url = "https://github.com/randomnetcat/AgoraBot.git";
             ref = "main";
             rev = "d4a501736357a48a340609c45f3f232830608431";
-          }) { inherit (pkgs); };
+          }) { inherit pkgs; };
 
           token = builtins.readFile ./secrets/discord/agora-prod-token;
 
@@ -70,7 +70,7 @@
             url = "https://github.com/randomnetcat/AgoraBot.git";
             ref = "secret-hitler";
             rev = "944ce1b32abb5151b09eadb69493301808da7fb6";
-          }) { inherit (pkgs); };
+          }) { inherit pkgs; };
 
           token = builtins.readFile ./secrets/discord/secret-hitler-token;
 
