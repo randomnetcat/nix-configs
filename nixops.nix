@@ -2,7 +2,7 @@
     oracle-server = 
     { config, pkgs, modulesPath, ... }:
     {
-      deployment.targetHost = "158.101.116.179";
+      deployment.targetHost = "oracle-server.randomcat.org";
 
       imports = [
         (modulesPath + "/profiles/qemu-guest.nix")
