@@ -10,6 +10,7 @@
         ./modules/wants/ssh-access.nix
         ./modules/wants/zulip-server.nix
         ./modules/wants/agorabot-server.nix
+        ./modules/impl/secrets
       ];
 
       boot.cleanTmpDir = true;
@@ -21,6 +22,13 @@
       networking.nameservers = [ "1.1.1.1" ];
 
       virtualisation.docker.enable = true;
+
+      randomcat.secrets = {
+        sshPubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOccenq6rA3lk3UtC0ywkJiiNV+76o6RQsfIQMY8cLw5 root@instance-20211029-1400";
+
+        secrets = {
+        };
+      };
 
       services.randomcat.docker-zulip = {
         enable = true;
