@@ -1,23 +1,4 @@
 {
-  randomcat-server =
-    { config, pkgs, modulesPath, ... }:
-    {
-      deployment.targetHost = "51.222.27.55";
-
-      imports = [
-        (modulesPath + "/profiles/qemu-guest.nix")
-        ./modules/system-types/basic-ovh.nix
-        ./modules/wants/ssh-access.nix
-        ./modules/wants/local-root-access.nix
-      ];
-
-      nix.gc.automatic = true;
-      nix.gc.options = "--delete-older-than 30d";
-      nix.optimise.automatic = true;
-
-      networking.firewall.enable = false;
-   };
-
     oracle-server = 
     { config, pkgs, modulesPath, ... }:
     {
