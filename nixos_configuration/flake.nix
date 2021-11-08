@@ -22,6 +22,7 @@
         (import ./configuration.nix { deviceDir = ./modules/devices/dell-g5-laptop; })
         (import "${home-manager}/nixos")
         { config.system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev; }
+        { config.nix.registry.nixpkgs.flake = nixpkgs; }
         {
           config.home-manager.extraSpecialArgs = {
             nurPkgs = import nixpkgs {
