@@ -11,7 +11,7 @@
     };
 
     working-nixops-nixpkgs = {
-      url = "github:nixos/nixops?rev=65b70fbe4c3a942a266794e28a08147b06ebb6bc";
+      url = "github:nixos/nixpkgs?rev=65b70fbe4c3a942a266794e28a08147b06ebb6bc";
     };
   };
 

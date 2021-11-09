@@ -62,13 +62,13 @@
         "lastModified": 1631525292,
         "narHash": "sha256-dbaXjviKfSz0L5/x25O6a/X+rqwtJAhSDTZv2XW+U1w=",
         "owner": "nixos",
-        "repo": "nixops",
+        "repo": "nixpkgs",
         "rev": "65b70fbe4c3a942a266794e28a08147b06ebb6bc",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "repo": "nixops",
+        "repo": "nixpkgs",
         "rev": "65b70fbe4c3a942a266794e28a08147b06ebb6bc",
         "type": "github"
       }
