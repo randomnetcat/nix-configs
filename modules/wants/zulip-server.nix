@@ -48,6 +48,7 @@ in
       keyNameOf = n: "zulip-secret-${n}";
       composePackage = import ./zulip-detail/adjusted-docker-zulip.nix { inherit pkgs; };
       allKeyServiceNames = map (n: (keyNameOf n) + "-key.service") (lib.attrNames cfg.secrets);
+      dockerPackage = config.virtualisation.docker.package;
     in
     lib.mkIf (cfg.enable) {
       virtualisation.docker.enable = true;
@@ -107,14 +108,14 @@ in
           " > ${lib.escapeShellArg secretEnvWorkPath}
 
           echo "Building docker image"
-          ${pkgs.docker}/bin/docker compose -f ${composePackage}/docker-compose.yml --env-file ${lib.escapeShellArg secretEnvWorkPath} build
+          ${dockerPackage}/bin/docker compose -f ${composePackage}/docker-compose.yml --env-file ${lib.escapeShellArg secretEnvWorkPath} build
 
-          ${pkgs.docker}/bin/docker compose -f ${composePackage}/docker-compose.yml --env-file ${lib.escapeShellArg secretEnvWorkPath} up
+          ${dockerPackage}/bin/docker compose -f ${composePackage}/docker-compose.yml --env-file ${lib.escapeShellArg secretEnvWorkPath} up
         '';
       };
 
       environment.systemPackages = [
-        (pkgs.writeShellScriptBin "zulip-manage" "${pkgs.docker}/bin/docker compose -f ${composePackage}/docker-compose.yml --env-file ${lib.escapeShellArg secretEnvWorkPath} exec -u zulip zulip /home/zulip/deployments/current/manage.py \"$@\"")
+        (pkgs.writeShellScriptBin "zulip-manage" "${dockerPackage}/bin/docker compose -f ${composePackage}/docker-compose.yml --env-file ${lib.escapeShellArg secretEnvWorkPath} exec -u zulip zulip /home/zulip/deployments/current/manage.py \"$@\"")
       ];
     };
 }
