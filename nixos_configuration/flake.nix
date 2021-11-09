@@ -13,6 +13,10 @@
     working-nixops-nixpkgs = {
       url = "github:nixos/nixpkgs?rev=65b70fbe4c3a942a266794e28a08147b06ebb6bc";
     };
+
+    nixpkgs = {
+      url = "github:nixos/nixpkgs/nixos-unstable";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, nur, working-nixops-nixpkgs }: {
