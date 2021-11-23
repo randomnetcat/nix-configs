@@ -5,7 +5,6 @@
     ./root.nix
     ./boot.nix
     ./home.nix
-    ./persist.nix
     ./swap.nix
   ];
 
