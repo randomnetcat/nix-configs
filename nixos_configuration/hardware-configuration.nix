@@ -1,1 +1,0 @@
-device-dir/hardware-configuration.nix
