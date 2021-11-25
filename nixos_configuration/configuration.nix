@@ -3,7 +3,7 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { deviceDir }:
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   selfLinkSpecPath = ./self-link.nix;
@@ -27,5 +27,12 @@ in
   environment.etc."nixos" = pkgs.lib.mkIf canSelfLink {
     source = (import selfLinkSpecPath).etc_nixos_dir;
   };
-}
 
+  specialisation = {
+    external-display.configuration = {
+      system.nixos.tags = [ "external-display" ];
+      hardware.nvidia.prime.offload.enable = lib.mkForce false;
+      hardware.nvidia.powerManagement.enable = lib.mkForce false;
+    };
+  };
+}
