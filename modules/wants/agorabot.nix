@@ -61,11 +61,6 @@ let
 
       };
       
-      workingDir = lib.mkOption {
-        type = types.str;
-        description = "Working directory of the bot.";
-      };
-
       autoRestart.enable = lib.mkEnableOption "Auto restart";
    };
   };
@@ -95,30 +90,27 @@ in
             User = value.unit.auth.user;
             Group = value.unit.auth.user;
             Restart = "on-failure";
-            WorkingDirectory = value.workingDir;
             RestartSec = "30s";
+            RuntimeDirectory="agorabot/${name}";
+            RuntimeDirectoryMode = "700";
+            StateDirectory="agorabot/${name}";
+            StateDirectoryMode = "700";
           } // lib.optionalAttrs value.autoRestart.enable {
             Restart = "always";
           };
 
           script = ''
-            set -eu
-            set -o pipefail
+            set -euo pipefail
 
-            BOT_CONFIG_DIR=${lib.escapeShellArg "${value.workingDir}/generated-config"}
-            rm -rf -- "$BOT_CONFIG_DIR"
-            mkdir -- "$BOT_CONFIG_DIR"
-            chmod 700 -- "$BOT_CONFIG_DIR"
+            BOT_CONFIG_DIR="$RUNTIME_DIRECTORY/generated-config"
             ${lib.escapeShellArg "${value.configGeneratorPackage}/bin/generate-config"} "$BOT_CONFIG_DIR"
 
-            BOT_STORAGE_DIR=${lib.escapeShellArg "${value.workingDir}/storage"}
-            mkdir -p -- "$BOT_STORAGE_DIR"
-            chmod 700 -- "$BOT_STORAGE_DIR"
+            BOT_STORAGE_DIR="$STATE_DIRECTORY/storage"
+            mkdir -p -m 700 -- "$BOT_STORAGE_DIR"
 
-            BOT_TMP_DIR=${lib.escapeShellArg "${value.workingDir}/tmp"}
+            BOT_TMP_DIR="$STATE_DIRECTORY/tmp"
             rm -rf -- "$BOT_TMP_DIR"
-            mkdir -- "$BOT_TMP_DIR"
-            chmod 700 -- "$BOT_TMP_DIR"
+            mkdir -m 700 -- "$BOT_TMP_DIR"
 
             ${lib.escapeShellArg "${value.package}/bin/AgoraBot"} \
               --token "$(cat ${lib.escapeShellArg value.tokenFilePath})" \

@@ -73,7 +73,6 @@ in
   config =
     let
       tokenKeyNameOf = instance: "agorabot-discord-token-${instance}";
-      workingDirOf = instance: "${cfg.root-directory}/${instance}";
       userGroup = config.users.users."${cfg.user}".group;
       escapeSecretConfigPath = path: (lib.replaceStrings ["/"] ["__"] path);
       secretConfigFileEntries =
@@ -132,18 +131,6 @@ in
         };
       }) secretConfigFileEntries));
 
-      systemd.services.agorabot-create-directories = {
-        wantedBy = [ "agorabot-instances.target" ];
-
-        serviceConfig = {
-          Type = "oneshot";
-          User = cfg.user;
-          Group = userGroup;
-        };
-
-        script = lib.concatStringsSep "\n" (map (name: "mkdir -p -- ${workingDirOf name}") (lib.attrNames cfg.instances));
-      };
-
       services.randomcat.agorabot.instances = lib.mapAttrs (
         name: value:
         (
@@ -153,7 +140,6 @@ in
           in
           {
             inherit (value) package dataVersion;
-            workingDir = workingDirOf name;
             tokenFilePath = "/run/keys/${tokenKeyNameOf name}";
 
             configGeneratorPackage = pkgs.writeShellScriptBin "generate-config" (
@@ -182,7 +168,7 @@ in
 
             unit = {
               wantedBy = [ "agorabot-instances.target" ];
-              after = [ "agorabot-create-directories.service" "${tokenKeyNameOf name}-key.service" ] ++ neededSecretConfigUnits;
+              after = [ "${tokenKeyNameOf name}-key.service" ] ++ neededSecretConfigUnits;
               wants = [ "${tokenKeyNameOf name}-key.service" ] ++ neededSecretConfigUnits;
 
               auth = {
