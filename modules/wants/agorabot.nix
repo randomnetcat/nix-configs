@@ -58,7 +58,11 @@ let
         };
       };
       
-      autoRestart.enable = lib.mkEnableOption "Auto restart";
+      restartOnHalt = lib.mkOption {
+        type = types.bool;
+        description = "Whether to restart the bot when a clean shutdown is initiated (probably by !halt).";
+        default = true;
+      };
    };
   };
 in
@@ -104,7 +108,7 @@ in
             serviceConfig = {
               User = value.user;
               Group = value.group;
-              Restart = "on-failure";
+              Restart = if value.restartOnHalt then "always" else "on-failure";
               RestartSec = "30s";
               RuntimeDirectory="agorabot/${name}";
               RuntimeDirectoryMode = "700";
@@ -133,8 +137,6 @@ in
               RemoveIPC = true;
               UMask = "077";
               SystemCallArchitectures = "native";
-            } // lib.optionalAttrs value.autoRestart.enable {
-              Restart = "always";
             };
 
             script = ''

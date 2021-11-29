@@ -172,8 +172,6 @@ in
 
             user = cfg.user;
             group = cfg.group;
-
-            autoRestart.enable = true;
           }
         )
       ) cfg.instances;
