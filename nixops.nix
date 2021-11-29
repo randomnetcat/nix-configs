@@ -18,9 +18,6 @@
       networking.firewall.allowPing = true;
       services.openssh.enable = true;
 
-      # Have to use external nameserver because Oracle nameserver is on a link-local address (169.254.x.x) and docker adds routes for those addresses for its network adapters.
-      networking.nameservers = [ "1.1.1.1" ];
-
       virtualisation.docker.enable = true;
 
       randomcat.secrets = {

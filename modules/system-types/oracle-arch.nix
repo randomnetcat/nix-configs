@@ -14,6 +14,21 @@
 
   boot.initrd.kernelModules = [ "nvme" ];
 
+  # Force link-local addresses to be routed by the primary Virtual Network
+  # Interface Controller (in Oracle terms).
+  #
+  # For some reason, Oracle puts important things on link-local addresses (like
+  # the default DNS server). This causes problems when, e.g., Docker creates
+  # virtual network controllers that route 169.254/16. By default only the
+  # single address 169.254.0.0 is routed to the Oracle controller (in addition
+  # to it having the default gateway), so the Docker routes are selected
+  # because they are more specific than the default route. This command fixes
+  # that by forcing 169.254/16 to be routed to the Oracle controller using a
+  # lower metric than the Docker routes have (thus taking precedence).
+  networking.localCommands = ''
+    ip route add 169.254.0.0/16 dev enp0s3 scope link metric 1
+  '';
+
   fileSystems = {
     "/" = {
       device = "/dev/sda1";
