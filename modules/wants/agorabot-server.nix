@@ -143,34 +143,26 @@ in
           let 
             neededSecretConfigEntries = lib.filter (x: x.instance == name) secretConfigFileEntries;
             neededSecretConfigUnits = map (x: (keyNameOfConfigFileEntry x) + "-key.service") neededSecretConfigEntries;
+            copySecretConfigFiles = lib.concatStringsSep "\n" (map (entry: ''cp --no-preserve=mode -- ${lib.escapeShellArg "/run/keys/${keyNameOfConfigFileEntry entry}"} "$1"/${lib.escapeShellArg entry.configPath}'') neededSecretConfigEntries);
+            generateExtraConfigFiles = lib.concatStringsSep "\n" (lib.mapAttrsToList (configPath: configValue: ''printf "%s" ${pkgs.lib.escapeShellArg configValue.text} > "$1"/${lib.escapeShellArg configPath}'') value.extraConfigFiles);
           in
           {
             inherit (value) package dataVersion;
             tokenFilePath = "/run/keys/${tokenKeyNameOf name}";
 
-            configGeneratorPackage = pkgs.writeShellScriptBin "generate-config" (
-            ''
+            configGeneratorPackage = pkgs.writeShellScriptBin "generate-config" ''
               set -eu
               set -o pipefail
 
               if [ "$#" -lt "1" ]; then
                 exit 1
               fi
-            '' +
-            "\n" + ''
+
               cp -RT --no-preserve=mode -- ${pkgs.lib.escapeShellArg "${value.configSource}"} "$1"
-            '' +
-            "\n" +
-            (
-              lib.concatStringsSep "\n" (map (entry: ''cp --no-preserve=mode -- ${lib.escapeShellArg "/run/keys/${keyNameOfConfigFileEntry entry}"} "$1"/${lib.escapeShellArg entry.configPath}'') neededSecretConfigEntries)
-            ) +
-            "\n" +
-            (
-              lib.concatStringsSep "\n" (lib.mapAttrsToList (configPath: configValue: ''printf "%s" ${pkgs.lib.escapeShellArg configValue.text} > "$1"/${lib.escapeShellArg configPath}'') value.extraConfigFiles)
-            )
-            + "\n"
-            )
-            ;
+
+              ${copySecretConfigFiles}
+              ${generateExtraConfigFiles}
+            '';
 
             unit = {
               wantedBy = [ "agorabot-instances.target" ];
