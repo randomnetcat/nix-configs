@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, options, ... }:
 
 let
   types = lib.types;
@@ -54,7 +54,14 @@ in
 
       user = lib.mkOption {
         type = types.str;
-        description = "Name of the user for AgoraBot instances.";
+        description = "Name of the user for AgoraBot instances. If not set to the default, the user must be separately configured.";
+        default = "agorabot";
+      };
+
+      group = lib.mkOption {
+        type = types.str;
+        description = "Name of the group for AgoraBot instances. If not set to the default, the group must be separately configured.";
+        default = "agorabot";
       };
 
       root-directory = lib.mkOption {
@@ -98,13 +105,6 @@ in
       keyNameOfConfigFileEntry = entry: "agorabot-config-${entry.instance}-${escapeSecretConfigPath entry.configPath}";
     in
     lib.mkIf (cfg.enable) {
-      users.users."${cfg.user}" = {
-        isSystemUser = true;
-        createHome = true;
-        home = cfg.root-directory;
-        extraGroups = [ "keys" ];
-      };
-
       systemd.targets.agorabot-instances = {
         enable = true;
         wantedBy = [ "multi-user.target" ];
@@ -130,6 +130,12 @@ in
           permissions = "0640";
         };
       }) secretConfigFileEntries));
+
+      users.users = lib.optionalAttrs (cfg.user == "agorabot") {
+        agorabot = {
+          extraGroups = [ "keys" ];
+        };
+      };
 
       services.randomcat.agorabot.instances = lib.mapAttrs (
         name: value:
@@ -170,12 +176,10 @@ in
               wantedBy = [ "agorabot-instances.target" ];
               after = [ "${tokenKeyNameOf name}-key.service" ] ++ neededSecretConfigUnits;
               wants = [ "${tokenKeyNameOf name}-key.service" ] ++ neededSecretConfigUnits;
-
-              auth = {
-                user = cfg.user;
-                group = userGroup;
-              };
             };
+
+            user = cfg.user;
+            group = cfg.group;
 
             autoRestart.enable = true;
           }

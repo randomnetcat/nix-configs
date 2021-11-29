@@ -42,15 +42,6 @@
 
       services.randomcat.agorabot-server = {
         enable = true;
-        user = "discord-bot";
-      };
-
-      users.users.discord-bot = {
-        group = "discord-bot";
-      };
-
-      users.groups.discord-bot = {
-        members = [ "discord-bot" ];
       };
 
       services.randomcat.agorabot-server.instances = {
