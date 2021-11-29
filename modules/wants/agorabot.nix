@@ -95,6 +95,29 @@ in
             RuntimeDirectoryMode = "700";
             StateDirectory="agorabot/${name}";
             StateDirectoryMode = "700";
+
+            # Sandboxing
+            ProtectHome = true;
+            ProtectSystem = "strict";
+            NoNewPrivileges = true;
+            ProtectKernelLogs = true;
+            ProtectKernelModules = true;
+            ProtectKernelTunables = true;
+            ProtectProc = "invisible";
+            ProtectClock = true;
+            ProtectHostname = true;
+            PrivateDevices = true;
+            PrivateTmp = true;
+            PrivateUsers = true;
+            ProtectControlGroups = true;
+            SystemCallFilter = "@system-service";
+            CapabilityBoundingSet = "";
+            RestrictNamespaces = true;
+            RestrictAddressFamilies = "AF_INET AF_INET6";
+            RestrictSUIDSGID = true;
+            RemoveIPC = true;
+            UMask = "077";
+            SystemCallArchitectures = "native";
           } // lib.optionalAttrs value.autoRestart.enable {
             Restart = "always";
           };
