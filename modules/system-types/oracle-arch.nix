@@ -25,9 +25,11 @@
   # because they are more specific than the default route. This command fixes
   # that by forcing 169.254/16 to be routed to the Oracle controller using a
   # lower metric than the Docker routes have (thus taking precedence).
-  networking.localCommands = ''
-    ip route replace 169.254.0.0/16 dev enp0s3 scope link metric 1
-  '';
+  systemd.services.add-oracle-card-route = {
+    wants = [ "network-online.target" ];
+    after = [ "network-online.target" ];
+    script = "ip route replace 169.254.0.0/16 dev enp0s3 scope link metric 1";
+  };
 
   fileSystems = {
     "/" = {
