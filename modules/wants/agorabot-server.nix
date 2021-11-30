@@ -64,12 +64,6 @@ in
         default = "agorabot";
       };
 
-      root-directory = lib.mkOption {
-        type = types.str;
-        description = "Path of the root directory for AgoraBot instances.";
-        default = "/srv/discord-bot";
-      };
-
       instances = lib.mkOption {
         type = types.attrsOf (types.submodule instancesModule);
         default = {};
