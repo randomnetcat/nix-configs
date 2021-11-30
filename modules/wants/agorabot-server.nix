@@ -80,7 +80,6 @@ in
   config =
     let
       tokenKeyNameOf = instance: "agorabot-discord-token-${instance}";
-      userGroup = config.users.users."${cfg.user}".group;
       escapeSecretConfigPath = path: (lib.replaceStrings ["/"] ["__"] path);
       secretConfigFileEntries =
         lib.concatLists
@@ -106,7 +105,6 @@ in
     in
     lib.mkIf (cfg.enable) {
       systemd.targets.agorabot-instances = {
-        enable = true;
         wantedBy = [ "multi-user.target" ];
       };
 
@@ -117,7 +115,7 @@ in
           value = {
             text = value.token;
             user = cfg.user;
-            group = userGroup;
+            group = cfg.group;
             permissions = "0640";
           };
         }
@@ -126,7 +124,7 @@ in
         value = {
           text = entry.configText;
           user = cfg.user;
-          group = userGroup;
+          group = cfg.group;
           permissions = "0640";
         };
       }) secretConfigFileEntries));
