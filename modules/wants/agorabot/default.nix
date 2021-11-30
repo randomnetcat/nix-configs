@@ -84,7 +84,7 @@ in
 
           value = {
             description = "AgoraBot instance ${name}";
-            after = [ "network.target" ];
+            after = [ "network-online.target" ];
             wantedBy = [ "agorabot-instances.target" ];
 
             serviceConfig = {
