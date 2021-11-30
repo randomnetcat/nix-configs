@@ -36,23 +36,6 @@ let
         default = "agorabot";
       };
 
-      unit = {
-        after = lib.mkOption {
-          type = types.listOf types.str;
-          default = [ "network.target" ];
-        };
-
-        wants = lib.mkOption {
-          type = types.listOf types.str;
-          default = [];
-        };
-
-        description = lib.mkOption {
-          type = types.str;
-          default = "AgoraBot instance ${name}";
-        };
-      };
-      
       restartOnHalt = lib.mkOption {
         type = types.bool;
         description = "Whether to restart the bot when a clean shutdown is initiated (probably by !halt).";
@@ -100,10 +83,8 @@ in
           name = "agorabot-instance-${name}";
 
           value = {
-            enable = true;
-
-            inherit (value.unit) wants after description;
-
+            description = "AgoraBot instance ${name}";
+            after = [ "network.target" ];
             wantedBy = [ "agorabot-instances.target" ];
 
             serviceConfig = {

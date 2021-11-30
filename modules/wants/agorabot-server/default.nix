@@ -108,11 +108,10 @@ in
           (lib.mapAttrsToList (secretPath: secretValue: makeSecretConfigKeyConfig { instance = name; inherit secretPath; secretText = secretValue.text; }) value.secretConfigFiles)
       );
 
+      makeNeededKeyNames = name: value: [ "${tokenKeyNameOf name}" ] ++ map (secretPath: secretConfigKeyName { instance = name; inherit secretPath; }) (builtins.attrNames value.secretConfigFiles);
+      makeNeededKeyServiceNames = name: value: map (key: "${key}-key.service") (makeNeededKeyNames name value);
+
       makeAgoraBotInstanceConfig = name: value:
-        let
-          neededKeyNames = map (secretPath: secretConfigKeyName { instance = name; inherit secretPath; }) (builtins.attrNames value.secretConfigFiles);
-          neededKeyServices = map (key: "${key}-key.service") neededKeyNames;
-        in
         {
           "${name}" = {
             inherit (value) package dataVersion;
@@ -160,18 +159,16 @@ in
                 ${generateExtraConfigFiles}
               '';
 
-            unit = {
-              after = [ "${tokenKeyNameOf name}-key.service" ] ++ neededKeyServices;
-              wants = [ "${tokenKeyNameOf name}-key.service" ] ++ neededKeyServices;
-            };
-
             user = cfg.user;
             group = cfg.group;
           };
         };
 
-        makeSystemdServicesConfig = name: value: {
+        makeSystemdServicesConfig = name: value: let neededKeyServices = makeNeededKeyServiceNames name value; in {
           "agorabot-instance-${name}" = {
+            wants = neededKeyServices;
+            after = neededKeyServices;
+
             serviceConfig = {
               ProtectHome = true;
               ProtectSystem = "strict";
