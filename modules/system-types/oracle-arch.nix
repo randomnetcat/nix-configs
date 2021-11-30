@@ -26,6 +26,7 @@
   # that by forcing 169.254/16 to be routed to the Oracle controller using a
   # lower metric than the Docker routes have (thus taking precedence).
   systemd.services.add-oracle-card-route = {
+    wantedBy = [ "multi-user.target" ];
     wants = [ "network-online.target" ];
     after = [ "network-online.target" ];
     script = "${lib.escapeShellArg "${pkgs.iproute2}/bin/ip"} route replace 169.254.0.0/16 dev enp0s3 scope link metric 1";
