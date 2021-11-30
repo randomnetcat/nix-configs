@@ -85,23 +85,29 @@ in
         };
       };
 
-      tokenKeyConfigOf = name: value: {
-        "${tokenKeyNameOf name}" = {
-          text = value.token;
-          user = cfg.user;
+      tokenKeyConfigOf = instanceName: instanceValue: let keyName = tokenKeyNameOf instanceName; in {
+        "${keyName}" = {
+          content = instanceValue.token;
+          dest = "/run/keys/${keyName}";
+          owner = cfg.user;
           group = cfg.group;
           permissions = "0640";
         };
       };
 
-      makeSecretConfigKeyConfig = { instance, secretPath, secretText }: {
-        "${secretConfigKeyName { inherit instance secretPath; }}" = {
-            text = secretText;
-            user = cfg.user;
+      makeSecretConfigKeyConfig = { instance, secretPath, secretText }:
+        let
+          keyName = secretConfigKeyName { inherit instance secretPath; };
+        in
+        {
+          "${keyName}" = {
+            content = secretText;
+            dest = "/run/keys/${keyName}";
+            owner = cfg.user;
             group = cfg.group;
             permissions = "0640";
+          };
         };
-      };
 
       makeKeysConfig = name: value: lib.mkMerge (
           (lib.singleton (tokenKeyConfigOf name value)) ++
@@ -198,7 +204,7 @@ in
     lib.mkIf (cfg.enable) (lib.mkMerge [
       (lib.mkIf (cfg.user == "agorabot" && cfg.instances != {}) baseAgoraBotUserConfig)
       {
-        deployment.keys = lib.mkMerge (lib.mapAttrsToList makeKeysConfig cfg.instances);
+        randomcat.secrets.secrets = lib.mkMerge (lib.mapAttrsToList makeKeysConfig cfg.instances);
         services.randomcat.agorabot.instances = lib.mkMerge (lib.mapAttrsToList makeAgoraBotInstanceConfig cfg.instances);
         systemd.services = lib.mkMerge (lib.mapAttrsToList makeSystemdServicesConfig cfg.instances);
       }
