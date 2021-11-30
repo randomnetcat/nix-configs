@@ -37,11 +37,6 @@ let
       };
 
       unit = {
-        wantedBy = lib.mkOption {
-          type = types.listOf types.str;
-          default = [ "multi-user.target" ];
-        };
-
         after = lib.mkOption {
           type = types.listOf types.str;
           default = [ "network.target" ];
@@ -95,6 +90,10 @@ in
         agorabot = {};
       };
 
+      systemd.targets.agorabot-instances = {
+        wantedBy = [ "multi-user.target" ];
+      };
+
       systemd.services = lib.mapAttrs' (
         name: value:
         {
@@ -103,7 +102,9 @@ in
           value = {
             enable = true;
 
-            inherit (value.unit) wantedBy wants after description;
+            inherit (value.unit) wants after description;
+
+            wantedBy = [ "agorabot-instances.target" ];
 
             serviceConfig = {
               User = value.user;

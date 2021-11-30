@@ -77,12 +77,6 @@ in
       escapeSecretConfigPath = path: (lib.replaceStrings ["/"] ["__"] path);
       secretConfigKeyName = { instance, secretPath }: "agorabot-config-${instance}-${escapeSecretConfigPath secretPath}";
 
-      baseGlobalConfig = {
-        systemd.targets.agorabot-instances = {
-          wantedBy = [ "multi-user.target" ];
-        };
-      };
-
       baseAgoraBotUserConfig = {
         users.users = {
           agorabot = {
@@ -167,7 +161,6 @@ in
               '';
 
             unit = {
-              wantedBy = [ "agorabot-instances.target" ];
               after = [ "${tokenKeyNameOf name}-key.service" ] ++ neededKeyServices;
               wants = [ "${tokenKeyNameOf name}-key.service" ] ++ neededKeyServices;
             };
@@ -206,7 +199,6 @@ in
         };
     in
     lib.mkIf (cfg.enable) (lib.mkMerge [
-      baseGlobalConfig
       (lib.mkIf (cfg.user == "agorabot" && cfg.instances != {}) baseAgoraBotUserConfig)
       {
         deployment.keys = lib.mkMerge (lib.mapAttrsToList makeKeysConfig cfg.instances);
