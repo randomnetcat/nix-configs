@@ -75,128 +75,143 @@ in
     let
       tokenKeyNameOf = instance: "agorabot-discord-token-${instance}";
       escapeSecretConfigPath = path: (lib.replaceStrings ["/"] ["__"] path);
-      secretConfigFileEntries =
-        lib.concatLists
-        (
-          lib.mapAttrsToList
-          (
-            instanceName: instanceValue:
-            lib.mapAttrsToList
-            (
-              configPath: configValue:
-              {
-                instance = instanceName;
-                configPath = configPath;
-                configText = configValue.text;
-              }
-            )
-            instanceValue.secretConfigFiles
-          )
-          cfg.instances
-        )
-        ;
-      keyNameOfConfigFileEntry = entry: "agorabot-config-${entry.instance}-${escapeSecretConfigPath entry.configPath}";
-    in
-    lib.mkIf (cfg.enable) {
-      systemd.targets.agorabot-instances = {
-        wantedBy = [ "multi-user.target" ];
+      secretConfigKeyName = { instance, secretPath }: "agorabot-config-${instance}-${escapeSecretConfigPath secretPath}";
+
+      baseGlobalConfig = {
+        systemd.targets.agorabot-instances = {
+          wantedBy = [ "multi-user.target" ];
+        };
       };
 
-      deployment.keys = (lib.mapAttrs' (
-        name: value:
-        {
-          name = tokenKeyNameOf name;
-          value = {
-            text = value.token;
-            user = cfg.user;
-            group = cfg.group;
-            permissions = "0640";
+      baseAgoraBotUserConfig = {
+        users.users = {
+          agorabot = {
+            extraGroups = [ "keys" ];
           };
-        }
-      ) cfg.instances) // (lib.listToAttrs (map (entry: {
-        name = keyNameOfConfigFileEntry entry;
-        value = {
-          text = entry.configText;
+        };
+      };
+
+      tokenKeyConfigOf = name: value: {
+        "${tokenKeyNameOf name}" = {
+          text = value.token;
           user = cfg.user;
           group = cfg.group;
           permissions = "0640";
         };
-      }) secretConfigFileEntries));
+      };
 
-      users.users = lib.optionalAttrs (cfg.user == "agorabot") {
-        agorabot = {
-          extraGroups = [ "keys" ];
+      makeSecretConfigKeyConfig = { instance, secretPath, secretText }: {
+        "${secretConfigKeyName { inherit instance secretPath; }}" = {
+            text = secretText;
+            user = cfg.user;
+            group = cfg.group;
+            permissions = "0640";
         };
       };
 
-      services.randomcat.agorabot.instances = lib.mapAttrs (
-        name: value:
-        (
-          let 
-            neededSecretConfigEntries = lib.filter (x: x.instance == name) secretConfigFileEntries;
-            neededSecretConfigUnits = map (x: (keyNameOfConfigFileEntry x) + "-key.service") neededSecretConfigEntries;
-            copySecretConfigFiles = lib.concatStringsSep "\n" (map (entry: ''cp --no-preserve=mode -- ${lib.escapeShellArg "/run/keys/${keyNameOfConfigFileEntry entry}"} "$1"/${lib.escapeShellArg entry.configPath}'') neededSecretConfigEntries);
-            generateExtraConfigFiles = lib.concatStringsSep "\n" (lib.mapAttrsToList (configPath: configValue: ''printf "%s" ${pkgs.lib.escapeShellArg configValue.text} > "$1"/${lib.escapeShellArg configPath}'') value.extraConfigFiles);
-          in
-          {
+      makeKeysConfig = name: value: lib.mkMerge (
+          (lib.singleton (tokenKeyConfigOf name value)) ++
+          (lib.mapAttrsToList (secretPath: secretValue: makeSecretConfigKeyConfig { instance = name; inherit secretPath; secretText = secretValue.text; }) value.secretConfigFiles)
+      );
+
+      makeAgoraBotInstanceConfig = name: value:
+        let
+          neededKeyNames = map (secretPath: secretConfigKeyName { instance = name; inherit secretPath; }) (builtins.attrNames value.secretConfigFiles);
+          neededKeyServices = map (key: "${key}-key.service") neededKeyNames;
+        in
+        {
+          "${name}" = {
             inherit (value) package dataVersion;
+
             tokenFilePath = "/run/keys/${tokenKeyNameOf name}";
 
-            configGeneratorPackage = pkgs.writeShellScriptBin "generate-config" ''
-              set -eu
-              set -o pipefail
+            configGeneratorPackage =
+              let
+                copySecretConfigFiles =
+                  lib.concatStringsSep
+                    "\n"
+                    (
+                      map
+                        (secretPath:
+                          let
+                            keyName = secretConfigKeyName { instance = name; inherit secretPath; };
+                          in
+                          ''cp --no-preserve=mode -- ${lib.escapeShellArg "/run/keys/${keyName}"} "$1"/${lib.escapeShellArg secretPath}''
+                        )
+                        (builtins.attrNames value.secretConfigFiles)
+                    )
+                ;
+                generateExtraConfigFiles =
+                  lib.concatStringsSep
+                    "\n"
+                    (
+                      lib.mapAttrsToList
+                        (configPath: configValue:
+                          ''printf "%s" ${pkgs.lib.escapeShellArg configValue.text} > "$1"/${lib.escapeShellArg configPath}''
+                        )
+                        value.extraConfigFiles
+                    );
+              in
+              pkgs.writeShellScriptBin "generate-config" ''
+                set -eu
+                set -o pipefail
 
-              if [ "$#" -lt "1" ]; then
-                exit 1
-              fi
+                if [ "$#" -lt "1" ]; then
+                  exit 1
+                fi
 
-              cp -RT --no-preserve=mode -- ${pkgs.lib.escapeShellArg "${value.configSource}"} "$1"
+                cp -RT --no-preserve=mode -- ${pkgs.lib.escapeShellArg "${value.configSource}"} "$1"
 
-              ${copySecretConfigFiles}
-              ${generateExtraConfigFiles}
-            '';
+                ${copySecretConfigFiles}
+                ${generateExtraConfigFiles}
+              '';
 
             unit = {
               wantedBy = [ "agorabot-instances.target" ];
-              after = [ "${tokenKeyNameOf name}-key.service" ] ++ neededSecretConfigUnits;
-              wants = [ "${tokenKeyNameOf name}-key.service" ] ++ neededSecretConfigUnits;
+              after = [ "${tokenKeyNameOf name}-key.service" ] ++ neededKeyServices;
+              wants = [ "${tokenKeyNameOf name}-key.service" ] ++ neededKeyServices;
             };
 
             user = cfg.user;
             group = cfg.group;
-          }
-        )
-      ) cfg.instances;
-
-      # Sandboxing
-      systemd.services = lib.mapAttrs' (name: value: {
-        name = "agorabot-instance-${name}";
-
-        value = {
-          serviceConfig = {
-            ProtectHome = true;
-            ProtectSystem = "strict";
-            NoNewPrivileges = true;
-            ProtectKernelLogs = true;
-            ProtectKernelModules = true;
-            ProtectKernelTunables = true;
-            ProtectProc = "invisible";
-            ProtectClock = true;
-            ProtectHostname = true;
-            PrivateDevices = true;
-            PrivateTmp = true;
-            PrivateUsers = true;
-            ProtectControlGroups = true;
-            SystemCallFilter = "@system-service";
-            CapabilityBoundingSet = "";
-            RestrictNamespaces = true;
-            RestrictAddressFamilies = "AF_INET AF_INET6";
-            RestrictSUIDSGID = true;
-            RemoveIPC = true;
-            UMask = "077";
-            SystemCallArchitectures = "native";
           };
         };
-      }) cfg.instances;
-    };
+
+        makeSystemdServicesConfig = name: value: {
+          "agorabot-instance-${name}" = {
+            serviceConfig = {
+              ProtectHome = true;
+              ProtectSystem = "strict";
+              NoNewPrivileges = true;
+              ProtectKernelLogs = true;
+              ProtectKernelModules = true;
+              ProtectKernelTunables = true;
+              ProtectProc = "invisible";
+              ProtectClock = true;
+              ProtectHostname = true;
+              PrivateDevices = true;
+              PrivateTmp = true;
+              PrivateUsers = true;
+              ProtectControlGroups = true;
+              SystemCallFilter = "@system-service";
+              CapabilityBoundingSet = "";
+              RestrictNamespaces = true;
+              RestrictAddressFamilies = "AF_INET AF_INET6";
+              RestrictSUIDSGID = true;
+              RemoveIPC = true;
+              UMask = "077";
+              SystemCallArchitectures = "native";
+            };
+          };
+        };
+    in
+    lib.mkIf (cfg.enable) (lib.mkMerge [
+      baseGlobalConfig
+      (lib.mkIf (cfg.user == "agorabot" && cfg.instances != {}) baseAgoraBotUserConfig)
+      {
+        deployment.keys = lib.mkMerge (lib.mapAttrsToList makeKeysConfig cfg.instances);
+        services.randomcat.agorabot.instances = lib.mkMerge (lib.mapAttrsToList makeAgoraBotInstanceConfig cfg.instances);
+        systemd.services = lib.mkMerge (lib.mapAttrsToList makeSystemdServicesConfig cfg.instances);
+      }
+    ]);
 }
