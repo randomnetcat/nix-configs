@@ -41,7 +41,7 @@ let
   mkSecretOnDisk = name: { content }:
     let key = cfg.sshPubKey; in
     pkgs.runCommand
-      "create-secret"
+      "encrypted-secret-${name}"
       {
         inherit content;
         passAsFile = [ "content" ];
