@@ -55,13 +55,16 @@ let
     description = "decrypt secret for ${name}";
     wantedBy = [ "multi-user.target" ];
 
-    serviceConfig.Type = "oneshot";
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
 
     script = let escapedDest = lib.escapeShellArg "${dest}"; in ''
-      rm -rf ${escapedDest}
-      touch -- ${escapedDest}
-      chown ${owner}:${group} ${escapedDest}
-      chmod ${permissions} ${escapedDest}
+      rm -rf -- ${escapedDest}
+      (umask 777; touch -- ${escapedDest})
+      chown ${owner}:${group} -- ${escapedDest}
+      chmod ${permissions} -- ${escapedDest}
       ${pkgs.age}/bin/age -d -i ${lib.escapeShellArg cfg.sshPrivKeyLocation} ${
         mkSecretOnDisk name { inherit content; }
       } > ${escapedDest}
