@@ -1,4 +1,4 @@
-{ modulesPath, ... }:
+{ modulesPath, pkgs, lib, ... }:
 {
   imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
@@ -28,7 +28,7 @@
   systemd.services.add-oracle-card-route = {
     wants = [ "network-online.target" ];
     after = [ "network-online.target" ];
-    script = "ip route replace 169.254.0.0/16 dev enp0s3 scope link metric 1";
+    script = "${lib.escapeShellArg "${pkgs.iproute2}/bin/ip"} route replace 169.254.0.0/16 dev enp0s3 scope link metric 1";
   };
 
   fileSystems = {
