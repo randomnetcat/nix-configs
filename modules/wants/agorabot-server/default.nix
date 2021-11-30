@@ -43,7 +43,7 @@ let
 in
 {
   imports = [
-    ./agorabot.nix
+    ../agorabot
   ];
 
   options = {

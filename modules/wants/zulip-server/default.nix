@@ -46,7 +46,7 @@ in
   config =
     let
       keyNameOf = n: "zulip-secret-${n}";
-      composePackage = import ./zulip-detail/adjusted-docker-zulip.nix { inherit pkgs; };
+      composePackage = import ./detail/adjusted-docker-zulip.nix { inherit pkgs; };
       allKeyServiceNames = map (n: (keyNameOf n) + "-key.service") (lib.attrNames cfg.secrets);
       dockerPackage = config.virtualisation.docker.package;
     in
