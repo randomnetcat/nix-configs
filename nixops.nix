@@ -49,7 +49,7 @@
           package = import (builtins.fetchGit {
             url = "https://github.com/randomnetcat/AgoraBot.git";
             ref = "main";
-            rev = "ac582130315fe0dba38dfc3f02f5a397b7961033";
+            rev = "40a37f69da66a4cc92362cb05f12af12722c7772";
           }) { inherit pkgs; };
 
           token = builtins.readFile ./secrets/discord/agora-prod-token;
