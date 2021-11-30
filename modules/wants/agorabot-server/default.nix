@@ -174,6 +174,8 @@ in
           "agorabot-instance-${name}" = {
             wants = neededKeyServices;
             after = neededKeyServices;
+            requires = neededKeyServices;
+            bindsTo = neededKeyServices;
 
             serviceConfig = {
               ProtectHome = true;
