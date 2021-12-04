@@ -10,6 +10,7 @@
         ./modules/wants/ssh-access.nix
         ./modules/wants/zulip-server
         ./modules/wants/agorabot-server
+        ./modules/wants/trungle-access.nix
         ./modules/impl/secrets
       ];
 
@@ -90,5 +91,7 @@
           dataVersion = 1;
         };
       };
+
+      features.trungle-access.enable = true;
      };
  }
