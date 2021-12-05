@@ -111,7 +111,7 @@ in
               rm -rf -- "$BOT_TMP_DIR"
               mkdir -m 700 -- "$BOT_TMP_DIR"
 
-              ${lib.escapeShellArg "${value.package}/bin/AgoraBot"} \
+              exec ${lib.escapeShellArg "${value.package}/bin/AgoraBot"} \
                 --token "$(cat ${lib.escapeShellArg value.tokenFilePath})" \
                 --data-version ${lib.escapeShellArg "${builtins.toString value.dataVersion}"} \
                 --config-path "$BOT_CONFIG_DIR" \
