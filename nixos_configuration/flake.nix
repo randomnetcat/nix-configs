@@ -40,6 +40,9 @@
             };
           };
         }
+        {
+          config.nix.nixPath = [ "nixpkgs=${nixpkgs}" ];
+        }
       ];
     };
   };
