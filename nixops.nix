@@ -19,8 +19,6 @@
       networking.firewall.allowPing = true;
       services.openssh.enable = true;
 
-      virtualisation.docker.enable = true;
-
       users.users.remote-build = {
         isNormalUser = true;
         group = "remote-build";
