@@ -35,4 +35,5 @@ in
       hardware.nvidia.powerManagement.enable = lib.mkForce false;
     };
   };
+
 }

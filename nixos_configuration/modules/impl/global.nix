@@ -3,6 +3,7 @@
 {
   imports = [
     ./users
+    ./builders
   ];
 
   options = {
