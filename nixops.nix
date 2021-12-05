@@ -2,7 +2,7 @@
     oracle-server = 
     { config, pkgs, modulesPath, ... }:
     {
-      deployment.targetHost = "oracle-server.randomcat.org";
+      deployment.targetHost = "finch.randomcat.org";
 
       imports = [
         (modulesPath + "/profiles/qemu-guest.nix")
@@ -15,7 +15,7 @@
       ];
 
       boot.cleanTmpDir = true;
-      networking.hostName = "instance-20211029-1400";
+      networking.hostName = "finch";
       networking.firewall.allowPing = true;
       services.openssh.enable = true;
 
