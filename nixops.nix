@@ -28,19 +28,6 @@
         };
       };
 
-      services.randomcat.docker-zulip = {
-        enable = true;
-
-        secrets = {
-          memcachedPass = builtins.readFile ./secrets/zulip/memcached_pw;
-          rabbitMqPass = builtins.readFile ./secrets/zulip/rabbitmq_pw;
-          postgresPass = builtins.readFile ./secrets/zulip/postgres_pw;
-          redisPass = builtins.readFile ./secrets/zulip/redis_pw;
-          zulipSecretKey = builtins.readFile ./secrets/zulip/secret_key;
-          emailPassword = builtins.readFile ./secrets/zulip/sendgrid_api_key;
-        };
-      };
-
       services.randomcat.agorabot-server = {
         enable = true;
       };
