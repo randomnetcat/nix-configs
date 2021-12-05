@@ -29,7 +29,19 @@
     wantedBy = [ "multi-user.target" ];
     wants = [ "network-online.target" ];
     after = [ "network-online.target" ];
-    script = "${lib.escapeShellArg "${pkgs.iproute2}/bin/ip"} route replace 169.254.0.0/16 dev enp0s3 scope link metric 1";
+    script = let ipCommand = lib.escapeShellArg "${pkgs.iproute2}/bin/ip"; in ''
+      set -euo pipefail
+
+      echo "Routes before:"
+      ${ipCommand} route # Log for debugging
+
+      echo "Adding route..."
+      ${ipCommand} route replace 169.254.0.0/16 dev enp0s3 scope link metric 1
+      echo "Added route."
+
+      echo "Routes after:"
+      ${ipCommand} route # Log for debugging
+    '';
   };
 
   fileSystems = {
