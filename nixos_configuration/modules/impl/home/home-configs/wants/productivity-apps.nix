@@ -15,6 +15,7 @@
       pkgs.teams
       pkgs.slack
       pkgs.libreoffice
+      pkgs.gimp
     ];
 
     programs.firefox = {
