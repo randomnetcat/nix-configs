@@ -6,7 +6,7 @@
     system = "aarch64-linux";
     maxJobs = 2;
     speedFactor = 2;
-    supportedFeatures = [ "kvm" ];
+    supportedFeatures = [ ];
     mandatoryFeatures = [ ];
   }];
 }
