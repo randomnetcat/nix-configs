@@ -48,7 +48,7 @@
           package = import (builtins.fetchGit {
             url = "https://github.com/randomnetcat/AgoraBot.git";
             ref = "main";
-            rev = "0b6f891c859f579675e453da477ad804f0ac1fcd";
+            rev = "82e3695394acd7a1b4632882b18f2ffded38ae78";
           }) { inherit pkgs; };
 
           token = builtins.readFile ./secrets/discord/agora-prod-token;
@@ -80,7 +80,7 @@
           package = import (builtins.fetchGit {
             url = "https://github.com/randomnetcat/AgoraBot.git";
             ref = "secret-hitler";
-            rev = "40fe5f0d2a98582b38fe07cba605376857f0c14c";
+            rev = "4c38facf4bad7950624a9c523c20c8cdd0b33f7c";
           }) { inherit pkgs; };
 
           token = builtins.readFile ./secrets/discord/secret-hitler-token;
