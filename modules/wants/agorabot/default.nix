@@ -64,7 +64,7 @@ in
           isSystemUser = true;
           description = "Service account for agorabot instance.";
           group = "agorabot";
-          home = "/homeless-shelter";
+          home = "/var/empty";
           createHome = false;
         };
       };
