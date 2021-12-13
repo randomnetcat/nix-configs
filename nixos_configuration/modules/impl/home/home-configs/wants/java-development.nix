@@ -25,9 +25,11 @@
       };
     };
 
+    programs.java.enable = true;
+    programs.java.package = pkgs.jdk;
+
     home.packages = [
       pkgs.jetbrains.idea-ultimate
-      pkgs.jdk
       pkgs.gradle
     ];
   };
