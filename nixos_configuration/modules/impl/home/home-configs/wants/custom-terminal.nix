@@ -41,6 +41,8 @@
       };
     };
 
+    programs.jq.enable = true;
+
     home.sessionVariables = {
       EDITOR = config.home.sessionVariables.VISUAL;
       VISUAL = "vim";
