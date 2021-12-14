@@ -16,6 +16,7 @@
       pkgs.slack
       pkgs.libreoffice
       pkgs.gimp
+      pkgs.audacity
     ];
 
     programs.firefox = {
