@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixopsPkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports = [
@@ -8,6 +8,6 @@
   };
 
   config = {
-    home.packages = [ nixopsPkgs.nixops ];
+    home.packages = [ pkgs.nixopsUnstable ];
   };
 }
