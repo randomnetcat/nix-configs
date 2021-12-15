@@ -40,9 +40,25 @@
             };
           };
         }
-        {
-          config.nix.nixPath = [ "nixpkgs=${nixpkgs}" ];
-        }
+        ({ lib, ... }: {
+          config = {
+            nix.nixPath = [ "nixpkgs=/run/active-nixpkgs-source" ];
+
+            systemd.services.create-nixpkgs-source-link = {
+              wantedBy = [ "multi-user.target" ];
+
+              unitConfig = {
+                Type = "oneshot";
+                RemainAfterExit = true;
+                RequiresMountsFor = "/run";
+              };
+
+              script = ''
+                ln -sfT -- ${lib.escapeShellArg "${nixpkgs}"} /run/active-nixpkgs-source
+              '';
+            };
+          };
+        })
       ];
     };
   };
