@@ -6,7 +6,7 @@ in
 {
   imports = [
     (impl-modules + "/global.nix")
-    (impl-modules + "/boot/grub-efi.nix")
+    (impl-modules + "/boot/systemd-boot.nix")
 
     ./mounts/system
 
