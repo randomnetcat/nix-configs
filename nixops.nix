@@ -1,4 +1,10 @@
 {
+  network = {
+    storage.legacy = {};
+
+    nixpkgs = import <nixpkgs> {};
+  };
+
     oracle-server = 
     { config, pkgs, modulesPath, ... }:
     {
