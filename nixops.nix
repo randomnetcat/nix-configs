@@ -5,7 +5,7 @@
     nixpkgs = import <nixpkgs> {};
   };
 
-    oracle-server = 
+  oracle-server = 
     { config, pkgs, modulesPath, ... }:
     {
       deployment.targetHost = "finch.randomcat.org";
