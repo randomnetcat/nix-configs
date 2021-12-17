@@ -26,6 +26,7 @@
         "tap-to-click" = true;
         "speed" = 0.25;
         "click-method" = "default";
+        "disable-while-typing" = false;
       };
 
       "org/gnome/settings-daemon/plugins/media-keys" = {
