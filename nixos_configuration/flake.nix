@@ -51,6 +51,7 @@
             };
           };
         })
+        { services.resolved.enable = true; }
       ];
     };
   };
