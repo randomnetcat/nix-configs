@@ -1,4 +1,4 @@
-{ pkgs, lib, config, options, ... }:
+{ pkgs, lib, utils, config, options, ... }:
 
 let
   types = lib.types;
@@ -74,7 +74,7 @@ in
   config =
     let
       tokenKeyNameOf = instance: "agorabot-discord-token-${instance}";
-      escapeSecretConfigPath = path: (lib.replaceStrings ["/"] ["__"] path);
+      escapeSecretConfigPath = path: utils.escapeSystemdPath path;
       secretConfigKeyName = { instance, secretPath }: "agorabot-config-${instance}-${escapeSecretConfigPath secretPath}";
 
       baseAgoraBotUserConfig = {
