@@ -60,4 +60,8 @@
       fsType = "vfat";
     };
   };
+
+  services.resolved.extraConfig = ''
+    DNS=169.254.169.254%enp0s3
+  '';
 }

@@ -97,5 +97,7 @@
       };
 
       features.trungle-access.enable = true;
+
+      services.resolved.enable = true;
      };
  }
