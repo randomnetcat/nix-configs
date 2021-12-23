@@ -10,6 +10,7 @@
     home.packages = [
       pkgs.killall
       pkgs.p7zip
+      pkgs.file
     ];
 
     programs.vim = {
