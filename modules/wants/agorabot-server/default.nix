@@ -3,7 +3,14 @@
 let
   types = lib.types;
   cfg = config.services.randomcat.agorabot-server;
-  extraConfigfileModule = { name, ... }: {
+  secretConfigModule = { name, ... }: {
+    options = {
+      encryptedFile = lib.mkOption {
+        type = types.path;
+      };
+    };
+  };
+  extraConfigModule = { name, ... }: {
     options = {
       text = lib.mkOption {
         type = types.str;
@@ -24,18 +31,18 @@ let
         type = types.int;
       };
 
-      token = lib.mkOption {
-        type = types.str;
-        description = "Bot token.";
+      tokenEncryptedFile = lib.mkOption {
+        type = types.path;
+        description = "Path to encrypted bot token.";
       };
 
       secretConfigFiles = lib.mkOption {
-        type = types.attrsOf (types.submodule extraConfigfileModule);
+        type = types.attrsOf (types.submodule secretConfigModule);
         default = {};
       };
 
       extraConfigFiles = lib.mkOption {
-        type = types.attrsOf (types.submodule extraConfigfileModule);
+        type = types.attrsOf (types.submodule extraConfigModule);
         default = {};
       };
     };
@@ -87,7 +94,7 @@ in
 
       tokenKeyConfigOf = instanceName: instanceValue: let keyName = tokenKeyNameOf instanceName; in {
         "${keyName}" = {
-          content = instanceValue.token;
+          encryptedFile = instanceValue.tokenEncryptedFile;
           dest = "/run/keys/${keyName}";
           owner = cfg.user;
           group = cfg.group;
@@ -95,13 +102,13 @@ in
         };
       };
 
-      makeSecretConfigKeyConfig = { instance, secretPath, secretText }:
+      makeSecretConfigKeyConfig = { instance, secretPath, localEncryptedFile }:
         let
           keyName = secretConfigKeyName { inherit instance secretPath; };
         in
         {
           "${keyName}" = {
-            content = secretText;
+            encryptedFile = localEncryptedFile;
             dest = "/run/keys/${keyName}";
             owner = cfg.user;
             group = cfg.group;
@@ -111,11 +118,8 @@ in
 
       makeKeysConfig = name: value: lib.mkMerge (
           (lib.singleton (tokenKeyConfigOf name value)) ++
-          (lib.mapAttrsToList (secretPath: secretValue: makeSecretConfigKeyConfig { instance = name; inherit secretPath; secretText = secretValue.text; }) value.secretConfigFiles)
+          (lib.mapAttrsToList (secretPath: secretValue: makeSecretConfigKeyConfig { instance = name; inherit secretPath; localEncryptedFile = secretValue.encryptedFile; }) value.secretConfigFiles)
       );
-
-      makeNeededKeyNames = name: value: [ "${tokenKeyNameOf name}" ] ++ map (secretPath: secretConfigKeyName { instance = name; inherit secretPath; }) (builtins.attrNames value.secretConfigFiles);
-      makeNeededKeyServiceNames = name: value: map (key: "${key}-key.service") (makeNeededKeyNames name value);
 
       makeAgoraBotInstanceConfig = name: value:
         {
@@ -170,13 +174,8 @@ in
           };
         };
 
-        makeSystemdServicesConfig = name: value: let neededKeyServices = makeNeededKeyServiceNames name value; in {
+        makeSystemdServicesConfig = name: value: {
           "agorabot-instance-${name}" = {
-            wants = neededKeyServices;
-            after = neededKeyServices;
-            requires = neededKeyServices;
-            bindsTo = neededKeyServices;
-
             serviceConfig = {
               ProtectHome = true;
               ProtectSystem = "strict";

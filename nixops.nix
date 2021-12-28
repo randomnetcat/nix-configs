@@ -38,13 +38,6 @@
 
       nix.trustedUsers = [ "remote-build" ];
 
-      randomcat.secrets = {
-        sshPubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOccenq6rA3lk3UtC0ywkJiiNV+76o6RQsfIQMY8cLw5 root@instance-20211029-1400";
-
-        secrets = {
-        };
-      };
-
       services.randomcat.agorabot-server = {
         enable = true;
       };
@@ -57,13 +50,13 @@
             rev = "82e3695394acd7a1b4632882b18f2ffded38ae78";
           }) { inherit pkgs; };
 
-          token = builtins.readFile ./secrets/discord/agora-prod-token;
+          tokenEncryptedFile = ./hosts/finch/secrets/discord-token-agora-prod.age;
 
           configSource = ./public-config/agorabot/agora-prod;
 
           secretConfigFiles = {
             "digest/ssmtp.conf" = {
-              text = builtins.readFile ./secrets/discord/agora-prod-ssmtp-config;
+              encryptedFile = ./hosts/finch/secrets/discord-config-agora-prod-ssmtp.age;
             };
           };
 
@@ -89,7 +82,7 @@
             rev = "4c38facf4bad7950624a9c523c20c8cdd0b33f7c";
           }) { inherit pkgs; };
 
-          token = builtins.readFile ./secrets/discord/secret-hitler-token;
+          tokenEncryptedFile = ./hosts/finch/secrets/discord-token-secret-hitler.age;
 
           configSource = ./public-config/agorabot/secret-hitler;
           dataVersion = 1;

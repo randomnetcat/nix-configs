@@ -8,9 +8,9 @@ let
 
   secret = types.submodule {
     options = {
-      content = lib.mkOption {
-        type = types.str;
-        description = "secret content";
+      encryptedFile = lib.mkOption {
+        type = types.path;
+        description = "path to encrypted secret (on build machine)";
       };
 
       dest = lib.mkOption {
@@ -37,51 +37,9 @@ let
       };
     };
   };
-
-  mkSecretOnDisk = name: { content }:
-    let key = cfg.sshPubKey; in
-    pkgs.runCommandLocal
-      "encrypted-secret-${name}"
-      {
-        inherit content;
-        passAsFile = [ "content" ];
-      }
-      ''
-        mv "$contentPath" secret.bin
-        ${lib.escapeShellArg "${pkgs.age}/bin/age"} -a -r ${lib.escapeShellArg cfg.sshPubKey} -o "$out" secret.bin
-      '';
-
-  mkService = name: { content, dest, owner, group, permissions }: {
-    description = "decrypt secret for ${name}";
-    wantedBy = [ "multi-user.target" ];
-
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-    };
-
-    script = let escapedDest = lib.escapeShellArg "${dest}"; in ''
-      rm -rf -- ${escapedDest}
-      (umask 777; touch -- ${escapedDest})
-      chown ${owner}:${group} -- ${escapedDest}
-      chmod ${permissions} -- ${escapedDest}
-      ${pkgs.age}/bin/age -d -i ${lib.escapeShellArg cfg.sshPrivKeyLocation} ${
-        mkSecretOnDisk name { inherit content; }
-      } > ${escapedDest}
-    '';
-  };
 in
 {
-  options.randomcat.secrets.sshPubKey = lib.mkOption {
-    type = types.str;
-    description = "ssh public key to encrypt secret with";
-  };
-
-  options.randomcat.secrets.sshPrivKeyLocation = lib.mkOption {
-    type = types.str;
-    description = "location of the ssh private key on the target machine";
-    default = "/etc/ssh/ssh_host_ed25519_key";
-  };
+  imports = [ (import ./age-module.nix) ];
 
   options.randomcat.secrets.secrets = lib.mkOption {
     type = types.attrsOf secret;
@@ -89,12 +47,14 @@ in
     default = {};
   };
 
-  config.systemd.services =
-    let
-      units = lib.mapAttrs' (name: info: {
-        name = "${name}-key";
-        value = (mkService name info);
-      }) cfg.secrets;
-    in
-    units;
+  config.age.secrets = lib.mapAttrs' (name: info: {
+    name = "${name}";
+    value = {
+      file = info.encryptedFile;
+      path = info.dest;
+      mode = info.permissions;
+      owner = info.owner;
+      group = info.group;
+    };
+  }) cfg.secrets;
 }
