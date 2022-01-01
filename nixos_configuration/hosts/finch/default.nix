@@ -1,12 +1,11 @@
 { config, pkgs, ... }:
 
-let
-  impl-modules = ../../impl;
-in
 {
   imports = [
-    (impl-modules + "/global.nix")
-    (impl-modules + "/boot/systemd-boot.nix")
+    ./hardware-configuration.nix
+
+    ../../modules/impl/global.nix
+    ../../modules/impl/boot/systemd-boot.nix
 
     ./mounts/system
 

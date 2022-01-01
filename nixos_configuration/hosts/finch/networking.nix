@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../../impl/networking/wifi.nix
+    ../../modules/impl/networking/wifi.nix
   ];
 
   options = {

@@ -71,7 +71,7 @@
           system = "x86_64-linux";
 
           modules = commonModules ++ [
-            (import ./configuration.nix { deviceDir = ./modules/devices/dell-g5-laptop; })
+            ./hosts/finch/default.nix
             homeManager
             homeManagerNurOverlay
             ./modules/wants/virtualisation
