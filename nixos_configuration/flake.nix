@@ -16,24 +16,18 @@
   };
 
   outputs = { self, nixpkgs, home-manager, nur }: {
-    nixosConfigurations.randomcat-laptop-nixos = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        (import ./configuration.nix { deviceDir = ./modules/devices/dell-g5-laptop; })
-        (import "${home-manager}/nixos")
-        { config.system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev; }
-        { config.nix.registry.nixpkgs.flake = nixpkgs; }
-        {
-          config.home-manager.extraSpecialArgs = {
-            nurPkgs = import nixpkgs {
-              system = "x86_64-linux";
-              overlays = [ nur.overlay ];
-              config = { allowUnfree = true; };
-            };
-          };
-        }
-        ({ lib, ... }: {
+    nixosConfigurations =
+      let
+        systemConfigurationRevision = {
           config = {
+            system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
+          };
+        };
+
+        pinnedNixpkgsFlake = {
+          config = {
+            nix.registry.nixpkgs.flake = nixpkgs;
+
             nix.nixPath = [ "nixpkgs=/run/active-nixpkgs-source" ];
 
             systemd.services.create-nixpkgs-source-link = {
@@ -46,13 +40,43 @@
               };
 
               script = ''
-                ln -sfT -- ${lib.escapeShellArg "${nixpkgs}"} /run/active-nixpkgs-source
+                ln -sfT -- ${nixpkgs.lib.escapeShellArg "${nixpkgs}"} /run/active-nixpkgs-source
               '';
             };
           };
-        })
-        { services.resolved.enable = true; }
-      ];
+        };
+
+        commonModules = [
+          systemConfigurationRevision
+          pinnedNixpkgsFlake
+          ./modules/wants/resolved
+          ./modules/wants/unstable-nix
+        ];
+
+        homeManager = home-manager.nixosModules.home-manager;
+        homeManagerNurOverlay = {
+          config = {
+            home-manager.extraSpecialArgs = {
+              nurPkgs = import nixpkgs {
+                system = "x86_64-linux";
+                overlays = [ nur.overlay ];
+                config = { allowUnfree = true; };
+              };
+            };
+          };
+        };
+      in
+      {
+        randomcat-laptop-nixos = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+
+          modules = commonModules ++ [
+            (import ./configuration.nix { deviceDir = ./modules/devices/dell-g5-laptop; })
+            homeManager
+            homeManagerNurOverlay
+            ./modules/wants/virtualisation
+          ];
+      };
     };
   };
 }

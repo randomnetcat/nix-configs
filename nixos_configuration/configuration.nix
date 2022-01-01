@@ -16,16 +16,7 @@ in
     (deviceDir + "/hardware-configuration.nix")
   ];
 
-  nix = {
-    package = pkgs.nixFlakes;
-
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
-
   environment.etc."nixos" = pkgs.lib.mkIf canSelfLink {
     source = (import selfLinkSpecPath).etc_nixos_dir;
   };
-
 }
