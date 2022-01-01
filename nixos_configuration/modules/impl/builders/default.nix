@@ -3,6 +3,6 @@
 {
   imports = [
     ./common.nix
-    ./finch.nix
+    ./0-aarch64.nix
   ];
 }
