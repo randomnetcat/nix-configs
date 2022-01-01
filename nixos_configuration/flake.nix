@@ -67,7 +67,7 @@
         };
       in
       {
-        randomcat-laptop-nixos = nixpkgs.lib.nixosSystem {
+        finch = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
 
           modules = commonModules ++ [
