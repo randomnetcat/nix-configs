@@ -8,7 +8,7 @@
   oracle-server = 
     { config, pkgs, modulesPath, ... }:
     {
-      deployment.targetHost = "finch.randomcat.org";
+      deployment.targetHost = "reese.randomcat.org";
 
       imports = [
         (modulesPath + "/profiles/qemu-guest.nix")
@@ -21,7 +21,7 @@
       ];
 
       boot.cleanTmpDir = true;
-      networking.hostName = "finch";
+      networking.hostName = "reese";
       networking.firewall.allowPing = true;
       services.openssh.enable = true;
 
@@ -50,13 +50,13 @@
             rev = "82e3695394acd7a1b4632882b18f2ffded38ae78";
           }) { inherit pkgs; };
 
-          tokenEncryptedFile = ./hosts/finch/secrets/discord-token-agora-prod.age;
+          tokenEncryptedFile = ./hosts/reese/secrets/discord-token-agora-prod.age;
 
           configSource = ./public-config/agorabot/agora-prod;
 
           secretConfigFiles = {
             "digest/ssmtp.conf" = {
-              encryptedFile = ./hosts/finch/secrets/discord-config-agora-prod-ssmtp.age;
+              encryptedFile = ./hosts/reese/secrets/discord-config-agora-prod-ssmtp.age;
             };
           };
 
@@ -82,7 +82,7 @@
             rev = "4c38facf4bad7950624a9c523c20c8cdd0b33f7c";
           }) { inherit pkgs; };
 
-          tokenEncryptedFile = ./hosts/finch/secrets/discord-token-secret-hitler.age;
+          tokenEncryptedFile = ./hosts/reese/secrets/discord-token-secret-hitler.age;
 
           configSource = ./public-config/agorabot/secret-hitler;
           dataVersion = 1;
