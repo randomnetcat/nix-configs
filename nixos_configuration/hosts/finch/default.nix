@@ -5,10 +5,10 @@
     ./hardware-configuration.nix
 
     ../../modules/impl/global.nix
-    ../../modules/impl/boot/systemd-boot.nix
 
     ./mounts/system
 
+    ./boot.nix
     ./graphical.nix
     ./networking.nix
     ./locale.nix
