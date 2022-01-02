@@ -19,9 +19,9 @@ let
         type = types.int;
       };
 
-      tokenFilePath = lib.mkOption {
-        type = types.str;
-        description = "Path to a file containing the bot token.";
+      tokenGeneratorPackage = lib.mkOption {
+        type = types.package;
+        description = "Package with script to generate bot token. The script should be in bin/generate-token in the output, should accept no arguments, and should print the token to stdout.";
       };
 
       user = lib.mkOption {
@@ -104,6 +104,8 @@ in
               BOT_CONFIG_DIR="$RUNTIME_DIRECTORY/generated-config"
               ${lib.escapeShellArg "${value.configGeneratorPackage}/bin/generate-config"} "$BOT_CONFIG_DIR"
 
+              BOT_TOKEN="$(${lib.escapeShellArg "${value.tokenGeneratorPackage}/bin/generate-token"})"
+
               BOT_STORAGE_DIR="$STATE_DIRECTORY/storage"
               mkdir -p -m 700 -- "$BOT_STORAGE_DIR"
 
@@ -112,7 +114,7 @@ in
               mkdir -m 700 -- "$BOT_TMP_DIR"
 
               exec ${lib.escapeShellArg "${value.package}/bin/AgoraBot"} \
-                --token "$(cat ${lib.escapeShellArg value.tokenFilePath})" \
+                --token "$BOT_TOKEN" \
                 --data-version ${lib.escapeShellArg "${builtins.toString value.dataVersion}"} \
                 --config-path "$BOT_CONFIG_DIR" \
                 --storage-path "$BOT_STORAGE_DIR" \

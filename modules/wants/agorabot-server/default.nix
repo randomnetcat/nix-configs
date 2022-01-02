@@ -126,7 +126,9 @@ in
           "${name}" = {
             inherit (value) package dataVersion;
 
-            tokenFilePath = "/run/keys/${tokenKeyNameOf name}";
+            tokenGeneratorPackage = pkgs.writeShellScriptBin "generate-token" ''
+              cat /run/keys/${tokenKeyNameOf name}
+            '';
 
             configGeneratorPackage =
               let
