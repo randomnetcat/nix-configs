@@ -36,11 +36,7 @@
 
   services.randomcat.agorabot-server.instances = {
     "agora-prod" = {
-      package = import (builtins.fetchGit {
-        url = "https://github.com/randomnetcat/AgoraBot.git";
-        ref = "main";
-        rev = "82e3695394acd7a1b4632882b18f2ffded38ae78";
-      }) { inherit pkgs; };
+      # Package set in flake.nix
 
       tokenEncryptedFile = ./secrets/discord-token-agora-prod.age;
 
@@ -68,11 +64,7 @@
     };
 
     "secret-hitler" = {
-      package = import (builtins.fetchGit {
-        url = "https://github.com/randomnetcat/AgoraBot.git";
-        ref = "secret-hitler";
-        rev = "4c38facf4bad7950624a9c523c20c8cdd0b33f7c";
-      }) { inherit pkgs; };
+      # Package set in flake.nix
 
       tokenEncryptedFile = ./secrets/discord-token-secret-hitler.age;
 
