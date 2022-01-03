@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports = [
@@ -22,5 +22,11 @@
 
     hardware.nvidia.modesetting.enable = true;
     hardware.nvidia.nvidiaPersistenced = true;
+
+    boot.blacklistedKernelModules =  [ "nouveau" ];
+
+    services.xserver.displayManager.sessionCommands = ''
+      ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource NVIDIA-G0 modesetting
+  '';
   };
 }
