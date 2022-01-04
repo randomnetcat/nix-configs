@@ -13,6 +13,7 @@
     ./home-configs/wants/sysadmin.nix
     ./home-configs/wants/video.nix
     ./home-configs/wants/agora-backup.nix
+    ./home-configs/wants/archive.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
