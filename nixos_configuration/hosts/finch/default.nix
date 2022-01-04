@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports = [
@@ -25,6 +25,17 @@
   };
 
   config = {
+    randomcat.hosts.finch.proprietaryGraphics.enable = true;
+
+    specialisation.openSourceGraphics = {
+      inheritParentConfig = true;
+
+      configuration = {
+        system.nixos.tags = [ "open-source-graphics" ];
+        randomcat.hosts.finch.proprietaryGraphics.enable = lib.mkForce false;
+      };
+    };
+
     networking.hostName = "finch";
 
     # This value determines the NixOS release from which the default

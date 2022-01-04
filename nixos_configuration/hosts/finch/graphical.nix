@@ -8,9 +8,10 @@
   ];
 
   options = {
+    randomcat.hosts.finch.proprietaryGraphics.enable = lib.mkEnableOption "proprietary nvidia graphics";
   };
 
-  config = {
+  config = lib.mkIf (config.randomcat.hosts.finch.proprietaryGraphics.enable) {
     services.xserver.videoDrivers = [ "nvidia" ];
 
     hardware.nvidia.prime = {
