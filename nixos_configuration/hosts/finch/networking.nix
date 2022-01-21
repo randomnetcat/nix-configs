@@ -16,9 +16,9 @@
     networking.interfaces.wlo1.useDHCP = true;
 
     environment.systemPackages = [
-      pkgs.gnome3.networkmanagerapplet
-      pkgs.gnome3.networkmanager_openvpn
-      pkgs.gnome3.networkmanager_openconnect
+      pkgs.networkmanagerapplet
+      pkgs.networkmanager_openvpn
+      pkgs.networkmanager_openconnect
     ];
   };
 }
