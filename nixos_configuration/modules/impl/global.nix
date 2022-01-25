@@ -4,6 +4,7 @@
   imports = [
     ./users
     ./builders
+    ./maintenance
   ];
 
   options = {
