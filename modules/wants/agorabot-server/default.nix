@@ -200,7 +200,7 @@ in
               RestrictAddressFamilies = "AF_INET AF_INET6";
               RestrictSUIDSGID = true;
               RemoveIPC = true;
-              UMask = "077";
+              # UMask = "077"; # Causes errors in mkdir call
               SystemCallArchitectures = "native";
               LoadCredential =
                 map

@@ -88,8 +88,7 @@ in
             wantedBy = [ "agorabot-instances.target" ];
 
             serviceConfig = {
-              User = value.user;
-              Group = value.group;
+              DynamicUser = true;
               Restart = if value.restartOnHalt then "always" else "on-failure";
               RestartSec = "30s";
               RuntimeDirectory="agorabot/${name}";
