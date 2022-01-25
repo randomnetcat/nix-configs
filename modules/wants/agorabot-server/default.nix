@@ -81,9 +81,10 @@ in
   config =
     let
       tokenKeyNameOf = instance: "agorabot-discord-token-${instance}";
+      tokenCredName = "token";
       escapeSecretConfigPath = path: utils.escapeSystemdPath path;
       secretConfigExternalKeyName = { instance, secretPath }: "agorabot-config-${instance}-${escapeSecretConfigPath secretPath}";
-      secretConfigInternalCredName = args: (builtins.hashString "sha256" (secretConfigExternalKeyName args));
+      secretConfigInternalCredName = args: "config-" + (builtins.hashString "sha256" (secretConfigExternalKeyName args));
 
       baseAgoraBotUserConfig = {
         users.users = {
@@ -128,7 +129,7 @@ in
             inherit (value) package dataVersion;
 
             tokenGeneratorPackage = pkgs.writeShellScriptBin "generate-token" ''
-              cat /run/keys/${tokenKeyNameOf name}
+              cat -- "''${CREDENTIALS_DIRECTORY}"/${lib.escapeShellArg tokenCredName}
             '';
 
             configGeneratorPackage =
@@ -211,7 +212,10 @@ in
                   in
                   "${credName}:/run/keys/${keyName}"
                 )
-                (builtins.attrNames value.secretConfigFiles);
+                (builtins.attrNames value.secretConfigFiles)
+                ++ [
+                  "${tokenCredName}:/run/keys/${tokenKeyNameOf instanceName}"
+                ];
             };
           };
         };
