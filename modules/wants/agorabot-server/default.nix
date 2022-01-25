@@ -82,7 +82,8 @@ in
     let
       tokenKeyNameOf = instance: "agorabot-discord-token-${instance}";
       escapeSecretConfigPath = path: utils.escapeSystemdPath path;
-      secretConfigKeyName = { instance, secretPath }: "agorabot-config-${instance}-${escapeSecretConfigPath secretPath}";
+      secretConfigExternalKeyName = { instance, secretPath }: "agorabot-config-${instance}-${escapeSecretConfigPath secretPath}";
+      secretConfigInternalCredName = args: (builtins.hashString "sha256" (secretConfigExternalKeyName args));
 
       baseAgoraBotUserConfig = {
         users.users = {
@@ -104,7 +105,7 @@ in
 
       makeSecretConfigKeyConfig = { instance, secretPath, localEncryptedFile }:
         let
-          keyName = secretConfigKeyName { inherit instance secretPath; };
+          keyName = secretConfigExternalKeyName { inherit instance secretPath; };
         in
         {
           "${keyName}" = {
@@ -139,9 +140,9 @@ in
                       map
                         (secretPath:
                           let
-                            keyName = secretConfigKeyName { instance = name; inherit secretPath; };
+                            credName = secretConfigInternalCredName { instance = name; inherit secretPath; };
                           in
-                          ''cp --no-preserve=mode -- ${lib.escapeShellArg "/run/keys/${keyName}"} "$1"/${lib.escapeShellArg secretPath}''
+                          ''cp --no-preserve=mode -- "''${CREDENTIALS_DIRECTORY}"/${lib.escapeShellArg credName} "$1"/${lib.escapeShellArg secretPath}''
                         )
                         (builtins.attrNames value.secretConfigFiles)
                     )
@@ -176,8 +177,8 @@ in
           };
         };
 
-        makeSystemdServicesConfig = name: value: {
-          "agorabot-instance-${name}" = {
+        makeSystemdServicesConfig = instanceName: value: {
+          "agorabot-instance-${instanceName}" = {
             serviceConfig = {
               ProtectHome = true;
               ProtectSystem = "strict";
@@ -200,6 +201,17 @@ in
               RemoveIPC = true;
               UMask = "077";
               SystemCallArchitectures = "native";
+              LoadCredential =
+                map
+                (secretPath:
+                  let
+                    args = { instance = instanceName; inherit secretPath; };
+                    credName = secretConfigInternalCredName args;
+                    keyName = secretConfigExternalKeyName args;
+                  in
+                  "${credName}:/run/keys/${keyName}"
+                )
+                (builtins.attrNames value.secretConfigFiles);
             };
           };
         };
