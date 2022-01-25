@@ -17,6 +17,7 @@
       pkgs.libreoffice
       pkgs.gimp
       pkgs.audacity
+      pkgs.zoom-us
     ];
 
     programs.firefox = {
