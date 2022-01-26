@@ -59,18 +59,6 @@ in
         name = "AgoraBot server";
       };
 
-      user = lib.mkOption {
-        type = types.str;
-        description = "Name of the user for AgoraBot instances. If not set to the default, the user must be separately configured.";
-        default = "agorabot";
-      };
-
-      group = lib.mkOption {
-        type = types.str;
-        description = "Name of the group for AgoraBot instances. If not set to the default, the group must be separately configured.";
-        default = "agorabot";
-      };
-
       instances = lib.mkOption {
         type = types.attrsOf (types.submodule instancesModule);
         default = {};
@@ -86,20 +74,12 @@ in
       secretConfigExternalKeyName = { instance, secretPath }: "agorabot-config-${instance}-${escapeSecretConfigPath secretPath}";
       secretConfigInternalCredName = args: "config-" + (builtins.hashString "sha256" (secretConfigExternalKeyName args));
 
-      baseAgoraBotUserConfig = {
-        users.users = {
-          agorabot = {
-            extraGroups = [ "keys" ];
-          };
-        };
-      };
-
       tokenKeyConfigOf = instanceName: instanceValue: let keyName = tokenKeyNameOf instanceName; in {
         "${keyName}" = {
           encryptedFile = instanceValue.tokenEncryptedFile;
           dest = "/run/keys/${keyName}";
-          owner = cfg.user;
-          group = cfg.group;
+          owner = "root";
+          group = "root";
           permissions = "0640";
         };
       };
@@ -112,8 +92,8 @@ in
           "${keyName}" = {
             encryptedFile = localEncryptedFile;
             dest = "/run/keys/${keyName}";
-            owner = cfg.user;
-            group = cfg.group;
+            owner = "root";
+            group = "root";
             permissions = "0640";
           };
         };
@@ -172,9 +152,6 @@ in
                 ${copySecretConfigFiles}
                 ${generateExtraConfigFiles}
               '';
-
-            user = cfg.user;
-            group = cfg.group;
           };
         };
 
@@ -221,7 +198,6 @@ in
         };
     in
     lib.mkIf (cfg.enable) (lib.mkMerge [
-      (lib.mkIf (cfg.user == "agorabot" && cfg.instances != {}) baseAgoraBotUserConfig)
       {
         randomcat.secrets.secrets = lib.mkMerge (lib.mapAttrsToList makeKeysConfig cfg.instances);
         services.randomcat.agorabot.instances = lib.mkMerge (lib.mapAttrsToList makeAgoraBotInstanceConfig cfg.instances);
