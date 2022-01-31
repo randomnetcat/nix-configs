@@ -31,6 +31,7 @@
     home.packages = [
       pkgs.jetbrains.idea-ultimate
       pkgs.gradle
+      pkgs.jd-gui
     ];
   };
 }
