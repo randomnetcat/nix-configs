@@ -14,6 +14,7 @@
     ./home-configs/wants/video.nix
     ./home-configs/wants/agora-backup.nix
     ./home-configs/wants/archive.nix
+    ./home-configs/wants/ncsu.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
