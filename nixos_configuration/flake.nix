@@ -28,21 +28,8 @@
           config = {
             nix.registry.nixpkgs.flake = nixpkgs;
 
-            nix.nixPath = [ "nixpkgs=/run/active-nixpkgs-source" ];
-
-            systemd.services.create-nixpkgs-source-link = {
-              wantedBy = [ "multi-user.target" ];
-
-              unitConfig = {
-                Type = "oneshot";
-                RemainAfterExit = true;
-                RequiresMountsFor = "/run";
-              };
-
-              script = ''
-                ln -sfT -- ${nixpkgs.lib.escapeShellArg "${nixpkgs}"} /run/active-nixpkgs-source
-              '';
-            };
+            environment.etc."active-nixpkgs-source".source = "${nixpkgs}";
+            nix.nixPath = [ "nixpkgs=/etc/active-nixpkgs-source" ];
           };
         };
 
