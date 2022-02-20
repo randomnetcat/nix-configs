@@ -61,7 +61,7 @@
             ./hosts/finch/default.nix
             homeManager
             homeManagerNurOverlay
-            ./modules/wants/virtualisation
+            # ./modules/wants/virtualisation
           ];
       };
     };
