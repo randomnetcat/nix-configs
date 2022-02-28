@@ -1,6 +1,8 @@
 {
   description = "randomcat nixops configurations";
 
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
+
   inputs.agorabot-prod = {
     url = "github:randomnetcat/AgoraBot/main";
     inputs.nixpkgs.follows = "nixpkgs";
