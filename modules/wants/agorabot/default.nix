@@ -73,6 +73,9 @@ in
             BOT_CONFIG_DIR="$RUNTIME_DIRECTORY/generated-config"
             ${lib.escapeShellArg "${value.configGeneratorPackage}/bin/generate-config"} "$BOT_CONFIG_DIR"
 
+            chmod -R 700 -- "$BOT_CONFIG_DIR"
+            find "$BOT_CONFIG_DIR" -type f -exec chmod 600 -- {} +
+
             BOT_TOKEN="$(${lib.escapeShellArg "${value.tokenGeneratorPackage}/bin/generate-token"})"
 
             BOT_STORAGE_DIR="$STATE_DIRECTORY/storage"
