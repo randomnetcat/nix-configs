@@ -123,7 +123,10 @@ in
                           let
                             credName = secretConfigInternalCredName { instance = name; inherit secretPath; };
                           in
-                          ''cp --no-preserve=mode -- "''${CREDENTIALS_DIRECTORY}"/${lib.escapeShellArg credName} "$1"/${lib.escapeShellArg secretPath}''
+                          ''
+                            mkdir -p -- "$(dirname -- "$1"/${lib.escapeShellArg secretPath})"
+                            ln -s -- "''${CREDENTIALS_DIRECTORY}"/${lib.escapeShellArg credName} "$1"/${lib.escapeShellArg secretPath}
+                          ''
                         )
                         (builtins.attrNames value.secretConfigFiles)
                     )
@@ -134,7 +137,10 @@ in
                     (
                       lib.mapAttrsToList
                         (configPath: configValue:
-                          ''printf "%s" ${pkgs.lib.escapeShellArg configValue.text} > "$1"/${lib.escapeShellArg configPath}''
+                          ''
+                            mkdir -p -- "$(dirname -- "$1"/${lib.escapeShellArg configPath})"
+                            printf "%s" ${pkgs.lib.escapeShellArg configValue.text} > "$1"/${lib.escapeShellArg configPath}
+                          ''
                         )
                         value.extraConfigFiles
                     );
