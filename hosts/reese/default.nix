@@ -43,8 +43,8 @@
       configSource = ./public-config/agorabot/agora-prod;
 
       secretConfigFiles = {
-        "digest/ssmtp.conf" = {
-          encryptedFile = ./secrets/discord-config-agora-prod-ssmtp.age;
+        "digest/msmtp.conf" = {
+          encryptedFile = ./secrets/discord-config-agora-prod-msmtp.age;
         };
       };
 
@@ -52,9 +52,9 @@
         "digest/mail.json" = {
           text = ''
             {
-              "send_strategy": "ssmtp",
-              "ssmtp_path": "${pkgs.ssmtp}/bin/ssmtp",
-              "ssmtp_config_path": "ssmtp.conf"
+              "send_strategy": "msmtp",
+              "msmtp_path": "${pkgs.msmtp}/bin/msmtp",
+              "msmtp_config_path": "msmtp.conf"
             }
           '';
         };

@@ -5,5 +5,5 @@ in
   "discord-token-agora-prod.age".publicKeys = [ system ];
   "discord-token-secret-hitler.age".publicKeys = [ system ];
 
-  "discord-config-agora-prod-ssmtp.age".publicKeys = [ system ];
+  "discord-config-agora-prod-msmtp.age".publicKeys = [ system ];
 }
