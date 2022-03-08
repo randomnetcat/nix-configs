@@ -17,8 +17,8 @@
 
     environment.systemPackages = [
       pkgs.networkmanagerapplet
-      pkgs.networkmanager_openvpn
-      pkgs.networkmanager_openconnect
+      pkgs.networkmanager-openvpn
+      pkgs.networkmanager-openconnect
     ];
   };
 }
