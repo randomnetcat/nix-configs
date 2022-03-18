@@ -13,7 +13,12 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, agorabot-prod, agorabot-secret-hitler }: {
+  inputs.agenix = {
+    url = "github:ryantm/agenix";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
+  outputs = { self, nixpkgs, agenix, agorabot-prod, agorabot-secret-hitler }: {
     nixopsConfigurations.default = {
       network.storage.legacy = {};
       inherit nixpkgs;
@@ -21,6 +26,7 @@
       oracle-server = { pkgs, config, ... }: {
         imports = [
           ./hosts/reese
+          agenix.nixosModule
         ];
 
         config = {

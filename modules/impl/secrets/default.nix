@@ -39,8 +39,6 @@ let
   };
 in
 {
-  imports = [ (import ./age-module.nix) ];
-
   options.randomcat.secrets.secrets = lib.mkOption {
     type = types.attrsOf secret;
     description = "secret configuration";

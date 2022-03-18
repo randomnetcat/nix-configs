@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "agenix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1646845404,
+        "narHash": "sha256-JENXFCI2HVqi0whBzt7MAW9PX3ziEaYqBhMux+4g+VM=",
+        "owner": "ryantm",
+        "repo": "agenix",
+        "rev": "764c975e74bce2f89a5106b68ec48e2b586f893c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ryantm",
+        "repo": "agenix",
+        "type": "github"
+      }
+    },
     "agorabot-prod": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -126,6 +146,7 @@
     },
     "root": {
       "inputs": {
+        "agenix": "agenix",
         "agorabot-prod": "agorabot-prod",
         "agorabot-secret-hitler": "agorabot-secret-hitler",
         "nixpkgs": "nixpkgs"
