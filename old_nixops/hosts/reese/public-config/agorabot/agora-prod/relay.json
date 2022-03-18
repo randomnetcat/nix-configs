@@ -1,0 +1,32 @@
+{
+  "setup":{
+    "irc_servers": {
+      "libera": {
+        "host": "irc.libera.chat",
+        "port": 6697,
+        "secure": true,
+        "user_nickname": "AgoraBot"
+      }
+    }
+  },
+  "endpoints": {
+    "irc": {
+      "libera_nomic": {
+        "server_name": "libera",
+        "channel_name": "##nomic",
+        "command_prefix": "!"
+      }
+    },
+    "discord": {
+      "agora_serious_business": {
+        "channel_id": "724079019578097684"
+      }
+    }
+  },
+  "bridges": [
+    {
+      "endpoints": ["libera_nomic", "agora_serious_business"]
+    }
+  ]
+}
+
