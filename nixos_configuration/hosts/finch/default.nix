@@ -19,6 +19,7 @@
     ./backup.nix
     ./bluetooth.nix
     ./printing.nix
+    ./tailscale.nix
   ];
 
   options = {
