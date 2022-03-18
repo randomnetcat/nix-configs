@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ./randomcat.nix
+    ./randomcat
   ];
 
   options = {

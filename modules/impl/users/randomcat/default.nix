@@ -25,7 +25,7 @@ in
 
     home-manager.users."${username}" = {
       imports = [
-        (import ../home/randomcat.nix { inherit username homeDirectory; })
+        (import ./home { inherit username homeDirectory; })
       ];
     };
   };
