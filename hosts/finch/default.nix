@@ -5,6 +5,7 @@
     ./hardware-configuration.nix
 
     ../../modules/impl/global.nix
+    ../../modules/wants/tailscale.nix
 
     ./mounts/system
 
@@ -19,7 +20,6 @@
     ./backup.nix
     ./bluetooth.nix
     ./printing.nix
-    ./tailscale.nix
   ];
 
   options = {
@@ -35,6 +35,11 @@
         system.nixos.tags = [ "open-source-graphics" ];
         randomcat.hosts.finch.proprietaryGraphics.enable = lib.mkForce false;
       };
+    };
+
+    randomcat.tailscale = {
+      enable = true;
+      authkeyPath = "/root/secrets/tailscale-authkey";
     };
 
     networking.hostName = "finch";
