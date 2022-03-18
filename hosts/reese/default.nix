@@ -28,7 +28,7 @@
 
   users.groups.remote-build = {};
 
-  nix.trustedUsers = [ "remote-build" ];
+  nix.settings.trusted-users = [ "remote-build" ];
 
   services.randomcat.agorabot-server = {
     enable = true;
