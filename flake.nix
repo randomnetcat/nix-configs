@@ -13,6 +13,21 @@
     nixpkgs = {
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
+
+    agorabot-prod = {
+      url = "github:randomnetcat/AgoraBot/main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    agorabot-secret-hitler = {
+      url = "github:randomnetcat/AgoraBot/secret-hitler";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, nur }: {
