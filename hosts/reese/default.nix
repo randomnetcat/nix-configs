@@ -4,12 +4,12 @@
 
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
-    ../../modules/system-types/oracle-arch.nix
-    ../../modules/wants/ssh-access.nix
-    ../../modules/wants/zulip-server
-    ../../modules/wants/agorabot-server
-    ../../modules/wants/trungle-access.nix
-    ../../modules/impl/secrets
+    ../../old_nixops/modules/system-types/oracle-arch.nix
+    ../../old_nixops/modules/wants/ssh-access.nix
+    ../../old_nixops/modules/wants/zulip-server
+    ../../old_nixops/modules/wants/agorabot-server
+    ../../old_nixops/modules/wants/trungle-access.nix
+    ../../old_nixops/modules/impl/secrets
   ];
 
   boot.cleanTmpDir = true;

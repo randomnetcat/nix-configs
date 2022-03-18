@@ -30,45 +30,45 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, nur }: {
-    nixosConfigurations =
-      let
-        systemConfigurationRevision = {
-          config = {
-            system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
-          };
+  outputs = { self, nixpkgs, home-manager, nur, agorabot-prod, agorabot-secret-hitler, agenix }:
+    let
+      systemConfigurationRevision = {
+        config = {
+          system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
         };
+      };
 
-        pinnedNixpkgsFlake = {
-          config = {
-            nix.registry.nixpkgs.flake = nixpkgs;
+      pinnedNixpkgsFlake = {
+        config = {
+          nix.registry.nixpkgs.flake = nixpkgs;
 
-            environment.etc."active-nixpkgs-source".source = "${nixpkgs}";
-            nix.nixPath = [ "nixpkgs=/etc/active-nixpkgs-source" ];
-          };
+          environment.etc."active-nixpkgs-source".source = "${nixpkgs}";
+          nix.nixPath = [ "nixpkgs=/etc/active-nixpkgs-source" ];
         };
+      };
 
-        commonModules = [
-          systemConfigurationRevision
-          pinnedNixpkgsFlake
-          ./modules/wants/resolved
-          ./modules/wants/unstable-nix
-        ];
+      commonModules = [
+        systemConfigurationRevision
+        pinnedNixpkgsFlake
+        ./modules/wants/resolved
+        ./modules/wants/unstable-nix
+      ];
 
-        homeManager = home-manager.nixosModules.home-manager;
-        homeManagerNurOverlay = {
-          config = {
-            home-manager.extraSpecialArgs = {
-              nurPkgs = import nixpkgs {
-                system = "x86_64-linux";
-                overlays = [ nur.overlay ];
-                config = { allowUnfree = true; };
-              };
+      homeManager = home-manager.nixosModules.home-manager;
+      homeManagerNurOverlay = {
+        config = {
+          home-manager.extraSpecialArgs = {
+            nurPkgs = import nixpkgs {
+              system = "x86_64-linux";
+              overlays = [ nur.overlay ];
+              config = { allowUnfree = true; };
             };
           };
         };
-      in
-      {
+      };
+    in
+    {
+      nixosConfigurations = {
         finch = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
 
@@ -78,7 +78,26 @@
             homeManagerNurOverlay
             # ./modules/wants/virtualisation
           ];
+        };
+      };
+
+      nixopsConfigurations.default = {
+        network.storage.legacy = {};
+        inherit nixpkgs;
+
+        oracle-server = { pkgs, config, ... }: {
+          imports = [
+            ./hosts/reese
+            agenix.nixosModule
+          ];
+
+          config = {
+            services.randomcat.agorabot-server.instances = {
+              agora-prod.package = (pkgs.extend agorabot-prod.overlays.default).randomcat.agorabot;
+              secret-hitler.package = (pkgs.extend agorabot-secret-hitler.overlay).randomcat.agorabot;
+            };
+          };
+        };
       };
     };
-  };
 }
