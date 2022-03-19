@@ -9,6 +9,7 @@
     ../../modules/wants/zulip-server
     ../../modules/wants/agorabot-server
     ../../modules/wants/trungle-access.nix
+    ../../modules/wants/tailscale.nix
     ../../modules/impl/secrets
   ];
 
@@ -76,4 +77,17 @@
   features.trungle-access.enable = true;
 
   services.resolved.enable = true;
- }
+
+  randomcat.tailscale = {
+    enable = true;
+    authkeyPath = "/run/keys/tailscale-authkey";
+  };
+
+  randomcat.secrets.secrets."tailscale-authkey" = {
+    encryptedFile = ./secrets/tailscale-authkey;
+    dest = "/run/keys/tailscale-authkey";
+    owner = "root";
+    group = "root";
+    permissions = "700";
+  };
+}

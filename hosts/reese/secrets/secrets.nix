@@ -6,4 +6,6 @@ in
   "discord-token-secret-hitler.age".publicKeys = [ system ];
 
   "discord-config-agora-prod-msmtp.age".publicKeys = [ system ];
+
+  "tailscale-authkey".publicKeys = [ system ];
 }
