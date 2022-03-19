@@ -1,6 +1,6 @@
 { config, pkgs, modulesPath, ... }:
 {
-  deployment.targetHost = "reese.randomcat.org";
+  deployment.targetHost = "reese";
 
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
