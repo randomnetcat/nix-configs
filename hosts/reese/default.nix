@@ -6,7 +6,6 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     ../../modules/system-types/oracle-arch.nix
     ../../modules/wants/ssh-access.nix
-    ../../modules/wants/zulip-server
     ../../modules/wants/agorabot-server
     ../../modules/wants/trungle-access.nix
     ../../modules/wants/tailscale.nix
