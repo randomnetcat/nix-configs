@@ -30,11 +30,11 @@
 
   nix.settings.trusted-users = [ "remote-build" ];
 
-  services.randomcat.agorabot-server = {
+  randomcat.services.agorabot-server = {
     enable = true;
   };
 
-  services.randomcat.agorabot-server.instances = {
+  randomcat.services.agorabot-server.instances = {
     "agora-prod" = {
       # Package set in flake.nix
 

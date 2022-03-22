@@ -2,7 +2,7 @@
 
 let
   types = lib.types;
-  cfg = config.services.randomcat.agorabot-server;
+  cfg = config.randomcat.services.agorabot-server;
   secretConfigModule = { name, ... }: {
     options = {
       encryptedFile = lib.mkOption {
@@ -54,7 +54,7 @@ in
   ];
 
   options = {
-    services.randomcat.agorabot-server = {
+    randomcat.services.agorabot-server = {
       enable = lib.mkEnableOption {
         name = "AgoraBot server";
       };
@@ -206,7 +206,7 @@ in
     lib.mkIf (cfg.enable) (lib.mkMerge [
       {
         randomcat.secrets.secrets = lib.mkMerge (lib.mapAttrsToList makeKeysConfig cfg.instances);
-        services.randomcat.agorabot.instances = lib.mkMerge (lib.mapAttrsToList makeAgoraBotInstanceConfig cfg.instances);
+        randomcat.services.agorabot.instances = lib.mkMerge (lib.mapAttrsToList makeAgoraBotInstanceConfig cfg.instances);
         systemd.services = lib.mkMerge (lib.mapAttrsToList makeSystemdServicesConfig cfg.instances);
       }
     ]);

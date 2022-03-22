@@ -3,7 +3,7 @@
 let
   lib = pkgs.lib;
   types = lib.types;
-  cfg = config.services.randomcat.agorabot;
+  cfg = config.randomcat.services.agorabot;
   instancesModule = { name, ... }: {
     options = {
       package = lib.mkOption {
@@ -34,7 +34,7 @@ let
 in
 {
   options = {
-    services.randomcat.agorabot = {
+    randomcat.services.agorabot = {
       instances = lib.mkOption {
         type = types.attrsOf (types.submodule instancesModule);
         default = {};

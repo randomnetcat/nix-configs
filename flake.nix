@@ -92,7 +92,7 @@
           ];
 
           config = {
-            services.randomcat.agorabot-server.instances = {
+            randomcat.services.agorabot-server.instances = {
               agora-prod.package = (pkgs.extend agorabot-prod.overlays.default).randomcat.agorabot;
               secret-hitler.package = (pkgs.extend agorabot-secret-hitler.overlay).randomcat.agorabot;
             };
