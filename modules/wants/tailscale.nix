@@ -2,7 +2,7 @@
 
 {
   options = {
-    randomcat.tailscale = {
+    randomcat.services.tailscale = {
       enable = lib.mkEnableOption "Custom tailscale setup";
 
       authkeyPath = lib.mkOption {
@@ -12,12 +12,12 @@
     };
   };
 
-  config = lib.mkIf (config.randomcat.tailscale.enable) {
+  config = lib.mkIf (config.randomcat.services.tailscale.enable) {
     environment.systemPackages = [ pkgs.tailscale ];
 
     services.tailscale.enable = true;
 
-    systemd.services.tailscale-autoconnect = let secretKeyPath = config.randomcat.tailscale.authkeyPath; in {
+    systemd.services.tailscale-autoconnect = let secretKeyPath = config.randomcat.services.tailscale.authkeyPath; in {
       description = "Automatic connection to Tailscale";
 
       # make sure tailscale is running before trying to connect to tailscale

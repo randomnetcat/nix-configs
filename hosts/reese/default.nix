@@ -81,7 +81,7 @@
     DNS=1.1.1.1%enp0s3#cloudflare-dns.com 1.0.0.1%enp0s3#cloudflare-dns.com 2606:4700:4700::1111%enp0s3#cloudflare-dns.com 2606:4700:4700::1001%enp0s3#cloudflare-dns.com
   '';
 
-  randomcat.tailscale = {
+  randomcat.services.tailscale = {
     enable = true;
     authkeyPath = "/run/keys/tailscale-authkey";
   };
