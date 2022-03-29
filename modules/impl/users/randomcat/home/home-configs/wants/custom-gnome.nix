@@ -11,7 +11,7 @@
     dconf.settings = let keybindingMaps = {
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
         binding = "<Primary><Alt>t";
-        command = "gnome-terminal";
+        command = "kgx";
         name = "Terimnal";
       };
     };
