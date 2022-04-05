@@ -35,6 +35,12 @@ let
         type = types.str;
         description = "Permissions expressed as octal.";
       };
+
+      realFile = lib.mkOption {
+        default = false;
+        type = types.bool;
+        description = "If true, a real file is guaranteed to be created; otherwise, a symlink might be used.";
+      };
     };
   };
 in
@@ -53,6 +59,7 @@ in
       mode = info.permissions;
       owner = info.owner;
       group = info.group;
+      symlink = !info.realFile;
     };
   }) cfg.secrets;
 }
