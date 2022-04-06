@@ -8,4 +8,6 @@ in
   "discord-config-agora-prod-msmtp.age".publicKeys = [ system ];
 
   "tailscale-authkey".publicKeys = [ system ];
+
+  "matrix-secret-config".publicKeys = [ system ];
 }
