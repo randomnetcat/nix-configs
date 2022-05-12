@@ -15,6 +15,9 @@
     # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
     system.stateVersion = "21.11"; # Did you read the comment?
 
+    virtualisation.writableStore = true;
+    virtualisation.writableStoreUseTmpfs = false;
+
     home-manager.users.randomcat = {
       imports = let configs = ../../modules/impl/users/randomcat/home/home-configs; in [
         (configs + "/wants/custom-gnome.nix")
