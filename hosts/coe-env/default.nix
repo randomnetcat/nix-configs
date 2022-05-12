@@ -20,7 +20,7 @@
         (configs + "/wants/custom-gnome.nix")
         (configs + "/wants/custom-terminal.nix")
         (configs + "/wants/general-development.nix")
-        (configs + "/wants/version-control.nix")
+        (configs + "/wants/version-control-ncsu.nix")
       ];
 
       config = {
