@@ -30,6 +30,8 @@
       };
     };
 
+    home-manager.useUserPackages = true;
+
     environment.systemPackages = [
       pkgs.vim
       pkgs.firefox
