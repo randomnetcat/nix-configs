@@ -54,6 +54,10 @@
         ./modules/wants/unstable-nix
       ];
 
+      commonVmModules = commonModules ++ [
+        ./modules/impl/vm-global.nix
+      ];
+
       homeManager = home-manager.nixosModules.home-manager;
       homeManagerNurOverlay = {
         config = {
@@ -77,6 +81,16 @@
             homeManager
             homeManagerNurOverlay
             # ./modules/wants/virtualisation
+          ];
+        };
+
+        coe-env = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+
+          modules = commonVmModules ++ [
+            ./hosts/coe-env/default.nix
+            homeManager
+            homeManagerNurOverlay
           ];
         };
       };
