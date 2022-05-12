@@ -45,5 +45,7 @@
       pkgs.vscode
       pkgs.dbeaver
     ];
+
+    virtualisation.docker.enable = true;
   };
 }
