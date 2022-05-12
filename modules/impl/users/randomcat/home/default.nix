@@ -3,6 +3,7 @@
 
 {
   imports = [
+    ./home-configs/wants/general-development.nix
     ./home-configs/wants/java-development.nix
     ./home-configs/wants/custom-gnome.nix
     ./home-configs/wants/version-control.nix
