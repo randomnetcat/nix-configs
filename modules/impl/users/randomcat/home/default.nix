@@ -1,4 +1,3 @@
-{ username, homeDirectory }:
 { config, lib, pkgs, ... }:
 
 {
@@ -24,11 +23,6 @@
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-
-  # Home Manager needs a bit of information about you and the
-  # paths it should manage.
-  home.username = username;
-  home.homeDirectory = homeDirectory;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

@@ -25,8 +25,13 @@ in
 
     home-manager.users."${username}" = {
       imports = [
-        (import ./home { inherit username homeDirectory; })
+        ./home
       ];
+
+      # Home Manager needs a bit of information about you and the
+      # paths it should manage.
+      home.username = username;
+      home.homeDirectory = homeDirectory;
     };
   };
 }
