@@ -47,5 +47,6 @@
     ];
 
     virtualisation.docker.enable = true;
+    users.users.randomcat.extraGroups = [ "docker" ];
   };
 }
