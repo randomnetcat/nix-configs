@@ -20,6 +20,7 @@
     ./backup.nix
     ./bluetooth.nix
     ./printing.nix
+    ./security.nix
   ];
 
   options = {
