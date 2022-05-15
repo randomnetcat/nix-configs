@@ -11,6 +11,7 @@
     };
 
     nixpkgs = {
+      # If updating this, must also update pin below
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
 
@@ -38,9 +39,15 @@
         };
       };
 
-      pinnedNixpkgsFlake = {
+      pinnedNixpkgsFlake = { config, ... }: {
         config = {
-          nix.registry.nixpkgs.flake = nixpkgs;
+          nix.registry.nixpkgs.to = {
+            type = "github";
+            owner = "NixOS";
+            repo = "nixpkgs";
+            rev = nixpkgs.rev;
+            narHash = nixpkgs.narHash;
+          };
 
           environment.etc."active-nixpkgs-source".source = "${nixpkgs}";
           nix.nixPath = [ "nixpkgs=/etc/active-nixpkgs-source" ];
