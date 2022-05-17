@@ -3,6 +3,7 @@
 {
   imports = [
     ./mounts/feature/projects.nix
+    ../../modules/wants/android-development
   ];
 
   options = {
@@ -18,5 +19,7 @@
 
     environment.systemPackages = [ pkgs.man-pages pkgs.man-pages-posix ];
     documentation.dev.enable = true;
+
+    users.users.randomcat.extraGroups = [ "adbusers" ];
   };
 }
