@@ -18,6 +18,11 @@
     virtualisation.writableStore = true;
     virtualisation.writableStoreUseTmpfs = false;
 
+    virtualisation.sharedDirectories.hostshare = {
+      source = "/home/randomcat/dev/coe-env/shared-dir";
+      target = "/host-shared";
+    };
+
     home-manager.users.randomcat = {
       imports = let configs = ../../modules/impl/users/randomcat/home/home-configs; in [
         (configs + "/wants/custom-gnome.nix")
