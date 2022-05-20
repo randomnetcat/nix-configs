@@ -91,6 +91,16 @@
           ];
         };
 
+        groves = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+
+          modules = commonModules ++ [
+            ./hosts/groves/default.nix
+            homeManager
+            homeManagerNurOverlay
+          ];
+        };
+
         coe-env = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
 
