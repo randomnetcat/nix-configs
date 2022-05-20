@@ -27,6 +27,7 @@
         "speed" = 0.25;
         "click-method" = "default";
         "disable-while-typing" = false;
+        "two-finger-scrolling-enabled" = true;
       };
 
       "org/gnome/settings-daemon/plugins/media-keys" = {
@@ -50,6 +51,16 @@
 
       "org/gnome/desktop/sound" = {
         "allow-volume-above-100-percent" = true;
+      };
+
+      "org/gnome/shell" = {
+        favorite-apps = [
+          "org.gnome.Nautilus.desktop"
+          "org.gnome.Console.desktop"
+          "firefox.desktop"
+          "discord.desktop"
+          "thunderbird.desktop"
+        ];
       };
     } // keybindingMaps;
   };
