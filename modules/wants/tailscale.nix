@@ -17,6 +17,9 @@
 
     services.tailscale.enable = true;
 
+    # Tailscale complains about this
+    networking.firewall.checkReversePath = "loose";
+
     systemd.services.tailscale-autoconnect = let secretKeyPath = config.randomcat.services.tailscale.authkeyPath; in {
       description = "Automatic connection to Tailscale";
 
