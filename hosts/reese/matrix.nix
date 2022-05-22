@@ -65,6 +65,8 @@ in {
 
     containers.matrix = {
       config = {
+        system.stateVersion = "21.11";
+
         networking.useHostResolvConf = false;
         networking.firewall.enable = false;
 
