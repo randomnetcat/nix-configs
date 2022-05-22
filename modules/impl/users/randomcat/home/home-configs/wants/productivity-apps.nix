@@ -40,6 +40,7 @@
         [
           addons.ublock-origin
           addons.onepassword-password-manager
+          addons.wayback-machine
         ];
     };
   };
