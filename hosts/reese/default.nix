@@ -14,6 +14,8 @@
     ./matrix.nix
   ];
 
+  system.stateVersion = "21.11";
+
   boot.cleanTmpDir = true;
   networking.hostName = "reese";
   networking.firewall.allowPing = true;
