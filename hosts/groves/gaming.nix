@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./mounts/feature/gaming.nix
   ];
 
   options = {
