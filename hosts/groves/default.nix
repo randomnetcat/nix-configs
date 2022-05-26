@@ -13,6 +13,7 @@
     ./graphical.nix
     ./networking.nix
     ./locale.nix
+    ./filesystem.nix
 
     # Features
     ./gaming.nix
