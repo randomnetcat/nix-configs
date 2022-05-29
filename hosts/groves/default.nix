@@ -29,7 +29,7 @@
 
   config = {
     randomcat.services.tailscale = {
-      # enable = true;
+      enable = true;
       authkeyPath = "/root/secrets/tailscale-authkey";
     };
 
