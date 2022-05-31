@@ -4,6 +4,7 @@
   imports = [
     ./root.nix
     ./swap.nix
+    ./tmp.nix
   ];
 
   options = {
