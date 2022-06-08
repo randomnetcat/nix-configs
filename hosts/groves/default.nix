@@ -31,6 +31,7 @@
     randomcat.services.tailscale = {
       enable = true;
       authkeyPath = "/root/secrets/tailscale-authkey";
+      extraArgs = [ "--operator=randomcat" ];
     };
 
     networking.hostName = "groves";
