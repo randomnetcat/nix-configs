@@ -9,6 +9,11 @@
         type = lib.types.str;
         description = "Path (not nix store path!) to file containing tailscale authkey";
       };
+
+      extraArgs = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        description = "Extra command line arguments to tailscale";
+      };
     };
   };
 
@@ -37,7 +42,7 @@
         sleep 2
 
         # otherwise authenticate with tailscale
-        ${pkgs.tailscale}/bin/tailscale up -authkey "$(cat -- ${lib.escapeShellArg secretKeyPath})"
+        ${pkgs.tailscale}/bin/tailscale up -authkey "$(cat -- ${lib.escapeShellArg secretKeyPath})" ${lib.escapeShellArgs config.randomcat.services.tailscale.extraArgs}
       '';
 
       serviceConfig = {
