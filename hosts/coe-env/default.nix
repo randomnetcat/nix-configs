@@ -4,6 +4,8 @@
   imports = [
     ./locale.nix
     ./development.nix
+    ./apache.nix
+    ./mysql.nix
   ];
 
   config = {
