@@ -30,6 +30,8 @@
       '';
     };
 
+    home.file.".vim/undo/.hm_keep".text = "";
+
     programs.bash = {
       enable = true;
 
