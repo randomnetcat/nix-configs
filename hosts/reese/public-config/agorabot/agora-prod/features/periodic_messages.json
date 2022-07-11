@@ -1,0 +1,12 @@
+{
+        "messages": {
+                "cocktail_party": {
+                        "discord_channel_id": "798296619274993714",
+                        "random_interval": "weekly",
+                        "options": [
+                                "*sips cocktail*",
+                                "mmm yes I see"
+                        ]
+                }
+        }
+}
