@@ -8,6 +8,8 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
+  hardware.enableAllFirmware = true;
+
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "sd_mod" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ "kvm-intel" ];
