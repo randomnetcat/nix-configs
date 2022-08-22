@@ -110,6 +110,16 @@
             homeManagerNurOverlay
           ];
         };
+
+        csc-326-env = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+
+          modules = commonVmModules ++ [
+            ./hosts/csc-326-env/default.nix
+            homeManager
+            homeManagerNurOverlay
+          ];
+        };
       };
 
       nixopsConfigurations.default = {
