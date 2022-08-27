@@ -5,6 +5,7 @@
     ./locale.nix
     ./development.nix
     ./eclipse.nix
+    ./mysql.nix
   ];
 
   config = {
