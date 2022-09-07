@@ -17,7 +17,10 @@
       enable = true;
 
       settings = {
-        expandtab = true;
+        expandtab = false;
+        tabstop = 4;
+        shiftwidth = 4;
+        number = true;
         undodir = [ "~/.vim/undo" ];
         undofile = true;
       };
