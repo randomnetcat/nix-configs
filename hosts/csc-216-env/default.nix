@@ -48,6 +48,8 @@
       pkgs.steam-run
     ];
 
+    programs.java.enable = true;
+
     virtualisation.resolution = {
       x = 1368;
       y = 768;
