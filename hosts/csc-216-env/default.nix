@@ -47,5 +47,10 @@
 
       pkgs.steam-run
     ];
+
+    virtualisation.resolution = {
+      x = 1368;
+      y = 768;
+    };
   };
 }

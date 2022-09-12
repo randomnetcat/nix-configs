@@ -41,6 +41,6 @@
     msize = 262144;
     cores = 6;
 
-    resolution = { x = 1920; y = 1080; };
+    resolution = lib.mkDefault { x = 1920; y = 1080; };
   };
 }
