@@ -24,6 +24,11 @@
       target = "/host-shared";
     };
 
+    virtualisation.fileSystems."/home/randomcat" = {
+      device = "/host-shared/rcat-home";
+      options = [ "bind" ];
+    };
+
     home-manager.users.randomcat = {
       imports = let configs = ../../modules/impl/users/randomcat/home/home-configs; in [
         (configs + "/wants/custom-gnome.nix")
