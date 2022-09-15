@@ -10,8 +10,6 @@
     ../../modules/wants/trungle-access.nix
     ../../modules/wants/tailscale.nix
     ../../modules/impl/secrets
-
-    ./matrix.nix
   ];
 
   system.stateVersion = "21.11";
@@ -97,14 +95,5 @@
     owner = "root";
     group = "root";
     permissions = "700";
-  };
-
-  randomcat.secrets.secrets."matrix-secret-config" = {
-    encryptedFile = ./secrets/matrix-secret-config;
-    dest = "/run/keys/containers/matrix/matrix-secret-config";
-    owner = "root";
-    group = "root";
-    permissions = "700";
-    realFile = true;
   };
 }
