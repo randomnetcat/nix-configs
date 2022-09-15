@@ -10,4 +10,5 @@ in
   "tailscale-authkey".publicKeys = [ system ];
 
   "matrix-secret-config".publicKeys = [ system ];
+  "wiki-password-file".publicKeys = [ system ];
 }

@@ -10,6 +10,8 @@
     ../../modules/wants/trungle-access.nix
     ../../modules/wants/tailscale.nix
     ../../modules/impl/secrets
+
+    ./wiki.nix
   ];
 
   system.stateVersion = "21.11";
@@ -95,5 +97,14 @@
     owner = "root";
     group = "root";
     permissions = "700";
+  };
+
+  randomcat.secrets.secrets."password-file" = {
+    encryptedFile = ./secrets/wiki-password-file;
+    dest = "/run/keys/containers/wiki/password-file";
+    owner = "root";
+    group = "root";
+    permissions = "700";
+    realFile = true;
   };
 }
