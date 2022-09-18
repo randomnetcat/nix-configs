@@ -46,7 +46,12 @@ in
 
           extraConfig = ''
             $wgForceHTTPS = true;
+            $wgServer = 'https://${wikiHost}';
             $wgInternalServer = 'http://[${containers.wiki.localIP6}]:${toString wikiPort}';
+
+            $wgCdnServersNoPurge = array();
+            $wgCdnServersNoPurge[] = '${containers.wiki.hostIP6}';
+            $wgUsePrivateIPs = true;
           '';
         };
 
@@ -81,13 +86,6 @@ in
       forceSSL = true;
 
       locations."/".proxyPass = "http://[${containers.wiki.localIP6}]:${toString wikiPort}";
-
-      # MediaWiki needs these headers in order to know that the original request
-      # was HTTPS.
-      extraConfig = ''
-        proxy_set_header X-Forwarded-Host $host;
-        proxy_set_header X-Forwarded-Proto $scheme;
-      '';
     };
   };
 }
