@@ -12,7 +12,6 @@
     };
 
     hardware.bluetooth.enable = true;
-    hardware.bluetooth.package = pkgs.bluezFull;
 
     nixpkgs.config.pulseaudio = true;
 
