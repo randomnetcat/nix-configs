@@ -17,7 +17,6 @@
 
     # Features
     ./gaming.nix
-    ./development.nix
     ./backup.nix
     ./bluetooth.nix
     ./printing.nix

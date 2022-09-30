@@ -1,14 +1,9 @@
 { config, lib, pkgs, ... }:
 
 {
-  config = {
-    environment.systemPackages = [
-      pkgs.linux-manual
-      pkgs.man-pages
-      pkgs.man-pages-posix
-    ];
-
-    documentation.man.enable = true;
-    documentation.dev.enable = true;
-  };
+  imports = [
+    ../../impl/development/man.nix
+    ../../impl/development/binfmt.nix
+    ../../impl/development/derivations.nix
+  ];
 }
