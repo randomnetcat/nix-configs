@@ -3,7 +3,7 @@
 {
   imports = [
     ../sys/impl/networking/resolved.nix
-    ../sys/impl/nix
+    ../sys/impl/nix/version.nix
   ];
 
   config = {
