@@ -4,6 +4,7 @@
   imports = [
     ./common.nix
     ../sys/user/randomcat.nix
+    ../sys/wants/development/common.nix
   ];
 
   config = {
