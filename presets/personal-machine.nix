@@ -21,6 +21,8 @@
       "nomic"
       "sysadmin"
       "web-browsing"
+    ] ++ [
+      ../home/id/personal.nix
     ];
   };
 }
