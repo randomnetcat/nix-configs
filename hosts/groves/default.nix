@@ -4,8 +4,8 @@
   imports = [
     ./hardware-configuration.nix
 
-    ../../modules/impl/global.nix
-    ../../modules/wants/tailscale.nix
+    ../../presets/personal-machine.nix
+    ../../sys/wants/tailscale.nix
 
     ./mounts/system
 

@@ -2,9 +2,7 @@
 
 {
   imports = [
-    ../../modules/impl/graphical/gnome-gdm.nix
-    ../../modules/impl/graphical/io/sound.nix
-    ../../modules/impl/graphical/io/touchpad.nix
+    ../../sys/impl/graphical/gnome-gdm.nix
   ];
 
   config = {
@@ -28,6 +26,6 @@
           exec -a "$0" "$@"
         '';
       in
-      [ nvidia-offload];
+      [ nvidia-offload ];
   };
 }

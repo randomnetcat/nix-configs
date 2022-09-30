@@ -1,13 +1,19 @@
 { pkgs, lib, ... }:
 
 {
-  imports = [
-    ../../modules/impl/boot/systemd-boot.nix
-  ];
-
   config = {
-    randomcat.system.efi.espDevice = "/dev/disk/by-partlabel/groves_ESP";
+    boot.loader.systemd-boot.enable = true;
+    boot.loader.grub.enable = false;
+
     boot.loader.efi.canTouchEfiVariables = true;
+    boot.loader.generationsDir.copyKernels = true;
+
+    fileSystems."/efi" = {
+      device = "/dev/disk/by-partlabel/groves_ESP";
+      fsType = "vfat";
+    };
+
+    boot.loader.efi.efiSysMountPoint = "/efi";
 
     fileSystems."/boot" = {
       device = "/dev/disk/by-partlabel/groves_nixos_boot";

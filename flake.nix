@@ -31,7 +31,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, nur, agorabot-prod, agorabot-secret-hitler, agenix }:
+  outputs = { self, nixpkgs, home-manager, nur, agorabot-prod, agorabot-secret-hitler, agenix }@inputs:
     let
       systemConfigurationRevision = {
         config = {
@@ -39,26 +39,15 @@
         };
       };
 
-      pinnedNixpkgsFlake = { config, ... }: {
+      inputsArg = {
         config = {
-          nix.registry.nixpkgs.to = {
-            type = "github";
-            owner = "NixOS";
-            repo = "nixpkgs";
-            rev = nixpkgs.rev;
-            narHash = nixpkgs.narHash;
-          };
-
-          environment.etc."active-nixpkgs-source".source = "${nixpkgs}";
-          nix.nixPath = [ "nixpkgs=/etc/active-nixpkgs-source" ];
+          _module.args.inputs = inputs;
         };
       };
 
       commonModules = [
         systemConfigurationRevision
-        pinnedNixpkgsFlake
-        ./modules/wants/resolved
-        ./modules/wants/unstable-nix
+        inputsArg
       ];
 
       commonVmModules = commonModules ++ [
