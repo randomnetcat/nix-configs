@@ -125,7 +125,7 @@
         inherit nixpkgs;
 
         oracle-server = { pkgs, config, ... }: {
-          imports = [
+          imports = commonModules ++ [
             ./hosts/reese
             agenix.nixosModule
           ];

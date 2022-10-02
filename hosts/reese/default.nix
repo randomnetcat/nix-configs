@@ -4,12 +4,12 @@
 
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
+    ../../presets/server.nix
     ../../sys/hw/oracle-arch.nix
-    ../../modules/wants/ssh-access.nix
-    ../../modules/wants/agorabot-server
-    ../../modules/wants/trungle-access.nix
-    ../../modules/wants/tailscale.nix
-    ../../modules/impl/secrets
+    ../../sys/wants/agorabot-server
+    ../../sys/wants/trungle-access.nix
+    ../../sys/wants/tailscale.nix
+    ../../sys/impl/secrets
 
     ./wiki.nix
   ];
