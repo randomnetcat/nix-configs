@@ -11,6 +11,8 @@
     fileSystems."/" = zfsMount "system/root";
     fileSystems."/var" = zfsMount "system/var";
     fileSystems."/nix" = zfsMount "local/nix";
+    fileSystems."/tmp" = zfsMount "local/tmp/root";
+    fileSystems."/var/tmp" = zfsMount "local/tmp/var";
 
     fileSystems."/efi" = {
       device = "/dev/disk/by-uuid/1B91-2431";
