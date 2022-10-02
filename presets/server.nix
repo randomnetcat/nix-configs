@@ -3,7 +3,6 @@
 {
   imports = [
     ./common.nix
-    ../sys/wants/ssh-server.nix
   ];
 
   config = {

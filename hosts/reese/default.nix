@@ -100,7 +100,7 @@
   randomcat.services.tailscale = {
     enable = true;
     authkeyPath = "/run/keys/tailscale-authkey";
-    extraArgs = [ "--advertise-exit-node" ];
+    extraArgs = [ "--advertise-exit-node" "--ssh" ];
   };
 
   randomcat.secrets.secrets."tailscale-authkey" = {
