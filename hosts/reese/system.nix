@@ -5,7 +5,7 @@
 
   nixpkgs.localSystem.system = "aarch64-linux";
 
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.loader.efi.efiSysMountPoint = "/efi";
 
   boot.loader.grub = {
     efiSupport = true;

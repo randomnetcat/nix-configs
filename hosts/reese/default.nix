@@ -11,9 +11,20 @@
     ../../sys/impl/secrets
 
     ./system.nix
-    ./wiki.nix
+    # ./wiki.nix
     ./mounts/system
   ];
+
+  networking.hostId = "531e2393";
+  systemd.network.enable = true;
+  networking.useNetworkd = true;
+  networking.useDHCP = true;
+  networking.interfaces.enp0s3.useDHCP = true;
+
+  documentation.nixos.enable = false;
+
+  # hardware.cpu.amd.updateMicrocode = true;
+  # hardware.enableRedistributableFirmware = true;
 
   system.stateVersion = "21.11";
 
@@ -36,7 +47,7 @@
   nix.settings.trusted-users = [ "remote-build" ];
 
   randomcat.services.agorabot-server = {
-    enable = true;
+    enable = false;
   };
 
   randomcat.services.agorabot-server.instances = {
