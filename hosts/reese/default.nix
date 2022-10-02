@@ -5,13 +5,14 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ../../presets/server.nix
-    ../../sys/hw/oracle-arch.nix
     ../../sys/wants/agorabot-server
     ../../sys/wants/trungle-access.nix
     ../../sys/wants/tailscale.nix
     ../../sys/impl/secrets
 
+    ./system.nix
     ./wiki.nix
+    ./mounts/system
   ];
 
   system.stateVersion = "21.11";
