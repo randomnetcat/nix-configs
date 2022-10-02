@@ -47,45 +47,45 @@
   nix.settings.trusted-users = [ "remote-build" ];
 
   randomcat.services.agorabot-server = {
-    enable = false;
-  };
+    enable = true;
 
-  randomcat.services.agorabot-server.instances = {
-    "agora-prod" = {
-      # Package set in flake.nix
+    instances = {
+      "agora-prod" = {
+        # Package set in flake.nix
 
-      tokenEncryptedFile = ./secrets/discord-token-agora-prod.age;
+        tokenEncryptedFile = ./secrets/discord-token-agora-prod.age;
 
-      configSource = ./public-config/agorabot/agora-prod;
+        configSource = ./public-config/agorabot/agora-prod;
 
-      secretConfigFiles = {
-        "digest/msmtp.conf" = {
-          encryptedFile = ./secrets/discord-config-agora-prod-msmtp.age;
+        secretConfigFiles = {
+          "digest/msmtp.conf" = {
+            encryptedFile = ./secrets/discord-config-agora-prod-msmtp.age;
+          };
         };
+
+        extraConfigFiles = {
+          "digest/mail.json" = {
+            text = ''
+              {
+                "send_strategy": "msmtp",
+                "msmtp_path": "${pkgs.msmtp}/bin/msmtp",
+                "msmtp_config_path": "msmtp.conf"
+              }
+            '';
+          };
+        };
+
+        dataVersion = 1;
       };
 
-      extraConfigFiles = {
-        "digest/mail.json" = {
-          text = ''
-            {
-              "send_strategy": "msmtp",
-              "msmtp_path": "${pkgs.msmtp}/bin/msmtp",
-              "msmtp_config_path": "msmtp.conf"
-            }
-          '';
-        };
+      "secret-hitler" = {
+        # Package set in flake.nix
+
+        tokenEncryptedFile = ./secrets/discord-token-secret-hitler.age;
+
+        configSource = ./public-config/agorabot/secret-hitler;
+        dataVersion = 1;
       };
-
-      dataVersion = 1;
-    };
-
-    "secret-hitler" = {
-      # Package set in flake.nix
-
-      tokenEncryptedFile = ./secrets/discord-token-secret-hitler.age;
-
-      configSource = ./public-config/agorabot/secret-hitler;
-      dataVersion = 1;
     };
   };
 
