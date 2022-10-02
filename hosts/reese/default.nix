@@ -17,9 +17,9 @@
 
   networking.hostId = "531e2393";
   systemd.network.enable = true;
-  networking.useNetworkd = true;
-  networking.useDHCP = true;
-  networking.interfaces.enp0s3.useDHCP = true;
+  # networking.useNetworkd = true;
+  # networking.useDHCP = true;
+  # networking.interfaces.enp0s3.useDHCP = true;
 
   documentation.nixos.enable = false;
 
