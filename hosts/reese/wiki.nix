@@ -5,6 +5,7 @@ let
   wikiHost = "infinitenomic.randomcat.org";
   wikiPort = 8080;
   wikiSubpath = "/wiki"; # Subpath, either empty or starting but not ending with slash
+  wikiLogo = "${./resources/infnom-wiki-logo.png}";
 in
 {
   imports = [
@@ -55,6 +56,7 @@ in
             $wgUsePrivateIPs = true;
             $wgScriptPath = '${wikiSubpath}';
             $wgResourceBasePath = '${wikiSubpath}';
+            $wgLogo = '${wikiSubpath}/images/logo';
           '';
         };
 
@@ -89,6 +91,7 @@ in
       forceSSL = true;
 
       locations."${wikiSubpath}/".proxyPass = "http://[${containers.wiki.localIP6}]:${toString wikiPort}/";
+      locations."=${wikiSubpath}/images/logo".alias = wikiLogo;
     };
   };
 }
