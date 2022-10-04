@@ -26,7 +26,7 @@ in
 
         services.mediawiki = {
           enable = true;
-          name = "Random Internet Cat Wiki";
+          name = "Infinite Nomic Wiki";
 
           virtualHost = {
             hostName = wikiHost;
