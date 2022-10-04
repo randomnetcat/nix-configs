@@ -2,8 +2,9 @@
 
 let
   containers = import ./container-def.nix;
-  wikiHost = "wiki.randomcat.org";
+  wikiHost = "infinitenomic.randomcat.org";
   wikiPort = 8080;
+  wikiSubpath = "/wiki"; # Subpath, either empty or starting but not ending with slash
 in
 {
   imports = [
@@ -52,6 +53,8 @@ in
             $wgCdnServersNoPurge = array();
             $wgCdnServersNoPurge[] = '${containers.wiki.hostIP6}';
             $wgUsePrivateIPs = true;
+            $wgScriptPath = '${wikiSubpath}';
+            $wgResourceBasePath = '${wikiSubpath}';
           '';
         };
 
@@ -85,7 +88,7 @@ in
       enableACME = true;
       forceSSL = true;
 
-      locations."/".proxyPass = "http://[${containers.wiki.localIP6}]:${toString wikiPort}";
+      locations."${wikiSubpath}/".proxyPass = "http://[${containers.wiki.localIP6}]:${toString wikiPort}/";
     };
   };
 }

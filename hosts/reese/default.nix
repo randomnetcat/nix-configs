@@ -11,7 +11,7 @@
     ../../sys/impl/secrets
 
     ./system.nix
-    # ./wiki.nix
+    ./wiki.nix
     ./mounts/system
   ];
 
