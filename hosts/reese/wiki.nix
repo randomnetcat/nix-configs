@@ -57,12 +57,29 @@ in
             $wgScriptPath = '${wikiSubpath}';
             $wgResourceBasePath = '${wikiSubpath}';
             $wgLogo = '${wikiSubpath}/images/logo';
+
+            $wgEmergencyContact = 'admin@randomcat.org';
+            $wgPasswordSender = 'infinitenomic-wiki@randomcat.org';
+
+            $wgSMTP = [
+              'host' => 'smtp.sendgrid.net',
+              'IDHost' => 'randomcat.org',
+              'localhost' => 'randomcat.org',
+              'port' => 587,
+              'auth' => true,
+              'username' => 'apikey',
+              'password' => trim(file_get_contents('/run/keys/smtp-pass')),
+            ];
+
+            $wgAllowHTMLEmail = true;
           '';
         };
 
         systemd.tmpfiles.rules = [
           "C /run/keys/password-file - - - - /host-keys/password-file"
           "z /run/keys/password-file 750 root keys - -"
+          "C /run/keys/smtp-pass - - - - /host-keys/smtp-pass"
+          "z /run/keys/smtp-pass 750 root keys - -"
         ];
 
         users.users.mediawiki.extraGroups = [ "keys" ];
@@ -92,6 +109,24 @@ in
 
       locations."${wikiSubpath}/".proxyPass = "http://[${containers.wiki.localIP6}]:${toString wikiPort}/";
       locations."=${wikiSubpath}/images/logo".alias = wikiLogo;
+    };
+
+    randomcat.secrets.secrets."wiki-password-file" = {
+      encryptedFile = ./secrets/wiki-password-file;
+      dest = "/run/keys/containers/wiki/password-file";
+      owner = "root";
+      group = "root";
+      permissions = "700";
+      realFile = true;
+    };
+
+    randomcat.secrets.secrets."wiki-smtp-pass" = {
+      encryptedFile = ./secrets/wiki-smtp-pass;
+      dest = "/run/keys/containers/wiki/smtp-pass";
+      owner = "root";
+      group = "root";
+      permissions = "700";
+      realFile = true;
     };
   };
 }

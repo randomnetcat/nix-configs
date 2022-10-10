@@ -11,4 +11,5 @@ in
 
   "matrix-secret-config".publicKeys = [ system ];
   "wiki-password-file".publicKeys = [ system ];
+  "wiki-smtp-pass".publicKeys = [ system ];
 }
