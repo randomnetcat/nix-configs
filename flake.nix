@@ -19,18 +19,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    agorabot-secret-hitler = {
-      url = "github:randomnetcat/AgoraBot/secret-hitler";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, nur, agorabot-prod, agorabot-secret-hitler, agenix }@inputs:
+  outputs = { self, nixpkgs, home-manager, nur, agorabot-prod, agenix }@inputs:
     let
       systemConfigurationRevision = {
         config = {
@@ -133,7 +128,6 @@
           config = {
             randomcat.services.agorabot-server.instances = {
               agora-prod.package = (pkgs.extend agorabot-prod.overlays.default).randomcat.agorabot;
-              secret-hitler.package = (pkgs.extend agorabot-secret-hitler.overlays.default).randomcat.agorabot;
             };
           };
         };
