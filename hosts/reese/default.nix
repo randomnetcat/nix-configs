@@ -77,15 +77,6 @@
 
         dataVersion = 1;
       };
-
-      "secret-hitler" = {
-        # Package set in flake.nix
-
-        tokenEncryptedFile = ./secrets/discord-token-secret-hitler.age;
-
-        configSource = ./public-config/agorabot/secret-hitler;
-        dataVersion = 1;
-      };
     };
   };
 
