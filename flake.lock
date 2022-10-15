@@ -29,11 +29,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1665810539,
-        "narHash": "sha256-JSmbDf3FvDLDgB88jX6JmtqtJQ2ntZGmdk/XG+LqB0o=",
+        "lastModified": 1665811895,
+        "narHash": "sha256-HtRv34FHtw7VFHV7qpJYy5o3bKIfC4xfV5rgNTBaWLw=",
         "owner": "randomnetcat",
         "repo": "AgoraBot",
-        "rev": "b2f1b461951939d69dac82e6f09f87ce248f3e6a",
+        "rev": "b3828971563bed36adc3a241aab284ea02ad4e11",
         "type": "github"
       },
       "original": {
