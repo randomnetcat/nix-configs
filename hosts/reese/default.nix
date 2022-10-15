@@ -1,4 +1,4 @@
-{ config, pkgs, modulesPath, ... }:
+{ config, pkgs, modulesPath, inputs, ... }:
 {
   deployment.targetHost = "reese";
 
@@ -49,9 +49,9 @@
   randomcat.services.agorabot-server = {
     enable = true;
 
-    instances = {
+    instances = let package = (pkgs.extend inputs.agorabot-prod.overlays.default).randomcat.agorabot; in {
       "agora-prod" = {
-        # Package set in flake.nix
+        inherit package;
 
         tokenEncryptedFile = ./secrets/discord-token-agora-prod.age;
 
@@ -75,6 +75,14 @@
           };
         };
 
+        dataVersion = 1;
+      };
+
+      "secret-hitler" = {
+        inherit package;
+
+        tokenEncryptedFile = ./secrets/discord-token-secret-hitler.age;
+        configSource = ./public-config/agorabot/secret-hitler;
         dataVersion = 1;
       };
     };

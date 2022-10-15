@@ -25,7 +25,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, nur, agorabot-prod, agenix }@inputs:
+  outputs = { self, nixpkgs, home-manager, nur, agenix, ... }@inputs:
     let
       systemConfigurationRevision = {
         config = {
@@ -124,12 +124,6 @@
             ./hosts/reese
             agenix.nixosModule
           ];
-
-          config = {
-            randomcat.services.agorabot-server.instances = {
-              agora-prod.package = (pkgs.extend agorabot-prod.overlays.default).randomcat.agorabot;
-            };
-          };
         };
       };
     };
