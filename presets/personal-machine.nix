@@ -14,7 +14,6 @@
       "custom-terminal"
       "general-development"
       "java-development"
-      "keybase"
       "media-creation"
       "ncsu"
       "nixops"
