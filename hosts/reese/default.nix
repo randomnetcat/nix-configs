@@ -14,6 +14,7 @@
     ./wiki.nix
     ./agorabot.nix
     ./mounts/system
+    ./zfs.nix
   ];
 
   networking.hostId = "531e2393";
