@@ -46,6 +46,26 @@ in
 
           passwordFile = "/run/keys/password-file";
 
+          extensions = {
+            # null -> use built-in plugin
+
+            CodeEditor = null;
+            CategoryTree = null;
+            CiteThisPage = null;
+            TextExtracts = null;
+            VisualEditor = null;
+            WikiEditor = null;
+
+            CodeMirror =
+              let
+                srcExtract = pkgs.fetchzip {
+                  url = "https://web.archive.org/web/20221021033350/https://extdist.wmflabs.org/dist/extensions/CodeMirror-REL1_38-2e3d6dd.tar.gz";
+                  sha256 = "Hp/4+tcHcKZXtwf2d2wfWAbw3Mmz1btRRCr+KAPL748=";
+                };
+              in
+              "${srcExtract}";
+          };
+
           extraConfig = ''
             $wgForceHTTPS = true;
             $wgServer = 'https://${wikiHost}';
@@ -72,6 +92,15 @@ in
             ];
 
             $wgAllowHTMLEmail = true;
+
+            // CodeEditor
+            $wgDefaultUserOptions['usebetatoolbar'] = 1; // user option provided by WikiEditor extension
+
+            // CodeMirror
+            $wgDefaultUserOptions['usecodemirror'] = 1;
+            $wgCodeMirrorEnableBracketMatching = true;
+            $wgCodeMirrorAccessibilityColors = true;
+            $wgCodeMirrorLineNumberingNamespaces = null;
           '';
         };
 
