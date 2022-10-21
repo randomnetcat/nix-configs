@@ -76,6 +76,7 @@ in
             $wgUsePrivateIPs = true;
             $wgScriptPath = '${wikiSubpath}';
             $wgResourceBasePath = '${wikiSubpath}';
+            $wgRestPath = '/rest.php';
             $wgLogo = '${wikiSubpath}/images/logo';
 
             $wgEmergencyContact = 'admin@randomcat.org';
