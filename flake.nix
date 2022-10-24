@@ -44,10 +44,6 @@
         inputsArg
       ];
 
-      commonVmModules = commonModules ++ [
-        ./modules/impl/vm-global.nix
-      ];
-
       homeManager = home-manager.nixosModules.home-manager;
       homeManagerNurOverlay = {
         config = {
@@ -87,7 +83,7 @@
         coe-env = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
 
-          modules = commonVmModules ++ [
+          modules = commonModules ++ [
             ./hosts/coe-env/default.nix
             homeManager
             homeManagerNurOverlay
@@ -97,7 +93,7 @@
         csc-216-env = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
 
-          modules = commonVmModules ++ [
+          modules = commonModules ++ [
             ./hosts/csc-216-env/default.nix
             homeManager
             homeManagerNurOverlay
@@ -107,7 +103,7 @@
         csc-326-env = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
 
-          modules = commonVmModules ++ [
+          modules = commonModules ++ [
             ./hosts/csc-326-env/default.nix
             homeManager
             homeManagerNurOverlay

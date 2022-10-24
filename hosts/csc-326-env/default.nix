@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../../presets/ncsu-vm-env.nix
     ./locale.nix
     ./development.nix
     ./eclipse.nix
@@ -25,27 +26,8 @@
       target = "/host-shared";
     };
 
-    home-manager.users.randomcat = {
-      imports = let configs = ../../modules/impl/users/randomcat/home/home-configs; in [
-        (configs + "/wants/custom-gnome.nix")
-        (configs + "/wants/custom-terminal.nix")
-        (configs + "/wants/general-development.nix")
-        (configs + "/wants/version-control-ncsu.nix")
-      ];
-
-      config = {
-        home.username = "randomcat";
-        home.homeDirectory = config.users.users.randomcat.home;
-        home.stateVersion = "21.11";
-      };
-    };
-
-    home-manager.useUserPackages = true;
-
     environment.systemPackages = [
-      pkgs.firefox
       pkgs.libreoffice
-
       pkgs.steam-run
     ];
   };

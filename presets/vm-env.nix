@@ -3,7 +3,7 @@
 {
   imports = [
     ./common.nix
-    ./sys/user/randomcat.nix
+    ../sys/user/randomcat.nix
     "${modulesPath}/virtualisation/qemu-vm.nix"
   ];
 
@@ -11,6 +11,12 @@
     users.users.randomcat = {
       password = "bad password";
     };
+
+    home-manager.users.randomcat.imports = map (x: ../home/wants + "/${x}.nix") [
+      "custom-gnome"
+      "custom-terminal"
+      "web-browsing"
+    ];
 
     nixpkgs.config.allowUnfree = true;
 
