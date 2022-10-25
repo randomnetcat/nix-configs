@@ -29,6 +29,10 @@
     environment.systemPackages = [
       pkgs.libreoffice
       pkgs.steam-run
+      pkgs.maven
     ];
+
+    virtualisation.docker.enable = true;
+    users.users.randomcat.extraGroups = [ "docker" ];
   };
 }
