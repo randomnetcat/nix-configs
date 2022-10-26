@@ -21,5 +21,18 @@
       createHome = true;
       group = "duplicati";
     };
+
+    services.syncoid = {
+      enable = true;
+
+      commonArgs = [ "--no-privilege-elevation" "--no-sync-snap" "--keep-sync-snap" "--no-rollback" ];
+
+      commands."zfs-rent-user" = {
+        target = "sync-groves@randomcat.zfs.rent:nas_1758665d/safe/rpool_fxooop_bak/groves/user";
+        source = "rpool_fxooop/groves/user";
+        recursive = true;
+        sshKey = "/var/lib/syncoid/id_ed25519_zfs_rent";
+      };
+    };
   };
 }
