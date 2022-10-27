@@ -18,5 +18,14 @@
 
     networking.nat.enable = true;
     networking.nat.externalInterface = "enp0s3";
+
+    services.nginx.virtualHosts."randomcat.org" = {
+      default = true;
+
+      forceSSL = true;
+      enableACME = true;
+
+      locations."/".return = "301 https://randomnetcat.github.io$request_uri";
+    };
   };
 }
