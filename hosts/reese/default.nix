@@ -11,10 +11,12 @@
     ../../sys/impl/secrets
 
     ./system.nix
-    ./wiki.nix
-    ./agorabot.nix
     ./mounts/system
     ./zfs.nix
+
+    ./agorabot.nix
+    ./mastodon.nix
+    ./wiki.nix
   ];
 
   networking.hostId = "531e2393";
