@@ -87,6 +87,10 @@ in
       localAddress6 = containerConfig.localIP6;
     };
 
+    services.nginx.virtualHosts."randomcat.org" = {
+      locations."/.well-known/webfinger".return = "301 https://${webDomain}$request_uri";
+    };
+
     services.nginx.virtualHosts."${webDomain}" = {
       forceSSL = true;
       enableACME = true;
