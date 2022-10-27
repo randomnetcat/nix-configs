@@ -33,6 +33,13 @@
         recursive = true;
         sshKey = "/var/lib/syncoid/id_ed25519_zfs_rent";
       };
+
+      commands."zfs-rent-system" = {
+        target = "sync-groves@randomcat.zfs.rent:nas_1758665d/safe/rpool_fxooop_bak/groves/system";
+        source = "rpool_fxooop/groves/system";
+        recursive = true;
+        sshKey = "/var/lib/syncoid/id_ed25519_zfs_rent";
+      };
     };
   };
 }
