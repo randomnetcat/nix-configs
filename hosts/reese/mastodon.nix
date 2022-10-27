@@ -26,7 +26,7 @@ in
         services.mastodon = {
           enable = true;
           inherit localDomain;
-          trustedProxy = containerConfig.hostIP6;
+          trustedProxy = containerConfig.hostIP4;
           enableUnixSocket = false;
 
           smtp = {
@@ -41,7 +41,7 @@ in
 
           extraConfig = {
             WEB_DOMAIN = webDomain;
-            BIND = "[${containerConfig.localIP6}]";
+            BIND = "${containerConfig.localIP4}";
           };
         };
 
@@ -102,16 +102,16 @@ in
       };
 
       locations."/system/" = {
-        proxyPass = "http://[${containerConfig.localIP6}]";
+        proxyPass = "http://${containerConfig.localIP4}";
       };
 
       locations."@proxy" = {
-        proxyPass = "http://[${containerConfig.localIP6}]:${toString config.services.mastodon.webPort}";
+        proxyPass = "http://${containerConfig.localIP4}:${toString config.services.mastodon.webPort}";
         proxyWebsockets = true;
       };
 
       locations."/api/v1/streaming/" = {
-        proxyPass = "http://[${containerConfig.localIP6}]:${toString config.services.mastodon.streamingPort}/";
+        proxyPass = "http://${containerConfig.localIP4}:${toString config.services.mastodon.streamingPort}/";
         proxyWebsockets = true;
       };
     };
