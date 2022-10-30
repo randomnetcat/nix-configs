@@ -57,7 +57,7 @@ in
             WikiEditor = null;
 
             CodeMirror = pkgs.fetchzip {
-              url = "https://web.archive.org/web/20221021033350/https://extdist.wmflabs.org/dist/extensions/CodeMirror-REL1_38-2e3d6dd.tar.gz";
+              url = "https://web.archive.org/web/20221021033350if_/https://extdist.wmflabs.org/dist/extensions/CodeMirror-REL1_38-2e3d6dd.tar.gz";
               sha256 = "Hp/4+tcHcKZXtwf2d2wfWAbw3Mmz1btRRCr+KAPL748=";
             };
 
