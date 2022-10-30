@@ -56,14 +56,27 @@ in
             VisualEditor = null;
             WikiEditor = null;
 
-            CodeMirror =
-              let
-                srcExtract = pkgs.fetchzip {
-                  url = "https://web.archive.org/web/20221021033350/https://extdist.wmflabs.org/dist/extensions/CodeMirror-REL1_38-2e3d6dd.tar.gz";
-                  sha256 = "Hp/4+tcHcKZXtwf2d2wfWAbw3Mmz1btRRCr+KAPL748=";
-                };
-              in
-              "${srcExtract}";
+            CodeMirror = pkgs.fetchzip {
+              url = "https://web.archive.org/web/20221021033350/https://extdist.wmflabs.org/dist/extensions/CodeMirror-REL1_38-2e3d6dd.tar.gz";
+              sha256 = "Hp/4+tcHcKZXtwf2d2wfWAbw3Mmz1btRRCr+KAPL748=";
+            };
+
+            MobileFrontend = pkgs.fetchzip {
+              url = "https://web.archive.org/web/20221030003242if_/https://extdist.wmflabs.org/dist/extensions/MobileFrontend-REL1_38-a2b388b.tar.gz";
+              sha256 = "ItCefiM06Ye4KFMWj1X8HVeQK0ir2TMH4S66bfqPgbA=";
+            };
+
+            DarkMode = pkgs.fetchzip {
+              url = "https://web.archive.org/web/20221030004052if_/https://extdist.wmflabs.org/dist/extensions/DarkMode-REL1_38-0fc14f5.tar.gz";
+              sha256 = "w4LV0e6NKaaYJRn/O+LomaiEup733RW/l1wTptS6hRo=";
+            };
+          };
+
+          skins = {
+            MinervaNeue = pkgs.fetchzip {
+              url = "https://web.archive.org/web/20221030004352if_/https://extdist.wmflabs.org/dist/skins/MinervaNeue-REL1_38-7825f1e.tar.gz";
+              sha256 = "L2AiIG9xOQ/boQOGRFhu4aZ6ML3HjmsbFztlFerKhuQ=";
+            };
           };
 
           extraConfig = ''
@@ -102,6 +115,9 @@ in
             $wgCodeMirrorEnableBracketMatching = true;
             $wgCodeMirrorAccessibilityColors = true;
             $wgCodeMirrorLineNumberingNamespaces = null;
+
+            // MobileFrontend
+            $wgDefaultMobileSkin = 'minerva';
           '';
         };
 
