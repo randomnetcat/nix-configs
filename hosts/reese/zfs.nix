@@ -16,7 +16,7 @@
         autoprune = true;
       };
 
-      datasets."rpool_sggau1/reese" = {
+      datasets."rpool_sggau1/reese/system" = {
         useTemplate = [ "safe" ];
         recursive = "zfs";
       };
