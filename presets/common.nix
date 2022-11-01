@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports = [
@@ -11,11 +11,10 @@
       type = "github";
       owner = "NixOS";
       repo = "nixpkgs";
-      rev = inputs.nixpkgs.rev;
-      narHash = inputs.nixpkgs.narHash;
+      rev = config.system.nixos.revision;
     };
 
-    environment.etc."active-nixpkgs-source".source = "${inputs.nixpkgs}";
+    environment.etc."active-nixpkgs-source".source = "${pkgs.path}";
     nix.nixPath = [ "nixpkgs=/etc/active-nixpkgs-source" ];
 
     nixpkgs.config.allowUnfree = true;
