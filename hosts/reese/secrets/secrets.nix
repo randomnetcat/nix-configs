@@ -13,4 +13,5 @@ in
   "wiki-password-file".publicKeys = [ system ];
   "wiki-smtp-pass".publicKeys = [ system ];
   "mastodon-smtp-pass".publicKeys = [ system ];
+  "syncoid-id-zfs-rent".publicKeys = [ system ];
 }

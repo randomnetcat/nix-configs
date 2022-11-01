@@ -13,6 +13,7 @@
     ./system.nix
     ./mounts/system
     ./zfs.nix
+    ./backup.nix
 
     ./agorabot.nix
     ./mastodon.nix
