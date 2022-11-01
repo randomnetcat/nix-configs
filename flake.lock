@@ -111,6 +111,22 @@
         "type": "github"
       }
     },
+    "nixpkgsSmall": {
+      "locked": {
+        "lastModified": 1667301035,
+        "narHash": "sha256-o8sbiXh7vcIHgpAe/WdU5f7Kq/s3BD0ccyNSVAy7oKk=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "adf91a16c0354ba34f27c00c8ed3f4c73f2fd4d5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable-small",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nur": {
       "locked": {
         "lastModified": 1667254694,
@@ -132,6 +148,7 @@
         "agorabot-prod": "agorabot-prod",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
+        "nixpkgsSmall": "nixpkgsSmall",
         "nur": "nur"
       }
     },

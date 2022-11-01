@@ -10,8 +10,11 @@
     };
 
     nixpkgs = {
-      # If updating this, must also update pin below
       url = "github:nixos/nixpkgs/nixos-unstable";
+    };
+
+    nixpkgsSmall = {
+      url = "github:nixos/nixpkgs/nixos-unstable-small";
     };
 
     agorabot-prod = {
@@ -25,7 +28,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, nur, agenix, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, agenix, ... }@inputs:
     let
       systemConfigurationRevision = {
         config = {
@@ -113,7 +116,7 @@
 
       nixopsConfigurations.default = {
         network.storage.legacy = {};
-        inherit nixpkgs;
+        nixpkgs = nixpkgsSmall;
 
         oracle-server = { pkgs, config, ... }: {
           imports = commonModules ++ [
