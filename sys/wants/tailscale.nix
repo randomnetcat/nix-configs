@@ -25,6 +25,9 @@
     # Tailscale complains about this
     networking.firewall.checkReversePath = "loose";
 
+    # Allow tailscale devices access to all ports (since tailscale will enforce this)
+    networking.firewall.trustedInterfaces = [ "tailscale0" ];
+
     systemd.services.tailscale-autoconnect = let secretKeyPath = config.randomcat.services.tailscale.authkeyPath; in {
       description = "Automatic connection to Tailscale";
 
