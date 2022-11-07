@@ -6,7 +6,7 @@
     localIP6 = "fdb3:55a3:516d::b001";
   };
 
-  mastodon = {
+  mastodon-personal = {
     hostIP4 = "10.231.148.12";
     localIP4 = "10.231.149.12";
     hostIP6 = "fdb3:55a3:516d::a002";

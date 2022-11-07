@@ -17,9 +17,11 @@
     ./tailscale.nix
 
     ./agorabot.nix
-    ./mastodon.nix
     ./wiki.nix
     ./remote-build.nix
+
+    ./mastodon/common.nix
+    ./mastodon/personal.nix
   ];
 
   networking.hostId = "531e2393";
