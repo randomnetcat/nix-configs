@@ -20,8 +20,8 @@
     ./wiki.nix
     ./remote-build.nix
 
-    ./mastodon/common.nix
     ./mastodon/personal.nix
+    ./mastodon/nomic-space.nix
   ];
 
   networking.hostId = "531e2393";

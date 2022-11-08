@@ -12,4 +12,11 @@
     hostIP6 = "fdb3:55a3:516d::a002";
     localIP6 = "fdb3:55a3:516d::b002";
   };
+
+  mastodon-nomic-space = {
+    hostIP4 = "10.231.148.13";
+    localIP4 = "10.231.149.13";
+    hostIP6 = "fdb3:55a3:516d::a003";
+    localIP6 = "fdb3:55a3:516d::b003";
+  };
 }
