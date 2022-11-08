@@ -27,5 +27,10 @@
 
       locations."/".return = "301 https://randomnetcat.github.io$request_uri";
     };
+
+    services.nginx.virtualHosts."nomic.space" = {
+      forceSSL = true;
+      enableACME = true;
+    };
   };
 }
