@@ -63,6 +63,10 @@ in
 
         root = "${containerConfig.services.mastodon.package}/public/";
 
+        extraConfig = ''
+          add_header X-Clacks-Overhead "GNU Natalie Nguyen";
+        '';
+
         locations."/" = {
           tryFiles = "$uri @proxy";
         };
