@@ -24,7 +24,7 @@
     services.syncoid = {
       enable = true;
 
-      commonArgs = [ "--no-privilege-elevation" "--no-rollback" ];
+      commonArgs = [ "--no-privilege-elevation" ];
       localSourceAllow = [ "bookmark" "hold" "send" "snapshot" "destroy" "mount" ];
 
       commands."zfs-rent-user" = {
