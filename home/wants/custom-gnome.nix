@@ -48,6 +48,10 @@
         sleep-inactive-ac-type = "nothing";
       };
 
+      "org/gnome/desktop/session" = {
+        "idle-delay" = 300;
+      };
+
       "org/gnome/desktop/sound" = {
         "allow-volume-above-100-percent" = true;
       };
