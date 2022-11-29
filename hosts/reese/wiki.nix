@@ -89,7 +89,7 @@ in
             $wgUsePrivateIPs = true;
             $wgScriptPath = '${wikiSubpath}';
             $wgResourceBasePath = '${wikiSubpath}';
-            $wgRestPath = '/rest.php';
+            $wgRestPath = '${wikiSubpath}/rest.php';
             $wgLogo = '${wikiSubpath}/images/logo';
 
             $wgEmergencyContact = 'admin@randomcat.org';
@@ -118,8 +118,22 @@ in
 
             // MobileFrontend
             $wgDefaultMobileSkin = 'minerva';
+
+            // Parsoid (for VisualEditor)
+            $wgVirtualRestConfig['modules']['parsoid'] = [
+              'url' => $wgInternalServer . $wgRestPath,
+            ];
+
+            wfLoadExtension('Parosid', 'vendor/wikimedia/parsoid/extension.json');
           '';
         };
+
+        services.mediawiki.virtualHost.extraConfig = ''
+          AllowEncodedSlashes NoDecode
+          RewriteEngine On
+          RewriteRule "^${wikiSubpath}/rest.php$" "/rest.php" [PT]
+          RewriteRule "^${wikiSubpath}/rest.php/(.*)$" "/rest.php/$1" [PT]
+        '';
 
         systemd.tmpfiles.rules = [
           "C /run/keys/password-file - - - - /host-keys/password-file"
@@ -154,6 +168,7 @@ in
       forceSSL = true;
 
       locations."${wikiSubpath}/".proxyPass = "http://[${containers.wiki.localIP6}]:${toString wikiPort}/";
+      locations."${wikiSubpath}/rest.php/".proxyPass = "http://[${containers.wiki.localIP6}]:${toString wikiPort}/wiki/rest.php/";
       locations."=${wikiSubpath}/images/logo".alias = wikiLogo;
     };
 
