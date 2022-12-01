@@ -8,10 +8,10 @@
       extraArgs = [ "--verbose" ];
 
       templates."safe" = {
-        yearly = 4;
-        monthly = 12;
-        daily = 28;
-        hourly = 48;
+        yearly = 0;
+        monthly = 0;
+        daily = 7;
+        hourly = 24;
         autosnap = true;
         autoprune = true;
       };
