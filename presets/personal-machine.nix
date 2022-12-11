@@ -5,6 +5,7 @@
     ./common.nix
     ../sys/user/randomcat.nix
     ../sys/wants/development/common.nix
+    ../sys/wants/virtualization.nix
   ];
 
   config = {
@@ -23,5 +24,7 @@
     ] ++ [
       ../home/id/personal.nix
     ];
+
+    users.users.randomcat.extraGroups = [ "libvirtd" ];
   };
 }
