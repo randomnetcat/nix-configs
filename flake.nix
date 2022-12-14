@@ -62,17 +62,6 @@
     in
     {
       nixosConfigurations = {
-        finch = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-
-          modules = commonModules ++ [
-            ./hosts/finch/default.nix
-            homeManager
-            homeManagerNurOverlay
-            # ./modules/wants/virtualisation
-          ];
-        };
-
         groves = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
 
