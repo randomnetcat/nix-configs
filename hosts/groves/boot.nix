@@ -16,10 +16,5 @@
     };
 
     boot.loader.efi.efiSysMountPoint = "/efi";
-
-    fileSystems."/boot" = {
-      device = "/dev/disk/by-partlabel/groves_nixos_boot";
-      fsType = "ext4";
-    };
   };
 }
