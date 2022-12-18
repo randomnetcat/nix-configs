@@ -77,6 +77,15 @@
           ];
         };
 
+        reese = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+
+          modules = commonModules ++ [
+            ./hosts/reese/default.nix
+            agenix.nixosModule
+          ];
+        };
+
         coe-env = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
 
@@ -116,6 +125,10 @@
           imports = commonModules ++ [
             ./hosts/reese
             agenix.nixosModule
+
+            {
+              deployment.targetHost = "reese";
+            }
           ];
         };
       };

@@ -1,7 +1,5 @@
 { config, pkgs, modulesPath, inputs, ... }:
 {
-  deployment.targetHost = "reese";
-
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ../../presets/server.nix
