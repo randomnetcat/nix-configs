@@ -26,6 +26,11 @@
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    wikiteam3-nix = {
+      url = "github:randomnetcat/nix-wrappers?dir=wikiteam3";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, agenix, ... }@inputs:
