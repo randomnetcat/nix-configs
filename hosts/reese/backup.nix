@@ -11,6 +11,10 @@
     services.syncoid = {
       enable = true;
 
+      # Run at 11am UTC daily. This time is chosen to minimize likelihood of concurrent
+      # sending with groves.
+      interval = "*-*-* 11:00:00";
+
       commonArgs = [ "--no-privilege-elevation" "--no-rollback" ];
       localSourceAllow = [ "bookmark" "hold" "send" "snapshot" "destroy" "mount" ];
 
