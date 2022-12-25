@@ -2,6 +2,8 @@
 
 {
   config = {
+    services.zfs.expandOnBoot = [ "rpool_sggau1" ];
+
     services.sanoid = {
       enable = true;
 
