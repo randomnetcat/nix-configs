@@ -27,6 +27,9 @@
       commonArgs = [ "--no-privilege-elevation" ];
       localSourceAllow = [ "bookmark" "hold" "send" "snapshot" "destroy" "mount" ];
 
+      # Run every day at 16:00 UTC.
+      interval = "*-*-* 16:00:00";
+
       commands."zfs-rent-user" = {
         target = "sync-groves@randomcat.zfs.rent:nas_1758665d/safe/rpool_fxooop_bak/groves/user";
         source = "rpool_fxooop/groves/user";
@@ -43,5 +46,15 @@
         extraArgs = [ "--identifier=zfs-rent" ];
       };
     };
-  };
+
+    systemd.timers =
+      let
+        commonConfig = {
+          Persistent = true;
+        };
+      in {
+        syncoid-zfs-rent-user.timerConfig = commonConfig;
+        syncoid-zfs-rent-system.timerConfig = commonConfig;
+      };
+    };
 }
