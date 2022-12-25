@@ -4,6 +4,7 @@
   imports = [
     ../sys/impl/networking/resolved.nix
     ../sys/impl/nix/version.nix
+    ../sys/impl/maintenance
   ];
 
   config = {
