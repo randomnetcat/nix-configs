@@ -56,5 +56,24 @@
         syncoid-zfs-rent-user.timerConfig = commonConfig;
         syncoid-zfs-rent-system.timerConfig = commonConfig;
       };
-    };
+
+    systemd.services =
+      let
+        commonConfig = {
+          unitConfig = {
+            StartLimitBurst = 3;
+            StartLimitIntervalSec = "12 hours";
+          };
+
+          serviceConfig = {
+            Restart = "on-failure";
+            RestartSec = "15min";
+            TimeoutStartSec = "2 hours";
+          };
+        };
+      in {
+        syncoid-zfs-rent-user = commonConfig;
+        syncoid-zfs-rent-system = commonConfig;
+      };
+  };
 }
