@@ -22,6 +22,10 @@
     ./mastodon/nomic-space.nix
   ];
 
+  nixpkgs.localSystem = {
+    system = "aarch64-linux";
+  };
+
   networking.hostId = "531e2393";
 
   documentation.nixos.enable = false;

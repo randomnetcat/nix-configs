@@ -28,6 +28,10 @@
   };
 
   config = {
+    nixpkgs.localSystem = {
+      system = "x86_64-linux";
+    };
+
     randomcat.services.tailscale = {
       enable = true;
       authkeyPath = "/root/secrets/tailscale-authkey";
