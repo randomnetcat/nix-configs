@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
   imports = [
@@ -23,6 +23,10 @@
       "web-browsing"
     ] ++ [
       ../home/id/personal.nix
+
+      {
+        _module.args.inputs = inputs;
+      }
     ];
 
     users.users.randomcat.extraGroups = [ "libvirtd" ];
