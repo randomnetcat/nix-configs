@@ -31,6 +31,11 @@
       url = "github:randomnetcat/nix-wrappers?dir=wikiteam3";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    colmena = {
+      url = "github:zhaofengli/colmena";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, agenix, ... }@inputs:
@@ -117,19 +122,20 @@
         };
       };
 
-      nixopsConfigurations.default = {
-        network.storage.legacy = {};
-        nixpkgs = nixpkgsSmall;
+      colmena = {
+        meta = {
+          nixpkgs = import nixpkgsSmall {
+            system = "x86_64-linux";
+          };
+        };
 
-        oracle-server = { pkgs, config, ... }: {
+        reese = {
           imports = commonModules ++ [
             ./hosts/reese
             agenix.nixosModule
-
-            {
-              deployment.targetHost = "reese";
-            }
           ];
+
+          system.nixos.revision = nixpkgsSmall.rev;
         };
       };
     };
