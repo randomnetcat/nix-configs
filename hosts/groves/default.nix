@@ -32,6 +32,8 @@
       system = "x86_64-linux";
     };
 
+    boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+
     randomcat.services.tailscale = {
       enable = true;
       authkeyPath = "/root/secrets/tailscale-authkey";
@@ -42,17 +44,6 @@
     networking.hostId = "8556b001";
 
     services.fwupd.enable = true;
-
-    boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_15.override {
-      argsOverride = rec {
-        src = pkgs.fetchurl {
-          url = "mirror://kernel/linux/kernel/v5.x/linux-${version}.tar.xz";
-          sha256 = "0kgxznd3sfbmnygjvp9dzhzg5chxlaxk6kldxmh1y0njcrj1lciv";
-        };
-        version = "5.15.80";
-        modDirVersion = "5.15.80";
-      };
-    });
 
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions
