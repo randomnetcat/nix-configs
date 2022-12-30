@@ -137,6 +137,17 @@
 
           system.nixos.revision = nixpkgsSmall.rev;
         };
+
+        leon = {
+          deployment.targetHost = "randomcat.zfs.rent";
+
+          imports = commonModules ++ [
+            ./hosts/leon
+            agenix.nixosModule
+          ];
+
+          system.nixos.revision = nixpkgsSmall.rev;
+        };
       };
     };
 }
