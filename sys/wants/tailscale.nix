@@ -5,11 +5,6 @@
     randomcat.services.tailscale = {
       enable = lib.mkEnableOption "Custom tailscale setup";
 
-      authkeyPath = lib.mkOption {
-        type = lib.types.str;
-        description = "Path (not nix store path!) to file containing tailscale authkey";
-      };
-
       extraArgs = lib.mkOption {
         type = lib.types.listOf lib.types.str;
         description = "Extra command line arguments to tailscale";
@@ -31,7 +26,7 @@
     # Open UDP port to help establishing direct WireGuard connections
     networking.firewall.allowedUDPPorts = [ 41641 ];
 
-    systemd.services.tailscale-autoconnect = let secretKeyPath = config.randomcat.services.tailscale.authkeyPath; in {
+    systemd.services.tailscale-autoconnect = {
       description = "Automatic connection to Tailscale";
 
       # make sure tailscale is running before trying to connect to tailscale
@@ -48,12 +43,8 @@
         sleep 2
 
         # otherwise authenticate with tailscale
-        ${pkgs.tailscale}/bin/tailscale up -authkey "$(cat -- ${lib.escapeShellArg secretKeyPath})" ${lib.escapeShellArgs config.randomcat.services.tailscale.extraArgs}
+        ${pkgs.tailscale}/bin/tailscale up ${lib.escapeShellArgs config.randomcat.services.tailscale.extraArgs}
       '';
-
-      serviceConfig = {
-        ConditionPathExists = secretKeyPath;
-      };
     };
   };
 }
