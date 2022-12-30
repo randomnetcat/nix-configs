@@ -3,6 +3,7 @@
 ## Machines
 - `groves`: Dell G15 5511, primary laptop
 - `reese`: Oracle Cloud aarch64 VPS
+- `leon`: server running on `zfs.rent`, provides storage for backups
 
 ## Laptop Manual Setup Steps
 
