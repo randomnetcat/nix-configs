@@ -52,6 +52,7 @@ in
             CodeEditor = null;
             CategoryTree = null;
             CiteThisPage = null;
+            ParserFunctions = null;
             TextExtracts = null;
             VisualEditor = null;
             WikiEditor = null;
