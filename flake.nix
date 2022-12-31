@@ -139,8 +139,6 @@
         };
 
         leon = {
-          deployment.targetHost = "randomcat.zfs.rent";
-
           imports = commonModules ++ [
             ./hosts/leon
             agenix.nixosModule
