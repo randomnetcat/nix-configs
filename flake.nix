@@ -135,6 +135,7 @@
             agenix.nixosModule
           ];
 
+          deployment.buildOnTarget = true;
           system.nixos.revision = nixpkgsSmall.rev;
         };
 
