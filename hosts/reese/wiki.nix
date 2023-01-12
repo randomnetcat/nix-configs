@@ -81,6 +81,8 @@ in
           };
 
           extraConfig = ''
+            # $wgDebugLogFile = '/var/log/mediawiki/debug.log';
+
             $wgForceHTTPS = true;
             $wgServer = 'https://${wikiHost}';
             $wgInternalServer = 'http://[${containers.wiki.localIP6}]:${toString wikiPort}';
