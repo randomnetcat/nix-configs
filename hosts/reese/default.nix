@@ -20,6 +20,8 @@
 
     ./mastodon/personal.nix
     ./mastodon/nomic-space.nix
+
+    ./archive/wiki.nix
   ];
 
   nixpkgs.localSystem = {
