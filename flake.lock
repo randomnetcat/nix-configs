@@ -628,11 +628,11 @@
       },
       "locked": {
         "dir": "wikiteam3",
-        "lastModified": 1673509663,
-        "narHash": "sha256-7LPpFWgHInGKvTSXY/mRfeJq/vwEEUn+7QlA+v6MttA=",
+        "lastModified": 1673515766,
+        "narHash": "sha256-Axca/Jt4r6e7QJr/yZoRSrD4D8IuaY5viFGOEkPy0NI=",
         "owner": "randomnetcat",
         "repo": "nix-wrappers",
-        "rev": "093277daa400d852c757d78317b1fa1ff0aa39f8",
+        "rev": "1bf818c74241718f8a789db68105d5e7921f69b3",
         "type": "github"
       },
       "original": {
