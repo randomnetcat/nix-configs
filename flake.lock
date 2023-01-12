@@ -604,11 +604,11 @@
     "wikiteam3": {
       "flake": false,
       "locked": {
-        "lastModified": 1673210440,
-        "narHash": "sha256-x1Lm2i1x170CFnDziOzzzR7tPQPuP7GQGvwxJMKMZyc=",
+        "lastModified": 1673556008,
+        "narHash": "sha256-U6WUJnmTemKhMBjudGfNJihC3BM4wPujkB3rH5MSNC4=",
         "owner": "elsiehupp",
         "repo": "wikiteam3",
-        "rev": "98518297cc0ae09a58266b5acf6f040d99743d4d",
+        "rev": "022558308567fe1e478a8ff0887cfdbaaf4630fd",
         "type": "github"
       },
       "original": {
@@ -628,11 +628,11 @@
       },
       "locked": {
         "dir": "wikiteam3",
-        "lastModified": 1673515766,
-        "narHash": "sha256-Axca/Jt4r6e7QJr/yZoRSrD4D8IuaY5viFGOEkPy0NI=",
+        "lastModified": 1673556089,
+        "narHash": "sha256-1rPkjqIjc+hR79Kk8h4Tj/blItIwGXDmpu6bT3fRcmk=",
         "owner": "randomnetcat",
         "repo": "nix-wrappers",
-        "rev": "1bf818c74241718f8a789db68105d5e7921f69b3",
+        "rev": "d15503aa132eb5ab06b790d8b6c33003ae88e648",
         "type": "github"
       },
       "original": {
