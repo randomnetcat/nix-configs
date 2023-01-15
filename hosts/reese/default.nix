@@ -22,6 +22,8 @@
     ./mastodon/nomic-space.nix
 
     ./archive/wiki.nix
+
+    ./diplomacy-bot
   ];
 
   nixpkgs.localSystem = {

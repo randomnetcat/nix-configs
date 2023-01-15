@@ -1,0 +1,84 @@
+{
+    "countries": {
+        "austria": {
+            "names": [
+                "austria",
+                "aus",
+                "a",
+                ":austria:"
+            ],
+            "role": 111111111111111111,
+            "channel": 111111111111111111
+        },
+        "england": {
+            "names": [
+                "england",
+                "eng",
+                "e",
+                ":england:"
+            ],
+            "role": 111111111111111111,
+            "channel": 111111111111111111
+        },
+        "france": {
+            "names": [
+                "france",
+                "fra",
+                "f",
+                ":france:"
+            ],
+            "role": 111111111111111111,
+            "channel": 111111111111111111
+        },
+        "germany": {
+            "names": [
+                "germany",
+                "ger",
+                "g",
+                ":germany:"
+            ],
+            "role": 111111111111111111,
+            "channel": 111111111111111111
+        },
+        "italy": {
+            "names": [
+                "italy",
+                "ita",
+                "i",
+                ":italy:"
+            ],
+            "role": 111111111111111111,
+            "channel": 111111111111111111
+        },
+        "russia": {
+            "names": [
+                "russia",
+                "rus",
+                "r",
+                ":russia:"
+            ],
+            "role": 111111111111111111,
+            "channel": 111111111111111111
+        },
+        "turkey": {
+            "names": [
+                "turkey",
+                "tur",
+                "t",
+                ":turkey:"
+            ],
+            "role": 111111111111111111,
+            "channel": 111111111111111111
+        }
+    },
+    "spectator": {
+        "role": 111111111111111111
+    },
+    "admin": {
+        "role": 111111111111111111
+    },
+    "categories": {
+        "country-chat": 111111111111111111,
+        "international-discussion": 111111111111111111
+    }
+}

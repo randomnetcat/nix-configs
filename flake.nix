@@ -36,6 +36,11 @@
       url = "github:zhaofengli/colmena";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    diplomacy-bot = {
+      url = "gitlab:randomnetcat/diplomacy-bot";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, agenix, ... }@inputs:

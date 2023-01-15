@@ -16,4 +16,6 @@ in
   "syncoid-id-zfs-rent".publicKeys = [ system ];
 
   "wiki-ia-keys".publicKeys = [ system ];
+
+  "diplomacy-bot-token".publicKeys = [ system ];
 }
