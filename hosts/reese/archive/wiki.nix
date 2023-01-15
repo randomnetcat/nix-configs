@@ -1,7 +1,7 @@
 { config, lib, pkgs, inputs, ... }:
 
 let
-  wikiteamPackage = inputs.wikiteam3-nix.packages."${pkgs.hostPlatform.system}".dumpgenerator;
+  wikiteamPackage = (pkgs.extend inputs.wikiteam3-nix.overlay).dumpgenerator;
   apisFile = pkgs.writeText "apis.txt" ''
     https://nomic.club/wiki/api.php
     https://infinitenomic.randomcat.org/wiki/api.php
