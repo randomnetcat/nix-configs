@@ -70,6 +70,8 @@ in
         ]}
       fi
 
+      chmod 600 game.json
+
       exec ${lib.escapeShellArg "${package}/bin/diplomacy-bot"}
     '';
   };
