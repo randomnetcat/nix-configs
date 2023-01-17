@@ -1,5 +1,7 @@
 {
   inputs = {
+    flake-utils.url = "github:numtide/flake-utils";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -43,7 +45,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, agenix, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, agenix, flake-utils, ... }@inputs:
     let
       systemConfigurationRevision = {
         config = {
@@ -74,8 +76,7 @@
           };
         };
       };
-    in
-    {
+
       nixosConfigurations = {
         groves = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
@@ -126,6 +127,9 @@
           ];
         };
       };
+    in
+    {
+      inherit nixosConfigurations;
 
       colmena = {
         meta = {
@@ -153,5 +157,22 @@
           system.nixos.revision = nixpkgsSmall.rev;
         };
       };
-    };
+    } // (flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = nixpkgs.legacyPackages."${system}";
+      in
+      {
+        # Adapted from https://discourse.nixos.org/t/get-qemu-guest-integration-when-running-nixos-rebuild-build-vm/22621/2
+        packages.run-coe-env = pkgs.writeShellApplication {
+          name = "run-coe-env";
+          runtimeInputs = [ pkgs.virt-viewer ];
+          text = ''
+            ${nixosConfigurations.coe-env.config.system.build.vm}/bin/run-nixos-vm & PID_QEMU="$!"
+            sleep 1
+            remote-viewer spice://127.0.0.1:5930
+            kill $PID_QEMU
+          '';
+        };
+      }
+      ));
 }
