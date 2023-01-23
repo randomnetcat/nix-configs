@@ -9,7 +9,7 @@
   config = {
     programs.git = {
       enable = true;
-      ignores = [ ".idea/" "*~" "*.iml" "local" ];
+      ignores = [ ".idea/" "*~" "*.iml" "local" ".envrc" ".direnv/" ];
       aliases = { fpush = "push --force-with-lease"; };
       package = pkgs.gitAndTools.gitFull;
 
