@@ -48,9 +48,7 @@
         "flake-compat": "flake-compat_2",
         "flake-utils": "flake-utils_2",
         "nix-eval-jobs": "nix-eval-jobs",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": "nixpkgs",
         "stable": "stable"
       },
       "locked": {
@@ -275,15 +273,15 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1674459583,
-        "narHash": "sha256-L0UZl/u2H3HGsrhN+by42c5kNYeKtdmJiPzIRvEVeiM=",
-        "owner": "nixos",
+        "lastModified": 1669542132,
+        "narHash": "sha256-DRlg++NJAwPh8io3ExBJdNW7Djs3plVI5jgYQ+iXAZQ=",
+        "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "1b1f50645af2a70dc93eae18bfd88d330bfbcf7f",
+        "rev": "a115bb9bd56831941be3776c8a94005867f316a7",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
+        "owner": "NixOS",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
@@ -305,13 +303,29 @@
         "type": "github"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1674459583,
+        "narHash": "sha256-L0UZl/u2H3HGsrhN+by42c5kNYeKtdmJiPzIRvEVeiM=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "1b1f50645af2a70dc93eae18bfd88d330bfbcf7f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nur": {
       "locked": {
-        "lastModified": 1674574136,
-        "narHash": "sha256-1VZkgpWft6Ifs35aIAry1vHUGLzxUe5M2eBvHhYVByA=",
+        "lastModified": 1674582384,
+        "narHash": "sha256-5KDJBOV4XL5vI8PfldYUc3bXit0FQYMqK8Hq0KNu9Ss=",
         "owner": "nix-community",
         "repo": "nur",
-        "rev": "b87197cac6c38db9e32d76c6f286fee98e2ba752",
+        "rev": "80761b98153ae3e77c16f9399c69250cff06b90a",
         "type": "github"
       },
       "original": {
@@ -372,7 +386,7 @@
         "diplomacy-bot": "diplomacy-bot",
         "flake-utils": "flake-utils_5",
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs",
+        "nixpkgs": "nixpkgs_2",
         "nixpkgsSmall": "nixpkgsSmall",
         "nur": "nur",
         "wikiteam3-nix": "wikiteam3-nix"
