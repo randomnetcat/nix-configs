@@ -16,6 +16,7 @@
       "custom-terminal"
       "general-development"
       "java-development"
+      "media-consumption"
       "media-creation"
       "ncsu"
       "nomic"
