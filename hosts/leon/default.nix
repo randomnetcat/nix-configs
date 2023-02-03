@@ -2,6 +2,7 @@
   imports = [
     ./hardware-configuration.nix
     ./tailscale.nix
+    ../../presets/common.nix
   ];
 
   boot.cleanTmpDir = true;
