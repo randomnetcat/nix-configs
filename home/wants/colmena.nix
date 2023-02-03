@@ -9,7 +9,7 @@
 
   config = {
     home.packages = [
-      inputs.colmena.packages."${pkgs.targetPlatform.system}".colmena
+      ((pkgs.extend inputs.colmena.overlays.default).colmena)
     ];
   };
 }
