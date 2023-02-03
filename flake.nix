@@ -93,7 +93,7 @@
 
           modules = commonModules ++ [
             ./hosts/reese/default.nix
-            agenix.nixosModule
+            agenix.nixosModules.default
           ];
         };
 
@@ -141,7 +141,7 @@
         reese = {
           imports = commonModules ++ [
             ./hosts/reese
-            agenix.nixosModule
+            agenix.nixosModules.default
           ];
 
           deployment.buildOnTarget = true;
@@ -151,7 +151,7 @@
         leon = {
           imports = commonModules ++ [
             ./hosts/leon
-            agenix.nixosModule
+            agenix.nixosModules.default
           ];
 
           system.nixos.revision = nixpkgsSmall.rev;
