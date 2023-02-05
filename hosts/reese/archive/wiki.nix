@@ -5,6 +5,7 @@ let
   apisFile = pkgs.writeText "apis.txt" ''
     https://nomic.club/wiki/api.php
     https://infinitenomic.randomcat.org/wiki/api.php
+    https://wiki.blognomic.com/api.php
   '';
 in
 {
