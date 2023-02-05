@@ -18,7 +18,13 @@
 
     home.packages = [
       pkgs.jetbrains.idea-ultimate
-      pkgs.gradle
+      (pkgs.gradle.override {
+        javaToolchains = [
+          pkgs.jdk11
+          pkgs.jdk17
+          pkgs.jdk
+        ];
+      })
       pkgs.jd-gui
     ];
   };
