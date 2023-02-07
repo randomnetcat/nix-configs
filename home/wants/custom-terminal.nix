@@ -9,12 +9,19 @@
 
   config = {
     home.packages = [
-      pkgs.killall
       pkgs.file
+      pkgs.fx
+      pkgs.glow
+      pkgs.hexyl
+      pkgs.killall
     ];
 
-    programs.ssh.enable = true;
+    programs.bat.enable = true;
+    programs.exa.enable = true;
+    programs.git.diff-so-fancy.enable = true;
+    programs.htop.enable = true;
     programs.jq.enable = true;
+    programs.ssh.enable = true;
 
     programs.bash = {
       enable = true;
