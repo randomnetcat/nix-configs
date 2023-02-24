@@ -39,6 +39,10 @@
       pkgs.dbeaver
     ];
 
+    networking.firewall.allowedTCPPorts = [
+      9003 # Allow PHP XDebug
+    ];
+
     virtualisation.docker.enable = true;
     users.users.randomcat.extraGroups = [ "docker" ];
 
