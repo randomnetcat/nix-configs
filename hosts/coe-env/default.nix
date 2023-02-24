@@ -5,7 +5,7 @@
     ../../presets/ncsu-vm-env.nix
     ./locale.nix
     ./development.nix
-    ./apache.nix
+    # ./apache.nix
     ./mysql.nix
   ];
 
