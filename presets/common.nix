@@ -16,8 +16,7 @@
       rev = config.system.nixos.revision;
     };
 
-    environment.etc."active-nixpkgs-source".source = "${pkgs.path}";
-    nix.nixPath = [ "nixpkgs=/etc/active-nixpkgs-source" ];
+    nix.nixPath = [ "nixpkgs=flake:nixpkgs" ];
 
     nixpkgs.config.allowUnfree = true;
   };
