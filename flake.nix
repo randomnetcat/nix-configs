@@ -126,6 +126,16 @@
             homeManagerNurOverlay
           ];
         };
+
+        csc-510-env = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+
+          modules = commonModules ++ [
+            ./hosts/csc-510-env/default.nix
+            homeManager
+            homeManagerNurOverlay
+          ];
+        };
       };
     in
     {
@@ -160,19 +170,22 @@
     } // (flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages."${system}";
-      in
-      {
+
         # Adapted from https://discourse.nixos.org/t/get-qemu-guest-integration-when-running-nixos-rebuild-build-vm/22621/2
-        packages.run-coe-env = pkgs.writeShellApplication {
-          name = "run-coe-env";
+        mkRunEnv = hostName: pkgs.writeShellApplication {
+          name = "run-${hostName}";
           runtimeInputs = [ pkgs.virt-viewer ];
           text = ''
-            ${nixosConfigurations.coe-env.config.system.build.vm}/bin/run-nixos-vm & PID_QEMU="$!"
+            ${nixosConfigurations."${hostName}".config.system.build.vm}/bin/run-nixos-vm & PID_QEMU="$!"
             sleep 1
             remote-viewer spice://127.0.0.1:5930
             kill $PID_QEMU
           '';
         };
+      in
+      {
+        packages.run-coe-env = mkRunEnv "coe-env";
+        packages.run-csc-510-env = mkRunEnv "csc-510-env";
       }
       ));
 }
