@@ -65,14 +65,10 @@
       ];
 
       homeManager = home-manager.nixosModules.home-manager;
-      homeManagerNurOverlay = {
+      homeManagerNurOverlay = { pkgs, ... }: {
         config = {
           home-manager.extraSpecialArgs = {
-            nurPkgs = import nixpkgs {
-              system = "x86_64-linux";
-              overlays = [ nur.overlay ];
-              config = { allowUnfree = true; };
-            };
+            nurPkgs = pkgs.extend nur.overlay;
           };
         };
       };
