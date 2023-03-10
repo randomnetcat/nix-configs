@@ -59,12 +59,6 @@
         };
       };
 
-      commonModules = [
-        systemConfigurationRevision
-        inputsArg
-      ];
-
-      homeManager = home-manager.nixosModules.home-manager;
       homeManagerNurOverlay = { pkgs, ... }: {
         config = {
           home-manager.extraSpecialArgs = {
@@ -73,65 +67,37 @@
         };
       };
 
+      commonModules = [
+        systemConfigurationRevision
+        inputsArg
+
+        home-manager.nixosModules.home-manager
+        homeManagerNurOverlay
+
+        agenix.nixosModules.default
+      ];
+
+      systemModules = path: commonModules ++ [ path ];
+
+      defineSystem = { pkgs ? nixpkgs, system ? null, modules }: pkgs.lib.nixosSystem {
+        inherit system;
+        modules = commonModules ++ modules;
+      };
+
+      defineSystemX64 = args: defineSystem (args // { system = "x86_64-linux"; });
+      defineSystemAarch64 = args: defineSystem (args // { system = "aarch64-linux"; });
+
+      defineSimpleSystemX64 = module: defineSystemX64 { modules = [ module ]; };
+      defineSimpleSystemAarch64 = module: defineSystemAarch64 { modules = [ module ]; };
+
       nixosConfigurations = {
-        groves = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
+        groves = defineSimpleSystemX64 ./hosts/groves/default.nix;
+        reese = defineSimpleSystemAarch64 ./hosts/reese/default.nix;
 
-          modules = commonModules ++ [
-            ./hosts/groves/default.nix
-            homeManager
-            homeManagerNurOverlay
-          ];
-        };
-
-        reese = nixpkgs.lib.nixosSystem {
-          system = "aarch64-linux";
-
-          modules = commonModules ++ [
-            ./hosts/reese/default.nix
-            agenix.nixosModules.default
-          ];
-        };
-
-        coe-env = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-
-          modules = commonModules ++ [
-            ./hosts/coe-env/default.nix
-            homeManager
-            homeManagerNurOverlay
-          ];
-        };
-
-        csc-216-env = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-
-          modules = commonModules ++ [
-            ./hosts/csc-216-env/default.nix
-            homeManager
-            homeManagerNurOverlay
-          ];
-        };
-
-        csc-326-env = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-
-          modules = commonModules ++ [
-            ./hosts/csc-326-env/default.nix
-            homeManager
-            homeManagerNurOverlay
-          ];
-        };
-
-        csc-510-env = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-
-          modules = commonModules ++ [
-            ./hosts/csc-510-env/default.nix
-            homeManager
-            homeManagerNurOverlay
-          ];
-        };
+        coe-env = defineSimpleSystemX64 ./hosts/coe-env/default.nix;
+        csc-216-env = defineSimpleSystemX64 ./hosts/csc-216-env/default.nix;
+        csc-326-env = defineSimpleSystemX64 ./hosts/csc-326-env/default.nix;
+        csc-510-env = defineSimpleSystemX64 ./hosts/csc-510-env/default.nix;
       };
     in
     {
@@ -145,20 +111,14 @@
         };
 
         reese = {
-          imports = commonModules ++ [
-            ./hosts/reese
-            agenix.nixosModules.default
-          ];
+          imports = systemModules ./hosts/reese;
 
           deployment.buildOnTarget = true;
           system.nixos.revision = nixpkgsSmall.rev;
         };
 
         leon = {
-          imports = commonModules ++ [
-            ./hosts/leon
-            agenix.nixosModules.default
-          ];
+          imports = systemModules ./hosts/leon;
 
           system.nixos.revision = nixpkgsSmall.rev;
         };
