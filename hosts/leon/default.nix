@@ -1,8 +1,11 @@
 { pkgs, lib, config, ... }: {
   imports = [
-    ./hardware-configuration.nix
-    ./tailscale.nix
     ../../presets/common.nix
+
+    ./hardware-configuration.nix
+
+    ./tailscale.nix
+    ./backups.nix
   ];
 
   boot.cleanTmpDir = true;
