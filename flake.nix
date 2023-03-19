@@ -43,6 +43,11 @@
       url = "gitlab:randomnetcat/diplomacy-bot";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    patched-sanoid = {
+      url = "github:randomnetcat/sanoid";
+      flake = false;
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, agenix, flake-utils, ... }@inputs:
