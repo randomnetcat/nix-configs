@@ -316,6 +316,22 @@
         "type": "github"
       }
     },
+    "patched-sanoid": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1679202400,
+        "narHash": "sha256-ZG3mtPPn0OLjabksOaUzqYetqaNSjYex//+SxZJMDFE=",
+        "owner": "randomnetcat",
+        "repo": "sanoid",
+        "rev": "c78a89ab362045eaeb429be48bc7ec5bc6566f5c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "randomnetcat",
+        "repo": "sanoid",
+        "type": "github"
+      }
+    },
     "poetry2nix": {
       "inputs": {
         "flake-utils": "flake-utils_4",
@@ -371,6 +387,7 @@
         "nixpkgs": "nixpkgs",
         "nixpkgsSmall": "nixpkgsSmall",
         "nur": "nur",
+        "patched-sanoid": "patched-sanoid",
         "wikiteam3-nix": "wikiteam3-nix"
       }
     },
