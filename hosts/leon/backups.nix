@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 {
   config = {
@@ -6,6 +6,14 @@
       pkgs.mbuffer
       pkgs.pv
       pkgs.zstd
+    ];
+
+    nixpkgs.overlays = [
+      (final: prev: {
+        sanoid = prev.sanoid.overrideAttrs (oldAttrs: {
+          src = "${inputs.patched-sanoid}";
+        });
+      })
     ];
 
     services.syncoid = {
@@ -18,6 +26,7 @@
         "--no-rollback"
         "--no-sync-snap"
         "--create-bookmark"
+        "--debug"
       ];
 
       localTargetAllow = [
