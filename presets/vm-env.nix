@@ -18,6 +18,11 @@
       "web-browsing"
     ];
 
+    # Don't bother trying to save space in VMs
+    nix.gc.automatic = lib.mkForce false;
+    nix.optimise.automatic = lib.mkForce false;
+    nix.settings.auto-optimise-store = lib.mkForce false;
+
     nixpkgs.config.allowUnfree = true;
 
     services.xserver = {
