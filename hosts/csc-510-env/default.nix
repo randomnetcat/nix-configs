@@ -17,7 +17,7 @@
     system.stateVersion = "21.11"; # Did you read the comment?
 
     virtualisation.writableStore = true;
-    virtualisation.writableStoreUseTmpfs = false;
+    virtualisation.writableStoreUseTmpfs = true;
 
     virtualisation.sharedDirectories.hostshare = {
       source = "/home/randomcat/dev/csc-510-env/shared-dir";
@@ -31,6 +31,8 @@
       pkgs.firefox
       pkgs.vscode
       pkgs.steam-run
+      pkgs.nodejs
+      pkgs.nodePackages.npm
     ];
 
     virtualisation.docker.enable = true;
