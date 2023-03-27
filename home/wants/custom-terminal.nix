@@ -33,7 +33,7 @@
       '';
 
       shellAliases = {
-        ls = "ls -l";
+        ls = "exa -l";
       };
     };
 
