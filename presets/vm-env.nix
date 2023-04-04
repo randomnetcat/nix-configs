@@ -48,7 +48,7 @@
     virtualisation = {
       qemu.package = pkgs.qemu_kvm;
 
-      memorySize = 8192;
+      memorySize = 24576;
       msize = 262144;
       cores = 6;
 
