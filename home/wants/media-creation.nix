@@ -5,7 +5,7 @@
     home.packages = [
       pkgs.gimp
       pkgs.audacity
-      pkgs.libreoffice
+      pkgs.libreoffice-fresh
       pkgs.corefonts
     ];
 
