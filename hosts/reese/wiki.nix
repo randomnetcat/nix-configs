@@ -51,6 +51,7 @@ in
 
             CodeEditor = null;
             CategoryTree = null;
+            Cite = null;
             CiteThisPage = null;
             ParserFunctions = null;
             TextExtracts = null;
