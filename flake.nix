@@ -58,12 +58,6 @@
         };
       };
 
-      inputsArg = {
-        config = {
-          _module.args.inputs = inputs;
-        };
-      };
-
       homeManagerNurOverlay = { pkgs, ... }: {
         config = {
           home-manager.extraSpecialArgs = {
@@ -74,7 +68,6 @@
 
       commonModules = [
         systemConfigurationRevision
-        inputsArg
 
         home-manager.nixosModules.home-manager
         homeManagerNurOverlay
@@ -86,7 +79,17 @@
 
       defineSystem = { pkgs ? nixpkgs, system ? null, modules }: pkgs.lib.nixosSystem {
         inherit system;
-        modules = commonModules ++ modules;
+        modules = commonModules ++ modules ++ [
+          # Provide only a single nixpkgs input to the configuration, regardless of which nixpkgs input is actually being used.
+          ({
+            _module.args.inputs =
+              let
+                inputsNoPkgs = (pkgs.lib.filterAttrs (k: v: !(pkgs.lib.strings.hasPrefix "nixpkgs" k)) inputs);
+              in
+              (inputsNoPkgs // { nixpkgs = pkgs; })
+            ;
+          })
+        ];
       };
 
       defineSystemX64 = args: defineSystem (args // { system = "x86_64-linux"; });
@@ -119,13 +122,10 @@
           imports = systemModules ./hosts/reese;
 
           deployment.buildOnTarget = true;
-          system.nixos.revision = nixpkgsSmall.rev;
         };
 
         leon = {
           imports = systemModules ./hosts/leon;
-
-          system.nixos.revision = nixpkgsSmall.rev;
         };
       };
     } // (flake-utils.lib.eachDefaultSystem (system:
