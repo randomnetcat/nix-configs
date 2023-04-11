@@ -10,7 +10,6 @@
 
   config = {
     home-manager.users.randomcat.imports = map (x: ../home/wants + "/${x}.nix") [
-      "colmena"
       "communication"
       "cpp-development"
       "custom-gnome"

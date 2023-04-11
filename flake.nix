@@ -34,8 +34,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    colmena = {
-      url = "github:zhaofengli/colmena";
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -50,8 +50,10 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, agenix, flake-utils, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, agenix, deploy-rs, flake-utils, ... }@inputs:
     let
+      lib = nixpkgs.lib;
+
       systemConfigurationRevision = {
         config = {
           system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
@@ -101,33 +103,42 @@
       nixosConfigurations = {
         groves = defineSimpleSystemX64 ./hosts/groves/default.nix;
         reese = defineSimpleSystemAarch64 ./hosts/reese/default.nix;
+        leon = defineSimpleSystemX64 ./hosts/leon/default.nix;
 
         coe-env = defineSimpleSystemX64 ./hosts/coe-env/default.nix;
-        csc-216-env = defineSimpleSystemX64 ./hosts/csc-216-env/default.nix;
-        csc-326-env = defineSimpleSystemX64 ./hosts/csc-326-env/default.nix;
+        # csc-216-env = defineSimpleSystemX64 ./hosts/csc-216-env/default.nix;
+        # csc-326-env = defineSimpleSystemX64 ./hosts/csc-326-env/default.nix;
         csc-510-env = defineSimpleSystemX64 ./hosts/csc-510-env/default.nix;
       };
+
+      remoteConfigs = {
+        reese = {
+          hostname = "reese";
+          sshUser = "root";
+          remoteBuild = true;
+        };
+
+        leon = {
+          hostname = "leon";
+          sshUser = "root";
+          remoteBuild = false;
+        };
+      };
+
+      deployNodes = lib.mapAttrs (name: value: {
+        profiles.system = let config = self.nixosConfigurations."${name}"; in {
+          user = "root";
+          path = deploy-rs.lib."${config.pkgs.system}".activate.nixos config;
+        };
+
+        profilesOrder = [ "system" ];
+      } // value) remoteConfigs;
     in
     {
       inherit nixosConfigurations;
 
-      colmena = {
-        meta = {
-          nixpkgs = import nixpkgsSmall {
-            system = "x86_64-linux";
-          };
-        };
-
-        reese = {
-          imports = systemModules ./hosts/reese;
-
-          deployment.buildOnTarget = true;
-        };
-
-        leon = {
-          imports = systemModules ./hosts/leon;
-        };
-      };
+      deploy.nodes = deployNodes;
+      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
     } // (flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages."${system}";
