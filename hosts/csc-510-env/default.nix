@@ -33,6 +33,8 @@
       pkgs.steam-run
       pkgs.nodejs
       pkgs.nodePackages.npm
+      pkgs.jdk # Needed for webdriver
+      pkgs.chromium
     ];
 
     virtualisation.docker.enable = true;
