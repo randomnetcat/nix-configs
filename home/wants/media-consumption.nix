@@ -3,5 +3,6 @@
 {
   home.packages = [
     pkgs.strawberry
+    pkgs.vlc
   ];
 }
