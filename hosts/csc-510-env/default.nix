@@ -35,6 +35,7 @@
       pkgs.nodePackages.npm
       pkgs.jdk # Needed for webdriver
       pkgs.chromium
+      pkgs.docker-compose
     ];
 
     virtualisation.docker.enable = true;
