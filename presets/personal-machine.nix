@@ -14,6 +14,7 @@
       "cpp-development"
       "custom-gnome"
       "custom-terminal"
+      "deployment"
       "general-development"
       "java-development"
       "media-consumption"
