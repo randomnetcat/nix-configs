@@ -14,6 +14,7 @@
       pkgs.glow
       pkgs.hexyl
       pkgs.killall
+      pkgs.sl
     ];
 
     programs.bat.enable = true;
