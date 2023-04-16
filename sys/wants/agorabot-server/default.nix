@@ -108,9 +108,7 @@ in
           "${name}" = {
             inherit (value) package dataVersion;
 
-            tokenGeneratorPackage = pkgs.writeShellScriptBin "generate-token" ''
-              cat -- "''${CREDENTIALS_DIRECTORY}"/${lib.escapeShellArg tokenCredName}
-            '';
+            tokenPath = "\"$CREDENTIALS_DIRECTORY\"/${lib.escapeShellArg tokenCredName}";
 
             configGeneratorPackage =
               let

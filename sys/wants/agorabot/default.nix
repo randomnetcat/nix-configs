@@ -19,9 +19,9 @@ let
         type = types.int;
       };
 
-      tokenGeneratorPackage = lib.mkOption {
-        type = types.package;
-        description = "Package with script to generate bot token. The script should be in bin/generate-token in the output, should accept no arguments, and should print the token to stdout.";
+      tokenPath = lib.mkOption {
+        type = types.string;
+        description = "Path to file containing the Discord token. May contain shell variables.";
       };
 
       restartOnHalt = lib.mkOption {
@@ -76,8 +76,6 @@ in
             chmod -R 700 -- "$BOT_CONFIG_DIR"
             find "$BOT_CONFIG_DIR" -type f -exec chmod 600 -- {} +
 
-            BOT_TOKEN="$(${lib.escapeShellArg "${value.tokenGeneratorPackage}/bin/generate-token"})"
-
             BOT_STORAGE_DIR="$STATE_DIRECTORY/storage"
             mkdir -p -m 700 -- "$BOT_STORAGE_DIR"
 
@@ -86,7 +84,7 @@ in
             mkdir -m 700 -- "$BOT_TMP_DIR"
 
             exec ${lib.escapeShellArg "${value.package}/bin/AgoraBot"} \
-              --token "$BOT_TOKEN" \
+              --token-path ${value.tokenPath} \
               --data-version ${lib.escapeShellArg "${builtins.toString value.dataVersion}"} \
               --config-path "$BOT_CONFIG_DIR" \
               --storage-path "$BOT_STORAGE_DIR" \
