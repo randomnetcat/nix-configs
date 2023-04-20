@@ -20,7 +20,7 @@ let
       };
 
       tokenPath = lib.mkOption {
-        type = types.string;
+        type = types.str;
         description = "Path to file containing the Discord token. May contain shell variables.";
       };
 
