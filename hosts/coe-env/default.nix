@@ -37,6 +37,8 @@
 
       pkgs.vscode
       pkgs.dbeaver
+
+      pkgs.apache-directory-studio
     ];
 
     networking.firewall.allowedTCPPorts = [
