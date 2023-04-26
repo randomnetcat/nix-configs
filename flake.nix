@@ -110,11 +110,6 @@
         groves = defineSimpleSystemX64 ./hosts/groves/default.nix;
         reese = defineSimpleSystemAarch64 ./hosts/reese/default.nix;
         leon = defineSimpleSystemX64 ./hosts/leon/default.nix;
-
-        coe-env = defineSimpleSystemX64 ./hosts/coe-env/default.nix;
-        # csc-216-env = defineSimpleSystemX64 ./hosts/csc-216-env/default.nix;
-        # csc-326-env = defineSimpleSystemX64 ./hosts/csc-326-env/default.nix;
-        csc-510-env = defineSimpleSystemX64 ./hosts/csc-510-env/default.nix;
       };
 
       remoteConfigs = {
@@ -145,25 +140,5 @@
 
       deploy.nodes = deployNodes;
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
-    } // (flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = nixpkgs.legacyPackages."${system}";
-
-        # Adapted from https://discourse.nixos.org/t/get-qemu-guest-integration-when-running-nixos-rebuild-build-vm/22621/2
-        mkRunEnv = hostName: pkgs.writeShellApplication {
-          name = "run-${hostName}";
-          runtimeInputs = [ pkgs.virt-viewer ];
-          text = ''
-            ${nixosConfigurations."${hostName}".config.system.build.vm}/bin/run-nixos-vm & PID_QEMU="$!"
-            sleep 1
-            remote-viewer spice://127.0.0.1:5930
-            kill $PID_QEMU
-          '';
-        };
-      in
-      {
-        packages.run-coe-env = mkRunEnv "coe-env";
-        packages.run-csc-510-env = mkRunEnv "csc-510-env";
-      }
-      ));
+    };
 }
