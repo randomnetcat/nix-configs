@@ -35,7 +35,11 @@
     };
 
     deploy-rs = {
-      url = "github:serokell/deploy-rs";
+      # Temporarily use workaround from https://github.com/serokell/deploy-rs/pull/203
+      type = "github";
+      owner = "serokell";
+      repo = "deploy-rs";
+      ref = "rvem/%23202-add-workaround-for-derivations-store-paths-interpolation";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

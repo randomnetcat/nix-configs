@@ -75,15 +75,16 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1682063650,
-        "narHash": "sha256-VaDHh2z6xlnTHaONlNVHP7qEMcK5rZ8Js3sT6mKb2XY=",
+        "lastModified": 1681803572,
+        "narHash": "sha256-OwThUxRA2lILwEJRTtXMLqFMcMPY55eGr4xQVAIZg8E=",
         "owner": "serokell",
         "repo": "deploy-rs",
-        "rev": "c2ea4e642dc50fd44b537e9860ec95867af30d39",
+        "rev": "b11156d5d46380a90e383ddaa366e09c93e49503",
         "type": "github"
       },
       "original": {
         "owner": "serokell",
+        "ref": "rvem/%23202-add-workaround-for-derivations-store-paths-interpolation",
         "repo": "deploy-rs",
         "type": "github"
       }
