@@ -83,17 +83,19 @@
 
       systemModules = path: commonModules ++ [ path ];
 
-      defineSystem = { pkgs ? nixpkgs, system ? null, modules }: pkgs.lib.nixosSystem {
+      defineSystem = { pkgsFlake ? nixpkgs, system ? null, modules }@sysArgs: pkgsFlake.lib.nixosSystem {
         inherit system;
         modules = commonModules ++ modules ++ [
           # Provide only a single nixpkgs input to the configuration, regardless of which nixpkgs input is actually being used.
           ({
             _module.args.inputs =
               let
-                inputsNoPkgs = (pkgs.lib.filterAttrs (k: v: !(pkgs.lib.strings.hasPrefix "nixpkgs" k)) inputs);
+                inputsNoPkgs = (pkgsFlake.lib.filterAttrs (k: v: !(pkgsFlake.lib.strings.hasPrefix "nixpkgs" k)) inputs);
               in
-              (inputsNoPkgs // { nixpkgs = pkgs; })
+              (inputsNoPkgs // { nixpkgs = pkgsFlake; })
             ;
+
+            _module.args.defineNestedSystem = { modules }@nestedArgs: defineSystem (sysArgs // nestedArgs);
           })
         ];
       };

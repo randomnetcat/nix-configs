@@ -24,6 +24,8 @@
     ./security.nix
 
     ./insecure.nix
+
+    ./vms.nix
   ];
 
   options = {
