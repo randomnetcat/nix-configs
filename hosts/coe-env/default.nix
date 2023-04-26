@@ -26,7 +26,7 @@
     environment.systemPackages = [
       pkgs.vim
       pkgs.firefox
-      # pkgs.libreoffice
+      pkgs.libreoffice
 
       pkgs.steam-run
 
