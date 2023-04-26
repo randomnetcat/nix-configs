@@ -22,9 +22,6 @@
     ./bluetooth.nix
     ./printing.nix
     ./security.nix
-
-    ./insecure.nix
-
     ./vms.nix
   ];
 
