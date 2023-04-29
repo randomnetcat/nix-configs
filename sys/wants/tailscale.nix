@@ -8,6 +8,7 @@
       extraArgs = lib.mkOption {
         type = lib.types.listOf lib.types.str;
         description = "Extra command line arguments to tailscale";
+        default = [];
       };
     };
   };
