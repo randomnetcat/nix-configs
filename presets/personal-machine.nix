@@ -6,6 +6,7 @@
     ../sys/user/randomcat.nix
     ../sys/wants/development/common.nix
     ../sys/wants/virtualization.nix
+    ../sys/wants/android.nix
   ];
 
   config = {
@@ -31,6 +32,9 @@
       }
     ];
 
-    users.users.randomcat.extraGroups = [ "libvirtd" ];
+    users.users.randomcat.extraGroups = [
+      "libvirtd"
+      "adbusers"
+    ];
   };
 }
