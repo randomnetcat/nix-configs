@@ -110,6 +110,7 @@
         groves = defineSimpleSystemX64 ./hosts/groves/default.nix;
         reese = defineSimpleSystemAarch64 ./hosts/reese/default.nix;
         leon = defineSimpleSystemX64 ./hosts/leon/default.nix;
+        bear = defineSimpleSystemAarch64 ./hosts/bear/default.nix;
       };
 
       remoteConfigs = {
@@ -121,6 +122,12 @@
 
         leon = {
           hostname = "leon";
+          sshUser = "root";
+          remoteBuild = false;
+        };
+
+        bear = {
+          hostname = "bear";
           sshUser = "root";
           remoteBuild = false;
         };
