@@ -10,6 +10,7 @@
     ./zfs.nix
     ./tailscale.nix
 
+    ./nginx.nix
     ./acme.nix
     ./mail.nix
   ];

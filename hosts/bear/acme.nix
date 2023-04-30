@@ -10,8 +10,6 @@
     networking.firewall.allowedTCPPorts = [ 80 443 ];
 
     services.nginx = {
-      enable = true;
-
       virtualHosts = {
         "acmechallenge.unspecified.systems" = {
           serverAliases = [ "*.unspecified.systems" ];
@@ -31,7 +29,14 @@
       webroot = "/var/lib/acme/.challenges";
       email = "jason.e.cobb@gmail.com";
 
-      extraDomainNames = [ "mail.unspecified.systems" ];
+      # Ensure that the certificate's key does not change. This is required because the public key
+      # is hashed for the TLSA DNS record.
+      extraLegoRenewFlags = [ "--reuse-key" ];
+
+      extraDomainNames = [
+        "mail.unspecified.systems"
+        "mta-sts.unspecified.systems"
+      ];
     };
   };
 }

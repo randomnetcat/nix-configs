@@ -4,6 +4,14 @@
   config = {
     users.users.maddy.extraGroups = [ "acme" ];
 
+    networking.firewall.allowedTCPPorts = [
+      25
+      465
+      587
+      993
+      143
+    ];
+
     services.maddy = {
       enable = true;
       openFirewall = true;
@@ -197,6 +205,19 @@
             auth &local_authdb
             storage &local_mailboxes
         }
+      '';
+    };
+
+    services.nginx.virtualHosts."mta-sts.unspecified.systems" = {
+      addSSL = true;
+      acmeRoot = config.security.acme.certs."unspecified.systems".webroot;
+      useACMEHost = "unspecified.systems";
+
+      locations."=/.well-known/mta-sts.txt".alias = pkgs.writeText "mta-sts.txt" ''
+        version: STSv1
+        mode: enforce
+        max_age: 604800
+        mx: mail.unspecified.systems
       '';
     };
   };
