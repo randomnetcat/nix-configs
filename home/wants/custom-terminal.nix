@@ -30,7 +30,7 @@
       # Source home-manager session variables into bash
       initExtra = ''
         if [ -e "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"; fi
-        if [ -e "/etc/profiles/per-user/randomcat/etc/profile.d/hm-session-vars.sh" ]; then . "/etc/profiles/per-user/randomcat/etc/profile.d/hm-session-vars.sh"; fi
+        if [ -e "/etc/profiles/per-user/${config.home.username}/etc/profile.d/hm-session-vars.sh" ]; then . "/etc/profiles/per-user/randomcat/etc/profile.d/hm-session-vars.sh"; fi
       '';
 
       shellAliases = {
