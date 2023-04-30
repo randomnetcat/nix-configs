@@ -13,6 +13,7 @@
     ./nginx.nix
     ./acme.nix
     ./mail.nix
+    ./web.nix
   ];
 
   networking.hostId = "b3302af3";
