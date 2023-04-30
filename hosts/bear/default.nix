@@ -16,6 +16,7 @@
   documentation.nixos.enable = false;
 
   system.stateVersion = "23.05";
+  home-manager.users.root.home.stateVersion = "23.05";
 
   boot.cleanTmpDir = true;
   networking.hostName = "bear";
