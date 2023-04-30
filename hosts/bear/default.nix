@@ -9,6 +9,9 @@
     ./mounts/system
     ./zfs.nix
     ./tailscale.nix
+
+    ./acme.nix
+    ./mail.nix
   ];
 
   networking.hostId = "b3302af3";
