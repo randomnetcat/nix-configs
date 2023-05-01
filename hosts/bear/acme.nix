@@ -36,6 +36,7 @@
       extraDomainNames = [
         "mail.unspecified.systems"
         "mta-sts.unspecified.systems"
+        "www.unspecified.systems"
       ];
     };
   };
