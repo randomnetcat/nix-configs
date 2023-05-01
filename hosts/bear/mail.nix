@@ -123,6 +123,13 @@
             source $(local_domains) {
                 reject 501 5.1.8 "Use Submission for outgoing SMTP"
             }
+
+            modify {
+                replace_rcpt static {
+                    entry abuse@unspecified.systems postmaster@unspecified.systems
+                }
+            }
+
             default_source {
                 destination postmaster $(local_domains) {
                     deliver_to &local_routing
