@@ -16,6 +16,25 @@
       })
     ];
 
+    services.sanoid = {
+      enable = true;
+      extraArgs = [ "--verbose" "--debug" ];
+
+      templates."backup" = {
+        yearly = 999999;
+        monthly = 999999;
+        daily = 999999;
+        hourly = 0;
+        autosnap = false;
+        autoprune = true;
+      };
+
+      datasets."nas_1758665d/safe/rpool_sggau1_bak" = {
+        useTemplate = [ "backup" ];
+        recursive = "zfs";
+      };
+    };
+
     services.syncoid = {
       enable = true;
  
