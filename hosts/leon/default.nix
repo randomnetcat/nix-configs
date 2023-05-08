@@ -1,6 +1,6 @@
 { pkgs, lib, config, ... }: {
   imports = [
-    ../../presets/common.nix
+    ../../presets/server.nix
 
     ./hardware-configuration.nix
 
@@ -57,4 +57,5 @@
   };
 
   system.stateVersion = "23.05";
+  home-manager.users.root.home.stateVersion = "23.05";
 }
