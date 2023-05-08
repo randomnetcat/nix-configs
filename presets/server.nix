@@ -17,5 +17,11 @@
         programs.vim.packageConfigurable = pkgs.vim;
       })
     ];
+
+    # Simple security things
+    # From https://xeiaso.net/blog/paranoid-nixos-2021-07-18
+    networking.firewall.enable = true;
+    nix.settings.allowed-users = [ "root" ];
+    security.sudo.execWheelOnly = true;
   };
 }
