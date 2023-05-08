@@ -24,6 +24,17 @@
         "unspecified.systems"
       ];
 
+      tls = {
+        loader = "file";
+
+        certificates = [
+          {
+            keyPath = "/var/lib/acme/unspecified.systems/key.pem";
+            certPath = "/var/lib/acme/unspecified.systems/cert.pem";
+          }
+        ];
+      };
+
       config = ''
         ## Maddy Mail Server - default configuration file (2022-06-18)
         # Suitable for small-scale deployments. Uses its own format for local users DB,
@@ -36,8 +47,6 @@
         # Base variables
 
         ## Included from NixOS Config
-
-        tls file /var/lib/acme/unspecified.systems/cert.pem /var/lib/acme/unspecified.systems/key.pem
 
         # ----------------------------------------------------------------------------
         # Local storage & authentication
