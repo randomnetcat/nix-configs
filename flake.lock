@@ -75,16 +75,15 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1683270266,
-        "narHash": "sha256-F1mAjCE9VrtXo8LG2XmNOljMq+C+75GOaDL4ErKfdXo=",
+        "lastModified": 1683515103,
+        "narHash": "sha256-vWlnZ0twW+ekOC6JuAHDfupv+u4QNvWawG7+DaQJ4VA=",
         "owner": "serokell",
         "repo": "deploy-rs",
-        "rev": "c17d71fadf9a124ad6dd6af91944dbc2f0a60496",
+        "rev": "64160276cd6569694131ed8864d4d35470a84ec3",
         "type": "github"
       },
       "original": {
         "owner": "serokell",
-        "ref": "rvem/%23202-add-workaround-for-derivations-store-paths-interpolation",
         "repo": "deploy-rs",
         "type": "github"
       }
@@ -290,11 +289,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1683515240,
-        "narHash": "sha256-if+qOMIV44UpAlXojfBCmOhYzbBAQLgvYD8T8lg2h64=",
+        "lastModified": 1683520661,
+        "narHash": "sha256-QxtLukKuKiLRKF5tjR5rBf6NjF6/LXVyo/U0Q6LhoNc=",
         "owner": "nix-community",
         "repo": "nur",
-        "rev": "1ab1d6dde5b446400fbb17e4ea40e738800afb76",
+        "rev": "5c326de18cb35f6e3841d8d4535472b9e5373fc4",
         "type": "github"
       },
       "original": {
