@@ -75,5 +75,23 @@
         ];
       };
     };
+
+    systemd.services =
+      let
+        commonConfig = {
+          unitConfig = {
+            StartLimitBurst = 5;
+            StartLimitIntervalSec = "12 hours";
+          };
+
+          serviceConfig = {
+            Restart = "on-failure";
+            RestartSec = "10min";
+            TimeoutStartSec = "2 hours";
+          };
+        };
+      in {
+        syncoid-reese-system = commonConfig;
+      };
   };
 }
