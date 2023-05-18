@@ -194,7 +194,8 @@
                     fs_dir mtasts_cache/
                 }
                 local_policy {
-                    min_tls_level encrypted
+                    # At least agoranomic.org does not support TLS
+                    min_tls_level none
                     min_mx_level none
                 }
             }
