@@ -7,6 +7,7 @@
     ./development.nix
     # ./apache.nix
     ./mysql.nix
+    ./vscode.nix
   ];
 
   config = {
@@ -30,7 +31,6 @@
 
       pkgs.steam-run
 
-      pkgs.vscode
       pkgs.dbeaver
 
       pkgs.apache-directory-studio
