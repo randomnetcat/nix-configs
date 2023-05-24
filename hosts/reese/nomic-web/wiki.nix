@@ -2,7 +2,7 @@
 
 let
   containers = import ../container-def.nix;
-  wikiHost = "infinitenomic.randomcat.org";
+  wikiHost = "infinite.nomic.space";
   wikiPort = 8080;
   wikiSubpath = "/wiki"; # Subpath, either empty or starting but not ending with slash
   wikiLogo = "${./resources/infnom-wiki-logo.png}";
