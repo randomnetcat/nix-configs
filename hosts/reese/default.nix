@@ -15,7 +15,6 @@
     ./tailscale.nix
 
     ./agorabot.nix
-    ./wiki.nix
     ./remote-build.nix
 
     ./mastodon/personal.nix
@@ -24,6 +23,7 @@
     ./archive/wiki.nix
 
     ./diplomacy-bot
+    ./nomic-web
   ];
 
   nixpkgs.localSystem = {

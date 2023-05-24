@@ -1,17 +1,13 @@
 { config, lib, pkgs, ... }:
 
 let
-  containers = import ./container-def.nix;
+  containers = import ../container-def.nix;
   wikiHost = "infinitenomic.randomcat.org";
   wikiPort = 8080;
   wikiSubpath = "/wiki"; # Subpath, either empty or starting but not ending with slash
   wikiLogo = "${./resources/infnom-wiki-logo.png}";
 in
 {
-  imports = [
-    ./nginx.nix
-  ];
-
   config = {
     networking.nat.internalInterfaces = [ "ve-wiki" ];
 
@@ -177,7 +173,7 @@ in
     };
 
     randomcat.secrets.secrets."wiki-password-file" = {
-      encryptedFile = ./secrets/wiki-password-file;
+      encryptedFile = ../secrets/wiki-password-file;
       dest = "/run/keys/containers/wiki/password-file";
       owner = "root";
       group = "root";
@@ -186,7 +182,7 @@ in
     };
 
     randomcat.secrets.secrets."wiki-smtp-pass" = {
-      encryptedFile = ./secrets/wiki-smtp-pass;
+      encryptedFile = ../secrets/wiki-smtp-pass;
       dest = "/run/keys/containers/wiki/smtp-pass";
       owner = "root";
       group = "root";
