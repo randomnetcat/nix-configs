@@ -35,6 +35,8 @@
         ];
       };
 
+      secrets = pkgs.emptyFile;
+
       config = ''
         ## Maddy Mail Server - default configuration file (2022-06-18)
         # Suitable for small-scale deployments. Uses its own format for local users DB,
