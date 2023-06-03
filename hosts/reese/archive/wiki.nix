@@ -4,7 +4,7 @@ let
   wikiteamPackage = (pkgs.extend inputs.wikiteam3-nix.overlay).dumpgenerator;
   apisFile = pkgs.writeText "apis.txt" ''
     https://nomic.club/wiki/api.php
-    https://infinitenomic.randomcat.org/wiki/api.php
+    https://infinite.nomic.space/wiki/api.php
     https://wiki.blognomic.com/api.php
   '';
 in
