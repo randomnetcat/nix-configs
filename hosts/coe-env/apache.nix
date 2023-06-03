@@ -8,7 +8,7 @@
     services.httpd.phpPackage = pkgs.php81.buildEnv {
       extraConfig = ''
         include_path=".:/var/www/_include"
-        display_errors=On
+        display_errors=Off
         log_errors=On
         error_log=/var/log/httpd/php_error.log
         upload_max_filesize=20M
