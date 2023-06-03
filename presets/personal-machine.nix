@@ -35,6 +35,7 @@
     users.users.randomcat.extraGroups = [
       "libvirtd"
       "adbusers"
+      "vboxusers"
     ];
   };
 }
