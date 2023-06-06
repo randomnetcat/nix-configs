@@ -8,7 +8,7 @@
     ./backups.nix
   ];
 
-  boot.cleanTmpDir = true;
+  boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
 
   networking.hostId = "2b20be51";

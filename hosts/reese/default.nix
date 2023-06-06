@@ -37,7 +37,7 @@
   system.stateVersion = "21.11";
   home-manager.users.root.home.stateVersion = "23.05";
 
-  boot.cleanTmpDir = true;
+  boot.tmp.cleanOnBoot = true;
   networking.hostName = "reese";
   networking.firewall.allowPing = true;
 

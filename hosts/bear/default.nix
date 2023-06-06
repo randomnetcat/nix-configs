@@ -23,7 +23,7 @@
   system.stateVersion = "23.05";
   home-manager.users.root.home.stateVersion = "23.05";
 
-  boot.cleanTmpDir = true;
+  boot.tmp.cleanOnBoot = true;
   networking.hostName = "bear";
   networking.firewall.allowPing = true;
 
