@@ -127,7 +127,7 @@
         bear = {
           hostname = "bear";
           sshUser = "root";
-          remoteBuild = false;
+          remoteBuild = true;
         };
       };
 
