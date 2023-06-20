@@ -12,7 +12,7 @@ in
     networking.nat.internalInterfaces = [ "ve-wiki" ];
 
     containers.wiki = {
-      config = {
+      config = { config, lib, pkgs, ... }: {
         system.stateVersion = "22.05";
 
         networking.useHostResolvConf = false;
@@ -125,6 +125,13 @@ in
             ];
 
             wfLoadExtension('Parosid', 'vendor/wikimedia/parsoid/extension.json');
+
+            // SVG
+            $wgSVGConverters = [
+              'batik' => '${pkgs.jdk}/bin/java -Djava.awt.headless=true -jar ${pkgs.batik}/batik-rasterizer-${pkgs.batik.version}.jar -w $width -d $output $input'
+            ];
+
+            $wgSVGConverter = "batik";
           '';
         };
 
