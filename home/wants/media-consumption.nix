@@ -12,5 +12,7 @@
         jdk = pkgs.jdk11;
       };
     })
+
+    pkgs.makemkv
   ];
 }
