@@ -20,6 +20,7 @@
     ./mastodon/personal.nix
     ./mastodon/nomic-space.nix
 
+    ./archive/agora.nix
     ./archive/wiki.nix
 
     ./diplomacy-bot

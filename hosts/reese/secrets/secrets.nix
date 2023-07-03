@@ -16,6 +16,7 @@ in
   "syncoid-id-zfs-rent".publicKeys = [ system ];
 
   "wiki-ia-keys".publicKeys = [ system ];
+  "agora-ia-config".publicKeys = [ system ];
 
   "diplomacy-bot-token".publicKeys = [ system ];
 }
