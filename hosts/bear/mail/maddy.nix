@@ -95,6 +95,7 @@ in
             optional_step static {
                 entry postmaster postmaster@$(primary_domain)
             }
+            optional_step regexp "(postmaster|abuse|security)@(.+)" "postmaster@$(primary_domain)"
             optional_step file /etc/maddy/aliases
         }
 
@@ -135,13 +136,6 @@ in
             source $(local_domains) {
                 reject 501 5.1.8 "Use Submission for outgoing SMTP"
             }
-
-            modify {
-                replace_rcpt static {
-                    entry abuse@$(primary_domain) postmaster@$(primary_domain)
-                }
-            }
-
             default_source {
                 destination postmaster $(local_domains) {
                     deliver_to &local_routing
