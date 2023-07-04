@@ -1,5 +1,10 @@
 { config, pkgs, lib, ... }:
 
+let
+  cfg = config.randomcat.services.mail;
+  primary = cfg.primaryDomain;
+  allDomains = [ primary ] ++ cfg.extraDomains;
+in
 {
   config = {
     users.users.maddy.extraGroups = [ "acme" ];
@@ -16,21 +21,19 @@
       enable = true;
       openFirewall = true;
 
-      hostname = "mail.unspecified.systems";
+      hostname = "mail.${primary}";
 
-      primaryDomain = "unspecified.systems";
+      primaryDomain = primary;
 
-      localDomains = [
-        "unspecified.systems"
-      ];
+      localDomains = allDomains;
 
       tls = {
         loader = "file";
 
         certificates = [
           {
-            keyPath = "/var/lib/acme/unspecified.systems/key.pem";
-            certPath = "/var/lib/acme/unspecified.systems/cert.pem";
+            keyPath = "/var/lib/acme/${primary}/key.pem";
+            certPath = "/var/lib/acme/${primary}/cert.pem";
           }
         ];
       };
@@ -135,7 +138,7 @@
 
             modify {
                 replace_rcpt static {
-                    entry abuse@unspecified.systems postmaster@unspecified.systems
+                    entry abuse@$(primary_domain) postmaster@$(primary_domain)
                 }
             }
 
@@ -225,17 +228,21 @@
       '';
     };
 
-    services.nginx.virtualHosts."mta-sts.unspecified.systems" = {
-      addSSL = true;
-      acmeRoot = config.security.acme.certs."unspecified.systems".webroot;
-      useACMEHost = "unspecified.systems";
+    services.nginx.virtualHosts = (lib.listToAttrs (map (domain: {
+      name = "mta-sts.${primary}";
 
-      locations."=/.well-known/mta-sts.txt".alias = pkgs.writeText "mta-sts.txt" ''
-        version: STSv1
-        mode: enforce
-        max_age: 604800
-        mx: mail.unspecified.systems
-      '';
-    };
+      value = {
+        addSSL = true;
+        acmeRoot = config.security.acme.certs."${primary}".webroot;
+        useACMEHost = primary;
+
+        locations."=/.well-known/mta-sts.txt".alias = pkgs.writeText "mta-sts.txt" ''
+          version: STSv1
+          mode: enforce
+          max_age: 604800
+          mx: mail.${primary}
+        '';
+      };
+    }) allDomains));
   };
 }

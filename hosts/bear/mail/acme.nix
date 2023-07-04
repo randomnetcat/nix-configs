@@ -1,5 +1,9 @@
 { config, lib, pkgs, ... }:
 
+let
+  cfg = config.randomcat.services.mail;
+  primary = cfg.primaryDomain;
+in
 {
   config = {
     security.acme.acceptTerms = true;
@@ -11,8 +15,8 @@
 
     services.nginx = {
       virtualHosts = {
-        "acmechallenge.unspecified.systems" = {
-          serverAliases = [ "*.unspecified.systems" ];
+        "acmechallenge.${primary}" = {
+          serverAliases = [ "*.${primary}" ];
 
           locations."/.well-known/acme-challenge" = {
             root = "/var/lib/acme/.challenges";
@@ -25,7 +29,7 @@
       };
     };
 
-    security.acme.certs."unspecified.systems" = {
+    security.acme.certs."${primary}" = {
       webroot = "/var/lib/acme/.challenges";
       email = "jason.e.cobb@gmail.com";
 
@@ -34,10 +38,12 @@
       extraLegoRenewFlags = [ "--reuse-key" ];
 
       extraDomainNames = [
-        "mail.unspecified.systems"
-        "mta-sts.unspecified.systems"
-        "www.unspecified.systems"
-      ];
+        "mail.${primary}"
+        "mta-sts.${primary}"
+        "www.${primary}"
+      ] ++ (lib.concatMap (d: [
+        "mta-sts.${d}"
+      ]) cfg.extraDomains);
     };
   };
 }

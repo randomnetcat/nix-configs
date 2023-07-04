@@ -11,9 +11,9 @@
     ./tailscale.nix
 
     ./nginx.nix
-    ./acme.nix
-    ./mail.nix
     ./web.nix
+
+    ./mail
   ];
 
   networking.hostId = "b3302af3";
