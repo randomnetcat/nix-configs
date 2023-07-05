@@ -15,6 +15,7 @@
       pkgs.hexyl
       pkgs.killall
       pkgs.sl
+      pkgs.dnsutils
     ];
 
     programs.bat.enable = true;
