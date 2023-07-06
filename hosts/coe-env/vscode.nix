@@ -24,6 +24,8 @@
 
             "php.debug.executablePath" = "${php}/bin/php";
             "php.validate.executablePath" = "${php}/bin/php";
+
+            "html.format.wrapAttributes" = "aligned-multiple";
           };
         };
       })
