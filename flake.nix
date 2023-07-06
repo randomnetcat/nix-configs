@@ -98,17 +98,29 @@
         ];
       };
 
-      defineSystemX64 = args: defineSystem (args // { system = "x86_64-linux"; });
-      defineSystemAarch64 = args: defineSystem (args // { system = "aarch64-linux"; });
-
-      defineSimpleSystemX64 = module: defineSystemX64 { modules = [ module ]; };
-      defineSimpleSystemAarch64 = module: defineSystemAarch64 { modules = [ module ]; };
-
       nixosConfigurations = {
-        groves = defineSimpleSystemX64 ./hosts/groves/default.nix;
-        reese = defineSimpleSystemAarch64 ./hosts/reese/default.nix;
-        leon = defineSimpleSystemX64 ./hosts/leon/default.nix;
-        bear = defineSimpleSystemAarch64 ./hosts/bear/default.nix;
+        groves = defineSystem {
+          system = "x86_64-linux";
+          modules = [ ./hosts/groves ];
+        };
+
+        reese = defineSystem {
+          pkgsFlake = nixpkgsSmall;
+          system = "aarch64-linux";
+          modules = [ ./hosts/reese ];
+        };
+
+        leon = defineSystem {
+          pkgsFlake = nixpkgsSmall;
+          system = "x86_64-linux";
+          modules = [ ./hosts/leon ];
+        };
+
+        bear = defineSystem {
+          pkgsFlake = nixpkgsSmall;
+          system = "aarch64-linux";
+          modules = [ ./hosts/bear ];
+        };
       };
 
       remoteConfigs = {
