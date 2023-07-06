@@ -18,7 +18,6 @@
     ./remote-build.nix
 
     ./mastodon/personal.nix
-    ./mastodon/nomic-space.nix
 
     ./archive/agora.nix
     ./archive/wiki.nix
