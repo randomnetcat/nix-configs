@@ -4,7 +4,7 @@
   config = {
     programs.git = {
       userEmail = "jecobb2@ncsu.edu";
-      userName = "Jason Cobb";
+      userName = "Janet Cobb";
     };
   };
 }
