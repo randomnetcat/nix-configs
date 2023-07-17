@@ -93,15 +93,15 @@ in
             $wgLogo = '${wikiSubpath}/images/logo';
 
             $wgEmergencyContact = 'admin@randomcat.org';
-            $wgPasswordSender = 'infinitenomic-wiki@randomcat.org';
+            $wgPasswordSender = 'wiki@unspecified.systems';
 
             $wgSMTP = [
-              'host' => 'smtp.sendgrid.net',
-              'IDHost' => 'randomcat.org',
-              'localhost' => 'randomcat.org',
-              'port' => 587,
+              'host' => 'tls://mail.unspecified.systems',
+              'IDHost' => 'unspecified.systems',
+              'localhost' => 'unspecified.sytems',
+              'port' => 465,
               'auth' => true,
-              'username' => 'apikey',
+              'username' => 'wiki@unspecified.systems',
               'password' => trim(file_get_contents('/run/keys/smtp-pass')),
             ];
 
