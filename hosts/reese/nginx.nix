@@ -28,6 +28,13 @@
       locations."/".return = "301 https://randomnetcat.github.io$request_uri";
     };
 
+    services.nginx.virtualHosts."jecobb.com" = {
+      forceSSL = true;
+      enableACME = true;
+
+      locations."/".return = "307 https://randomcat.org/portfolio";
+    };
+
     services.nginx.virtualHosts."nomic.space" = {
       forceSSL = true;
       enableACME = true;

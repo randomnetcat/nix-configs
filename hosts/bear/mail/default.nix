@@ -12,6 +12,7 @@
 
       extraDomains = [
         "randomcat.gay"
+        "jecobb.com"
       ];
     };
   };
