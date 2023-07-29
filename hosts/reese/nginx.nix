@@ -25,7 +25,7 @@
       forceSSL = true;
       enableACME = true;
 
-      locations."/".return = "301 https://randomnetcat.github.io$request_uri";
+      locations."/".return = "307 https://randomnetcat.github.io$request_uri";
     };
 
     services.nginx.virtualHosts."jecobb.com" = {
