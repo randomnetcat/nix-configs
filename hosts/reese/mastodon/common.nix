@@ -129,10 +129,21 @@ in
           };
         };
 
-        systemd.tmpfiles.rules = [
-          "C /run/keys/smtp-pass - - - - /common-keys/smtp-pass"
-          "z /run/keys/smtp-pass 750 root keys - -"
-        ];
+        systemd.services.load-mastodon-host-keys = {
+          requiredBy = [ "mastodon-init-dirs.service" ];
+          before = [ "mastodon-init-dirs.service" ];
+
+          unitConfig = {
+            RequiresMountsFor = [ "/run/keys" "/common-keys" ];
+          };
+
+          script = ''
+            umask 077
+            cp --no-preserve=mode,ownership -- /common-keys/smtp-pass /run/keys/smtp-pass
+            chown root:keys /run/keys/smtp-pass
+            chmod 750 /run/keys/smtp-pass
+          '';
+        };
 
         users.users.nginx.extraGroups = [
           "keys"
