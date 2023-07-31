@@ -106,17 +106,20 @@ in
 
           smtp = {
             createLocally = false;
-           host = "smtp.sendgrid.net";
-            port = 587;
-            user = "apikey";
+            host = "mail.unspecified.systems";
+            port = 465;
+            user = "mastodon@unspecified.systems";
             passwordFile = "/run/keys/smtp-pass";
             authenticate = true;
-            fromAddress = "mastodon@randomcat.org";
+            fromAddress = "mastodon@unspecified.systems";
           };
 
           extraConfig = {
             WEB_DOMAIN = webDomain;
             BIND = localIP4;
+
+            SMTP_DOMAIN = "unspecified.systems";
+            SMTP_TLS = "true";
           };
         };
 
@@ -129,12 +132,16 @@ in
           };
         };
 
+        # Use a unit instead of tmpfiles so that we can delay execution until
+        # after all mounts are done.
         systemd.services.load-mastodon-host-keys = {
           requiredBy = [ "mastodon-init-dirs.service" ];
           before = [ "mastodon-init-dirs.service" ];
 
           unitConfig = {
             RequiresMountsFor = [ "/run/keys" "/common-keys" ];
+            Type = "oneshot";
+            RemainAfterExit = true;
           };
 
           script = ''
