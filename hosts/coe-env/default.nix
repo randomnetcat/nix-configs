@@ -24,16 +24,18 @@
 
     home-manager.useUserPackages = true;
 
-    environment.systemPackages = [
-      pkgs.vim
-      pkgs.firefox
-      pkgs.libreoffice
+    environment.systemPackages = lib.mkMerge [
+      ([
+        pkgs.vim
+        pkgs.firefox
+        pkgs.libreoffice
+        pkgs.dbeaver
+      ])
 
-      pkgs.steam-run
-
-      pkgs.dbeaver
-
-      pkgs.apache-directory-studio
+      (lib.mkIf (pkgs.stdenv.hostPlatform.system == "x86_64-linux") [
+        pkgs.steam-run
+        pkgs.apache-directory-studio
+      ])
     ];
 
     networking.firewall.allowedTCPPorts = [
