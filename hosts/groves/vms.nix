@@ -65,11 +65,11 @@ in
               source =
                 let
                   binName = "run-${name}-vm";
+                  targetPath = "${config.home.homeDirectory}/dev/vms/${name}";
 
                   vm = buildVm {
-                    inherit name;
+                    inherit name targetPath;
                     modules = [ path ];
-                    targetPath = "${config.home.homeDirectory}/dev/vms/${name}";
                   };
 
                   runPkg = pkgs.writeShellApplication {
@@ -79,6 +79,8 @@ in
 
                     # Adapted from https://discourse.nixos.org/t/get-qemu-guest-integration-when-running-nixos-rebuild-build-vm/22621/2
                     text = ''
+                      mkdir -p -- ${lib.escapeShellArg "${targetPath}/shared-dir"}
+
                       ${vm.config.system.build.vm}/bin/run-${vm.config.networking.hostName}-vm & PID_QEMU="$!"
                       sleep 1
                       remote-viewer spice://127.0.0.1:5930
