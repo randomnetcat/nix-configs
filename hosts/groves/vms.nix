@@ -37,16 +37,28 @@ in
             services.spice-vdagentd.enable = true;
             services.spice-webdavd.enable = true;
 
-            ## Force enabling of qxl (mkVmOverride in the module has priority 10, taking precedence over even mkForce, so we have to be even lower than that).
-            services.xserver.videoDrivers = lib.mkOverride 0 [ "modesetting" "qxl" ];
-
             ## Force allowing X to determine its own resolutions.
             services.xserver.resolutions = lib.mkOverride 0 [];
 
-            ## Enable SPICE
-            virtualisation.qemu.options = [
-              "-vga qxl -device virtio-serial-pci -spice port=5930,disable-ticketing=on -device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 -chardev spicevmc,id=spicechannel0,name=vdagent"
-            ];
+            ## Configure devices
+            virtualisation.qemu.options =
+              let
+                commonArgs = [
+                  "-device virtio-serial-pci"
+                  "-device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0"
+                  "-chardev spicevmc,id=spicechannel0,name=vdagent"
+                ];
+
+                platformArgs = {
+                  "x86_64-linux" = [
+                    "-device virtio-vga-gl"
+                  ];
+
+                  "aarch64-linux" = [
+                  ];
+                }."${pkgs.stdenv.hostPlatform.system}";
+              in
+              (commonArgs ++ platformArgs);
           };
         })
       ];
@@ -81,9 +93,12 @@ in
                     text = ''
                       mkdir -p -- ${lib.escapeShellArg "${targetPath}/shared-dir"}
 
-                      ${vm.config.system.build.vm}/bin/run-${vm.config.networking.hostName}-vm & PID_QEMU="$!"
+                      SOCK_DIR="$(mktemp -d nix-vm-spice-sock.XXXXXXXXXX --tmpdir="$XDG_RUNTIME_DIR")"
+                      SOCK_FILE="$SOCK_DIR/vm.sock"
+
+                      ${vm.config.system.build.vm}/bin/run-${vm.config.networking.hostName}-vm -spice disable-ticketing=on,gl=on,unix=on,addr="$SOCK_FILE" & PID_QEMU="$!"
                       sleep 1
-                      remote-viewer spice://127.0.0.1:5930
+                      remote-viewer "spice+unix://$SOCK_FILE"
                       kill "$PID_QEMU"
                     '';
                   };
