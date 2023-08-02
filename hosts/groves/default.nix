@@ -45,6 +45,9 @@
 
     services.fwupd.enable = true;
 
+    # TEMPORARY: Allow non-root to access USB SD card reader for work
+    services.udev.extraRules = ''SUBSYSTEMS=="usb" ATTRS{idVendor}=="14cd" ATTRS{idProduct}=="1212" GROUP="wheel" ENV{UDISKS_AUTO}="0"'';
+
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions
     # on your system were taken. It‘s perfectly fine and recommended to leave
