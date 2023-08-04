@@ -35,7 +35,7 @@
       '';
 
       shellAliases = {
-        ls = "exa -l";
+        ls = "exa -l --group";
       };
     };
 
