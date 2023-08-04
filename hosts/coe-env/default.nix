@@ -44,5 +44,9 @@
 
     virtualisation.docker.enable = true;
     users.users.randomcat.extraGroups = [ "docker" ];
+
+    boot.binfmt.emulatedSystems = lib.mkIf (pkgs.stdenv.hostPlatform.system != "aarch64-linux") [
+      "aarch64-linux"
+    ];
   };
 }
