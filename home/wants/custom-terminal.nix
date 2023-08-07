@@ -19,11 +19,13 @@
     ];
 
     programs.bat.enable = true;
-    programs.exa.enable = true;
     programs.git.diff-so-fancy.enable = true;
     programs.htop.enable = true;
     programs.jq.enable = true;
     programs.ssh.enable = true;
+
+    programs.exa.enable = true;
+    programs.exa.extraOptions = [ "--group" ];
 
     programs.bash = {
       enable = true;
@@ -35,7 +37,7 @@
       '';
 
       shellAliases = {
-        ls = "exa -l --group";
+        ls = "exa -l";
       };
     };
 
