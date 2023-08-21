@@ -22,6 +22,7 @@
     programs.git.diff-so-fancy.enable = true;
     programs.htop.enable = true;
     programs.jq.enable = true;
+    programs.ripgrep.enable = true;
     programs.ssh.enable = true;
 
     programs.exa.enable = true;
