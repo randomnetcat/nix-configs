@@ -16,9 +16,13 @@
     security.sudo.execWheelOnly = true;
 
     # Chosen to be when I am likely to be asleep
-    system.autoUpgrade.rebootWindow = {
-      lower = "07:00";
-      upper = "10:00";
+    system.autoUpgrade = {
+      dates = "08:00";
+
+      rebootWindow = {
+        lower = "07:00";
+        upper = "10:00";
+      };
     };
   };
 }
