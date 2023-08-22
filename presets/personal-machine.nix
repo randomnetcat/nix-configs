@@ -7,6 +7,7 @@
     ../sys/wants/development/common.nix
     ../sys/wants/virtualization.nix
     ../sys/wants/android.nix
+    ../sys/wants/auto-upgrade/manual-reboot.nix
   ];
 
   config = {

@@ -3,6 +3,7 @@
 {
   imports = [
     ./common.nix
+    ../sys/wants/auto-upgrade/auto-reboot.nix
   ];
 
   config = {
@@ -13,5 +14,11 @@
     networking.firewall.enable = true;
     nix.settings.allowed-users = [ "root" ];
     security.sudo.execWheelOnly = true;
+
+    # Chosen to be when I am likely to be asleep
+    system.autoUpgrade.rebootWindow = {
+      lower = "07:00";
+      upper = "10:00";
+    };
   };
 }
