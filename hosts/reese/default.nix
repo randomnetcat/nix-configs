@@ -35,7 +35,6 @@
   documentation.nixos.enable = false;
 
   system.stateVersion = "21.11";
-  home-manager.users.root.home.stateVersion = "23.05";
 
   boot.tmp.cleanOnBoot = true;
   networking.hostName = "reese";
