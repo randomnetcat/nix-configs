@@ -14,6 +14,8 @@
     ./web.nix
 
     ./mail
+
+    ./networking.nix
   ];
 
   networking.hostId = "b3302af3";
