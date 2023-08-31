@@ -17,7 +17,7 @@
     };
 
     networking.nat.enable = true;
-    networking.nat.externalInterface = "enp0s3";
+    networking.nat.externalInterface = "enp0s6";
 
     services.nginx.virtualHosts."randomcat.org" = {
       default = true;
