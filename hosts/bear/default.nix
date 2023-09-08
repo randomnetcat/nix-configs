@@ -29,4 +29,5 @@
   networking.firewall.allowPing = true;
 
   services.resolved.enable = true;
+  services.resolved.dnssec = "false";
 }
