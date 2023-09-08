@@ -30,6 +30,7 @@
         pkgs.firefox
         pkgs.libreoffice
         pkgs.dbeaver
+        pkgs.ngrok
       ])
 
       (lib.mkIf (pkgs.stdenv.hostPlatform.system == "x86_64-linux") [
