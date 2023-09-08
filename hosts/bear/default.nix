@@ -29,8 +29,4 @@
   networking.firewall.allowPing = true;
 
   services.resolved.enable = true;
-
-  services.resolved.extraConfig = ''
-    DNS=8.8.8.8#dns.google 8.8.4.4#dns.google 2001:4860:4860::8888#dns.google 2001:4860:4860::8844#dns.google
-  '';
 }
