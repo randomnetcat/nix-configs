@@ -56,6 +56,10 @@ let
           type = types.str;
         };
 
+        bucketEndpoint = lib.mkOption {
+          type = types.str;
+        };
+
         encryptedKeyFile = lib.mkOption {
           type = types.path;
           description = "Encrypted file in systemd env format with AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY";
@@ -230,6 +234,7 @@ in
               S3_BUCKET = conf.objectStorage.bucketName;
               S3_REGION = conf.objectStorage.bucketRegion;
               S3_HOSTNAME = conf.objectStorage.bucketHostname;
+              S3_ENDPOINT = conf.objectStorage.bucketEndpoint;
               S3_ALIAS_HOST = conf.objectStorage.aliasHost;
             })
           ];
