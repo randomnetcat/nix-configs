@@ -25,8 +25,8 @@
     programs.ripgrep.enable = true;
     programs.ssh.enable = true;
 
-    programs.exa.enable = true;
-    programs.exa.extraOptions = [ "--group" ];
+    programs.eza.enable = true;
+    programs.eza.extraOptions = [ "--group" ];
 
     programs.bash = {
       enable = true;
@@ -38,7 +38,7 @@
       '';
 
       shellAliases = {
-        ls = "exa -l";
+        ls = "eza -l";
       };
     };
 
