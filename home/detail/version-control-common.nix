@@ -13,6 +13,8 @@
       aliases = { fpush = "push --force-with-lease"; };
       package = pkgs.gitAndTools.gitFull;
 
+      difftastic.enable = true;
+
       extraConfig = {
         pull.rebase = true;
         init.defaultBranch = "main";

@@ -19,7 +19,6 @@
     ];
 
     programs.bat.enable = true;
-    programs.git.diff-so-fancy.enable = true;
     programs.htop.enable = true;
     programs.jq.enable = true;
     programs.ripgrep.enable = true;
