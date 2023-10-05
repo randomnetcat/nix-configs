@@ -71,10 +71,7 @@ in
           };
 
           skins = {
-            MinervaNeue = pkgs.fetchzip {
-              url = "https://web.archive.org/web/20221030004352if_/https://extdist.wmflabs.org/dist/skins/MinervaNeue-REL1_38-7825f1e.tar.gz";
-              sha256 = "L2AiIG9xOQ/boQOGRFhu4aZ6ML3HjmsbFztlFerKhuQ=";
-            };
+            MinervaNeue = "${config.services.mediawiki.package}/share/mediawiki/skins/MinervaNeue";
           };
 
           extraConfig = ''
