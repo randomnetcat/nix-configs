@@ -18,25 +18,20 @@
       {
         Unit = {
           Description = "Automatically backup agora lists";
-          After = [ "basic.target" ];
         };
-        Install = {
-          WantedBy = [ "default.target" ];
-        };
+
         Service = {
-          Type = "simple";
+          Type = "oneshot";
           ExecStart = "${agoraBackupScript}";
         };
       };
 
     systemd.user.timers.backup-agora-list = {
-      Install = {
-        WantedBy = [ "timers.target" ];
-      };
+      wantedBy = [ "default.target" ];
 
       Timer = {
-        OnBootSec = "10m";
-        OnUnitActiveSec = "1d";
+        OnCalendar = "12:00:00";
+        Persistent = true;
       };
     };
   };
