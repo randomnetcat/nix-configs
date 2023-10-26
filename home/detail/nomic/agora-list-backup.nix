@@ -17,9 +17,9 @@
       in
       {
         Unit = {
-          Description = "Automatically backup agora lists";
+          Description = "Automatically backup Agora mailing lists";
         };
-
+        
         Service = {
           Type = "oneshot";
           ExecStart = "${agoraBackupScript}";
@@ -27,7 +27,9 @@
       };
 
     systemd.user.timers.backup-agora-list = {
-      wantedBy = [ "default.target" ];
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
 
       Timer = {
         OnCalendar = "12:00:00";
