@@ -41,6 +41,7 @@
     ];
 
     networking.firewall.allowedTCPPorts = [
+      3333 # SSH tunnel for mysql
       9003 # Allow PHP XDebug
     ];
 
