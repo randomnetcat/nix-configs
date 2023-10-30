@@ -2,6 +2,7 @@
 
 {
   config = {
+    networking.useNetworkd = true;
     networking.dhcpcd.enable = false;
 
     systemd.network = {
