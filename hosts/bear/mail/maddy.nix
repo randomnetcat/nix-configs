@@ -156,13 +156,37 @@ in
 
         submission tls://0.0.0.0:465 tcp://0.0.0.0:587 {
             limits {
-                # Up to 50 msgs/sec across any amount of SMTP connections.
+              # Up to 50 msgs/sec across any amount of SMTP connections.
                 all rate 50 1s
             }
 
             auth &local_authdb
 
-            source $(local_domains) {
+            source agora.nomic.space {
+                check {
+                    authorize_sender {
+                        # Only check envelope for mailman
+                        check_header no
+
+                        prepare_email regexp "agora-test(-.+)?@agora.nomic.space" "mailman@agora.nomic.space"
+                        user_to_email static {
+                            entry "mailman@agora.nomic.space" "mailman@agora.nomic.space"
+                        }
+                    }
+                }
+
+                destination postmaster $(local_domains) {
+                    deliver_to &local_routing
+                }
+                default_destination {
+                    modify {
+                        dkim $(primary_domain) $(local_domains) default
+                    }
+                    deliver_to &remote_queue
+                }
+            }
+
+            source ${lib.concatStringsSep " " (lib.filter (d: d != "agora.nomic.space") allDomains)} {
                 check {
                     authorize_sender {
                         prepare_email &local_rewrites
@@ -180,6 +204,7 @@ in
                     deliver_to &remote_queue
                 }
             }
+
             default_source {
                 reject 501 5.1.8 "Non-local sender domain"
             }
