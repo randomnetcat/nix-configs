@@ -224,22 +224,5 @@ in
         }
       '';
     };
-
-    services.nginx.virtualHosts = (lib.listToAttrs (map (domain: {
-      name = "mta-sts.${primary}";
-
-      value = {
-        addSSL = true;
-        acmeRoot = config.security.acme.certs."${primary}".webroot;
-        useACMEHost = primary;
-
-        locations."=/.well-known/mta-sts.txt".alias = pkgs.writeText "mta-sts.txt" ''
-          version: STSv1
-          mode: enforce
-          max_age: 604800
-          mx: mail.${primary}
-        '';
-      };
-    }) allDomains));
   };
 }

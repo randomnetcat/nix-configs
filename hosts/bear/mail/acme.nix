@@ -3,6 +3,7 @@
 let
   cfg = config.randomcat.services.mail;
   primary = cfg.primaryDomain;
+  allDomains = [ primary ] ++ cfg.extraDomains;
 in
 {
   config = {
@@ -14,19 +15,38 @@ in
     networking.firewall.allowedTCPPorts = [ 80 443 ];
 
     services.nginx = {
-      virtualHosts = {
-        "acmechallenge.${primary}" = {
-          serverAliases = [ "*.${primary}" ];
+      virtualHosts = lib.mkMerge [
+        {
+          "acmechallenge.${primary}" = {
+            serverAliases = [ "*.${primary}" ];
 
-          locations."/.well-known/acme-challenge" = {
-            root = "/var/lib/acme/.challenges";
-          };
+            locations."/.well-known/acme-challenge" = {
+              root = "/var/lib/acme/.challenges";
+            };
 
-          locations."/" = {
-            return = "301 https://$host$request_uri";
+            locations."/" = {
+              return = "301 https://$host$request_uri";
+            };
           };
-        };
-      };
+        }
+
+        (lib.listToAttrs (map (domain: {
+          name = "mta-sts.${domain}";
+
+          value = {
+            addSSL = true;
+            acmeRoot = config.security.acme.certs."${primary}".webroot;
+            useACMEHost = primary;
+
+            locations."=/.well-known/mta-sts.txt".alias = pkgs.writeText "mta-sts.txt" ''
+              version: STSv1
+              mode: enforce
+              max_age: 604800
+              mx: mail.${primary}
+            '';
+          };
+        }) allDomains))
+      ];
     };
 
     security.acme.certs."${primary}" = {
