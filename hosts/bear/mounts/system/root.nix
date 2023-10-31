@@ -17,6 +17,12 @@
     fileSystems."/boot" = {
       device = "/dev/disk/by-uuid/E328-28DD";
       fsType = "vfat";
+
+      options = [
+        "uid=0"
+        "gid=0"
+        "umask=077"
+      ];
     };
   };
 }
