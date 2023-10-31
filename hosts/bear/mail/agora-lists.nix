@@ -51,6 +51,10 @@ in
             virtualRoot = mailmanRoot;
           };
 
+          webSettings = {
+            STATIC_URL = "lists/static/";
+          };
+
           webHosts = [
             mailmanHost
           ];
