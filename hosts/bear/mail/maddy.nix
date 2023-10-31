@@ -109,6 +109,11 @@ in
             #     deliver_to lmtp tcp://127.0.0.1:8024
             # }
 
+
+            destination_in regexp "(agora-test(-(bounces\+.*|confirm\+.*|join|leave|owner|request|subscribe|unsubscribe))?@agora.nomic.space)" "$1" {
+                deliver_to lmtp tcp://${config.containers.agora-lists.localAddress}:8024
+            }
+
             destination postmaster $(local_domains) {
                 modify {
                     replace_rcpt &local_rewrites
