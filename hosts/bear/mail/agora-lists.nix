@@ -52,6 +52,13 @@ in
 
           webSettings = {
             STATIC_URL = "lists/static/";
+
+            # Per https://docs.mailman3.org/en/latest/config-web.html#setting-up-email
+            ACCOUNT_AUTHENTICATION_METHOD = "username_email";
+            ACCOUNT_EMAIL_REQUIRED = true;
+            ACCOUNT_EMAIL_VERIFICATION = "mandatory";
+            ACCOUNT_DEFAULT_HTTP_PROTOCOL = "http";
+            ACCOUNT_UNIQUE_EMAIL = true;
           };
 
           webHosts = [
