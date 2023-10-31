@@ -10,7 +10,6 @@ let
   mailmanRoot = "/lists";
 
   mailmanLmtpPort = 8024;
-  mailmanWebPort = 8001;
 in
 {
   imports = [
@@ -60,12 +59,6 @@ in
           ];
 
           hyperkitty.enable = true;
-
-          settings.webservice = {
-            hostname = mailmanHost;
-            port = toString mailmanWebPort;
-            use_https = "no";
-          };
         };
 
         systemd.services.mailman-settings = {
