@@ -61,13 +61,23 @@ in
           hyperkitty.enable = true;
         };
 
+        environment.etc."mailman3/settings.py".text = lib.mkAfter ''
+          with open('/var/lib/mailman-web/settings_randomcat.json') as f:
+              globals().update(json.load(f))
+        '';
+
         systemd.services.mailman-settings = {
           script = lib.mkAfter ''
             ${pkgs.replace-secret}/bin/replace-secret '#REPLACE_SMTP_PASS#' "$CREDENTIALS_DIRECTORY/mailman-smtp-pass" /etc/mailman.cfg
+
+            install -m 0770 -o mailman -g mailman -T "$CREDENTIALS_DIRECTORY/django-config" "$mailmanWebDir/settings_randomcat.json"
           '';
 
           serviceConfig = {
-            LoadCredential = [ "mailman-smtp-pass" ];
+            LoadCredential = [
+              "mailman-smtp-pass"
+              "django-config"
+            ];
           };
         };
       };
@@ -83,13 +93,20 @@ in
 
       extraFlags = [
         "--load-credential=mailman-smtp-pass:agora-mailman-smtp-pass"
+        "--load-credential=django-config:agora-django-config"
       ];
     };
 
     systemd.services."container@agora-lists" = {
       serviceConfig = {
         LoadCredentialEncrypted = [
+          # A single line containing the SMTP password to use for mailman
           "agora-mailman-smtp-pass:${../secrets/agora-mailman-smtp-pass}"
+
+          # A JSON file containing config for django:
+          # Auth: EMAIL_BACKEND, EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_USE_SSL
+          # Sender: DEFAULT_FROM_EMAIL, SERVER_EMAIL
+          "agora-django-config:${../secrets/agora-django-config}"
         ];
       };
     };
