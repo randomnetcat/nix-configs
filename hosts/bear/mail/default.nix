@@ -4,6 +4,7 @@
 
     ./acme.nix
     ./maddy.nix
+    ./agora-lists.nix
   ];
 
   config = {

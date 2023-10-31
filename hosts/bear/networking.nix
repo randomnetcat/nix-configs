@@ -19,5 +19,10 @@
         linkConfig.RequiredForOnline = "routable";
       };
     };
+
+    # For container support
+    networking.nat.enable = true;
+    networking.nat.externalInterface = "enp0s6";
+    networking.nat.internalInterfaces = [ "ve-+" ];
   };
 }
