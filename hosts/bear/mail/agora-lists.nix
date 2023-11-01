@@ -51,6 +51,9 @@ in
           };
 
           webSettings = {
+            # Must be set for Hyperkitty to generate correct permalinks in Archived-At header.
+            FORCE_SCRIPT_NAME = "/lists";
+
             STATIC_URL = "lists/static/";
 
             # Per https://docs.mailman3.org/en/latest/config-web.html#setting-up-email
