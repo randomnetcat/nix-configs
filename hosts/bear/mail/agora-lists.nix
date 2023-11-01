@@ -61,6 +61,9 @@ in
             ACCOUNT_UNIQUE_EMAIL = true;
 
             POSTORIUS_TEMPLATE_BASE_URL = "http://localhost:80/lists";
+
+            DEFAULT_FROM_EMAIL = "django@agora.nomic.space";
+            SERVER_EMAIL = "django@agora.nomic.space";
           };
 
           webHosts = [
