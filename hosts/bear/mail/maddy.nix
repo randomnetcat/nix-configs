@@ -171,6 +171,7 @@ in
                         prepare_email regexp "agora-test(-.+)?@agora.nomic.space" "mailman@agora.nomic.space"
                         user_to_email static {
                             entry "mailman@agora.nomic.space" "mailman@agora.nomic.space"
+                            entry "django@agora.nomic.space" "django@agora.nomic.space"
                         }
                     }
                 }
