@@ -59,6 +59,8 @@ in
             ACCOUNT_EMAIL_VERIFICATION = "mandatory";
             ACCOUNT_DEFAULT_HTTP_PROTOCOL = "http";
             ACCOUNT_UNIQUE_EMAIL = true;
+
+            POSTORIUS_TEMPLATE_BASE_URL = "http://localhost:80/lists";
           };
 
           webHosts = [
