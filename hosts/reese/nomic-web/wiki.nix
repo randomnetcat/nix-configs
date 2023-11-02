@@ -24,7 +24,7 @@ in
           enable = true;
           name = "Infinite Nomic Wiki";
 
-          virtualHost = {
+          httpd.virtualHost = {
             hostName = wikiHost;
             adminAddr = "admin@randomcat.org";
 
