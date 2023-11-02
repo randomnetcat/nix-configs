@@ -55,18 +55,18 @@ in
             WikiEditor = null;
 
             CodeMirror = pkgs.fetchzip {
-              url = "https://web.archive.org/web/20221021033350if_/https://extdist.wmflabs.org/dist/extensions/CodeMirror-REL1_38-2e3d6dd.tar.gz";
-              sha256 = "Hp/4+tcHcKZXtwf2d2wfWAbw3Mmz1btRRCr+KAPL748=";
+              url = "https://web.archive.org/web/20231102025732if_/https://extdist.wmflabs.org/dist/extensions/CodeMirror-REL1_40-817396c.tar.gz";
+              sha256 = "MESclPvlMXt2pSIlCtTCF28vDLVMPHmnQtvLFGfbfXQ=";
             };
 
             MobileFrontend = pkgs.fetchzip {
-              url = "https://web.archive.org/web/20221030003242if_/https://extdist.wmflabs.org/dist/extensions/MobileFrontend-REL1_38-a2b388b.tar.gz";
-              sha256 = "ItCefiM06Ye4KFMWj1X8HVeQK0ir2TMH4S66bfqPgbA=";
+              url = "https://web.archive.org/web/20231102025347if_/https://extdist.wmflabs.org/dist/extensions/MobileFrontend-REL1_40-2ece372.tar.gz";
+              sha256 = "ulTXd7ubQ/4w/Xvs3VPxPKGLK+QdaIazDMIW/RiHpOI=";
             };
 
             DarkMode = pkgs.fetchzip {
-              url = "https://web.archive.org/web/20221030004052if_/https://extdist.wmflabs.org/dist/extensions/DarkMode-REL1_38-0fc14f5.tar.gz";
-              sha256 = "w4LV0e6NKaaYJRn/O+LomaiEup733RW/l1wTptS6hRo=";
+              url = "https://web.archive.org/web/20231023234922if_/https://extdist.wmflabs.org/dist/extensions/DarkMode-REL1_40-a1c3e67.tar.gz";
+              sha256 = "caPOiUYilMaIiPvI6OsgHR1/TFjih2YcejTgTNmbdE8=";
             };
           };
 
