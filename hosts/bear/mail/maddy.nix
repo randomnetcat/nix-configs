@@ -4,6 +4,25 @@ let
   cfg = config.randomcat.services.mail;
   primary = cfg.primaryDomain;
   allDomains = [ primary ] ++ cfg.extraDomains;
+
+  hyperkittyWebMailException = ''
+    # We allow Hyperkitty to send from any email only to the mailing list, so that web sending will work.
+    destination_in regexp "(agora-test@agora.nomic.space)" "$1" {
+        check {
+            authorize_sender {
+                prepare_email regexp ".+" "django@agora.nomic.space"
+
+                # Only the django user may use this ability
+                user_to_email static {
+                    entry "django@agora.nomic.space" "django@agora.nomic.space"
+                }
+            }
+        }
+
+        # Never, under any circumstances, allow it to route anywhere other than localhost
+        deliver_to &local_routing
+    }
+  '';
 in
 {
   config = {
@@ -188,26 +207,41 @@ in
             }
 
             source ${lib.concatStringsSep " " (lib.filter (d: d != "agora.nomic.space") allDomains)} {
-                check {
-                    authorize_sender {
-                        prepare_email &local_rewrites
-                        user_to_email identity
-                    }
-                }
+                ${hyperkittyWebMailException}
 
                 destination postmaster $(local_domains) {
+                    check {
+                        authorize_sender {
+                            prepare_email &local_rewrites
+                            user_to_email identity
+                        }
+                    }
+
                     deliver_to &local_routing
                 }
+
                 default_destination {
+                    check {
+                        authorize_sender {
+                            prepare_email &local_rewrites
+                            user_to_email identity
+                        }
+                    }
+
                     modify {
                         dkim $(primary_domain) $(local_domains) default
                     }
+
                     deliver_to &remote_queue
                 }
             }
 
             default_source {
-                reject 501 5.1.8 "Non-local sender domain"
+                ${hyperkittyWebMailException}
+
+                default_destination {
+                    reject 501 5.1.8 "Non-local sender domain"
+                }
             }
         }
 
