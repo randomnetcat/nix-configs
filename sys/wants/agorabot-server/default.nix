@@ -31,9 +31,14 @@ let
         type = types.int;
       };
 
-      tokenEncryptedFile = lib.mkOption {
+      tokenCredFile = lib.mkOption {
         type = types.path;
-        description = "Path to encrypted bot token.";
+        description = "Path to systemd encrypted bot token credential";
+      };
+
+      tokenCredName = lib.mkOption {
+        type = types.str;
+        description = "Name of systemd bot token credential (authenticated in enrypted file)";
       };
 
       secretConfigFiles = lib.mkOption {
@@ -69,20 +74,9 @@ in
   config =
     let
       tokenKeyNameOf = instance: "agorabot-discord-token-${instance}";
-      tokenCredName = "token";
       escapeSecretConfigPath = path: utils.escapeSystemdPath path;
       secretConfigExternalKeyName = { instance, secretPath }: "agorabot-config-${instance}-${escapeSecretConfigPath secretPath}";
       secretConfigInternalCredName = args: "config-" + (builtins.hashString "sha256" (secretConfigExternalKeyName args));
-
-      tokenKeyConfigOf = instanceName: instanceValue: let keyName = tokenKeyNameOf instanceName; in {
-        "${keyName}" = {
-          encryptedFile = instanceValue.tokenEncryptedFile;
-          dest = "/run/keys/${keyName}";
-          owner = "root";
-          group = "root";
-          permissions = "0640";
-        };
-      };
 
       makeSecretConfigKeyConfig = { instance, secretPath, localEncryptedFile }:
         let
@@ -99,7 +93,6 @@ in
         };
 
       makeKeysConfig = name: value: lib.mkMerge (
-          (lib.singleton (tokenKeyConfigOf name value)) ++
           (lib.mapAttrsToList (secretPath: secretValue: makeSecretConfigKeyConfig { instance = name; inherit secretPath; localEncryptedFile = secretValue.encryptedFile; }) value.secretConfigFiles)
       );
 
@@ -108,7 +101,7 @@ in
           "${name}" = {
             inherit (value) package dataVersion;
 
-            tokenPath = "\"$CREDENTIALS_DIRECTORY\"/${lib.escapeShellArg tokenCredName}";
+            tokenPath = "\"$CREDENTIALS_DIRECTORY\"/${lib.escapeShellArg value.tokenCredName}";
 
             configGeneratorPackage =
               let
@@ -193,10 +186,10 @@ in
                   in
                   "${credName}:/run/keys/${keyName}"
                 )
-                (builtins.attrNames value.secretConfigFiles)
-                ++ [
-                  "${tokenCredName}:/run/keys/${tokenKeyNameOf instanceName}"
-                ];
+                (builtins.attrNames value.secretConfigFiles);
+              LoadCredentialEncrypted = [
+                "${value.tokenCredName}:${value.tokenCredFile}"
+              ];
             };
           };
         };

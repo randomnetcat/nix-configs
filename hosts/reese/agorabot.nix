@@ -9,7 +9,8 @@
         "agora-prod" = {
           inherit package;
 
-          tokenEncryptedFile = ./secrets/discord-token-agora-prod.age;
+          tokenCredName = "agorabot-agora-prod-token";
+          tokenCredFile = ./secrets/agorabot-agora-prod-token;
 
           configSource = ./public-config/agorabot/agora-prod;
 
@@ -37,7 +38,9 @@
         "secret-hitler" = {
           inherit package;
 
-          tokenEncryptedFile = ./secrets/discord-token-secret-hitler.age;
+          tokenCredName = "agorabot-secret-hitler-token";
+          tokenCredFile = ./secrets/agorabot-secret-hitler-token;
+
           configSource = ./public-config/agorabot/secret-hitler;
           dataVersion = 1;
         };
