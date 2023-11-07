@@ -85,7 +85,11 @@ in
           script = lib.mkAfter ''
             ${pkgs.replace-secret}/bin/replace-secret '#REPLACE_SMTP_PASS#' "$CREDENTIALS_DIRECTORY/mailman-smtp-pass" /etc/mailman.cfg
 
-            install -m 0770 -o mailman -g mailman -T "$CREDENTIALS_DIRECTORY/django-config" "$mailmanWebDir/settings_randomcat.json"
+            # First copy the secret to a private directory (mode 0700) then to the target, so it can't be accessed in the interim.
+            SECRET_DIR="$(mktemp -d)"
+            install -m 0440 -o mailman-web -g mailman -T -- "$CREDENTIALS_DIRECTORY/django-config" "$SECRET_DIR/django-config"
+            mv -T -- "$SECRET_DIR/django-config" "$mailmanWebDir/settings_randomcat.json"
+            rmdir -- "$SECRET_DIR"
           '';
 
           serviceConfig = {
@@ -120,7 +124,6 @@ in
 
           # A JSON file containing config for django:
           # Auth: EMAIL_BACKEND, EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_USE_SSL
-          # Sender: DEFAULT_FROM_EMAIL, SERVER_EMAIL
           "agora-django-config:${../secrets/agora-django-config}"
         ];
       };
