@@ -1,8 +1,6 @@
 { config, lib, pkgs, inputs, ... }:
 
 let
-  configSecretPath = "/run/keys/agora-ia-config";
-
   listNames = [
     "agora-discussion"
     "agora-business"
@@ -11,14 +9,6 @@ let
 
   itemName = "agoranomic";
 in {
-  randomcat.secrets.secrets."agora-ia-config" = {
-    encryptedFile = ../secrets/agora-ia-config;
-    dest = configSecretPath;
-    owner = "root";
-    group = "root";
-    permissions = "700";
-  };
-
   systemd.services."archive-agora" = {
     serviceConfig = {
       DynamicUser = true;
@@ -50,7 +40,7 @@ in {
       RuntimeDirectory = "archive-agora";
       RuntimeDirectoryMode = "700";
 
-      LoadCredential = "ia-config:${configSecretPath}";
+      LoadCredentialEncrypted = "agora-ia-config:${../secrets/agora-ia-config}";
     };
 
     script = ''
@@ -64,7 +54,7 @@ in {
         ${pkgs.wget}/bin/wget -c -- "https://agora:nomic@mailman.agoranomic.org/archives/${list}.mbox"
 
         ${pkgs.internetarchive}/bin/ia \
-          --config-file="$CREDENTIALS_DIRECTORY/ia-config" \
+          --config-file="$CREDENTIALS_DIRECTORY/agora-ia-config" \
           upload \
           '${itemName}' \
           --remote-name='lists/${list}.mbox' \
