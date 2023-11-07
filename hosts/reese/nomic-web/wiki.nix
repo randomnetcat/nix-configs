@@ -139,12 +139,28 @@ in
           RewriteRule "^${wikiSubpath}/rest.php/(.*)$" "/rest.php/$1" [PT]
         '';
 
-        systemd.tmpfiles.rules = [
-          "C /run/keys/password-file - - - - /host-keys/password-file"
-          "z /run/keys/password-file 750 root keys - -"
-          "C /run/keys/smtp-pass - - - - /host-keys/smtp-pass"
-          "z /run/keys/smtp-pass 750 root keys - -"
-        ];
+        systemd.services.mediawiki-creds = {
+          before = [ "mediawiki-init.service" ];
+          requiredBy = [ "mediawiki-init.service" ];
+
+          script = ''
+            SECRET_DIR="$(mktemp -d)"
+            install -m 0750 -o root -g keys -T -- "$CREDENTIALS_DIRECTORY/smtp-pass" "$SECRET_DIR/smtp-pass"
+            install -m 0750 -o root -g keys -T -- "$CREDENTIALS_DIRECTORY/password-file" "$SECRET_DIR/password-file"
+            mv -T -- "$SECRET_DIR/smtp-pass" /run/keys/smtp-pass
+            mv -T -- "$SECRET_DIR/password-file" /run/keys/password-file
+            rmdir -- "$SECRET_DIR"
+          '';
+
+          serviceConfig = {
+            Type = "oneshot";
+            RemainAfterExit = true;
+            PrivateTmp = true;
+            LoadCredential = [ "smtp-pass" "password-file" ];
+          };
+
+          unitConfig.RequiresMountsFor = [ "/run/keys" ];
+        };
 
         users.users.mediawiki.extraGroups = [ "keys" ];
       };
@@ -152,19 +168,26 @@ in
       ephemeral = false;
       autoStart = true;
 
-      bindMounts = {
-        "/host-keys" = {
-          hostPath = "/run/keys/containers/wiki";
-          isReadOnly = true;
-        };
-      };
-
       privateNetwork = true;
 
       hostAddress = containers.wiki.hostIP4;
       localAddress = containers.wiki.localIP4;
       hostAddress6 = containers.wiki.hostIP6;
       localAddress6 = containers.wiki.localIP6;
+
+      extraFlags = [
+        "--load-credential=smtp-pass:wiki-smtp-pass"
+        "--load-credential=password-file:wiki-password-file"
+      ];
+    };
+
+    systemd.services."container@wiki" = {
+      serviceConfig = {
+        LoadCredentialEncrypted = [
+          "wiki-smtp-pass:${../secrets/wiki-smtp-pass}"
+          "wiki-password-file:${../secrets/wiki-password-file}"
+        ];
+      };
     };
 
     services.nginx.virtualHosts."${wikiHost}" = {
@@ -174,24 +197,6 @@ in
       locations."${wikiSubpath}/".proxyPass = "http://[${containers.wiki.localIP6}]:${toString wikiPort}/";
       locations."${wikiSubpath}/rest.php/".proxyPass = "http://[${containers.wiki.localIP6}]:${toString wikiPort}/wiki/rest.php/";
       locations."=${wikiSubpath}/images/logo".alias = wikiLogo;
-    };
-
-    randomcat.secrets.secrets."wiki-password-file" = {
-      encryptedFile = ../secrets/wiki-password-file;
-      dest = "/run/keys/containers/wiki/password-file";
-      owner = "root";
-      group = "root";
-      permissions = "700";
-      realFile = true;
-    };
-
-    randomcat.secrets.secrets."wiki-smtp-pass" = {
-      encryptedFile = ../secrets/wiki-smtp-pass;
-      dest = "/run/keys/containers/wiki/smtp-pass";
-      owner = "root";
-      group = "root";
-      permissions = "700";
-      realFile = true;
     };
   };
 }
