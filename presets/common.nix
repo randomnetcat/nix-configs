@@ -31,7 +31,7 @@
 
       {
         assertion = inputs.nixpkgs.outPath == (toString pkgs.path);
-        message = "Nixpkgs path should be the same as nixpkgs input";
+        message = "Nixpkgs path (${inputs.nixpkgs.outPath}) should be the same as nixpkgs input (${toString pkgs.path})";
       }
     ];
   };
