@@ -123,6 +123,7 @@
         };
 
         shaw = defineSystem {
+          pkgsFlake = nixpkgsSmall;
           system = "x86_64-linux";
           modules = [ ./hosts/shaw ];
         };
