@@ -10,7 +10,7 @@
 
   hardware.enableAllFirmware = true;
 
-  boot.initrd.availableKernelModules = [ "achi" "xchi_pci" "usbhid" "uas" "usb_storage" "sd_mod" "sdhci_pci" ];
+  boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "usbhid" "uas" "usb_storage" "sd_mod" "sdhci_pci" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
