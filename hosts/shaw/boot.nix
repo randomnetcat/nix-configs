@@ -9,12 +9,6 @@
     boot.loader.generationsDir.copyKernels = true;
 
     boot.loader.systemd-boot.editor = false;
-
-    fileSystems."/boot" = {
-      device = "/dev/disk/by-partlabel/ESP";
-      fsType = "vfat";
-    };
-
     boot.loader.efi.efiSysMountPoint = "/boot";
   };
 }
