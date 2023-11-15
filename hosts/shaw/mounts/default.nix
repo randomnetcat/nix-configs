@@ -7,6 +7,13 @@
 
     boot.kernelParams = [ "nohibernate" ]; # Cannot hibernate with ZFS or random encryption swap
 
+    boot.initrd.luks.devices = {
+      "cryptroot" = {
+        device = "/dev/disk/by-partuuid/996f43f1-1fba-4e42-acd8-e5a17b110311";
+        preLVM = true;
+      };
+    };
+
     fileSystems =
       let
         zfsMount = fs: {
@@ -17,7 +24,7 @@
       in
       {
         "/boot" = {
-          device = "/dev/disk/by-partlabel/ESP";
+          device = "/dev/disk/by-partuuid/d6a4624b-d26d-4ad3-9400-89f23f8faf64";
           fsType = "vfat";
 
           options = [
