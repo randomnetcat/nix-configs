@@ -121,6 +121,11 @@
           system = "aarch64-linux";
           modules = [ ./hosts/bear ];
         };
+
+        shaw = defineSystem {
+          system = "x86_64-linux";
+          modules = [ ./hosts/shaw ];
+        };
       };
 
       remoteConfigs = {
