@@ -16,6 +16,17 @@
         };
       in
       {
+        fileSystems."/boot" = {
+          device = "/dev/disk/by-partlabel/ESP";
+          fsType = "vfat";
+
+          options = [
+            "uid=0"
+            "gid=0"
+            "umask=077"
+          ];
+        };
+
         "/" = zfsMount "system/root";
         "/nix" = zfsMount "local/nix";
       };
