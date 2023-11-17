@@ -129,7 +129,7 @@ in
           };
 
           locations."/api/v1/streaming/" = {
-            proxyPass = "http://${localIP4}:${toString containerConfig.services.mastodon.streamingPort}/";
+            proxyPass = "http://${localIP4}/api/v1/streaming/";
             proxyWebsockets = true;
           };
         };
@@ -209,6 +209,7 @@ in
           inherit localDomain;
           trustedProxy = hostIP4;
           enableUnixSocket = false;
+          streamingProcesses = 1;
 
           smtp = {
             createLocally = false;
@@ -246,10 +247,36 @@ in
 
         services.nginx = {
           enable = true;
+          recommendedProxySettings = true;
 
           virtualHosts."${webDomain}" = {
             default = true;
+
             locations."/system/".alias = "/var/lib/mastodon/public-system/";
+
+            locations."/api/v1/streaming/" = {
+              proxyPass = "http://mastodon-streaming";
+              proxyWebsockets = true;
+            };
+          };
+
+          upstreams.mastodon-streaming = {
+            extraConfig = ''
+              least_conn;
+
+              # https://www.nginx.com/blog/avoiding-top-10-nginx-configuration-mistakes/#keepalive
+              keepalive ${config.services.mastodon.streamingProcesses * 2};
+            '';
+
+            servers =
+              builtins.listToAttrs (
+                map
+                  (i: {
+                    name = "unix:/run/mastodon-streaming/streaming-${toString i}.socket";
+                    value = {};
+                  })
+                  (lib.range 1 config.services.mastodon.streamingProcesses)
+              );
           };
         };
 
