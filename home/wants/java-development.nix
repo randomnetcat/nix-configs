@@ -8,24 +8,28 @@
   options = {
   };
 
-  config = {
-    home.file."dev/jdks/current".source = pkgs.jdk.home;
-    home.file."dev/jdks/17".source = pkgs.jdk17.home;
-    home.file."dev/jdks/11".source = pkgs.jdk11.home;
+  config =
+    let
+      currentJDK = pkgs.jdk21;
+    in
+    {
+      home.file."dev/jdks/current".source = currentJDK.home;
+      home.file."dev/jdks/17".source = pkgs.jdk17.home;
+      home.file."dev/jdks/11".source = pkgs.jdk11.home;
 
-    programs.java.enable = true;
-    programs.java.package = pkgs.jdk;
+      programs.java.enable = true;
+      programs.java.package = pkgs.jdk;
 
-    home.packages = [
-      pkgs.jetbrains.idea-ultimate
-      (pkgs.gradle.override {
-        javaToolchains = [
-          pkgs.jdk11
-          pkgs.jdk17
-          pkgs.jdk
-        ];
-      })
-      pkgs.jd-gui
-    ];
-  };
+      home.packages = [
+        pkgs.jetbrains.idea-ultimate
+        (pkgs.gradle.override {
+          javaToolchains = [
+            pkgs.jdk11
+            pkgs.jdk17
+            currentJDK
+          ];
+        })
+        pkgs.jd-gui
+      ];
+    };
 }
