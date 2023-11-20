@@ -15,17 +15,28 @@
         "server_name": "libera",
         "channel_name": "##nomic",
         "command_prefix": "!"
+      },
+      "libera_nomic_drafting": {
+        "server_name": "libera",
+        "channel_name": "##nomic-drafting",
+        "command_prefix": "!"
       }
     },
     "discord": {
       "agora_serious_business": {
         "channel_id": "724079019578097684"
+      },
+      "agora_drafting": {
+        "channel_id": "770777770182836277"
       }
     }
   },
   "bridges": [
     {
       "endpoints": ["libera_nomic", "agora_serious_business"]
+    },
+    {
+      "endpoints": ["libera_nomic_drafting", "agora_drafting"]
     }
   ]
 }
