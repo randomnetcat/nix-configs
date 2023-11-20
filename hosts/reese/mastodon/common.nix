@@ -265,7 +265,7 @@ in
               least_conn;
 
               # https://www.nginx.com/blog/avoiding-top-10-nginx-configuration-mistakes/#keepalive
-              keepalive ${config.services.mastodon.streamingProcesses * 2};
+              keepalive ${toString (config.services.mastodon.streamingProcesses * 2)};
             '';
 
             servers =
