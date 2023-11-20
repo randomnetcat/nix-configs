@@ -2,7 +2,7 @@
 
 {
   config = {
-    services.zfs.expandOnBoot = [ "rpool_zpnzkc" ];
+    # services.zfs.expandOnBoot = [ "rpool_zpnzkc" ];
 
     services.sanoid = {
       enable = true;
