@@ -23,7 +23,6 @@
     ./printing.nix
     ./security.nix
     ./vms.nix
-    ./pi-development.nix # TEMPORARY
   ];
 
   options = {
