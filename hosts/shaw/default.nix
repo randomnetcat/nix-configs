@@ -7,7 +7,8 @@
     ../../presets/server.nix
     ../../sys/wants/tailscale.nix
 
-    ./mounts/default.nix
+    ./mounts/system.nix
+    ./moutns/data.nix
 
     ./boot.nix
     ./networking.nix
