@@ -41,12 +41,16 @@
     # disabled the in-tree it87 module, which does work. However, it modifies
     # the kernel derivation, so if we did that we could no longer use the
     # binary caches.
+    # 
+    # Another option would be to modify the it87 module to build a .ko.xz file.
+    # However, this wouldn't be resilient against future changes in kernel
+    # module package (e.g. if the kernel moved to zstd compression with a .zst
+    # file, then that might again take precedence over our .xz file).
     #
     # Instead, we build the modified it87 module, then move the built result
     # from the "kernel" directory to the "extra" directory. The "extra"
-    # directory is for out-of-tree modules, and it takes precedence over
-    # in-kernel modules.So, it will actually take precedence over the in-tree
-    # module, as it should.
+    # directory is for out-of-tree modules, so the modified it87 module will
+    # take precedence over the in-tree one, as it should.
 
     boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages.extend (self: super: {
       it87 = super.it87.overrideAttrs (old: rec {
