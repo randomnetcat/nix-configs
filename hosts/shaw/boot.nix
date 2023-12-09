@@ -25,7 +25,7 @@
           owner = "frankcrawford";
           repo = "it87";
           rev = "6392311da76b4868efd7b6db8101e10f9e453c75";
-          sha256 = lib.fakeSha256;
+          sha256 = "bletkm02WDhhI9dXAPnxuS9uIr3rk4Af7GohwwSM+WQ=";
         };
       });
     });
