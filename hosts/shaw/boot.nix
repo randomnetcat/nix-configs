@@ -31,7 +31,7 @@
     });
 
     boot.extraModulePackages = [
-      config.boot.kernelPackages.it87;
+      config.boot.kernelPackages.it87
     ];
   };
 }
