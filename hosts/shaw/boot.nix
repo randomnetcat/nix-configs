@@ -15,7 +15,7 @@
       enable = true;
       emergencyAccess = "$y$j9T$VFWFsSdjfFxZ0ulNmde6z/$BGUb8vViS0moC3YLGdCF9Y4lrB697tO9AM3aFFoKpB3";
 
-      networks."50-enp4s0" = {
+      network.networks."50-enp4s0" = {
         matchConfig.Name = "enp4s0";
 
         networkConfig = {
@@ -26,7 +26,7 @@
         # linkConfig.RequiredForOnline = "routable";
       };
 
-      networks."50-enp3s0" = {
+      network.networks."50-enp3s0" = {
         matchConfig.Name = "enp3s0";
 
         networkConfig = {
