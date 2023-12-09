@@ -71,5 +71,10 @@
         '';
       }))
     ];
+
+    # Required per https://gist.github.com/johndavisnz/bae122274fc6f0e006fdf0bc92fe6237 (part 3)
+    boot.exraModprobeConfig = ''
+      options it87 fix_pwm_polarity=1
+    '';
   };
 }
