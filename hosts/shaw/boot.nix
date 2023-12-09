@@ -16,10 +16,14 @@
     #   emergencyAccess = "$y$j9T$VFWFsSdjfFxZ0ulNmde6z/$BGUb8vViS0moC3YLGdCF9Y4lrB697tO9AM3aFFoKpB3";
     # };
 
+    boot.kernelParams = [
+      "acpi_enforce_resources=lax"
+    ];
+
     boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages.extend (self: super: {
       it87 = super.it87.overrideAttrs (old: rec {
-        name = "it87-${version}-${self.kernel.version}";
-        version = "unstable-2023-11-11";
+        # name = "it87-${version}-${self.kernel.version}";
+        # version = "unstable-2023-11-11";
 
         src = pkgs.fetchFromGitHub {
           owner = "frankcrawford";
