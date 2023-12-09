@@ -8,7 +8,7 @@
     ../../sys/wants/tailscale.nix
 
     ./mounts/system.nix
-    ./moutns/data.nix
+    ./mounts/data.nix
 
     ./boot.nix
     ./networking.nix
