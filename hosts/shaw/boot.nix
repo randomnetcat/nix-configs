@@ -11,11 +11,6 @@
     boot.loader.systemd-boot.editor = false;
     boot.loader.efi.efiSysMountPoint = "/boot";
 
-    # boot.initrd.systemd = {
-    #   enable = true;
-    #   emergencyAccess = "$y$j9T$VFWFsSdjfFxZ0ulNmde6z/$BGUb8vViS0moC3YLGdCF9Y4lrB697tO9AM3aFFoKpB3";
-    # };
-
     # Okay, this is *incredibly* stupid.
     # 
     # The kernel includes a builtin it87 module, but it's too old, and we can't
