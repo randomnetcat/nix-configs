@@ -67,13 +67,13 @@
         fixupPhase = let kernelVersion = config.boot.kernelPackages.kernel.version; in ''
           ${old.fixupPhase or ""}
 
-          mv -- ${lib.escapeShellArg "lib/modules/${kernelVersion}/kernel"} ${lib.escapeShellArg "lib/modules/${kernelVersion}/extra"}
+          mv -- "$out"/${lib.escapeShellArg "lib/modules/${kernelVersion}/kernel"} "$out"/${lib.escapeShellArg "lib/modules/${kernelVersion}/extra"}
         '';
       }))
     ];
 
     # Required per https://gist.github.com/johndavisnz/bae122274fc6f0e006fdf0bc92fe6237 (part 3)
-    boot.exraModprobeConfig = ''
+    boot.extraModprobeConfig = ''
       options it87 fix_pwm_polarity=1
     '';
   };
