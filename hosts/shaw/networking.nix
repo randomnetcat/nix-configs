@@ -8,21 +8,21 @@
     systemd.network = {
       enable = true;
 
-      networks."50-enp0s4" = {
-        matchConfig.Name = "enp0s4";
+      networks."50-eth" = {
+        matchConfig.Name = "enp4s0";
 
         networkConfig = {
           DHCP = "ipv4";
           IPv6AcceptRA = true;
         };
 
-        linkConfig.RequiredForOnline = "routable";
+        # linkConfig.RequiredForOnline = "routable";
       };
     };
 
     # For container support
-    networking.nat.enable = true;
-    networking.nat.externalInterface = "enp0s4";
-    networking.nat.internalInterfaces = [ "ve-+" ];
+    # networking.nat.enable = true;
+    # networking.nat.externalInterface = "enp0s4";
+    # networking.nat.internalInterfaces = [ "ve-+" ];
   };
 }
