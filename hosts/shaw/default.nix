@@ -12,6 +12,8 @@
     ./boot.nix
     ./networking.nix
     ./filesystem.nix
+
+    ./tailscale.nix
   ];
 
   options = {
