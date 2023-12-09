@@ -29,5 +29,9 @@
         };
       });
     });
+
+    boot.extraModulePackages = [
+      config.boot.kernelPackages.it87;
+    ];
   };
 }
