@@ -24,7 +24,7 @@
       system = "x86_64-linux";
     };
 
-    boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+    # boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
 
     randomcat.services.tailscale = {
       enable = true;
