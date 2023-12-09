@@ -11,11 +11,34 @@
     boot.loader.systemd-boot.editor = false;
     boot.loader.efi.efiSysMountPoint = "/boot";
 
-    boot.initrd.network = {
+    boot.initd.systemd = {
       enable = true;
-      udhcpc.enable = true;
-      flushBeforeStage2 = true;
+      emergencyAccess = "$y$j9T$VFWFsSdjfFxZ0ulNmde6z/$BGUb8vViS0moC3YLGdCF9Y4lrB697tO9AM3aFFoKpB3";
 
+      networks."50-enp4s0" = {
+        matchConfig.Name = "enp4s0";
+
+        networkConfig = {
+          DHCP = "ipv4";
+          IPv6AcceptRA = true;
+        };
+
+        # linkConfig.RequiredForOnline = "routable";
+      };
+
+      networks."50-enp3s0" = {
+        matchConfig.Name = "enp3s0";
+
+        networkConfig = {
+          DHCP = "ipv4";
+          IPv6AcceptRA = true;
+        };
+
+        # linkConfig.RequiredForOnline = "routable";
+      };
+    };
+
+    boot.initrd.network = {
       ssh = {
         enable = true;
         port = 33;
