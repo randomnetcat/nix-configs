@@ -22,8 +22,8 @@
 
     boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages.extend (self: super: {
       it87 = super.it87.overrideAttrs (old: rec {
-        # name = "it87-${version}-${self.kernel.version}";
-        # version = "unstable-2023-11-11";
+        name = "it87-${version}-${self.kernel.version}";
+        version = "unstable-2023-11-11";
 
         src = pkgs.fetchFromGitHub {
           owner = "frankcrawford";
