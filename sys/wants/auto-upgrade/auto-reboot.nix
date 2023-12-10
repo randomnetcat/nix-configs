@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 
 {
   imports = [
@@ -8,7 +8,7 @@
   config = {
     system.autoUpgrade = {
       operation = "switch";
-      allowReboot = true;
+      allowReboot = lib.mkDefault true;
     };
   };
 }
