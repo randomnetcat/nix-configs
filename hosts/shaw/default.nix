@@ -39,6 +39,12 @@
     system.autoUpgrade.allowReboot = false;
     system.autoUpgrade.rebootWindow = null;
 
+    # For syncoid
+    environment.systemPackages = [
+      pkgs.mbuffer
+      pkgs.lzop
+    ];
+
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions
     # on your system were taken. It‘s perfectly fine and recommended to leave
