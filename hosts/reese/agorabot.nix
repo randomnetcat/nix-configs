@@ -1,26 +1,28 @@
 { config, pkgs, inputs, ... }:
 
 {
-  config = {
-    randomcat.services.agorabot-server = {
-      enable = true;
+  imports = [
+    ../../sys/wants/agorabot
+  ];
 
+  config = {
+    randomcat.services.agorabot = {
       instances = let package = (pkgs.extend inputs.agorabot-prod.overlays.default).randomcat.agorabot; in {
         "agora-prod" = {
+          enable = true;
+
           inherit package;
-
-          tokenCredName = "agorabot-agora-prod-token";
+          dataVersion = 1;
           tokenCredFile = ./secrets/agorabot-agora-prod-token;
-
           configSource = ./public-config/agorabot/agora-prod;
 
-          secretConfigFiles = {
+          secretConfig = {
             "digest/msmtp.conf" = {
-              encryptedFile = ./secrets/discord-config-agora-prod-msmtp.age;
+              credFile = ./secrets/agorabot-agora-prod-config-digest-msmtp.conf;
             };
           };
 
-          extraConfigFiles = {
+          extraConfig = {
             "digest/mail.json" = {
               text = ''
                 {
@@ -31,16 +33,13 @@
               '';
             };
           };
-
-          dataVersion = 1;
         };
 
         "secret-hitler" = {
+          enable = true;
+
           inherit package;
-
-          tokenCredName = "agorabot-secret-hitler-token";
           tokenCredFile = ./secrets/agorabot-secret-hitler-token;
-
           configSource = ./public-config/agorabot/secret-hitler;
           dataVersion = 1;
         };

@@ -3,7 +3,6 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ../../presets/server.nix
-    ../../sys/wants/agorabot-server
     ../../sys/wants/trungle-access.nix
     ../../sys/wants/tailscale.nix
     ../../sys/impl/secrets
