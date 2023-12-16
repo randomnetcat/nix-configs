@@ -8,6 +8,11 @@ in
 {
   systemd.services."diplomacy-bot" = {
     wantedBy = [ "multi-user.target" ];
+    wants = [ "network-online.target" ];
+    after = [ "network-online.target" ];
+
+    startLimitBurst = 10;
+    startLimitIntervalSec = 30 * 60;
 
     serviceConfig = {
       DynamicUser = true;
@@ -34,6 +39,9 @@ in
       SystemCallArchitectures = "native";
       StateDirectory = "diplomacy-bot/prod";
       StateDirectoryMode = "700";
+
+      Restart = "on-failure";
+      RestartSec = "30s";
 
       LoadCredentialEncrypted = [
         "diplomacy-bot-token:${../secrets/diplomacy-bot-token}"
