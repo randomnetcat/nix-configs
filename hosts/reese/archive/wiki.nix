@@ -9,14 +9,6 @@ let
   '';
 in
 {
-  randomcat.secrets.secrets."wiki-ia-keys" = {
-    encryptedFile = ../secrets/wiki-ia-keys;
-    dest = "/run/keys/wiki-ia-keys";
-    owner = "root";
-    group = "root";
-    permissions = "700";
-  };
-
   systemd.services."archive-wikis" = {
     serviceConfig = {
       DynamicUser = true;
@@ -44,7 +36,9 @@ in
       StateDirectory = "archive-wikis";
       StateDirectoryMode = "700";
 
-      LoadCredential="ia-keys:/run/keys/wiki-ia-keys";
+      LoadCredentialEncrypted = [
+        "wiki-ia-keys:${../secrets/wiki-ia-keys}"
+      ];
     };
 
     script = ''
@@ -72,7 +66,7 @@ in
           "-u"
           "--logfile=/dev/null"
         ])
-        "--keysfile=\"\${CREDENTIALS_DIRECTORY}/ia-keys\""
+        "--keysfile=\"\${CREDENTIALS_DIRECTORY}/wiki-ia-keys\""
         (lib.escapeShellArg "${apisFile}")
       ]}
     '';
