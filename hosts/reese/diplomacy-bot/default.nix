@@ -6,14 +6,6 @@ let
   configFile = "${./config.json}";
 in
 {
-  randomcat.secrets.secrets."diplomacy-bot-token" = {
-    encryptedFile = ../secrets/diplomacy-bot-token;
-    dest = "/run/keys/diplomacy-bot-token";
-    owner = "root";
-    group = "root";
-    permissions = "700";
-  };
-
   systemd.services."diplomacy-bot" = {
     wantedBy = [ "multi-user.target" ];
 
@@ -43,7 +35,9 @@ in
       StateDirectory = "diplomacy-bot/prod";
       StateDirectoryMode = "700";
 
-      LoadCredential="token:/run/keys/diplomacy-bot-token";
+      LoadCredentialEncrypted = [
+        "diplomacy-bot-token:${../secrets/diplomacy-bot-token}"
+      ];
     };
 
     script = ''
@@ -59,7 +53,7 @@ in
         "config.json"
       ]}
 
-      ln -sfT -- "$CREDENTIALS_DIRECTORY/token" key.txt
+      ln -sfT -- "$CREDENTIALS_DIRECTORY/diplomacy-bot-token" key.txt
 
       if [ ! -e game.json ]; then
         ${lib.escapeShellArgs [
