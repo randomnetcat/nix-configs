@@ -147,6 +147,11 @@
           sshUser = "root";
           remoteBuild = true;
         };
+
+        shaw = {
+          hostname = "shaw";
+          sshUser = "root";
+        };
       };
 
       deployNodes = lib.mapAttrs (name: value: {
