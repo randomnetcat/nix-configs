@@ -15,6 +15,7 @@
     ./filesystem.nix
 
     ./tailscale.nix
+    ./archive.nix
   ];
 
   options = {
