@@ -5,7 +5,6 @@
     ../../presets/server.nix
     ../../sys/wants/trungle-access.nix
     ../../sys/wants/tailscale.nix
-    ../../sys/impl/secrets
 
     ./system.nix
     ./mounts/system
@@ -38,11 +37,6 @@
   boot.tmp.cleanOnBoot = true;
   networking.hostName = "reese";
   networking.firewall.allowPing = true;
-
-  age.identityPaths = [
-    "/root/host_keys/ssh_host_ed25519_key"
-    "/root/host_keys/ssh_host_rsa_key"
-  ];
 
   features.trungle-access.enable = true;
 

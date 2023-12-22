@@ -24,11 +24,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    agenix = {
-      url = "github:ryantm/agenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     wikiteam3-nix = {
       url = "github:randomnetcat/nix-wrappers?dir=wikiteam3";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -52,7 +47,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, agenix, deploy-rs, flake-utils, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, deploy-rs, flake-utils, ... }@inputs:
     let
       lib = nixpkgs.lib;
 
@@ -75,8 +70,6 @@
 
         home-manager.nixosModules.home-manager
         homeManagerNurOverlay
-
-        agenix.nixosModules.default
       ];
 
       systemModules = path: commonModules ++ [ path ];
