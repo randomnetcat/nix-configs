@@ -121,7 +121,8 @@ in
               'url' => $wgInternalServer . $wgRestPath,
             ];
 
-            wfLoadExtension('Parosid', 'vendor/wikimedia/parsoid/extension.json');
+            // From https://www.mediawiki.org/wiki/Parsoid
+            wfLoadExtension('Parsoid', "$IP/vendor/wikimedia/parsoid/extension.json");
 
             // SVG
             $wgSVGConverters = [
