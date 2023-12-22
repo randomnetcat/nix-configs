@@ -21,7 +21,7 @@
         bucketRegion = "us-east-005";
         bucketHostname = "s3.us-east-005.backblazeb2.com";
         bucketEndpoint = "https://s3.us-east-005.backblazeb2.com";
-        encryptedKeyFile = ../secrets/mastodon-personal-s3;
+        encryptedCredFile = ../secrets/mastodon-personal-object-storage-keys;
       };
     };
   };

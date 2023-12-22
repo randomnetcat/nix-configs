@@ -60,9 +60,9 @@ let
           type = types.str;
         };
 
-        encryptedKeyFile = lib.mkOption {
+        encryptedCredFile = lib.mkOption {
           type = types.path;
-          description = "Encrypted file in systemd env format with AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY";
+          description = "systemd encrypted credential file, decryptnig to a file in systemd env format with AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY";
         };
       };
     };
@@ -77,28 +77,6 @@ in
   };
 
   config = {
-    randomcat.secrets.secrets = lib.mkMerge [
-      {
-        "mastodon-smtp-pass" = {
-          encryptedFile = ../secrets/mastodon-smtp-pass;
-          dest = "/run/keys/mastodon-common/smtp-pass";
-          owner = "root";
-          group = "root";
-          permissions = "700";
-          realFile = true;
-        };
-      }
-
-      (lib.mapAttrs' (n: v: lib.nameValuePair "mastodon-${n}-object-storage-keys" {
-        encryptedFile = v.objectStorage.encryptedKeyFile;
-        dest = "/run/keys/mastodon-instance/${n}/object-storage-keys";
-        owner = "root";
-        group = "root";
-        permissions = "700";
-        realFile = true;
-      }) (lib.filterAttrs (n: v: v.objectStorage.enable) enabledInstances))
-    ];
-
     services.nginx = lib.mkMerge (lib.concatMap (conf: let containerConfig = config.containers."${conf.containerName}".config; inherit (conf) localIP4; in [
       {
         virtualHosts."${conf.localDomain}" = {
@@ -282,22 +260,27 @@ in
 
         # Use a unit instead of tmpfiles so that we can delay execution until
         # after all mounts are done.
-        systemd.services.load-mastodon-host-keys = {
+        systemd.services.mastodon-init-creds = {
           requiredBy = [ "mastodon-init-dirs.service" ];
           before = [ "mastodon-init-dirs.service" ];
 
           unitConfig = {
-            RequiresMountsFor = lib.mkMerge [
-              [
-                "/run/keys"
-                "/common-keys"
-              ]
-              (lib.mkIf conf.objectStorage.enable ["/instance-keys"])
+            RequiresMountsFor = [
+              "/run/keys"
             ];
 
             Type = "oneshot";
             RemainAfterExit = true;
           };
+
+          serviceConfig.LoadCredential = lib.mkMerge [
+            [
+              "smtp-pass:smtp-pass"
+            ]
+            (lib.mkIf conf.objectStorage.enable [
+              "object-storage-keys:object-storage-keys"
+            ])
+          ];
 
           script = ''
             umask 077
@@ -309,8 +292,8 @@ in
               chmod 750 -- "$TARGET_PATH"
             }
 
-            load_key smtp-pass /common-keys/smtp-pass
-            ${lib.optionalString conf.objectStorage.enable "load_key object-storage-keys /instance-keys/object-storage-keys"}
+            load_key smtp-pass "$CREDENTIALS_DIRECTORY/smtp-pass"
+            ${lib.optionalString conf.objectStorage.enable "load_key object-storage-keys \"$CREDENTIALS_DIRECTORY/object-storage-keys\""}
           '';
         };
 
@@ -327,22 +310,32 @@ in
       ephemeral = false;
       autoStart = true;
 
-      bindMounts = {
-        "/common-keys" = {
-          hostPath = "/run/keys/mastodon-common";
-          isReadOnly = true;
-        };
-
-        "/instance-keys" = lib.mkIf conf.objectStorage.enable {
-          hostPath = "/run/keys/mastodon-instance/${name}";
-          isReadOnly = true;
-        };
-      };
-
       privateNetwork = true;
 
       hostAddress = hostIP4;
       localAddress = localIP4;
+
+      extraFlags = lib.mkMerge [
+        [
+          "--load-credential=smtp-pass:mastodon-smtp-pass"
+        ]
+        (lib.mkIf conf.objectStorage.enable [
+          "--load-credential=object-storage-keys:mastodon-${name}-object-storage-keys"
+        ])
+      ];
+    })) enabledInstances;
+
+    systemd.services = lib.mapAttrs' (name: conf: lib.nameValuePair "container@${conf.containerName}" ({
+      serviceConfig = {
+        LoadCredentialEncrypted = lib.mkMerge [
+          [
+            "mastodon-smtp-pass:${../secrets/mastodon-smtp-pass}"
+          ]
+          (lib.mkIf conf.objectStorage.enable [
+            "mastodon-${name}-object-storage-keys:${conf.objectStorage.encryptedCredFile}"
+          ])
+        ];
+      };
     })) enabledInstances;
   };
 }
