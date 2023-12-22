@@ -38,6 +38,13 @@ in
                 ssl = false;
               }
             ];
+            
+            extraConfig = ''
+              AllowEncodedSlashes NoDecode
+              RewriteEngine On
+              RewriteRule "^${wikiSubpath}/rest.php$" "/rest.php" [PT]
+              RewriteRule "^${wikiSubpath}/rest.php/(.*)$" "/rest.php/$1" [PT]
+            '';
           };
 
           passwordFile = "/run/keys/password-file";
@@ -132,13 +139,6 @@ in
             $wgSVGConverter = "batik";
           '';
         };
-
-        services.mediawiki.virtualHost.extraConfig = ''
-          AllowEncodedSlashes NoDecode
-          RewriteEngine On
-          RewriteRule "^${wikiSubpath}/rest.php$" "/rest.php" [PT]
-          RewriteRule "^${wikiSubpath}/rest.php/(.*)$" "/rest.php/$1" [PT]
-        '';
 
         systemd.services.mediawiki-creds = {
           before = [ "mediawiki-init.service" ];
