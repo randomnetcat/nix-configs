@@ -69,19 +69,19 @@ in
   };
 
   config = {
-    systemd.targets.agorabot-instances = lib.mkIf (lib.any (value: value.enable) (lib.attrValues cfg.instances)) {
+    systemd.targets.agorabot = lib.mkIf (lib.any (value: value.enable) (lib.attrValues cfg.instances)) {
       wantedBy = [ "multi-user.target" ];
     };
 
     systemd.services = lib.mapAttrs' (
       name: value:
       {
-        name = "agorabot-instance-${name}";
+        name = "agorabot-${name}";
 
         value = lib.mkIf value.enable {
           description = "AgoraBot instance ${name}";
           after = [ "network-online.target" ];
-          wantedBy = [ "agorabot-instances.target" ];
+          wantedBy = [ "agorabot.target" ];
 
           serviceConfig = {
             DynamicUser = true;
