@@ -30,6 +30,9 @@
     programs.bash = {
       enable = true;
 
+      historySize = -1;
+      historyFileSize = -1;
+
       # Source home-manager session variables into bash
       initExtra = ''
         if [ -e "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"; fi
