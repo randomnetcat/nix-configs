@@ -139,7 +139,7 @@ in
             $wgSVGConverter = "batik";
 
             // External images
-            $wgAllowExternalimagesFrom = [
+            $wgAllowExternalImagesFrom = [
               'https://nyhilo.website/cycle15/'
             ];
           '';
