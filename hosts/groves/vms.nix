@@ -8,11 +8,6 @@ in
     let
       vmModules = {
         coe-env = ../coe-env;
-        csc-510-env = ../csc-510-env;
-        coe-env-arch = {
-          imports = [ ../coe-env ];
-          config = { nixpkgs.localSystem.system = "aarch64-linux"; };
-        };
       };
 
       vmExtraModules = { name, targetPath }: [
