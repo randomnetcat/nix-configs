@@ -44,25 +44,39 @@ in
             ## Force allowing X to determine its own resolutions.
             services.xserver.resolutions = lib.mkOverride 0 [];
 
+            services.xserver.videoDrivers = lib.mkOverride 0 [
+              "virtio"
+              "modesetting"
+            ];
+
+            boot.kernelModules = [
+              "virtio"
+              "virtio-mmio"
+              "virtio-pci"
+              "virtio-input"
+              "virtio-vdpa"
+              "virtio-balloon"
+              "virtio-pci-modern-dev"
+              "virtio-pci-legacy-dev"
+              "virtio-mem"
+              "virtio-console"
+              "virtio-iommu"
+              "virtio-crypto"
+              "virtio-snd"
+              "virtio-blk"
+              "virtio-gpu"
+            ];
+
             ## Configure devices
-            virtualisation.qemu.options =
-              let
-                commonArgs = [
-                  "-device virtio-serial-pci"
-                  "-device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0"
-                  "-chardev spicevmc,id=spicechannel0,name=vdagent"
-                ];
+            virtualisation.qemu.options = {
+              "x86_64-linux" = [
+                "-vga none"
+                "-device virtio-gpu-pci"
+              ];
 
-                platformArgs = {
-                  "x86_64-linux" = [
-                    "-device virtio-vga-gl"
-                  ];
-
-                  "aarch64-linux" = [
-                  ];
-                }."${pkgs.stdenv.hostPlatform.system}";
-              in
-              (commonArgs ++ platformArgs);
+              "aarch64-linux" = [
+              ];
+            }."${pkgs.stdenv.hostPlatform.system}";
           };
         })
       ];
@@ -78,36 +92,15 @@ in
             name = "dev/vms/${name}/run-vm";
 
             value = {
-              source =
+              source = 
                 let
-                  binName = "run-${name}-vm";
                   targetPath = "${config.home.homeDirectory}/dev/vms/${name}";
-
                   vm = buildVm {
                     inherit name targetPath;
                     modules = [ path ];
                   };
-
-                  runPkg = pkgs.writeShellApplication {
-                    name = binName;
-
-                    runtimeInputs = [ pkgs.virt-viewer ];
-
-                    # Adapted from https://discourse.nixos.org/t/get-qemu-guest-integration-when-running-nixos-rebuild-build-vm/22621/2
-                    text = ''
-                      mkdir -p -- ${lib.escapeShellArg "${targetPath}/shared-dir"}
-
-                      SOCK_DIR="$(mktemp -d nix-vm-spice-sock.XXXXXXXXXX --tmpdir="$XDG_RUNTIME_DIR")"
-                      SOCK_FILE="$SOCK_DIR/vm.sock"
-
-                      ${vm.config.system.build.vm}/bin/run-${vm.config.networking.hostName}-vm -spice disable-ticketing=on,gl=on,unix=on,addr="$SOCK_FILE" & PID_QEMU="$!"
-                      sleep 1
-                      remote-viewer "spice+unix://$SOCK_FILE"
-                      kill "$PID_QEMU"
-                    '';
-                  };
                 in
-                "${runPkg}/bin/${binName}";
+                "${vm.config.system.build.vm}/bin/run-${vm.config.networking.hostName}-vm";
             };
           }) vmModules;
         })
