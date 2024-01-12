@@ -137,6 +137,11 @@ in
             ];
 
             $wgSVGConverter = "batik";
+
+            // External images
+            $wgAllowExternalimagesFrom = [
+              'https://nyhilo.website/cycle15/'
+            ];
           '';
         };
 
