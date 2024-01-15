@@ -10,7 +10,7 @@
   config = {
     swapDevices = [
       {
-        device = "/dev/disk/by-partlabel/groves_swap_1";
+        device = "/dev/disk/by-partlabel/groves-swap-1";
         randomEncryption.enable = true;
       }
     ];

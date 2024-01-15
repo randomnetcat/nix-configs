@@ -10,11 +10,17 @@
 
     boot.loader.systemd-boot.editor = false;
 
-    fileSystems."/efi" = {
-      device = "/dev/disk/by-partlabel/groves_ESP";
+    fileSystems."/boot" = {
+      device = "/dev/disk/by-partlabel/groves-esp";
       fsType = "vfat";
+
+      options = [
+        "uid=0"
+        "gid=0"
+        "umask=077"
+      ];
     };
 
-    boot.loader.efi.efiSysMountPoint = "/efi";
+    boot.loader.efi.efiSysMountPoint = "/boot";
   };
 }
