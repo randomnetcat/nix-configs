@@ -268,19 +268,21 @@ in
             RequiresMountsFor = [
               "/run/keys"
             ];
-
-            Type = "oneshot";
-            RemainAfterExit = true;
           };
 
-          serviceConfig.LoadCredential = lib.mkMerge [
-            [
-              "smtp-pass:smtp-pass"
-            ]
-            (lib.mkIf conf.objectStorage.enable [
-              "object-storage-keys:object-storage-keys"
-            ])
-          ];
+          serviceConfig = {
+            Type = "oneshot";
+            RemainAfterExit = true;
+
+            LoadCredential = lib.mkMerge [
+              [
+                "smtp-pass:smtp-pass"
+              ]
+              (lib.mkIf conf.objectStorage.enable [
+                "object-storage-keys:object-storage-keys"
+              ])
+            ];
+          };
 
           script = ''
             umask 077
