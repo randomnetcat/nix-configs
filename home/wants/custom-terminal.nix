@@ -13,7 +13,6 @@
       pkgs.fx
       pkgs.glow
       pkgs.hexyl
-      pkgs.killall
       pkgs.sl
       pkgs.dnsutils
     ];
