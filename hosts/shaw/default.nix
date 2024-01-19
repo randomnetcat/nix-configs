@@ -17,6 +17,7 @@
     ./tailscale.nix
     ./archive.nix
     ./backup.nix
+    ./share.nix
   ];
 
   options = {
