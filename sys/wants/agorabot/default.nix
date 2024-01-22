@@ -80,6 +80,7 @@ in
 
         value = lib.mkIf value.enable {
           description = "AgoraBot instance ${name}";
+          wants = [ "network-online.target" ];
           after = [ "network-online.target" ];
           wantedBy = [ "agorabot.target" ];
 
