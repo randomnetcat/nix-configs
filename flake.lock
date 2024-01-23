@@ -154,6 +154,24 @@
         "systems": "systems_4"
       },
       "locked": {
+        "lastModified": 1705309234,
+        "narHash": "sha256-uNRRNRKmJyCRC/8y1RqBkqWBLM034y4qN7EprSdmgyA=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "1ef2e671c3b0c19053962c07dbda38332dcebf26",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_5": {
+      "inputs": {
+        "systems": "systems_5"
+      },
+      "locked": {
         "lastModified": 1694529238,
         "narHash": "sha256-zsNZZGTGnMOf9YpHKJqMSsa0dXbfmxeoJ7xHlrt+xmY=",
         "owner": "numtide",
@@ -174,16 +192,38 @@
         ]
       },
       "locked": {
-        "lastModified": 1705879479,
-        "narHash": "sha256-ZIohbyly1KOe+8I3gdyNKgVN/oifKdmeI0DzMfytbtg=",
+        "lastModified": 1706001011,
+        "narHash": "sha256-J7Bs9LHdZubgNHZ6+eE/7C18lZ1P6S5/zdJSdXFItI4=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "2d47379ad591bcb14ca95a90b6964b8305f6c913",
+        "rev": "3df2a80f3f85f91ea06e5e91071fa74ba92e5084",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
         "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "nix-github-actions": {
+      "inputs": {
+        "nixpkgs": [
+          "wikiteam3-nix",
+          "poetry2nix",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1698974481,
+        "narHash": "sha256-yPncV9Ohdz1zPZxYHQf47S8S0VrnhV7nNhCawY46hDA=",
+        "owner": "nix-community",
+        "repo": "nix-github-actions",
+        "rev": "4bb5e752616262457bc7ca5882192a564c0472d2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nix-github-actions",
         "type": "github"
       }
     },
@@ -205,11 +245,11 @@
     },
     "nixpkgsSmall": {
       "locked": {
-        "lastModified": 1705891108,
-        "narHash": "sha256-PQ0Df5BzByg+0gPE1goa9WYVXSoEP6gtjblrbYC8WOI=",
+        "lastModified": 1705936081,
+        "narHash": "sha256-koT6JZMFkA/EDZLSdkTa2LgEjM+JLKWWZyyARbh2yLE=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "8cccce637e19577815de54c5ecc3132dff965aee",
+        "rev": "f048098f0b0945a9054e11ae5dba08b5688b0be1",
         "type": "github"
       },
       "original": {
@@ -221,11 +261,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1705925306,
-        "narHash": "sha256-NIgvEgi/Xl7p7I+JvtzJjtLTQwQLnYuVxTuu56PQNHQ=",
+        "lastModified": 1706005806,
+        "narHash": "sha256-DKzMwoKq7UTsvSv7RELNPfS7xTWqYoHmqcC3KekWTh0=",
         "owner": "nix-community",
         "repo": "nur",
-        "rev": "3b71df0e3e90c32554154d608db507c4f6d6fd13",
+        "rev": "084c9e5ac47b1da166bb485fe1ade830eb525f07",
         "type": "github"
       },
       "original": {
@@ -247,6 +287,31 @@
       "original": {
         "owner": "randomnetcat",
         "repo": "sanoid",
+        "type": "github"
+      }
+    },
+    "poetry2nix": {
+      "inputs": {
+        "flake-utils": "flake-utils_5",
+        "nix-github-actions": "nix-github-actions",
+        "nixpkgs": [
+          "wikiteam3-nix",
+          "nixpkgs"
+        ],
+        "systems": "systems_6",
+        "treefmt-nix": "treefmt-nix"
+      },
+      "locked": {
+        "lastModified": 1705060653,
+        "narHash": "sha256-puYyylgrBS4AFAHeyVRTjTUVD8DZdecJfymWJe7H438=",
+        "owner": "nix-community",
+        "repo": "poetry2nix",
+        "rev": "e0b44e9e2d3aa855d1dd77b06f067cd0e0c3860d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "poetry2nix",
         "type": "github"
       }
     },
@@ -324,6 +389,57 @@
         "type": "github"
       }
     },
+    "systems_5": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_6": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "id": "systems",
+        "type": "indirect"
+      }
+    },
+    "treefmt-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "wikiteam3-nix",
+          "poetry2nix",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1699786194,
+        "narHash": "sha256-3h3EH1FXQkIeAuzaWB+nK0XK54uSD46pp+dMD3gAcB4=",
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "rev": "e82f32aa7f06bbbd56d7b12186d555223dc399d1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
     "utils": {
       "inputs": {
         "systems": "systems"
@@ -345,16 +461,16 @@
     "wikiteam3": {
       "flake": false,
       "locked": {
-        "lastModified": 1695021643,
-        "narHash": "sha256-iLeevm6VjhpiVg7IIU+R3pHaazegepmuXtEWQVFbMn4=",
-        "owner": "elsiehupp",
-        "repo": "wikiteam3",
-        "rev": "5d3b65ff275673e88f35a7136b104e10062b55a0",
+        "lastModified": 1705836459,
+        "narHash": "sha256-Md3m3GUURZw8ap47b+KogyHLvXrCPG58MYXSxGT0yIk=",
+        "owner": "mediawiki-client-tools",
+        "repo": "mediawiki-dump-generator",
+        "rev": "19ecdfa83c8fef6ac9eb5f144df32824c292bd0d",
         "type": "github"
       },
       "original": {
-        "owner": "elsiehupp",
-        "repo": "wikiteam3",
+        "owner": "mediawiki-client-tools",
+        "repo": "mediawiki-dump-generator",
         "type": "github"
       }
     },
@@ -364,15 +480,16 @@
         "nixpkgs": [
           "nixpkgs"
         ],
+        "poetry2nix": "poetry2nix",
         "wikiteam3": "wikiteam3"
       },
       "locked": {
         "dir": "wikiteam3",
-        "lastModified": 1695087707,
-        "narHash": "sha256-QshMKSIHhhqc4s1rVltBcA2ySbaUl8otXR2qRKZ/42k=",
+        "lastModified": 1705948032,
+        "narHash": "sha256-C54+DGZGro0tU1amN+KUQwNGl1hV9+LviHcy/CIHEVs=",
         "owner": "randomnetcat",
         "repo": "nix-wrappers",
-        "rev": "c5e978f0650d3797b4cf874964480c6e9c51a80b",
+        "rev": "c15e1fb9f7a1908fa27f05ba7c63dbdd680b64b8",
         "type": "github"
       },
       "original": {
