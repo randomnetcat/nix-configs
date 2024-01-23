@@ -41,12 +41,7 @@
         autoprune = true;
       };
 
-      datasets."rpool_fxooop/groves/user" = {
-        useTemplate = [ "safe" ];
-        recursive = "zfs";
-      };
-
-      datasets."rpool_fxooop/groves/system" = {
+      datasets."rpool_fxooop/groves/safe" = {
         useTemplate = [ "safe" ];
         recursive = "zfs";
       };
@@ -60,51 +55,6 @@
 
       # Run every day at 16:00 UTC.
       interval = "*-*-* 16:00:00";
-
-      commands."zfs-rent-user" = {
-        target = "sync-groves@randomcat.zfs.rent:nas_1758665d/safe/rpool_fxooop_bak/groves/user";
-        source = "rpool_fxooop/groves/user";
-        recursive = true;
-        sshKey = "/var/lib/syncoid/id_ed25519_zfs_rent";
-        extraArgs = [ "--identifier=zfs-rent" ];
-      };
-
-      commands."zfs-rent-system" = {
-        target = "sync-groves@randomcat.zfs.rent:nas_1758665d/safe/rpool_fxooop_bak/groves/system";
-        source = "rpool_fxooop/groves/system";
-        recursive = true;
-        sshKey = "/var/lib/syncoid/id_ed25519_zfs_rent";
-        extraArgs = [ "--identifier=zfs-rent" ];
-      };
     };
-
-    systemd.timers =
-      let
-        commonConfig = {
-          Persistent = true;
-        };
-      in {
-        syncoid-zfs-rent-user.timerConfig = commonConfig;
-        syncoid-zfs-rent-system.timerConfig = commonConfig;
-      };
-
-    systemd.services =
-      let
-        commonConfig = {
-          unitConfig = {
-            StartLimitBurst = 3;
-            StartLimitIntervalSec = "12 hours";
-          };
-
-          serviceConfig = {
-            Restart = "on-failure";
-            RestartSec = "15min";
-            TimeoutStartSec = "2 hours";
-          };
-        };
-      in {
-        syncoid-zfs-rent-user = commonConfig;
-        syncoid-zfs-rent-system = commonConfig;
-      };
   };
 }
