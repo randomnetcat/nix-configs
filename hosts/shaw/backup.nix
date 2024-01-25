@@ -8,6 +8,14 @@
   };
 
   config = {
+    users.users.sync-groves = {
+      isSystemUser = true;
+      useDefaultShell = true;
+      group = "sync-groves";
+    };
+
+    users.groups.sync-groves = {};
+
     services.sanoid = {
       enable = true;
       interval = "*:0/15";
