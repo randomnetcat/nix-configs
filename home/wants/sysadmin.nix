@@ -7,6 +7,7 @@
       pkgs.smartmontools
       pkgs.lshw
       pkgs.usbutils
+      pkgs.wireshark
     ];
   };
 }
