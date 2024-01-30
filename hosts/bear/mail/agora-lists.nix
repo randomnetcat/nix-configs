@@ -45,6 +45,17 @@ in
             configuration = "${pkgs.emptyFile}";
           };
 
+          settings.ARC = {
+            enabled = "yes";
+            dmarc = "yes";
+            dkim = "yes";
+            authserv_id = "agora.nomic.space";
+            trusted_authserv_ids = "unspecified.systems";
+            privkey = "/var/lib/mailman/arc-key";
+            selector = "arc";
+            domain = "agora.nomic.space";
+          };
+
           serve = {
             enable = true;
             virtualRoot = mailmanRoot;
@@ -87,8 +98,13 @@ in
 
             # First copy the secret to a private directory (mode 0700) then to the target, so it can't be accessed in the interim.
             SECRET_DIR="$(mktemp -d)"
+
             install -m 0440 -o mailman-web -g mailman -T -- "$CREDENTIALS_DIRECTORY/django-config" "$SECRET_DIR/django-config"
             mv -T -- "$SECRET_DIR/django-config" "$mailmanWebDir/settings_randomcat.json"
+
+            install -m 0440 -o mailman -g mailman -T -- "$CREDENTIALS_DIRECTORY/mailman-arc-key" "$SECRET_DIR/arc-key"
+            mv -T -- "$SECRET_DIR/arc-key" "$mailmanDir/arc-key"
+
             rmdir -- "$SECRET_DIR"
           '';
 
@@ -96,6 +112,7 @@ in
             LoadCredential = [
               "mailman-smtp-pass"
               "django-config"
+              "mailman-arc-key"
             ];
           };
         };
@@ -113,6 +130,7 @@ in
       extraFlags = [
         "--load-credential=mailman-smtp-pass:agora-mailman-smtp-pass"
         "--load-credential=django-config:agora-django-config"
+        "--load-credential=mailman-arc-key:agora-mailman-arc-key"
       ];
     };
 
@@ -125,6 +143,10 @@ in
           # A JSON file containing config for django:
           # Auth: EMAIL_BACKEND, EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_USE_SSL
           "agora-django-config:${../secrets/agora-django-config}"
+
+          # Generated with nix run nixpkgs#openssl -- genpkey -out rsakey.pem -algorithm RSA -pkeyopt rsa_keygen_bits:2048
+          # Public key reflected on DNS
+          "agora-mailman-arc-key:${../secrets/agora-mailman-arc-key}"
         ];
       };
     };
