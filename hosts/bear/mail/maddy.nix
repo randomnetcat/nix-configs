@@ -4,25 +4,7 @@ let
   cfg = config.randomcat.services.mail;
   primary = cfg.primaryDomain;
   allDomains = [ primary ] ++ cfg.extraDomains;
-
-  hyperkittyWebMailException = ''
-    # We allow Hyperkitty to send from any email only to the mailing list, so that web sending will work.
-    destination_in regexp "(agora-test@agora.nomic.space)" "$1" {
-        check {
-            authorize_sender {
-                prepare_email regexp ".+" "django@agora.nomic.space"
-
-                # Only the django user may use this ability
-                user_to_email static {
-                    entry "django@agora.nomic.space" "django@agora.nomic.space"
-                }
-            }
-        }
-
-        # Never, under any circumstances, allow it to route anywhere other than localhost
-        deliver_to &local_routing
-    }
-  '';
+  maddyIP = "192.168.166.100";
 in
 {
   config = {
@@ -35,6 +17,39 @@ in
       993
       143
     ];
+
+    systemd.network.netdevs."40-maddy" = {
+      enable = true;
+
+      netdevConfig = {
+        Name = "maddy0";
+        Kind = "dummy";
+      };
+    };
+
+    systemd.network.networks."40-maddy" = {
+      enable = true;
+
+      matchConfig = {
+        Name = "maddy0";
+      };
+
+      networkConfig = {
+        Address = maddyIP;
+      };
+    };
+
+    assertions = [
+      {
+        assertion = !(lib.elem 588 config.networking.firewall.allowedTCPPorts) && !((config.networking.firewall.interfaces ? maddy0) && (lib.elem 588 config.networking.firewall.interfaces.maddy0.allowedTCPPorts));
+        message = "Port 588 is used for local SMTP communication and should not be exposed publicly";
+      }
+    ];
+
+    # Allow connecting to the raw TCP port only from the agora-lists container.
+    networking.firewall.extraCommands = ''
+      iptables -A nixos-fw -p tcp --dport 588 -d ${maddyIP} -j nixos-fw-accept -i ve-agora-lists
+    '';
 
     services.maddy = {
       enable = true;
@@ -122,13 +137,6 @@ in
         }
 
         msgpipeline local_routing {
-            # Insert handling for special-purpose local domains here.
-            # e.g.
-            # destination lists.example.org {
-            #     deliver_to lmtp tcp://127.0.0.1:8024
-            # }
-
-
             destination_in regexp "(agora-test(-(bounces\+.*|confirm\+.*|join|leave|owner|request|subscribe|unsubscribe))?@agora.nomic.space)" "$1" {
                 deliver_to lmtp tcp://${config.containers.agora-lists.localAddress}:8024
             }
@@ -143,6 +151,20 @@ in
 
             default_destination {
                 reject 550 5.1.1 "User doesn't exist"
+            }
+        }
+
+        msgpipeline full_routing {
+            destination postmaster $(local_domains) {
+                deliver_to &local_routing
+            }
+
+            default_destination {
+                modify {
+                    dkim $(primary_domain) $(local_domains) default
+                }
+
+                deliver_to &remote_queue
             }
         }
 
@@ -195,52 +217,73 @@ in
                     }
                 }
 
-                destination postmaster $(local_domains) {
-                    deliver_to &local_routing
-                }
-                default_destination {
-                    modify {
-                        dkim $(primary_domain) $(local_domains) default
-                    }
-                    deliver_to &remote_queue
-                }
+                deliver_to &full_routing
             }
 
             source ${lib.concatStringsSep " " (lib.filter (d: d != "agora.nomic.space") allDomains)} {
-                ${hyperkittyWebMailException}
+                check {
+                    authorize_sender {
+                        prepare_email &local_rewrites
+                        user_to_email identity
+                    }
+                }
 
-                destination postmaster $(local_domains) {
+                deliver_to &full_routing
+            }
+
+            default_source {
+                default_destination {
+                    reject 501 5.1.8 "Non-local sender domain"
+                }
+            }
+        }
+
+        submission tcp://${maddyIP}:588 {
+            limits {
+                all rate 50 1s
+            }
+
+            # This endpoint is only accessible on localhost (as guaranteed by the firewall configuration above),
+            # so it's safe to allow insecure plaintext authentication.
+            insecure_auth true
+            auth &local_authdb
+
+            source agora.nomic.space {
+                check {
+                    authorize_sender {
+                        # Only check envelope for mailman
+                        check_header no
+
+                        prepare_email regexp "agora-test(-.+)?@agora.nomic.space" "mailman@agora.nomic.space"
+                        user_to_email static {
+                            entry "mailman@agora.nomic.space" "mailman@agora.nomic.space"
+                            entry "django@agora.nomic.space" "django@agora.nomic.space"
+                        }
+                    }
+                }
+
+                deliver_to &full_routing
+            }
+
+            default_source {
+                destination_in regexp "(agora-test@agora.nomic.space)" "$1" {
                     check {
+                        # Only the django user may use this ability
                         authorize_sender {
-                            prepare_email &local_rewrites
-                            user_to_email identity
+                            prepare_email regexp ".+" "django@agora.nomic.space"
+
+                            user_to_email static {
+                                entry "django@agora.nomic.space" "django@agora.nomic.space"
+                            }
                         }
                     }
 
+                    # Never, under any circumstances, allow it to route anywhere other than localhost
                     deliver_to &local_routing
                 }
 
                 default_destination {
-                    check {
-                        authorize_sender {
-                            prepare_email &local_rewrites
-                            user_to_email identity
-                        }
-                    }
-
-                    modify {
-                        dkim $(primary_domain) $(local_domains) default
-                    }
-
-                    deliver_to &remote_queue
-                }
-            }
-
-            default_source {
-                ${hyperkittyWebMailException}
-
-                default_destination {
-                    reject 501 5.1.8 "Non-local sender domain"
+                    reject 501 5.1.2 "Can only send to agora-test when using a non-local destinations"
                 }
             }
         }
