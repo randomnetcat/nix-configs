@@ -2,7 +2,7 @@
 
 {
   imports = [
-    # ./mounts/feature/gaming.nix
+    ./mounts/feature/gaming.nix
   ];
 
   options = {
