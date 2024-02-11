@@ -15,6 +15,8 @@
     nix.settings.allowed-users = [ "root" ];
     security.sudo.execWheelOnly = true;
 
+    programs.tmux.enable = true;
+
     # Chosen to be when I am likely to be asleep
     system.autoUpgrade = {
       dates = "08:00";
