@@ -8,6 +8,7 @@
 
       packages = [
         pkgs.yt-dlp
+        pkgs.rclone
       ];
     };
 
