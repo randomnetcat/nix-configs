@@ -189,17 +189,17 @@ in
           enableUnixSocket = false;
           streamingProcesses = 1;
 
-          # Temporarily bump Mastodon to 4.2.5. This will automatically disable itself when the nixpkgs input reaches an updated version,
+          # Temporarily bump Mastodon to 4.2.6. This will automatically disable itself when the nixpkgs input reaches an updated version,
           # so it won't cause any problems in the future.
-          package = lib.mkIf (pkgs.mastodon.version == "4.2.4") (
+          package = lib.mkIf ((lib.hasPrefix "4.2." pkgs.mastodon.version) && (lib.versionOlder pkgs.mastodon.version "4.2.6")) (
             pkgs.mastodon.overrideAttrs (oldAttrs: {
-              version = "4.2.5";
+              version = "4.2.6";
 
               src = pkgs.fetchFromGitHub {
                 owner = "mastodon";
                 repo = "mastodon";
-                rev = "v4.2.5";
-                hash = "sha256-dgC5V/CVE9F1ORTjPWUWc/JVcWCEj/pb4eWpDV0WliY=";
+                rev = "v4.2.6";
+                hash = "sha256-xUJiyQN3xsl/8+D/kaky+iYunY0ctlSbjkftN2+NQNw=";
               };
             })
           );
