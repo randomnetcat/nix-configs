@@ -66,8 +66,8 @@ in
 
         certificates = [
           {
-            keyPath = "/var/lib/acme/${primary}/key.pem";
-            certPath = "/var/lib/acme/${primary}/cert.pem";
+            keyPath = "/var/lib/acme/mail/key.pem";
+            certPath = "/var/lib/acme/mail/cert.pem";
           }
         ];
       };
