@@ -32,6 +32,7 @@
         pkgs.clang
         pkgs.gdb
         pkgs.gnumake
+        pkgs.ghidra
       ])
 
       (lib.mkIf (pkgs.stdenv.hostPlatform.system == "x86_64-linux") [
