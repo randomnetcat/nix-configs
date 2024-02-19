@@ -30,6 +30,7 @@
         pkgs.libreoffice
         pkgs.dbeaver
         pkgs.ngrok
+        pkgs.insomnia
       ])
 
       (lib.mkIf (pkgs.stdenv.hostPlatform.system == "x86_64-linux") [
