@@ -9,6 +9,7 @@
       packages = [
         pkgs.yt-dlp
         pkgs.rclone
+        pkgs.makemkv
       ];
     };
 
