@@ -18,6 +18,7 @@
     ./archive.nix
     ./backup.nix
     ./share.nix
+    ./playback.nix
   ];
 
   options = {
