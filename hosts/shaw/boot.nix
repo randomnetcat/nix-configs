@@ -2,6 +2,8 @@
 
 let
   kernelVersion = config.boot.kernelPackages.kernel.version;
+
+  it87Object = "${config.boot.kernelPackages.it87}/lib/modules/${kernelVersion}/kernel/drivers/hwmon/it87.ko";
 in 
 {
   config = {
@@ -25,26 +27,21 @@ in
     # For laziness, we just override the existing derivation. However, the
     # nixpkgs it87 derivation builds the kernel module into a .ko file. This
     # causes a problem when nixpkgs builds the final module tree (what becomes
-    # the kernel-modules directly). Although the extraModulePackages *should*
-    # take precedence over the in-tree modules, this is implemented (in
-    # pkgs.aggregateModules, used by system.ModulesTree) by just linking in the
-    # files from the extraModulePackages after. The problem occurs because the
-    # in-tree kernel packages are built to a compressed .ko.xz. So, when
+    # the kernel-modules directly). The fist problem occurs because the in-tree
+    # kernel packages are built to a compressed .ko.xz. So, when
     # aggregateModules links our modified it87 derivation into the final module
     # tree, it just links in the .ko file, leaving the .ko.xz file intact. And,
     # apparently, modprobe prefers the .ko.xz file!
     #
-    # So, we have a few options. One person
-    # (https://discourse.nixos.org/t/best-way-to-handle-boot-extramodulepackages-kernel-module-conflict/30729)
-    # disabled the in-tree it87 module, which does work. However, it modifies
-    # the kernel derivation, so if we did that we could no longer use the
-    # binary caches.
+    # Second, even if we fix this, although the extraModulePackages *should*
+    # take precedence over the in-tree modules according to the wiki, it
+    # doesn't!  It instead gives an error about the conflicting file. (This is
+    # implemented (in pkgs.aggregateModules, used by system.ModulesTree.) So,
+    # we can't do that either.
     #
-    # Instead, we build the modified it87 module, then move the built result
-    # compress the module to an xz file, so that it does actually take
-    # precedence.  In order to ensure this is resilient against changes in
-    # format, we add a check to ensure that it is actually overriding a module
-    # in the base kernel.
+    # So, instead, we blacklist the built-in it87 module and force modprobe to
+    # load our modified module instead. This should be fine, since the
+    # dependency information should hopefully match the built-in module.
 
     boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages.extend (self: super: {
       it87 = super.it87.overrideAttrs (old: rec {
@@ -60,24 +57,19 @@ in
       });
     });
 
-    boot.extraModulePackages = [
-      (config.boot.kernelPackages.it87.overrideAttrs (old: {
-        fixupPhase = ''
-          ${old.fixupPhase or ""}
-
-          xz -- "$out"/${lib.escapeShellArg "lib/modules/${kernelVersion}/kernel/drivers/hwmon/it87.ko"}
-
-          # Move the output to the extra directory so that it takes precedence
-          # over the built-in module.
-          mv -- "$out"/${lib.escapeShellArg "lib/modules/${kernelVersion}/kernel"} "$out"/${lib.escapeShellArg "lib/modules/${kernelVersion}/extra"}
-        '';
-      }))
+    boot.blacklistedKernelModules = [
+      "it87"
     ];
 
-    # Check that it87 module exists as expected in base kernel.
+    boot.kernelModules = [ "it87" ];
+
+    boot.extraModprobeConfig = ''
+      install it87 /run/current-system/sw/bin/modprobe --ignore-install ${it87Object} fix_pwm_polarity=1 $CMDLINE_OPTS
+    '';
+
     system.checks = [
       (pkgs.runCommand "check-it87-override" {} ''
-        MOD_PATH=${lib.escapeShellArg "${config.boot.kernelPackages.kernel}/lib/modules/${kernelVersion}/kernel/drivers/hwmon/it87.ko.xz"}
+        MOD_PATH=${lib.escapeShellArg it87Object}
 
         if [ -f "$MOD_PATH" ]; then
           mkdir -- "$out"
@@ -87,12 +79,5 @@ in
         fi
       '')
     ];
-
-    boot.kernelModules = [ "it87" ];
-
-    # Required per https://gist.github.com/johndavisnz/bae122274fc6f0e006fdf0bc92fe6237 (part 3)
-    boot.extraModprobeConfig = ''
-      options it87 fix_pwm_polarity=1
-    '';
   };
 }
