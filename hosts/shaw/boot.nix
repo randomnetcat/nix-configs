@@ -1,5 +1,8 @@
 { pkgs, config, lib, ... }:
 
+let
+  kernelVersion = config.boot.kernelPackages.kernel.version;
+in 
 {
   config = {
     boot.loader.systemd-boot.enable = true;
@@ -36,16 +39,12 @@
     # disabled the in-tree it87 module, which does work. However, it modifies
     # the kernel derivation, so if we did that we could no longer use the
     # binary caches.
-    # 
-    # Another option would be to modify the it87 module to build a .ko.xz file.
-    # However, this wouldn't be resilient against future changes in kernel
-    # module package (e.g. if the kernel moved to zstd compression with a .zst
-    # file, then that might again take precedence over our .xz file).
     #
     # Instead, we build the modified it87 module, then move the built result
-    # from the "kernel" directory to the "extra" directory. The "extra"
-    # directory is for out-of-tree modules, so the modified it87 module will
-    # take precedence over the in-tree one, as it should.
+    # compress the module to an xz file, so that it does actually take
+    # precedence.  In order to ensure this is resilient against changes in
+    # format, we add a check to ensure that it is actually overriding a module
+    # in the base kernel.
 
     boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages.extend (self: super: {
       it87 = super.it87.overrideAttrs (old: rec {
@@ -63,12 +62,30 @@
 
     boot.extraModulePackages = [
       (config.boot.kernelPackages.it87.overrideAttrs (old: {
-        fixupPhase = let kernelVersion = config.boot.kernelPackages.kernel.version; in ''
+        fixupPhase = ''
           ${old.fixupPhase or ""}
 
+          xz -- "$out"/${lib.escapeShellArg "lib/modules/${kernelVersion}/kernel/drivers/hwmon/it87.ko"}
+
+          # Move the output to the extra directory so that it takes precedence
+          # over the built-in module.
           mv -- "$out"/${lib.escapeShellArg "lib/modules/${kernelVersion}/kernel"} "$out"/${lib.escapeShellArg "lib/modules/${kernelVersion}/extra"}
         '';
       }))
+    ];
+
+    # Check that it87 module exists as expected in base kernel.
+    system.checks = [
+      (pkgs.runCommand "check-it87-override" {} ''
+        MOD_PATH=${lib.escapeShellArg "${config.boot.kernelPackages.kernel}/lib/modules/${kernelVersion}/kernel/drivers/hwmon/it87.ko.xz"}
+
+        if [ -f "$MOD_PATH" ]; then
+          mkdir -- "$out"
+        else
+          echo "Path does not exist: $MOD_PATH"
+          exit 1
+        fi
+      '')
     ];
 
     boot.kernelModules = [ "it87" ];
