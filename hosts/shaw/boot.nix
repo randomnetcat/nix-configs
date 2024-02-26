@@ -39,9 +39,9 @@ in
     # implemented (in pkgs.aggregateModules, used by system.ModulesTree.) So,
     # we can't do that either.
     #
-    # So, instead, we blacklist the built-in it87 module and force modprobe to
-    # load our modified module instead. This should be fine, since the
-    # dependency information should hopefully match the built-in module.
+    # So, instead, we force modprobe to load our modified module instead. This
+    # should be fine, since the dependency information should hopefully match
+    # the built-in module.
 
     boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages.extend (self: super: {
       it87 = super.it87.overrideAttrs (old: rec {
@@ -56,10 +56,6 @@ in
         };
       });
     });
-
-    boot.blacklistedKernelModules = [
-      "it87"
-    ];
 
     boot.kernelModules = [ "it87" ];
 
