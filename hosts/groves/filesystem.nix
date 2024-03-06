@@ -9,7 +9,6 @@
       enableMail = false;
 
       settings = {
-        ZED_DEBUG_LOG = "/tmp/zed.debug.log";
         ZED_EMAIL_ADDR = [ "sys_groves@randomcat.org" ];
         ZED_EMAIL_OPTS = "'@ADDRESS@' '@SUBJECT@'";
 
