@@ -128,6 +128,7 @@ in
       localAddress6 = localIP6;
 
       extraFlags = [
+        "-U"
         "--load-credential=mailman-smtp-pass:agora-mailman-smtp-pass"
         "--load-credential=django-config:agora-django-config"
         "--load-credential=mailman-arc-key:agora-mailman-arc-key"
