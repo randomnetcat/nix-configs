@@ -197,10 +197,14 @@ in
 
           mkdir -p -m 750 -- "$OUT_DIR"
           chmod 750 -- "$OUT_DIR"
+          chmod 640 -- "$OUT_DIR"/*
 
-          cp -vp -- "$LEGO_DIR/certificates/$DOMAIN.crt" "$OUT_DIR/fullchain.pem"
-          cp -vp -- "$LEGO_DIR/certificates/$DOMAIN.issuer.crt" "$OUT_DIR/chain.pem"
-          cp -vp -- "$CREDENTIALS_DIRECTORY/maddy-tls-key" "$OUT_DIR/key.pem"
+          cp -v --preserve=timestamps -- "$LEGO_DIR/certificates/$DOMAIN.crt" "$OUT_DIR/fullchain.pem"
+          cp -v --preserve=timestamps -- "$LEGO_DIR/certificates/$DOMAIN.issuer.crt" "$OUT_DIR/chain.pem"
+
+          # Do not preserve mode and ownership because systemd sets these restricively.
+          cp -- "$CREDENTIALS_DIRECTORY/maddy-tls-key" "$OUT_DIR/key.pem"
+
           ln -sf -- fullchain.pem "$OUT_DIR/cert.pem"
           cat -- "$OUT_DIR/key.pem" "$OUT_DIR/fullchain.pem" > "$OUT_DIR/full.pem"
 
