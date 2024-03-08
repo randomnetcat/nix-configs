@@ -184,6 +184,7 @@ in
       extraFlags = [
         "--load-credential=smtp-pass:wiki-smtp-pass"
         "--load-credential=password-file:wiki-password-file"
+        "-U"
       ];
     };
 
