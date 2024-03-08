@@ -339,6 +339,9 @@ in
         (lib.mkIf conf.objectStorage.enable [
           "--load-credential=object-storage-keys:mastodon-${name}-object-storage-keys"
         ])
+        [
+          "-U"
+        ]
       ];
     })) enabledInstances;
 
