@@ -24,9 +24,9 @@
         pkgs.jetbrains.idea-ultimate
         (pkgs.gradle.override {
           javaToolchains = [
-            pkgs.jdk11
-            pkgs.jdk17
-            currentJDK
+            pkgs.jdk11.home
+            pkgs.jdk17.home
+            currentJDK.home
           ];
         })
         pkgs.jd-gui
