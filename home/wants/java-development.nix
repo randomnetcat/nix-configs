@@ -18,7 +18,7 @@
       home.file."dev/jdks/11".source = pkgs.jdk11.home;
 
       programs.java.enable = true;
-      programs.java.package = pkgs.jdk;
+      programs.java.package = currentJDK;
 
       home.packages = [
         pkgs.jetbrains.idea-ultimate
