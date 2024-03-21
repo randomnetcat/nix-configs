@@ -24,7 +24,6 @@
     ./security.nix
     ./vms.nix
     ./archive.nix
-    ./pi-development.nix # TEMPORARY
   ];
 
   options = {
