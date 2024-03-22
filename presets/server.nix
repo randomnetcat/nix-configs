@@ -4,6 +4,7 @@
   imports = [
     ./common.nix
     ../sys/wants/auto-upgrade/auto-reboot.nix
+    ../sys/impl/auto-prune-system.nix
   ];
 
   config = {
@@ -26,5 +27,7 @@
         upper = "10:00";
       };
     };
+
+    randomcat.services.auto-prune-system.enable = true;
   };
 }
