@@ -168,8 +168,7 @@ in
               ${generateExtraConfigFiles}
 
               # Set config modes because some external programs care about this
-              chmod -R 700 -- "$BOT_CONFIG_DIR"
-              find "$BOT_CONFIG_DIR" -type f -exec chmod 600 -- {} +
+              chmod -R u=rwX,g=,o= -- "$BOT_CONFIG_DIR"
 
               BOT_STORAGE_DIR="$STATE_DIRECTORY/storage"
               mkdir -p -m 700 -- "$BOT_STORAGE_DIR"
