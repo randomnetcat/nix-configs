@@ -6,6 +6,7 @@
     ./locale.nix
     ./development.nix
     ./vscode.nix
+    ./apache.nix
   ];
 
   config = {
