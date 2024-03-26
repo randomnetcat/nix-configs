@@ -16,7 +16,7 @@
       objectStorage = {
         enable = true;
 
-        aliasHost = "mastodon-files.randomcat.org";
+        aliasHost = "mastodon-files.internetcat.org";
         bucketName = "randomcat-mastodon-personal";
         bucketRegion = "us-east-005";
         bucketHostname = "s3.us-east-005.backblazeb2.com";
