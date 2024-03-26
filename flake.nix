@@ -45,6 +45,10 @@
       url = "github:randomnetcat/sanoid";
       flake = false;
     };
+
+    phps = {
+      url = "github:fossar/nix-phps";
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, deploy-rs, flake-utils, ... }@inputs:
