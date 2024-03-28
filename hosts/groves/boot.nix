@@ -22,5 +22,7 @@
     };
 
     boot.loader.efi.efiSysMountPoint = "/boot";
+
+    boot.loader.systemd-boot.memtest86.enable = true;
   };
 }
