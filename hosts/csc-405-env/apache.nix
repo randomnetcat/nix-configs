@@ -14,7 +14,7 @@
         post_max_size=20M
         request_order=GP
         variables_order=GPCS
-        session.save_path=/var/lib/php/session-5.6
+        session.save_path=/var/lib/php5
       '';
     };
 
@@ -24,8 +24,7 @@
     };
 
     systemd.tmpfiles.rules = [
-      "d /var/lib/php 700 wwwrun wwwrun - -"
-      "d /var/lib/php/session-5.6 700 wwwrun wwwrun - -"
+      "d /var/lib/php5 700 wwwrun wwwrun - -"
     ];
   };
 }
