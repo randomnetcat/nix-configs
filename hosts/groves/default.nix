@@ -24,6 +24,7 @@
     ./security.nix
     ./vms.nix
     ./archive.nix
+    ./development.nix
   ];
 
   options = {
