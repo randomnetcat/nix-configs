@@ -36,7 +36,6 @@
       (lib.mkIf (pkgs.stdenv.hostPlatform.system == "x86_64-linux") [
         pkgs.steam-run
         pkgs.apache-directory-studio
-        pkgs.libguestfs-with-appliance
       ])
     ];
 
