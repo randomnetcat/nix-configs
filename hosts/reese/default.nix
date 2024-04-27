@@ -14,6 +14,7 @@
 
     ./agorabot.nix
     ./remote-build.nix
+    ./prometheus.nix
 
     ./mastodon/personal.nix
 
