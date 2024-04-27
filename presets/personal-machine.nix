@@ -37,5 +37,10 @@
       "adbusers"
       "vboxusers"
     ];
+
+    # Ensure nixpkgs source is kept so it isn't constantly redownloaded.
+    system.extraDependencies = [
+      inputs.nixpkgs.outPath
+    ];
   };
 }
