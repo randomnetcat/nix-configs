@@ -41,11 +41,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    patched-sanoid = {
-      url = "github:randomnetcat/sanoid";
-      flake = false;
-    };
-
     phps = {
       url = "github:fossar/nix-phps";
     };
@@ -107,12 +102,6 @@
           modules = [ ./hosts/reese ];
         };
 
-        leon = defineSystem {
-          pkgsFlake = nixpkgsSmall;
-          system = "x86_64-linux";
-          modules = [ ./hosts/leon ];
-        };
-
         bear = defineSystem {
           pkgsFlake = nixpkgsSmall;
           system = "aarch64-linux";
@@ -131,12 +120,6 @@
           hostname = "reese";
           sshUser = "root";
           remoteBuild = true;
-        };
-
-        leon = {
-          hostname = "leon";
-          sshUser = "root";
-          remoteBuild = false;
         };
 
         bear = {
