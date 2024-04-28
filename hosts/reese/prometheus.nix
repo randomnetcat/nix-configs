@@ -40,6 +40,17 @@ in
             }
           ];
         }
+
+        {
+          job_name = "bear_maddy";
+          static_configs = [
+            {
+              targets = [
+                "bear:9749"
+              ];
+            }
+          ];
+        }
       ];
     };
 
