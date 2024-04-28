@@ -5,6 +5,7 @@ let
   primary = cfg.primaryDomain;
   allDomains = [ primary ] ++ cfg.extraDomains;
   maddyIP = "192.168.166.100";
+  tailscaleIP = "100.85.165.130";
 in
 {
   config = {
@@ -329,6 +330,10 @@ in
             auth &local_authdb
             storage &local_mailboxes
         }
+
+        # Prometheus support
+        openmetrics tcp://127.0.0.1:9749 { }
+        openmetrics tcp://${tailscaleIP}:9749 { }
       '';
     };
   };
