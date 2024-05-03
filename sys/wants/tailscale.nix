@@ -16,16 +16,14 @@
   config = lib.mkIf (config.randomcat.services.tailscale.enable) {
     environment.systemPackages = [ pkgs.tailscale ];
 
-    services.tailscale.enable = true;
-
-    # Tailscale complains about this
-    networking.firewall.checkReversePath = "loose";
+    services.tailscale = {
+      enable = true;
+      useRoutingFeatures = "client";
+      openFirewall = config.services.tailscale.port > 0;
+    };
 
     # Allow tailscale devices access to all ports (since tailscale will enforce this)
-    networking.firewall.trustedInterfaces = [ "tailscale0" ];
-
-    # Open UDP port to help establishing direct WireGuard connections
-    networking.firewall.allowedUDPPorts = [ 41641 ];
+    networking.firewall.trustedInterfaces = [ config.services.tailscale.interfaceName ];
 
     systemd.services.tailscale-autoconnect = {
       description = "Automatic connection to Tailscale";
