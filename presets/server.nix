@@ -33,7 +33,7 @@
 
     randomcat.services.tailscale = {
       enable = true;
-      extraArgs = [ "--ssh" ];
+      ssh = true;
     };
   };
 }

@@ -5,6 +5,8 @@
     randomcat.services.tailscale = {
       enable = lib.mkEnableOption "Custom tailscale setup";
 
+      ssh = lib.mkEnableOption "Tailscale SSH";
+
       extraArgs = lib.mkOption {
         type = lib.types.listOf lib.types.str;
         description = "Extra command line arguments to tailscale";
@@ -21,6 +23,8 @@
       useRoutingFeatures = "client";
       openFirewall = config.services.tailscale.port > 0;
     };
+
+    randomcat.services.tailscale.extraArgs = lib.mkIf config.randomcat.services.tailscale.ssh [ "--ssh" ];
 
     # Allow tailscale devices access to all ports (since tailscale will enforce this)
     networking.firewall.trustedInterfaces = [ config.services.tailscale.interfaceName ];
