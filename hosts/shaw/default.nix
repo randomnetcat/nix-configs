@@ -5,7 +5,6 @@
     ./hardware-configuration.nix
 
     ../../presets/server.nix
-    ../../sys/wants/tailscale.nix
 
     ./mounts/system.nix
     ./mounts/data.nix
@@ -14,7 +13,6 @@
     ./networking.nix
     ./filesystem.nix
 
-    ./tailscale.nix
     ./archive.nix
     ./backup.nix
     ./share.nix
@@ -30,10 +28,6 @@
     };
 
     # boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
-
-    randomcat.services.tailscale = {
-      enable = true;
-    };
 
     networking.hostName = "shaw";
     networking.hostId = "df7b2245";

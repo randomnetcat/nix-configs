@@ -3,12 +3,10 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ../../presets/server.nix
-    ../../sys/wants/tailscale.nix
 
     ./system.nix
     ./mounts/system
     ./zfs.nix
-    ./tailscale.nix
 
     ./nginx.nix
     ./web.nix

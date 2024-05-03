@@ -4,13 +4,11 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     ../../presets/server.nix
     ../../sys/wants/trungle-access.nix
-    ../../sys/wants/tailscale.nix
 
     ./system.nix
     ./mounts/system
     ./zfs.nix
     ./backup.nix
-    ./tailscale.nix
 
     ./agorabot.nix
     ./remote-build.nix

@@ -3,6 +3,7 @@
 {
   imports = [
     ./common.nix
+    ../sys/wants/tailscale.nix
     ../sys/wants/auto-upgrade/auto-reboot.nix
     ../sys/impl/auto-prune-system.nix
   ];
@@ -29,5 +30,10 @@
     };
 
     randomcat.services.auto-prune-system.enable = true;
+
+    randomcat.services.tailscale = {
+      enable = true;
+      extraArgs = [ "--ssh" ];
+    };
   };
 }

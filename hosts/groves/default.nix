@@ -5,7 +5,6 @@
     ./hardware-configuration.nix
 
     ../../presets/personal-machine.nix
-    ../../sys/wants/tailscale.nix
     ../../sys/impl/builders
 
     ./mounts/system
@@ -36,11 +35,6 @@
     };
 
     boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
-
-    randomcat.services.tailscale = {
-      enable = true;
-      extraArgs = [ "--operator=randomcat" ];
-    };
 
     networking.hostName = "groves";
     networking.hostId = "8556b001";

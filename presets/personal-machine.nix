@@ -8,6 +8,7 @@
     ../sys/wants/virtualization.nix
     ../sys/wants/android.nix
     ../sys/wants/auto-upgrade/manual-reboot.nix
+    ../sys/wants/tailscale.nix
   ];
 
   config = {
@@ -37,6 +38,11 @@
       "adbusers"
       "vboxusers"
     ];
+
+    randomcat.services.tailscale = {
+      enable = true;
+      extraArgs = [ "--operator=randomcat" ];
+    };
 
     # Ensure nixpkgs source is kept so it isn't constantly redownloaded.
     system.extraDependencies = [
