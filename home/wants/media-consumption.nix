@@ -9,7 +9,6 @@
         withAACS = true;
         withBDplus = true;
         withJava = true;
-        jdk = pkgs.jdk11;
       };
     })
 
