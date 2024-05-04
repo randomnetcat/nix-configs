@@ -25,17 +25,17 @@
 
     nixpkgs.config.allowUnfree = true;
 
+    services.displayManager.autoLogin = {
+      enable = true;
+      user = "randomcat";
+    };
+
     services.xserver = {
       enable = true;
 
       displayManager = {
         gdm = {
           enable = true;
-        };
-
-        autoLogin = {
-          enable = true;
-          user = "randomcat";
         };
       };
 
