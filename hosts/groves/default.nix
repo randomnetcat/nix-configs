@@ -14,6 +14,7 @@
     ./networking.nix
     ./locale.nix
     ./filesystem.nix
+    ./failure.nix
 
     # Features
     ./gaming.nix
