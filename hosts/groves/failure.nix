@@ -29,6 +29,9 @@
         let
           gatherJournal = pkgs.writeShellScript "failure-gather-journal" ''
             journalctl -u "$1" -b -n100 > "$RUNTIME_DIRECTORY/log"
+
+            # Access to file is protected by RuntimeDirectoryMode
+            chmod 0444 -- "$RUNTIME_DIRECTORY/log"
           '';
 
           sendNotification = pkgs.writeShellScript "failure-send-notification" ''
@@ -57,7 +60,6 @@
         in
         {
           Type = "oneshot";
-          DynamicUser = true;
 
           LoadCredentialEncrypted = [
             "failure-email-password:${./secrets/failure-email-password}"
@@ -70,6 +72,24 @@
 
           RuntimeDirectory = "notify-failure/%i";
           RuntimeDirectoryMode = "0700";
+
+          DynamicUser = true;
+
+          CapabilityBoundingSet = "";
+          LockPersonality = true;
+          PrivateDevices = true;
+          PrivateUsers = true;
+          ProtectClock = true;
+          ProtectControlGroups = true;
+          ProtectHome = true;
+          ProtectHostname = true;
+          ProtectKernelLogs = true;
+          ProtectKernelModules = true;
+          ProtectKernelTunables = true;
+          ProtectProc = "invisible";
+          RestrictNamespaces = true;
+          SystemCallArchitectures = "native";
+          SystemCallFilter = [ "@system-service" "~@privileged @resources" ];
         };
     };
   };
