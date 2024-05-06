@@ -14,7 +14,7 @@
     ./networking.nix
     ./locale.nix
     ./filesystem.nix
-    ./failure.nix
+    ./notifications.nix
 
     # Features
     ./gaming.nix
@@ -41,6 +41,13 @@
     networking.hostId = "8556b001";
 
     services.fwupd.enable = true;
+
+    randomcat.notifications = {
+      enable = true;
+      sender = "sys.groves@unspecified.systems";
+      recipient = "sys_groves@randomcat.org";
+      smtp.passwordEncryptedCredentialPath = ./secrets/notify-email-password;
+    };
 
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions
