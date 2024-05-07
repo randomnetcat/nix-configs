@@ -18,4 +18,6 @@
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 
   hardware.cpu.intel.updateMicrocode = true;
+
+  services.thermald.enable = true;
 }
