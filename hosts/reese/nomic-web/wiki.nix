@@ -198,9 +198,6 @@ in
     };
 
     services.nginx.virtualHosts."${wikiHost}" = {
-      enableACME = true;
-      forceSSL = true;
-
       locations."${wikiSubpath}/".proxyPass = "http://[${containers.wiki.localIP6}]:${toString wikiPort}/";
       locations."${wikiSubpath}/rest.php/".proxyPass = "http://[${containers.wiki.localIP6}]:${toString wikiPort}/wiki/rest.php/";
       locations."=${wikiSubpath}/images/logo".alias = wikiLogo;
