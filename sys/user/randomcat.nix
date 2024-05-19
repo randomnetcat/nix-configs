@@ -7,6 +7,7 @@
       group = "randomcat";
       home = "/home/randomcat";
       extraGroups = [ "users" "wheel" ]; # Enable ‘sudo’ for the user.
+      description = "Janet";
     };
 
     users.groups.randomcat = {
