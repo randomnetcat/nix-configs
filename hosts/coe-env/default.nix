@@ -28,7 +28,7 @@
         pkgs.vim
         pkgs.firefox
         pkgs.libreoffice
-        pkgs.dbeaver
+        pkgs.dbeaver-bin
         pkgs.ngrok
         pkgs.insomnia
       ])
