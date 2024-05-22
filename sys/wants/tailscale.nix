@@ -53,7 +53,7 @@
         sleep 2
 
         # otherwise authenticate with tailscale
-        ${pkgs.tailscale}/bin/tailscale up ${lib.escapeShellArgs config.randomcat.services.tailscale.extraArgs}
+        ${pkgs.tailscale}/bin/tailscale up --reset ${lib.escapeShellArgs config.randomcat.services.tailscale.extraArgs}
       '';
     };
   };
