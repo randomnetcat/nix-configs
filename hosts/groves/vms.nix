@@ -7,8 +7,6 @@ in
   config =
     let
       vmModules = {
-        coe-env = ../coe-env;
-        csc-405-env = ../csc-405-env;
       };
 
       vmExtraModules = { name, targetPath }: [
