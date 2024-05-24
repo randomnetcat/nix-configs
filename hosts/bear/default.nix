@@ -12,6 +12,7 @@
     ./web.nix
 
     ./mail
+    ./auth
 
     ./networking.nix
   ];
