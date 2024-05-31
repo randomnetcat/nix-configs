@@ -3,7 +3,6 @@
 {
   imports = [
     ../sys/impl/networking/resolved.nix
-    ../sys/impl/nix/version.nix
     ../sys/impl/maintenance
     ../sys/impl/zfs-common.nix
     ../sys/impl/ssh-security.nix

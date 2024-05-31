@@ -44,9 +44,20 @@
     phps = {
       url = "github:fossar/nix-phps";
     };
+
+    lix = {
+      url = "git+https://git.lix.systems/lix-project/lix";
+      flake = false;
+    };
+
+    lix-module = {
+      url = "git+https://git.lix.systems/lix-project/nixos-module";
+      inputs.lix.follows = "lix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, deploy-rs, flake-utils, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, deploy-rs, flake-utils, lix-module, ... }@inputs:
     let
       lib = nixpkgs.lib;
 
@@ -64,11 +75,26 @@
         };
       };
 
+      lixCache = {
+        config = {
+          nix.settings.extra-substituters = [
+            "https://cache.lix.systems"
+          ];
+
+          nix.settings.trusted-public-keys = [
+            "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
+          ];
+        };
+      };
+
       commonModules = [
         systemConfigurationRevision
 
         home-manager.nixosModules.home-manager
         homeManagerNurOverlay
+
+        lix-module.nixosModules.default
+        lixCache
       ];
 
       systemModules = path: commonModules ++ [ path ];
