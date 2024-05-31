@@ -6,6 +6,7 @@
 
     ../../presets/personal-machine.nix
     ../../sys/impl/builders
+    ../../sys/impl/notifications.nix
 
     ./mounts/system
 
@@ -14,7 +15,6 @@
     ./networking.nix
     ./locale.nix
     ./filesystem.nix
-    ./notifications.nix
 
     # Features
     ./gaming.nix
