@@ -169,13 +169,15 @@ in
               chmod 0444 -- "$RUNTIME_DIRECTORY/log"
             '';
 
+            escapedHost = lib.escapeShellArg config.networking.hostName;
+
             sendNotification = pkgs.writeShellScript "failure-send-notification" ''
               set -euo pipefail
 
               {
-                  echo "Subject: [groves] Service failure: $1"
+                  echo "Subject: ["${escapedHost}"] Service failure: $1"
                   echo ""
-                  echo "The service unit $1 has failed on host groves. It is currently $(date -u)."
+                  echo "The service unit $1 has failed on host "${escapedHost}". It is currently $(date -u)."
                   echo ""
                   echo "Up to 100 lines of journal context follow:"
                   echo ""
