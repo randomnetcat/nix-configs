@@ -5,6 +5,7 @@
     ./hardware-configuration.nix
 
     ../../presets/server.nix
+    ../../sys/impl/notifications.nix
 
     ./mounts/system.nix
     ./mounts/data.nix
@@ -31,6 +32,13 @@
 
     networking.hostName = "shaw";
     networking.hostId = "df7b2245";
+
+    randomcat.notifications = {
+      enable = true;
+      sender = "sys.shaw@unspecified.systems";
+      recipient = "sys_shaw@randomcat.org";
+      smtp.passwordEncryptedCredentialPath = ./secrets/notify-email-password;
+    };
 
     services.fwupd.enable = true;
 
