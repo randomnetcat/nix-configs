@@ -1,9 +1,10 @@
-{ config, pkgs, modulesPath, inputs, ... }:
+{ pkgs, modulesPath, ... }:
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ../../presets/server.nix
     ../../sys/wants/trungle-access.nix
+    ../../sys/impl/notifications.nix
 
     ./system.nix
     ./mounts/system
@@ -45,4 +46,10 @@
     DNS=1.1.1.1%enp0s6#cloudflare-dns.com 1.0.0.1%enp0s6#cloudflare-dns.com 2606:4700:4700::1111%enp0s6#cloudflare-dns.com 2606:4700:4700::1001%enp0s6#cloudflare-dns.com
   '';
 
+  randomcat.notifications = {
+    enable = true;
+    sender = "sys.reese@unspecified.systems";
+    recipient = "sys_reese@randomcat.org";
+    smtp.passwordEncryptedCredentialPath = ./secrets/notify-email-password;
+  };
 }
