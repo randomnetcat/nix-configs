@@ -21,6 +21,9 @@ let
                 path = lib.mkOption {
                   type = types.path;
                   description = "The systemd-encrypted credential file.";
+
+                  # Force copying file to store.
+                  apply = p: "${p}";
                 };
 
                 credName = lib.mkOption {
