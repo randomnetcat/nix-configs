@@ -4,6 +4,10 @@ let
   cfg = config.randomcat.notifications;
 in
 {
+  imports = [
+    ./fs-keys.nix
+  ];
+
   options = {
     randomcat.notifications = {
       enable = lib.mkEnableOption "automatic failure notifications";
@@ -104,35 +108,16 @@ in
         };
       };
 
-      systemd.services."zfs-zed-init-creds" = {
+      randomcat.services.fs-keys.zfs-zed-init-creds = {
         requiredBy = [ "zfs-zed.service" ];
         before = [ "zfs-zed.service" ];
 
-        unitConfig = {
-          RequiresMountsFor = [
-            "/run/keys"
-          ];
+        keys.zed-email-password = {
+          source.encrypted = {
+            path = cfg.smtp.passwordEncryptedCredentialPath;
+            credName = "notify-email-password";
+          };
         };
-
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-
-          LoadCredentialEncrypted = [
-            "notify-email-password:${cfg.smtp.passwordEncryptedCredentialPath}"
-          ];
-        };
-
-        script = ''
-          set -euo pipefail
-
-          OUT_FILE=`mktemp`
-
-          cat -- "$CREDENTIALS_DIRECTORY/notify-email-password" > "$OUT_FILE"
-          mv -T -- "$OUT_FILE" /run/keys/zed-email-password
-          chown root:keys /run/keys/zed-email-password
-          chmod 750 /run/keys/zed-email-password
-        '';
       };
 
       systemd.packages = [
