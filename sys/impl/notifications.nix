@@ -109,7 +109,8 @@ in
       };
 
       randomcat.services.fs-keys.zfs-zed-init-creds = {
-        requiredBy = [ "zfs-zed.service" ];
+        # If this fails, we still want ZED to start.
+        wantedBy = [ "zfs-zed.service" ];
         before = [ "zfs-zed.service" ];
 
         keys.zed-email-password = {
