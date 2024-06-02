@@ -133,8 +133,6 @@ in
             UMask = "077";
 
             WorkingDirectory = "/var/empty";
-            RuntimeDirectory = "fs-keys/${serviceCfg.name}";
-            RuntimeDirectoryMode = "0700";
 
             LoadCredential = map (k: "${k.localName}:${k.config.source.inherited}") inheritedCreds;
           };
@@ -148,7 +146,7 @@ in
 
             # Mount a ramfs for storing credentials before movement.
             # Don't need to clean this up due to PrivateMounts=true.
-            WORK_DIR="$RUNTIME_DIRECTORY"/creds
+            WORK_DIR="$(mktemp -d)"/creds
             mkdir -- "$WORK_DIR"
             ${lib.getExe' pkgs.util-linux "mount"} -t ramfs -o mode=0700,uid=0,gid=0 -- ramfs "$WORK_DIR"
 
