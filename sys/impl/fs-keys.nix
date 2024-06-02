@@ -8,7 +8,7 @@ let
   keySubmodule = types.submodule ({ name, ... }: {
     options = {
       dest = lib.mkOption {
-        type = types.str;
+        type = types.strMatching "/.+";
         description = "The location that the credential will be placed on disk.";
         default = if lib.hasPrefix "/" name then name else "/run/keys/${name}";
       };
