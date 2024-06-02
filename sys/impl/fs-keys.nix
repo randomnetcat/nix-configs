@@ -114,9 +114,8 @@ in
 
           rawInheritedCreds = lib.sortOn (k: k.dest) (lib.filter (k: k.source ? inherited) (lib.attrValues keys));
 
-          inheritedCreds = lib.imap0 (i: k: {
+          inheritedCreds = lib.imap0 (i: k: k // {
             localName = "inherited-${toString i}";
-            config = k.value;
           }) rawInheritedCreds;
 
           encryptedCreds = lib.sortOn (k: k.dest) (lib.filter (k: k.source ? encrypted) (lib.attrValues keys));
@@ -134,7 +133,7 @@ in
 
             WorkingDirectory = "/var/empty";
 
-            LoadCredential = map (k: "${k.localName}:${k.config.source.inherited}") inheritedCreds;
+            LoadCredential = map (k: "${k.localName}:${k.source.inherited}") inheritedCreds;
           };
 
           unitConfig = {
@@ -171,7 +170,7 @@ in
 
               WORK_FILE="$WORK_DIR/tmp-$CRED_NAME"
 
-              cp -T -- "$CREDENTIALS_DIRECTORY/$CRED_NAME" "$SRC"
+              cp -T -- "$CREDENTIALS_DIRECTORY/$CRED_NAME" "$WORK_FILE"
               install_cred "$WORK_FILE" "$DEST" "$MODE" "$USER" "$GROUP"
             }
 
@@ -192,10 +191,10 @@ in
             ${lib.concatMapStringsSep "\n" (k: lib.escapeShellArgs [
               "load_inherited"
               k.localName
-              k.config.dest
-              k.config.mode
-              k.config.user
-              k.config.group
+              k.dest
+              k.mode
+              k.user
+              k.group
             ]) inheritedCreds}
 
             ${lib.concatMapStringsSep "\n" (k: lib.escapeShellArgs [
