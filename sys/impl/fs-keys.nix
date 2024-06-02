@@ -159,6 +159,8 @@ in
               chmod -- "$MODE" "$SRC"
               chown -- "$USER:$GROUP" "$SRC"
               mv -T -- "$SRC" "$DEST"
+
+              echo "Installed credential to $DEST" >&2
             }
 
             load_inherited() {
