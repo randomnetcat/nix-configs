@@ -21,60 +21,60 @@ in
   config = {
     containers.keycloak = {
       config = { config, lib, pkgs, ... }: {
-        system.stateVersion = "23.11";
-
-        services.resolved.enable = true;
-        networking.useHostResolvConf = false;
-
-        services.postgresql.enable = true;
-
-        services.keycloak = {
-          enable = true;
-
-          database = {
-            type = "postgresql";
-            createLocally = true;
-
-            username = "keycloak";
-            passwordFile = keyLocation;
-          };
-
-          settings = {
-            hostname = keycloakHost;
-            hostname-admin-url = "http://${tailscaleName}:${toString tailscalePort}/";
-            http-port = listenPort;
-            proxy-headers = "xforwarded";
-            http-enabled = true;
-          };
-        };
-
-        networking.firewall.allowedTCPPorts = [
-          config.services.keycloak.settings.http-port
+        imports = [
+          ../../../sys/impl/fs-keys.nix
         ];
 
-        systemd.services.keycloak-creds-init =
-          let
-            dependents = [
-              "keycloak.service"
-              "keycloakPostgreSQLInit.service"
-              "keycloakMySQLInit.service"
-            ];
-          in
-          {
-            requiredBy = dependents;
-            before = dependents;
+        config = {
+          system.stateVersion = "23.11";
 
-            serviceConfig.LoadCredential = [
-              "db-password"
-            ];
+          services.resolved.enable = true;
+          networking.useHostResolvConf = false;
 
-            script = ''
-              umask 077
-              cp --no-preserve=ownership,mode -- "$CREDENTIALS_DIRECTORY/db-password" ${lib.escapeShellArg keyLocation}
-              chown -- root:keys ${lib.escapeShellArg keyLocation}
-              chmod -- 750 ${lib.escapeShellArg keyLocation}
-            '';
+          services.postgresql.enable = true;
+
+          services.keycloak = {
+            enable = true;
+
+            database = {
+              type = "postgresql";
+              createLocally = true;
+
+              username = "keycloak";
+              passwordFile = keyLocation;
+            };
+
+            settings = {
+              hostname = keycloakHost;
+              hostname-admin-url = "http://${tailscaleName}:${toString tailscalePort}/";
+              http-port = listenPort;
+              proxy-headers = "xforwarded";
+              http-enabled = true;
+            };
           };
+
+          networking.firewall.allowedTCPPorts = [
+            config.services.keycloak.settings.http-port
+          ];
+
+          randomcat.services.fs-keys.keycloak-creds-init =
+            let
+              dependents = [
+                "keycloak.service"
+                "keycloakPostgreSQLInit.service"
+                "keycloakMySQLInit.service"
+              ];
+            in
+            {
+              requiredBy = dependents;
+              before = dependents;
+
+              keys.db-password = {
+                dest = keyLocation;
+                source.inherited = true;
+              };
+            };
+        };
       };
 
       ephemeral = false;
