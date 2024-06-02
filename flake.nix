@@ -41,10 +41,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    phps = {
-      url = "github:fossar/nix-phps";
-    };
-
     lix = {
       url = "git+https://git.lix.systems/lix-project/lix";
       flake = false;
