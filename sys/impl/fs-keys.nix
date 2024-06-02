@@ -52,7 +52,7 @@ let
       mode = lib.mkOption {
         type = types.strMatching "[0-7]{3,4}";
         description = "The mode of the file";
-        default = "0640";
+        default = "0400";
       };
 
       user = lib.mkOption {
