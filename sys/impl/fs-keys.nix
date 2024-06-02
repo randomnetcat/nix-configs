@@ -150,44 +150,44 @@ in
             ${lib.getExe' pkgs.util-linux "mount"} -t ramfs -o mode=0700,uid=0,gid=0 -- ramfs "$WORK_DIR"
 
             install_cred() {
-              SRC="$1"
-              DEST="$2"
-              MODE="$3"
-              USER="$4"
-              GROUP="$5"
+              declare -r src="$1"
+              declare -r dest="$2"
+              declare -r mode="$3"
+              declare -r user="$4"
+              declare -r group="$5"
 
-              chmod -- "$MODE" "$SRC"
-              chown -- "$USER:$GROUP" "$SRC"
-              mv -T -- "$SRC" "$DEST"
+              chmod -- "$mode" "$src"
+              chown -- "$user:$group" "$src"
+              mv -T -- "$src" "$dest"
 
-              echo "Installed credential to $DEST" >&2
+              echo "Installed credential to $dest" >&2
             }
 
             load_inherited() {
-              CRED_NAME="$1"
-              DEST="$2"
-              MODE="$3"
-              USER="$4"
-              GROUP="$5"
+              declare -r cred_name="$1"
+              declare -r dest="$2"
+              declare -r mode="$3"
+              declare -r user="$4"
+              declare -r group="$5"
 
-              WORK_FILE="$WORK_DIR/tmp-$CRED_NAME"
+              declare -r work_file="$WORK_DIR/tmp-$cred_name"
 
-              cp -T -- "$CREDENTIALS_DIRECTORY/$CRED_NAME" "$WORK_FILE"
-              install_cred "$WORK_FILE" "$DEST" "$MODE" "$USER" "$GROUP"
+              cp -T -- "$CREDENTIALS_DIRECTORY/$cred_name" "$work_file"
+              install_cred "$work_file" "$dest" "$mode" "$user" "$group"
             }
 
             load_encrypted() {
-              ENCRYPTED_SRC="$1"
-              CRED_NAME="$2"
-              DEST="$3"
-              MODE="$4"
-              USER="$5"
-              GROUP="$6"
+              declare -r encrypted_src="$1"
+              declare -r cred_name="$2"
+              declare -r dest="$3"
+              declare -r mode="$4"
+              declare -r user="$5"
+              declare -r group="$6"
 
-              WORK_FILE="$WORK_DIR/tmp-$CRED_NAME"
+              declare -r work_file="$WORK_DIR/tmp-$cred_name"
 
-              systemd-creds --name="$CRED_NAME" -- decrypt "$ENCRYPTED_SRC" "$WORK_FILE"
-              install_cred "$WORK_FILE" "$DEST" "$MODE" "$USER" "$GROUP"
+              systemd-creds --name="$cred_name" -- decrypt "$encrypted_src" "$work_file"
+              install_cred "$work_file" "$dest" "$mode" "$user" "$group"
             }
 
             ${lib.concatMapStringsSep "\n" (k: lib.escapeShellArgs [
