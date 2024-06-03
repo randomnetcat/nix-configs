@@ -175,153 +175,139 @@ in
 
     containers = lib.mapAttrs' (name: conf: lib.nameValuePair conf.containerName (let inherit (conf) localDomain webDomain localIP4 hostIP4; in {
       config = ({ config, lib, pkgs, ... }: {
-        system.stateVersion = "22.05";
+        imports = [
+          ../../../sys/impl/fs-keys.nix
+        ];
 
-        networking.useHostResolvConf = false;
-        networking.firewall.enable = false;
+        config = {
+          system.stateVersion = "22.05";
 
-        services.resolved.enable = true;
+          networking.useHostResolvConf = false;
+          networking.firewall.enable = false;
 
-        services.mastodon = {
-          enable = true;
-          inherit localDomain;
-          trustedProxy = hostIP4;
-          enableUnixSocket = false;
-          streamingProcesses = 1;
+          services.resolved.enable = true;
 
-          # Temporarily bump Mastodon to 4.2.6. This will automatically disable itself when the nixpkgs input reaches an updated version,
-          # so it won't cause any problems in the future.
-          package = lib.mkIf ((lib.hasPrefix "4.2." pkgs.mastodon.version) && (lib.versionOlder pkgs.mastodon.version "4.2.7")) (
-            pkgs.mastodon.overrideAttrs (oldAttrs: {
-              version = "4.2.7";
+          services.mastodon = {
+            enable = true;
+            inherit localDomain;
+            trustedProxy = hostIP4;
+            enableUnixSocket = false;
+            streamingProcesses = 1;
 
-              src = pkgs.fetchFromGitHub {
-                owner = "mastodon";
-                repo = "mastodon";
-                rev = "v4.2.7";
-                hash = "sha256-lz1HMg/B6BOqGxypzDTTO5yY7C5B6QRNIpRnDZW2eGs=";
-              };
-            })
-          );
+            # Temporarily bump Mastodon to 4.2.6. This will automatically disable itself when the nixpkgs input reaches an updated version,
+            # so it won't cause any problems in the future.
+            package = lib.mkIf ((lib.hasPrefix "4.2." pkgs.mastodon.version) && (lib.versionOlder pkgs.mastodon.version "4.2.7")) (
+              pkgs.mastodon.overrideAttrs (oldAttrs: {
+                version = "4.2.7";
 
-          smtp = {
-            createLocally = false;
-            host = "mail.unspecified.systems";
-            port = 465;
-            user = "mastodon@unspecified.systems";
-            passwordFile = "/run/keys/smtp-pass";
-            authenticate = true;
-            fromAddress = "mastodon@unspecified.systems";
+                src = pkgs.fetchFromGitHub {
+                  owner = "mastodon";
+                  repo = "mastodon";
+                  rev = "v4.2.7";
+                  hash = "sha256-lz1HMg/B6BOqGxypzDTTO5yY7C5B6QRNIpRnDZW2eGs=";
+                };
+              })
+            );
+
+            smtp = {
+              createLocally = false;
+              host = "mail.unspecified.systems";
+              port = 465;
+              user = "mastodon@unspecified.systems";
+              passwordFile = "/run/keys/smtp-pass";
+              authenticate = true;
+              fromAddress = "mastodon@unspecified.systems";
+            };
+
+            extraConfig = lib.mkMerge [
+              {
+                WEB_DOMAIN = webDomain;
+                BIND = localIP4;
+
+                SMTP_DOMAIN = "unspecified.systems";
+                SMTP_TLS = "true";
+              }
+
+              (lib.mkIf conf.objectStorage.enable {
+                S3_ENABLED = "true";
+                S3_BUCKET = conf.objectStorage.bucketName;
+                S3_REGION = conf.objectStorage.bucketRegion;
+                S3_HOSTNAME = conf.objectStorage.bucketHostname;
+                S3_ENDPOINT = conf.objectStorage.bucketEndpoint;
+                S3_ALIAS_HOST = conf.objectStorage.aliasHost;
+              })
+            ];
+
+            extraEnvFiles = lib.mkIf conf.objectStorage.enable [
+              "/run/keys/object-storage-keys"
+            ];
           };
 
-          extraConfig = lib.mkMerge [
-            {
-              WEB_DOMAIN = webDomain;
-              BIND = localIP4;
+          services.nginx = {
+            enable = true;
+            recommendedProxySettings = true;
 
-              SMTP_DOMAIN = "unspecified.systems";
-              SMTP_TLS = "true";
-            }
+            virtualHosts."${webDomain}" = {
+              default = true;
 
-            (lib.mkIf conf.objectStorage.enable {
-              S3_ENABLED = "true";
-              S3_BUCKET = conf.objectStorage.bucketName;
-              S3_REGION = conf.objectStorage.bucketRegion;
-              S3_HOSTNAME = conf.objectStorage.bucketHostname;
-              S3_ENDPOINT = conf.objectStorage.bucketEndpoint;
-              S3_ALIAS_HOST = conf.objectStorage.aliasHost;
-            })
-          ];
+              locations."/system/".alias = "/var/lib/mastodon/public-system/";
 
-          extraEnvFiles = lib.mkIf conf.objectStorage.enable [
-            "/run/keys/object-storage-keys"
-          ];
-        };
+              locations."/api/v1/streaming/" = {
+                proxyPass = "http://mastodon-streaming";
+                proxyWebsockets = true;
+              };
+            };
 
-        services.nginx = {
-          enable = true;
-          recommendedProxySettings = true;
+            upstreams.mastodon-streaming = {
+              extraConfig = ''
+                least_conn;
 
-          virtualHosts."${webDomain}" = {
-            default = true;
+                # https://www.nginx.com/blog/avoiding-top-10-nginx-configuration-mistakes/#keepalive
+                keepalive ${toString (config.services.mastodon.streamingProcesses * 2)};
+              '';
 
-            locations."/system/".alias = "/var/lib/mastodon/public-system/";
-
-            locations."/api/v1/streaming/" = {
-              proxyPass = "http://mastodon-streaming";
-              proxyWebsockets = true;
+              servers =
+                builtins.listToAttrs (
+                  map
+                    (i: {
+                      name = "unix:/run/mastodon-streaming/streaming-${toString i}.socket";
+                      value = {};
+                    })
+                    (lib.range 1 config.services.mastodon.streamingProcesses)
+                );
             };
           };
 
-          upstreams.mastodon-streaming = {
-            extraConfig = ''
-              least_conn;
+          randomcat.services.fs-keys.mastodon-init-creds = {
+            requiredBy = [ "mastodon-init-dirs.service" ];
+            before = [ "mastodon-init-dirs.service" ];
 
-              # https://www.nginx.com/blog/avoiding-top-10-nginx-configuration-mistakes/#keepalive
-              keepalive ${toString (config.services.mastodon.streamingProcesses * 2)};
-            '';
+            keys.smtp-pass = {
+              source.inherited = true;
 
-            servers =
-              builtins.listToAttrs (
-                map
-                  (i: {
-                    name = "unix:/run/mastodon-streaming/streaming-${toString i}.socket";
-                    value = {};
-                  })
-                  (lib.range 1 config.services.mastodon.streamingProcesses)
-              );
+              user = "mastodon";
+              group = "keys";
+              mode = "0440";
+            };
+
+            keys.object-storage-keys = lib.mkIf conf.objectStorage.enable {
+              source.inherited = true;
+
+              user = "mastodon";
+              group = "keys";
+              mode = "0440";
+            };
           };
+
+          users.users.nginx.extraGroups = [
+            "keys"
+            "mastodon"
+          ];
+
+          users.users.mastodon.extraGroups = [
+            "keys"
+          ];
         };
-
-        # Use a unit instead of tmpfiles so that we can delay execution until
-        # after all mounts are done.
-        systemd.services.mastodon-init-creds = {
-          requiredBy = [ "mastodon-init-dirs.service" ];
-          before = [ "mastodon-init-dirs.service" ];
-
-          unitConfig = {
-            RequiresMountsFor = [
-              "/run/keys"
-            ];
-          };
-
-          serviceConfig = {
-            Type = "oneshot";
-            RemainAfterExit = true;
-
-            LoadCredential = lib.mkMerge [
-              [
-                "smtp-pass:smtp-pass"
-              ]
-              (lib.mkIf conf.objectStorage.enable [
-                "object-storage-keys:object-storage-keys"
-              ])
-            ];
-          };
-
-          script = ''
-            umask 077
-
-            load_key() {
-              TARGET_PATH="/run/keys/$1"
-              cp --no-preserve=mode,ownership -- "$2" "$TARGET_PATH"
-              chown root:keys -- "$TARGET_PATH"
-              chmod 750 -- "$TARGET_PATH"
-            }
-
-            load_key smtp-pass "$CREDENTIALS_DIRECTORY/smtp-pass"
-            ${lib.optionalString conf.objectStorage.enable "load_key object-storage-keys \"$CREDENTIALS_DIRECTORY/object-storage-keys\""}
-          '';
-        };
-
-        users.users.nginx.extraGroups = [
-          "keys"
-          "mastodon"
-        ];
-
-        users.users.mastodon.extraGroups = [
-          "keys"
-        ];
       });
 
       ephemeral = false;
