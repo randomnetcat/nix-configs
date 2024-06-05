@@ -37,7 +37,7 @@
     services.syncoid = {
       enable = true;
 
-      commonArgs = [ "--no-privilege-elevation" ];
+      commonArgs = [ "--no-privilege-elevation" "--keep-sync-snap" ];
       localSourceAllow = [ "bookmark" "hold" "send" "snapshot" "destroy" "mount" ];
 
       # Run every day at 16:00 UTC.
