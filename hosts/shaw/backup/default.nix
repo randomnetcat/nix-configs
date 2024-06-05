@@ -1,21 +1,22 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
-{
-  imports = [
-  ];
-
-  options = {
+let
+  sourceHosts = {
+    reese = {
+      key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFkOFn/HmrUFe3/I8JI4tsRRmTtsjmSjMYruVaxrzmoV root@reese";
+    };
   };
 
+  dataPool = "nas_oabrke";
+  backupsDataset = "${dataPool}/data/backups";
+  zfsBin = lib.getExe' config.boot.zfs.package "zfs";
+in
+{
+  imports = [ 
+    ./dest.nix
+  ];
+
   config = {
-    users.users.sync-groves = {
-      isSystemUser = true;
-      useDefaultShell = true;
-      group = "sync-groves";
-    };
-
-    users.groups.sync-groves = {};
-
     services.sanoid = {
       enable = true;
       interval = "*:0/15";

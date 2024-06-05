@@ -15,9 +15,10 @@
     ./filesystem.nix
 
     ./archive.nix
-    ./backup.nix
+    ./backup
     ./share.nix
     ./playback.nix
+    ./ssh.nix
   ];
 
   options = {
