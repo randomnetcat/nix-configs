@@ -19,6 +19,7 @@
 
     programs.bat.enable = true;
     programs.htop.enable = true;
+    programs.btop.enable = true;
     programs.jq.enable = true;
     programs.ripgrep.enable = true;
     programs.ssh.enable = true;
