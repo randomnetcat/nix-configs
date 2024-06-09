@@ -112,6 +112,12 @@ in
       useDefaultShell = true;
       group = "sync-${host}";
       openssh.authorizedKeys.keys = lib.mkIf (hostCfg ? key) [ hostCfg.key ];
+      
+      # syncoid wants these packages
+      packages = [
+        pkgs.mbuffer
+        pkgs.lzop
+      ];
     };
 
     users.groups."sync-${host}" = {};
