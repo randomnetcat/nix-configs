@@ -32,11 +32,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1715699772,
-        "narHash": "sha256-sKhqIgucN5sI/7UQgBwsonzR4fONjfMr9OcHK/vPits=",
+        "lastModified": 1718020088,
+        "narHash": "sha256-zi/5nEeOiDEKWvXYlW4nYQIVQeLihytUn/c0dbIy5ek=",
         "owner": "serokell",
         "repo": "deploy-rs",
-        "rev": "b3ea6f333f9057b77efd9091119ba67089399ced",
+        "rev": "9c3147639c233f80d333fe81f463b0a87fc49764",
         "type": "github"
       },
       "original": {
@@ -241,11 +241,11 @@
     "lix": {
       "flake": false,
       "locked": {
-        "lastModified": 1717921732,
-        "narHash": "sha256-qmpmri4MQiP925Xyuy0+z7Qkygo3R6pLe5krHKti5H0=",
+        "lastModified": 1717994892,
+        "narHash": "sha256-kFUKMwjGLbGBNkw0/prNnbKzc8tRayU0FuRpaUNnUx4=",
         "ref": "refs/heads/main",
-        "rev": "7dfa2a761ef8856454d8f63eda27edb8984bdc98",
-        "revCount": 15745,
+        "rev": "a986a8dfa1c5896de8acfc603ff71a51f629bdc8",
+        "revCount": 15747,
         "type": "git",
         "url": "https://git.lix.systems/lix-project/lix"
       },
@@ -335,11 +335,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1717933626,
-        "narHash": "sha256-mIcEUWu/7BLWb5/KQqhQRUlLP4kVt8HNpDhHGBgyMAg=",
+        "lastModified": 1718021886,
+        "narHash": "sha256-r6nkPqNSawHwWQpIOofFuSgTs4RqVYU0UlnKtfzrFlE=",
         "owner": "nix-community",
         "repo": "nur",
-        "rev": "752b702aea877a4bb49bdf91552ed035bf0b820e",
+        "rev": "c8bf4a2c423ec065a5d094943d586e907945c28d",
         "type": "github"
       },
       "original": {
