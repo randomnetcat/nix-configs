@@ -196,15 +196,15 @@ in
 
             # Temporarily bump Mastodon to 4.2.6. This will automatically disable itself when the nixpkgs input reaches an updated version,
             # so it won't cause any problems in the future.
-            package = lib.mkIf ((lib.hasPrefix "4.2." pkgs.mastodon.version) && (lib.versionOlder pkgs.mastodon.version "4.2.7")) (
+            package = lib.mkIf ((lib.hasPrefix "4.2." pkgs.mastodon.version) && (lib.versionOlder pkgs.mastodon.version "4.2.10")) (
               pkgs.mastodon.overrideAttrs (oldAttrs: {
-                version = "4.2.7";
+                version = "4.2.10";
 
                 src = pkgs.fetchFromGitHub {
                   owner = "mastodon";
                   repo = "mastodon";
-                  rev = "v4.2.7";
-                  hash = "sha256-lz1HMg/B6BOqGxypzDTTO5yY7C5B6QRNIpRnDZW2eGs=";
+                  rev = "v4.2.10";
+                  hash = "sha256-z3veI0CpZk6mBgygqXk8SN/5WWjy5VkKLxC7nOLnyZE=";
                 };
               })
             );
