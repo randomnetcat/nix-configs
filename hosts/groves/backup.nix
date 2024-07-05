@@ -44,7 +44,7 @@
       interval = "*-*-* 16:00:00";
 
       commands."shaw" = {
-        target = "sync-groves@shaw:nas_oabrke/data/backups/groves";
+        target = "sync-groves@shaw:nas_oabrke/data/backups/groves/safe";
         source = "rpool_fxooop/groves/safe";
         recursive = true;
         sshKey = "/var/lib/syncoid/id_ed25519_zfs_rent";
