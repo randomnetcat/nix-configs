@@ -62,6 +62,7 @@ in
               Cite = null;
               CiteThisPage = null;
               ParserFunctions = null;
+              TemplateData = null;
               TextExtracts = null;
               VisualEditor = null;
               WikiEditor = null;
