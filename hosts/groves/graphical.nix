@@ -7,7 +7,7 @@
 
   config = {
     services.xserver.videoDrivers = [ "nvidia" ];
-    hardware.opengl.enable = true;
+    hardware.graphics.enable = true;
 
     hardware.nvidia.prime = {
       offload.enable = true;
