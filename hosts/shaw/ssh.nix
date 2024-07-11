@@ -18,7 +18,7 @@ in
 
       settings = {
         PermitRootLogin = "no";
-        AllowUsers = [];
+        AllowUsers = [ "sync-*" ];
       };
     };
   };
