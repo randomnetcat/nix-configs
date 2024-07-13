@@ -19,6 +19,11 @@
         settings = {
           "browser.ctrlTab.sortByRecentlyUsed" = false;
           "browser.startup.page" = 3;
+          "privacy.donottrackheader.enabled" = true;
+          "privacy.trackingprotection.enabled" = true;
+          "privacy.trackingprotection.emailtracking.enabled" = true;
+          "privacy.trackingprotection.socialtracking.enabled" = true;
+          "dom.private-attribution.submission.enabled" = false;
         };
 
         extensions =
