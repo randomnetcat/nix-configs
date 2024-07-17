@@ -6,6 +6,13 @@ let
   allDomains = [ primary ] ++ cfg.extraDomains;
   maddyIP = "192.168.166.100";
   tailscaleIP = "100.85.165.130";
+
+  agoraLists = [
+    "agora-test"
+    "agora-talk"
+  ];
+
+  agoraListsNameRegex = "(" + (lib.concatMapStringsSep "|" (list: "(${list})") agoraLists) + ")";
 in
 {
   config = {
@@ -137,7 +144,7 @@ in
         }
 
         msgpipeline local_routing {
-            destination_in regexp "(agora-test(-(bounces\+.*|confirm\+.*|join|leave|owner|request|subscribe|unsubscribe))?@agora.nomic.space)" "$1" {
+            destination_in regexp "(${agoraListsNameRegex}(-(bounces\+.*|confirm\+.*|join|leave|owner|request|subscribe|unsubscribe))?@agora.nomic.space)" "$1" {
                 deliver_to lmtp tcp://${config.containers.agora-lists.localAddress}:8024
             }
 
@@ -208,8 +215,8 @@ in
                     authorize_sender {
                         # Only check envelope for mailman
                         check_header no
+                        prepare_email regexp "${agoraListsNameRegex}(-.+)?@agora.nomic.space" "mailman@agora.nomic.space"
 
-                        prepare_email regexp "agora-test(-.+)?@agora.nomic.space" "mailman@agora.nomic.space"
                         user_to_email static {
                             entry "mailman@agora.nomic.space" "mailman@agora.nomic.space"
                             entry "django@agora.nomic.space" "django@agora.nomic.space"
@@ -253,8 +260,8 @@ in
                     authorize_sender {
                         # Only check envelope for mailman
                         check_header no
+                        prepare_email regexp "${agoraListsNameRegex}(-.+)?@agora.nomic.space" "mailman@agora.nomic.space"
 
-                        prepare_email regexp "agora-test(-.+)?@agora.nomic.space" "mailman@agora.nomic.space"
                         user_to_email static {
                             entry "mailman@agora.nomic.space" "mailman@agora.nomic.space"
                             entry "django@agora.nomic.space" "django@agora.nomic.space"
@@ -266,7 +273,7 @@ in
             }
 
             default_source {
-                destination_in regexp "(agora-test@agora.nomic.space)" "$1" {
+                destination_in regexp "(${agoraListsNameRegex}@agora.nomic.space)" "$1" {
                     check {
                         # Only the django user may use this ability
                         authorize_sender {
@@ -283,7 +290,7 @@ in
                 }
 
                 default_destination {
-                    reject 501 5.1.2 "Can only send to agora-test when using a non-local destinations"
+                    reject 501 5.1.2 "Can only send to mailing lists when using a non-local destinations"
                 }
             }
         }
