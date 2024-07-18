@@ -157,6 +157,8 @@ in
         enableACME = true;
         forceSSL = true;
 
+        root = ../agora-web;
+
         locations."${lib.removeSuffix "/" mailmanRoot}/" = {
           recommendedProxySettings = true;
           proxyPass = "http://${localIP4}:80";

@@ -14,6 +14,7 @@
   config = {
     home-manager.users.randomcat.imports = map (x: ../home/wants + "/${x}.nix") [
       "communication"
+      "cpp-development"
       "custom-gnome"
       "custom-terminal"
       "deployment"
