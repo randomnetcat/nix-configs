@@ -19,6 +19,7 @@
     ./share.nix
     ./playback.nix
     ./ssh.nix
+    ./wireguard.nix
   ];
 
   options = {
