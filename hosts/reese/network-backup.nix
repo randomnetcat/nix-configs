@@ -27,6 +27,8 @@ in
     services.syncoid = {
       enable = true;
 
+      interval = "*-*-* 06:00:00 UTC";
+
       commands = lib.mkMerge (lib.imap0 (i: m: {
         "randomcat-${toString i}-${m.targetHost}" = {
           source = m.source;
