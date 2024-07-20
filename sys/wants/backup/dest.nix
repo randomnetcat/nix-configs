@@ -77,7 +77,7 @@ in
       wantedBy = [ "multi-user.target" ];
     };
 
-    globalPermsService = {
+    mkCreateDatasetService = sourceCfg: {
       wantedBy = [ destTargetName ];
 
       serviceConfig = {
@@ -86,27 +86,24 @@ in
       };
 
       script = ''
-        ${lib.escapeShellArgs [
-          zfsBin
-          "allow"
-          "-c"
-          childPerms
-          destParent
-        ]}
-      '';
+        set -euo pipefail
 
-      postStop = ''
-        ${lib.escapeShellArgs [
-          zfsBin
-          "unallow"
-          "-c"
-          destParent
-        ]}
+        if ${lib.escapeShellArgs [ zfsBin "list" "-Ho" "name" sourceCfg.fullDataset ]}; then
+          printf "Dataset %s already exists; not creating.\n" ${lib.escapeShellArg sourceCfg.fullDataset}
+          exit 0
+        fi
+
+        ${lib.escapeShellArgs [ zfsBin "create" sourceCfg.fullDataset ]}
+
+        printf "Created dataset %s\n" ${lib.escapeShellArg sourceCfg.fullDataset}
       '';
     };
 
     mkAcceptPermsService = sourceCfg: {
       wantedBy = [ destTargetName ];
+
+      requires = [ "sync-create-${sourceCfg.name}.service" ];
+      after = [ "sync-create-${sourceCfg.name}.service" ];
 
       serviceConfig = {
         Type = "oneshot";
@@ -115,17 +112,6 @@ in
 
       script = ''
         set -eu
-
-        # Allow user to create new datasets within the backups dataset.
-        ${lib.escapeShellArgs [
-          zfsBin
-          "allow"
-          "-l"
-          "-u"
-          sourceCfg.user
-          "create,mount"
-          destParent
-        ]}
 
         ${lib.escapeShellArgs [
           zfsBin
@@ -138,15 +124,6 @@ in
       '';
 
       postStop = ''
-        ${lib.escapeShellArgs [
-          zfsBin
-          "unallow"
-          "-l"
-          "-u"
-          sourceCfg.user
-          destParent
-        ]}
-
         ${lib.escapeShellArgs [
           zfsBin
           "unallow"
@@ -215,6 +192,11 @@ in
             }
         }
 
+        if ! ${lib.escapeShellArgs [ zfsBin "list" "-Ho" "name" sourceCfg.fullDataset ]}; then
+          printf "Dataset %s does not exists; not pruning.\n" ${lib.escapeShellArg sourceCfg.fullDataset}
+          exit 0
+        fi
+
         ${lib.escapeShellArgs [
           "prune_recursive_snaps"
           sourceCfg.fullDataset
@@ -243,14 +225,11 @@ in
       "${destTargetBaseName}" = destTarget;
     };
 
-    systemd.services = lib.mkMerge (
-      [
-        { sync-perms-global = globalPermsService; }
-      ] ++ (map (sourceCfg: {
-        "sync-perms-${sourceCfg.name}" = mkAcceptPermsService sourceCfg;
-        "sync-prune-${sourceCfg.name}" = mkPruneSyncSnapsService sourceCfg;
-      }) (lib.attrValues cfg.dest.acceptSources))
-    );
+    systemd.services = lib.mkMerge (map (sourceCfg: {
+      "sync-create-${sourceCfg.name}" = mkCreateDatasetService sourceCfg;
+      "sync-perms-${sourceCfg.name}" = mkAcceptPermsService sourceCfg;
+      "sync-prune-${sourceCfg.name}" = mkPruneSyncSnapsService sourceCfg;
+    }) (lib.attrValues cfg.dest.acceptSources));
 
     users.users = lib.mkMerge (map (sourceCfg: {
       "${sourceCfg.user}" = mkUser sourceCfg;
