@@ -10,24 +10,26 @@
 
   config =
     let
-      currentJDK = pkgs.jdk21;
+      jdks = {
+        "11" = pkgs.jdk11;
+        "17" = pkgs.jdk17;
+        "21" = pkgs.jdk21;
+
+        current = pkgs.jdk21;
+      };
     in
     {
-      home.file."dev/jdks/current".source = currentJDK.home;
-      home.file."dev/jdks/17".source = pkgs.jdk17.home;
-      home.file."dev/jdks/11".source = pkgs.jdk11.home;
+      home.file = lib.mkMerge (lib.mapAttrsToList (name: pkg: {
+        "dev/toolchains/java/jdks/${name}".source = pkg.home;
+      }) jdks);
 
       programs.java.enable = true;
-      programs.java.package = currentJDK;
+      programs.java.package = jdks.current;
 
       home.packages = [
         pkgs.jetbrains.idea-ultimate
         (pkgs.gradle.override {
-          javaToolchains = [
-            pkgs.jdk11.home
-            pkgs.jdk17.home
-            currentJDK.home
-          ];
+          javaToolchains = map (p: p.home) (lib.attrValues jdks);
         })
         pkgs.jd-gui
       ];
