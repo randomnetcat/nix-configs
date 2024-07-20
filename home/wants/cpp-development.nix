@@ -15,8 +15,8 @@
       pkgs.jetbrains.clion
     ];
 
-    home.file."dev/cpp/gcc".source = pkgs.gcc;
-    home.file."dev/cpp/clang".source = pkgs.clang;
-    home.file."dev/cpp/cmake".source = pkgs.cmake;
+    home.file."dev/toolchains/cpp/gcc".source = pkgs.gcc;
+    home.file."dev/toolchains/cpp/clang".source = pkgs.clang;
+    home.file."dev/toolchains/cpp/cmake".source = pkgs.cmake;
   };
 }
