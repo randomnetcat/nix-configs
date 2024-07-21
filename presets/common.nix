@@ -25,11 +25,6 @@
 
     assertions = [
       {
-        assertion = config.system.nixos.revision == inputs.nixpkgs.rev;
-        message = "NixOS pkgs revision should match nixpkgs input revision";
-      }
-
-      {
         assertion = inputs.nixpkgs.outPath == (toString pkgs.path);
         message = "Nixpkgs path should be the same as nixpkgs input";
       }

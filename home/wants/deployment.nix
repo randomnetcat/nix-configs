@@ -3,7 +3,7 @@
 {
   config = {
     home.packages = [
-      (pkgs.extend inputs.deploy-rs.overlays.default).deploy-rs.deploy-rs
+      (pkgs.extend inputs.colmena.overlays.default).colmena
     ];
   };
 }

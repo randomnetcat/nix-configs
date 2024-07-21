@@ -29,10 +29,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    deploy-rs = {
-      type = "github";
-      owner = "serokell";
-      repo = "deploy-rs";
+    colmena = {
+      url = "github:zhaofengli/colmena";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -53,7 +51,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, deploy-rs, flake-utils, lix-module, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, colmena, flake-utils, lix-module, ... }@inputs:
     let
       lib = nixpkgs.lib;
 
@@ -95,47 +93,51 @@
 
       systemModules = path: commonModules ++ [ path ];
 
+      mkFullSystemModules = { pkgsFlake ? nixpkgs, system, modules }@sysArgs: (commonModules ++ modules ++ [
+        # Provide only a single nixpkgs input to the configuration, regardless of which nixpkgs input is actually being used.
+        ({
+          _module.args.inputs =
+            let
+              inputsNoPkgs = (pkgsFlake.lib.filterAttrs (k: v: !(pkgsFlake.lib.strings.hasPrefix "nixpkgs" k)) inputs);
+            in
+            (inputsNoPkgs // { nixpkgs = pkgsFlake; })
+          ;
+
+          _module.args.defineNestedSystem = { modules }@nestedArgs: defineSystem (sysArgs // nestedArgs);
+        })
+      ]);
+
       defineSystem = { pkgsFlake ? nixpkgs, system ? null, modules }@sysArgs: pkgsFlake.lib.nixosSystem {
         inherit system;
-        modules = commonModules ++ modules ++ [
-          # Provide only a single nixpkgs input to the configuration, regardless of which nixpkgs input is actually being used.
-          ({
-            _module.args.inputs =
-              let
-                inputsNoPkgs = (pkgsFlake.lib.filterAttrs (k: v: !(pkgsFlake.lib.strings.hasPrefix "nixpkgs" k)) inputs);
-              in
-              (inputsNoPkgs // { nixpkgs = pkgsFlake; })
-            ;
-
-            _module.args.defineNestedSystem = { modules }@nestedArgs: defineSystem (sysArgs // nestedArgs);
-          })
-        ];
+        modules = mkFullSystemModules sysArgs;
       };
 
-      nixosConfigurations = {
-        groves = defineSystem {
+      systemConfigs = {
+        groves = {
           system = "x86_64-linux";
           modules = [ ./hosts/groves ];
         };
 
-        reese = defineSystem {
+        reese = {
           pkgsFlake = nixpkgsSmall;
           system = "aarch64-linux";
           modules = [ ./hosts/reese ];
         };
 
-        bear = defineSystem {
+        bear = {
           pkgsFlake = nixpkgsSmall;
           system = "aarch64-linux";
           modules = [ ./hosts/bear ];
         };
 
-        shaw = defineSystem {
+        shaw = {
           pkgsFlake = nixpkgsSmall;
           system = "x86_64-linux";
           modules = [ ./hosts/shaw ];
         };
       };
+
+      nixosConfigurations = lib.mapAttrs (n: v: defineSystem v) systemConfigs;
 
       remoteConfigs = {
         reese = {
@@ -156,19 +158,30 @@
         };
       };
 
-      deployNodes = lib.mapAttrs (name: value: {
-        profiles.system = let config = self.nixosConfigurations."${name}"; in {
-          user = "root";
-          path = deploy-rs.lib."${config.pkgs.system}".activate.nixos config;
-        };
+      colmena = {
+        meta = {
+          nixpkgs = import nixpkgs {
+            system = "x86_64-linux";
+          };
 
-        profilesOrder = [ "system" ];
-      } // value) remoteConfigs;
+          nodeNixpkgs = lib.mapAttrs (name: sysArgs: import (sysArgs.pkgsFlake or nixpkgs) {
+            system = "x86_64-linux";
+          }) systemConfigs;
+        };
+      } // (lib.mapAttrs (name: sysArgs: {
+        imports = mkFullSystemModules sysArgs;
+
+        config = {
+          nixpkgs.localSystem.system = sysArgs.system;
+
+          deployment = {
+            buildOnTarget = true;
+            targetHost = name;
+          };
+        };
+      }) systemConfigs);
     in
     {
-      inherit nixosConfigurations;
-
-      deploy.nodes = deployNodes;
-      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+      inherit nixosConfigurations colmena;
     };
 }
