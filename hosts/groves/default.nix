@@ -35,7 +35,7 @@
       system = "x86_64-linux";
     };
 
-    boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+    # boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
 
     networking.hostName = "groves";
     networking.hostId = "8556b001";
