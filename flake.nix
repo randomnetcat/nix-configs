@@ -165,7 +165,7 @@
           };
 
           nodeNixpkgs = lib.mapAttrs (name: sysArgs: import (sysArgs.pkgsFlake or nixpkgs) {
-            system = "x86_64-linux";
+            system = sysArgs.system;
           }) systemConfigs;
         };
       } // (lib.mapAttrs (name: sysArgs: {
