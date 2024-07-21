@@ -1,10 +1,11 @@
 { config, lib, pkgs, ... }:
 
 let
+  network = config.randomcat.network;
+
   hostName = config.networking.hostName;
 
-  network = import ../../network/common.nix;
-  backups = (import ../../network/backups.nix).backups;
+  backups = network.backups;
   hostMovements = lib.filter (m: m.sourceHost == hostName) backups.movements;
 
   hostDatasets = lib.concatMap (m: map (d: {
@@ -17,10 +18,11 @@ in
 {
   imports = [
     ../../sys/impl/fs-keys.nix
+    ../../network
   ];
 
   config = {
-    programs.ssh.knownHosts = lib.mkMerge (lib.mapAttrsToList (name: value: lib.mkIf (value ? hostKey) {
+    programs.ssh.knownHosts = lib.mkMerge (lib.mapAttrsToList (name: value: lib.mkIf (value.hostKey != null) {
       "[${name}]:2222".publicKey = value.hostKey;
     }) network.hosts);
 
@@ -32,7 +34,7 @@ in
       commands = lib.mkMerge (lib.imap0 (i: m: {
         "randomcat-${toString i}-${m.targetHost}" = {
           source = m.source;
-          target = "sync-${hostName}@${m.targetHost}:${backups.hosts."${m.targetHost}".destDataset}/${hostName}/${m.target}";
+          target = "sync-${hostName}@${m.targetHost}:${backups.targets."${m.targetHost}".backupsDataset}/${hostName}/${m.target}";
           recursive = true;
           sshKey = "/run/keys/sync-key";
           localSourceAllow = [ "bookmark" "hold" "send" "snapshot" "destroy" "mount" ];
