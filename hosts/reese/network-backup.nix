@@ -34,7 +34,7 @@ in
       commands = lib.mkMerge (lib.imap0 (i: m: {
         "randomcat-${toString i}-${m.targetHost}" = {
           source = m.source;
-          target = "sync-${hostName}@${m.targetHost}:${backups.targets."${m.targetHost}".backupsDataset}/${hostName}/${m.target}";
+          target = "sync-${hostName}@${network.hosts."${m.targetHost}".hostName}:${backups.targets."${m.targetHost}".backupsDataset}/${hostName}/${m.target}";
           recursive = true;
           sshKey = "/run/keys/sync-key";
           localSourceAllow = [ "bookmark" "hold" "send" "snapshot" "destroy" "mount" ];
