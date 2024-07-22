@@ -3,6 +3,7 @@
 {
   imports = [
     ../../sys/impl/fs-keys.nix
+    ../../sys/impl/zfs-create.nix
   ];
 
   config = {
@@ -30,6 +31,16 @@
 
       keys.wireguard-birdsong-key = {
         source.encrypted.path = ./secrets/wireguard-birdsong-key;
+      };
+    };
+
+    randomcat.services.zfs.create.datasets = {
+      "nas_oabrke/data/users" = {
+        zfsOptions.mountpoint = "none";
+      };
+
+      "nas_oabrke/data/users/qenya" = {
+        zfsOptions.mountpoint = "/home/qenya/data";
       };
     };
 
