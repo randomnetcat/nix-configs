@@ -27,7 +27,7 @@ in
       "[${name}]:2222".publicKey = value.hostKey;
     }) network.hosts);
 
-    randomcat.backups = {
+    randomcat.services.backups = {
       fromNetwork = true;
       source.encryptedSyncKey = ./secrets/sync-key;
     };

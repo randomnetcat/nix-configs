@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.randomcat.backups.source;
+  cfg = config.randomcat.services.backups.source;
 
   types = lib.types;
 
@@ -48,7 +48,7 @@ in
   ];
 
   options = {
-    randomcat.backups.source = {
+    randomcat.services.backups.source = {
       enable = lib.mkEnableOption "Backups source";
 
       encryptedSyncKey = lib.mkOption {

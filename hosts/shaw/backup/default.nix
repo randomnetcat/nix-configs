@@ -6,7 +6,7 @@
   ];
 
   config = {
-    randomcat.backups.dest = {
+    randomcat.services.backups.target = {
       enable = true;
       parentDataset = "nas_oabrke/data/backups";
 

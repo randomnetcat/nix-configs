@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.randomcat.backups;
+  cfg = config.randomcat.services.backups;
   network = config.randomcat.network;
   hostName = config.networking.hostName;
 
@@ -21,23 +21,23 @@ in
 {
   imports = [
     ./source.nix
-    ./dest.nix
+    ./target.nix
   ];
 
   options = {
-    randomcat.backups = {
+    randomcat.services.backups = {
       fromNetwork = lib.mkEnableOption "Automatically set backup configuration from network configuration";
 
       source.fromNetwork = lib.mkEnableOption "Automatically set backup source configuration from network configuration";
-      dest.fromNetwork = lib.mkEnableOption "Automatically set backup target configuration from network configuration";
+      target.fromNetwork = lib.mkEnableOption "Automatically set backup target configuration from network configuration";
     };
   };
 
   config = {
-    randomcat.backups = lib.mkMerge [
+    randomcat.services.backups = lib.mkMerge [
       {
         source.fromNetwork = lib.mkDefault cfg.fromNetwork;
-        dest.fromNetwork = lib.mkDefault cfg.fromNetwork;
+        target.fromNetwork = lib.mkDefault cfg.fromNetwork;
       }
 
       {

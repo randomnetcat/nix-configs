@@ -3,7 +3,8 @@
 {
   imports = [ 
     ./source.nix
-    ./dest.nix
+    ./target.nix
+    ./network.nix
   ];
 
   # config = {

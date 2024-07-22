@@ -6,12 +6,12 @@ let
   childPerms = "create,mount,bookmark,hold,receive,snapshot";
   zfsBin = lib.getExe' config.boot.zfs.package "zfs";
 
-  cfg = config.randomcat.backups;
-  destParent = cfg.dest.parentDataset;
+  cfg = config.randomcat.services.backups;
+  targetParent = cfg.target.parentDataset;
 in
 {
   options = {
-    randomcat.backups.dest = {
+    randomcat.services.backups.target = {
       enable = lib.mkEnableOption "Backups destination";
 
       parentDataset = lib.mkOption {
@@ -59,7 +59,7 @@ in
             name = lib.mkDefault name;
             user = lib.mkDefault ("sync-" + config.name);
             childDataset = lib.mkDefault config.name;
-            fullDataset = "${destParent}/${config.childDataset}";
+            fullDataset = "${targetParent}/${config.childDataset}";
             syncoidTag = lib.mkDefault config.name;
           };
         }));
@@ -220,7 +220,7 @@ in
 
     mkGroup = sourceCfg: lib.mkIf (sourceCfg.user == "sync-${sourceCfg.name}") {};
   in
-  lib.mkIf cfg.dest.enable {
+  lib.mkIf cfg.target.enable {
     systemd.targets = {
       "${destTargetBaseName}" = destTarget;
     };
@@ -229,14 +229,14 @@ in
       "sync-create-${sourceCfg.name}" = mkCreateDatasetService sourceCfg;
       "sync-perms-${sourceCfg.name}" = mkAcceptPermsService sourceCfg;
       "sync-prune-${sourceCfg.name}" = mkPruneSyncSnapsService sourceCfg;
-    }) (lib.attrValues cfg.dest.acceptSources));
+    }) (lib.attrValues cfg.target.acceptSources));
 
     users.users = lib.mkMerge (map (sourceCfg: {
       "${sourceCfg.user}" = mkUser sourceCfg;
-    }) (lib.attrValues cfg.dest.acceptSources));
+    }) (lib.attrValues cfg.target.acceptSources));
 
     users.groups = lib.mkMerge (map (sourceCfg: {
       "${sourceCfg.user}" = mkGroup sourceCfg;
-    }) (lib.attrValues cfg.dest.acceptSources));
+    }) (lib.attrValues cfg.target.acceptSources));
   };
 }
