@@ -63,8 +63,13 @@ in
 
           script =
             let
-              createOpts = lib.concatMap ({ name, value }: [ "-o" "${name}=${value}" ]) (lib.attrsToList zfsOptions);
-              setOpts = lib.mapAttrsToList (name: value: "${name}=${value}") zfsOptions;
+              createOpts =
+                (lib.concatMap ({ name, value }: [ "-o" "${name}=${value}" ]) (lib.attrsToList zfsOptions)) ++
+                [ datasetName ];
+
+              setOpts =
+                (lib.mapAttrsToList (name: value: "${name}=${value}") zfsOptions) ++
+                [ datasetName ];
             in
             ''
               set -euo pipefail
@@ -72,10 +77,10 @@ in
               if ${lib.escapeShellArgs [ zfsBin "list" "-Ho" "name" datasetName ]}; then
                 printf "Dataset %s already exists; not creating.\n" ${lib.escapeShellArg datasetName}
 
-                ${lib.escapeShellArgs ([ zfsBin "set" ] ++ setOpts ++ [ datasetName ])}
+                ${lib.escapeShellArgs ([ zfsBin "set" ] ++ setOpts)}
                 printf "Updated optiosn for dataset %s\n" ${lib.escapeShellArg datasetName}
               else
-                ${lib.escapeShellArgs ([ zfsBin "create" datasetName ] ++ createOpts)}
+                ${lib.escapeShellArgs ([ zfsBin "create" ] ++ createOpts)}
                 printf "Created dataset %s\n" ${lib.escapeShellArg datasetName}
               fi
             '';
