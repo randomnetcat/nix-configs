@@ -19,7 +19,7 @@
     ./share.nix
     ./playback.nix
     ./ssh.nix
-    ./wireguard.nix
+    ./birdsong.nix
   ];
 
   options = {

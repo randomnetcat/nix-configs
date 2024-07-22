@@ -32,5 +32,16 @@
         source.encrypted.path = ./secrets/wireguard-birdsong-key;
       };
     };
+
+    users.users.qenya = {
+      isNormalUser = true;
+      group = config.users.groups.qenya.name;
+
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEmkV9arotms79lJPsLHkdzAac4eu3pYS08ym0sB/on qenya@tohru"
+      ];
+    };
+
+    users.groups.qenya = {};
   };
 }
