@@ -17,8 +17,9 @@ let
 in
 {
   imports = [
-    ../../sys/impl/fs-keys.nix
     ../../network
+    ../../sys/wants/backup/network.nix
+    ../../sys/impl/fs-keys.nix
   ];
 
   config = {
@@ -26,54 +27,9 @@ in
       "[${name}]:2222".publicKey = value.hostKey;
     }) network.hosts);
 
-    services.syncoid = {
-      enable = true;
-
-      interval = "*-*-* 06:00:00 UTC";
-
-      commands = lib.mkMerge (lib.imap0 (i: m: {
-        "randomcat-${toString i}-${m.targetHost}" = {
-          source = m.source;
-          target = "sync-${hostName}@${network.hosts."${m.targetHost}".hostName}:${backups.targets."${m.targetHost}".backupsDataset}/${hostName}/${m.target}";
-          recursive = true;
-          sshKey = "/run/keys/sync-key";
-          localSourceAllow = [ "bookmark" "hold" "send" "snapshot" "destroy" "mount" ];
-          
-          extraArgs = [
-            "--no-privilege-elevation"
-            "--keep-sync-snap"
-            "--no-rollback"
-            "--sshport=2222"
-          ];
-        };
-      }) hostDatasets);
-    };
-
-    systemd.services = lib.mkMerge (lib.imap0 (i: m: {
-      "syncoid-randomcat-${toString i}-${m.targetHost}" = {
-        requires = [ "sync-creds.service" ];
-        after = [ "sync-creds.service" ];
-
-        unitConfig = {
-          StartLimitBurst = 3;
-          StartLimitIntervalSec = "12 hours";
-        };
-
-        serviceConfig = {
-          Restart = "on-failure";
-          RestartSec = "15min";
-          TimeoutStartSec = "2 hours";
-        };
-      };
-    }) hostDatasets);
-
-    users.users.syncoid.extraGroups = [ "keys" ];
-
-    randomcat.services.fs-keys.sync-creds = {
-      keys.sync-key = {
-        user = config.users.users.syncoid.name;
-        source.encrypted.path = ./secrets/sync-key;
-      };
+    randomcat.backups = {
+      fromNetwork = true;
+      source.encryptedSyncKey = ./secrets/sync-key;
     };
   };
 }

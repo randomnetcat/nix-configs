@@ -2,6 +2,7 @@
 
 {
   imports = [ 
+    ./source.nix
     ./dest.nix
   ];
 
