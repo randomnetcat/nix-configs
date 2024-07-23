@@ -17,12 +17,12 @@
     ./filesystem.nix
 
     # Features
-    ./gaming.nix
+    # ./gaming.nix
     ./backup.nix
-    ./bluetooth.nix
-    ./printing.nix
+    # ./bluetooth.nix
+    # ./printing.nix
     ./security.nix
-    ./vms.nix
+    # ./vms.nix
     ./archive.nix
     ./development.nix
   ];
