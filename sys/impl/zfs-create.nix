@@ -5,18 +5,35 @@ let
 
   types = lib.types;
 
-  datasetType = types.submodule ({ name, ... }: {
+  datasetType = types.submodule ({ name, config, ... }: {
     options = {
+      datasetName = lib.mkOption {
+        type = types.str;
+        default = name;
+      };
+
       zfsOptions = lib.mkOption {
         type = types.attrsOf types.str;
         description = "ZFS attributes to set on the dataset";
       };
+
+      mountpoint = lib.mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
+    };
+
+    config = {
+      # If the Nix-managed mountpoint is set, force ZFS mountpoint to be legacy.
+      zfsOptions.mountpoint = lib.mkIf (config.mountpoint != null) "legacy";
     };
   });
 
   createServiceName = datasetName: "zfs-create-${lib.replaceStrings ["/"] ["-"] datasetName}";
 
   zfsBin = lib.getExe' config.boot.zfs.package "zfs";
+
+  nixDatasets = lib.filter (fs: fs.mountpoint != null) (lib.attrValues cfg.datasets);
 in
 {
   options = {
@@ -28,8 +45,9 @@ in
   };
 
   config = {
-    systemd.services = lib.mkMerge (lib.mapAttrsToList (datasetName: datasetValue:
+    systemd.services = lib.mkMerge (map (datasetValue:
       let
+        datasetName = datasetValue.datasetName;
         zfsOptions = datasetValue.zfsOptions;
 
         datasetParts = lib.splitString "/" datasetName;
@@ -37,9 +55,14 @@ in
         parentName = lib.concatStringsSep "/" parentParts;
         parentUnits = lib.optional (cfg.datasets ? "${parentName}") "${createServiceName parentName}.service";
 
+        hasZfsMountpoint = (zfsOptions ? mountpoint) && (zfsOptions.mountpoint != "none") && (zfsOptions.mountpoint != "legacy");
+
+        hasNixMountpoint = datasetValue.mountpoint != null;
+        nixMountpoint = datasetValue.mountpoint;
+
         # TODO: this logic is untested and who knows if it works? but I feel bad not attempting to handle this at all, so...
-        hasMountpoint = (zfsOptions ? mountpoint) && (zfsOptions.mountpoint != "none") && (zfsOptions.mountpoint != "legacy");
-        mountUnits = lib.optional hasMountpoint "${utils.escapeSystemdPath zfsOptions.mountpoint}.mount";
+        mountUnits = lib.optional hasNixMountpoint "${utils.escapeSystemdPath nixMountpoint}.mount";
+        fsDependents = lib.optionals (!hasNixMountpoint) [ "local-fs.target" "zfs.target" ];
       in
       {
         "${createServiceName datasetName}" = {
@@ -47,13 +70,14 @@ in
           requires = parentUnits;
           after = parentUnits ++ [ "zfs-import.target" ];
 
-          wantedBy = mountUnits ++ [ "local-fs.target" "zfs.target" ];
-          before = mountUnits ++ [ "local-fs.target" "zfs.target" "shutdown.target" ];
+          wantedBy = fsDependents;
+          requiredBy = mountUnits;
+          before = mountUnits ++ fsDependents ++ [ "shutdown.target" ];
           conflicts = [ "shutdown.target" ];
 
           unitConfig = {
             DefaultDependencies = false;
-            RequiresMountsFor = [ "/" ] ++ (lib.optional hasMountpoint (dirOf zfsOptions.mountpoint));
+            RequiresMountsFor = [ "/" ] ++ (lib.optional hasZfsMountpoint (dirOf zfsOptions.mountpoint));
           };
 
           serviceConfig = {
@@ -74,11 +98,11 @@ in
             ''
               set -euo pipefail
 
-              if ${lib.escapeShellArgs [ zfsBin "list" "-Ho" "name" datasetName ]}; then
+              if ${lib.escapeShellArgs [ zfsBin "list" "-Ho" "name" datasetName ]} > /dev/null 2> /dev/null; then
                 printf "Dataset %s already exists; not creating.\n" ${lib.escapeShellArg datasetName}
 
                 ${lib.escapeShellArgs ([ zfsBin "set" ] ++ setOpts)}
-                printf "Updated optiosn for dataset %s\n" ${lib.escapeShellArg datasetName}
+                printf "Updated options for dataset %s\n" ${lib.escapeShellArg datasetName}
               else
                 ${lib.escapeShellArgs ([ zfsBin "create" ] ++ createOpts)}
                 printf "Created dataset %s\n" ${lib.escapeShellArg datasetName}
@@ -86,6 +110,18 @@ in
             '';
         };
       }
-    ) cfg.datasets);
+    ) (lib.attrValues cfg.datasets));
+
+    fileSystems = lib.mkMerge (map (datasetValue: {
+      "${datasetValue.mountpoint}" = {
+        fsType = "zfs";
+        device = datasetValue.datasetName;
+      };
+    }) nixDatasets);
+
+    assertions = map (datasetValue: {
+      assertion = !(utils.fsNeededForBoot config.fileSystems."${datasetValue.mountpoint}");
+      message = "Cannot zfs-create dataset for mount ${datasetValue.mountpoint}, as it is needed for boot.";
+    }) nixDatasets;
   };
 }
