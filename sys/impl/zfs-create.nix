@@ -25,7 +25,9 @@ let
 
     config = {
       # If the Nix-managed mountpoint is set, force ZFS mountpoint to be legacy.
-      zfsOptions.mountpoint = lib.mkIf (config.mountpoint != null) "legacy";
+      zfsOptions.mountpoint = lib.mkIf (config.mountpoint != null) (
+        if config.mountpoint == "none" then "none" else "legacy"
+      );
     };
   });
 
@@ -33,7 +35,7 @@ let
 
   zfsBin = lib.getExe' config.boot.zfs.package "zfs";
 
-  nixDatasets = lib.filter (fs: fs.mountpoint != null) (lib.attrValues cfg.datasets);
+  nixDatasets = lib.filter (fs: fs.mountpoint != null && fs.mountpoint != "none") (lib.attrValues cfg.datasets);
 in
 {
   options = {
@@ -57,7 +59,7 @@ in
 
         hasZfsMountpoint = (zfsOptions ? mountpoint) && (zfsOptions.mountpoint != "none") && (zfsOptions.mountpoint != "legacy");
 
-        hasNixMountpoint = datasetValue.mountpoint != null;
+        hasNixMountpoint = datasetValue.mountpoint != null && datasetValue.mountpoint != "none";
         nixMountpoint = datasetValue.mountpoint;
 
         # TODO: this logic is untested and who knows if it works? but I feel bad not attempting to handle this at all, so...
