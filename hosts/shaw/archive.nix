@@ -1,6 +1,23 @@
 { pkgs, lib, ... }:
 
+let
+  archiveParent = "nas_oabrke/data/archive";
+
+  archiveDatasets = [
+    "internet"
+    "media"
+    "ncsu-google"
+    "nomic"
+    "youtube"
+  ];
+
+  baseMountpoint = "/srv/archive";
+in
 {
+  imports = [
+    ../../sys/impl/zfs-create.nix
+  ];
+
   config = {
     users.users.archive = {
       isNormalUser = true;
@@ -14,5 +31,20 @@
     };
 
     users.groups.archive = {};
+
+    randomcat.services.zfs.create.datasets = lib.mkMerge (
+      [
+        {
+          "${archiveParent}" = {
+            mountpoint = baseMountpoint;
+          };
+        }
+      ] ++
+      (map (child: {
+        "${archiveParent}/${child}" = {
+          mountpoint = "${baseMountpoint}/${child}";
+        };
+      }) archiveDatasets)
+    );
   };
 }
