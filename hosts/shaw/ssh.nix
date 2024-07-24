@@ -21,5 +21,10 @@ in
         AllowUsers = [ "sync-*" ];
       };
     };
+
+    systemd.services.sshd = {
+      wants = [ "tailscale-autoconnect.service" ];
+      after = [ "tailscale-autoconnect.service" ];
+    };
   };
 }
