@@ -37,7 +37,6 @@
     randomcat.services.zfs.create.datasets = {
       "nas_oabrke/data/users" = {
         mountpoint = "none";
-
       };
 
       "nas_oabrke/data/users/qenya" = {
