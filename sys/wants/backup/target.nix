@@ -138,10 +138,6 @@ in
       wantedBy = [ destTargetName ];
       startAt = "06:00";
 
-      serviceConfig = {
-        Type = "oneshot";
-      };
-
       script = ''
         set -euo pipefail
 
