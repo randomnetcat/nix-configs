@@ -23,6 +23,22 @@
         "type": "github"
       }
     },
+    "birdsong": {
+      "locked": {
+        "lastModified": 1721924700,
+        "narHash": "sha256-Cp2DF2Blm86+cDvLNPZ7JYuXzNlRKf25qgIZQV0DIr0=",
+        "ref": "main",
+        "rev": "95aef242ea78b55eed928c575eae8fa4d65a6c4a",
+        "revCount": 5,
+        "type": "git",
+        "url": "https://git.qenya.tel/qenya/birdsong"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "https://git.qenya.tel/qenya/birdsong"
+      }
+    },
     "colmena": {
       "inputs": {
         "flake-compat": "flake-compat_2",
@@ -392,6 +408,7 @@
     "root": {
       "inputs": {
         "agorabot-prod": "agorabot-prod",
+        "birdsong": "birdsong",
         "colmena": "colmena",
         "diplomacy-bot": "diplomacy-bot",
         "flake-utils": "flake-utils_4",

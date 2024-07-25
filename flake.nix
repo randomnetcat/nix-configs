@@ -49,9 +49,13 @@
       inputs.lix.follows = "lix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    birdsong = {
+      url = "git+https://git.qenya.tel/qenya/birdsong?ref=main";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, colmena, flake-utils, lix-module, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, colmena, flake-utils, lix-module, birdsong,... }@inputs:
     let
       lib = nixpkgs.lib;
 
@@ -89,6 +93,8 @@
 
         lix-module.nixosModules.default
         lixCache
+
+        birdsong.nixosModules.default
       ];
 
       systemModules = path: commonModules ++ [ path ];
