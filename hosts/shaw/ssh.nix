@@ -20,9 +20,13 @@ in
 
       settings = {
         PermitRootLogin = "no";
-        AllowUsers = [ "sync-*" ];
+        AuthenticationMethods = "publickey";
+        KbdInteractiveAuthentication = false;
+        PasswordAuthentication = false;
       };
     };
+
+    networking.firewall.interfaces.wg-birdsong.allowedTCPPorts = [ 22 ];
 
     systemd.services.sshd = {
       wants = [ "tailscale-autoconnect.service" "wireguard-wg-birdsong.service" ];
