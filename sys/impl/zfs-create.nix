@@ -21,6 +21,16 @@ let
         type = types.nullOr types.str;
         default = null;
       };
+
+      zfsPermissions.createTime = lib.mkOption {
+        type = types.listOf types.str;
+        default = [];
+      };
+
+      zfsPermissions.users = lib.mkOption {
+        type = types.attrsOf (types.listOf types.str);
+        default = {};
+      };
     };
 
     config = {
@@ -32,9 +42,9 @@ let
   });
 
   createServiceName = datasetName: "zfs-create-${lib.replaceStrings ["/"] ["-"] datasetName}";
+  permsServiceName = datasetName: "zfs-permissions-${lib.replaceStrings ["/"] ["-"] datasetName}";
 
   zfsBin = lib.getExe' config.boot.zfs.package "zfs";
-
   nixDatasets = lib.filter (fs: fs.mountpoint != null && fs.mountpoint != "none") (lib.attrValues cfg.datasets);
 in
 {
@@ -65,6 +75,8 @@ in
         # TODO: this logic is untested and who knows if it works? but I feel bad not attempting to handle this at all, so...
         mountUnits = lib.optional hasNixMountpoint "${utils.escapeSystemdPath nixMountpoint}.mount";
         fsDependents = lib.optionals (!hasNixMountpoint) [ "local-fs.target" "zfs.target" ];
+
+        permissionEntries = lib.attrsToList datasetValue.zfsPermissions.users;
       in
       {
         "${createServiceName datasetName}" = {
@@ -110,6 +122,40 @@ in
                 printf "Created dataset %s\n" ${lib.escapeShellArg datasetName}
               fi
             '';
+        };
+
+        "${permsServiceName datasetName}" = lib.mkIf ((lib.length permissionEntries) != 0){
+          wantedBy = [ "multi-user.target" "zfs.target" ];
+          before = [ "multi-user.target" "zfs.target" ];
+
+          requires = [ "${createServiceName datasetName}.service" ];
+          after = [ "${createServiceName datasetName}.service" ];
+
+          serviceConfig = {
+            Type = "oneshot";
+            RemainAfterExit = true;
+          };
+
+          script = ''
+            ${lib.concatMapStringsSep "\n" ({ name, value }: lib.escapeShellArgs [
+              zfsBin
+              "allow"
+              "-u"
+              name
+              (lib.concatStringsSep "," value)
+              datasetName
+            ]) permissionEntries}
+          '';
+
+          postStop = ''
+            ${lib.concatMapStringsSep "\n" ({ name, value }: lib.escapeShellArgs [
+              zfsBin
+              "unallow"
+              "-u"
+              name
+              datasetName
+            ]) permissionEntries}
+          '';
         };
       }
     ) (lib.attrValues cfg.datasets));
