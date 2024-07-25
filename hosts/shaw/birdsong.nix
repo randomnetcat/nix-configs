@@ -36,11 +36,32 @@
 
     randomcat.services.zfs.create.datasets = {
       "nas_oabrke/data/users" = {
-        zfsOptions.mountpoint = "none";
+        mountpoint = "none";
+
       };
 
       "nas_oabrke/data/users/qenya" = {
-        zfsOptions.mountpoint = "/home/qenya/data";
+        zfsOptions = {
+          # Don't use a Nix-managed mountpoint in order to allow inheritance.
+          mountpoint = "/home/qenya/data";
+          quota = "2TiB";
+        };
+
+        zfsPermissions.users."${config.users.users.qenya.name}" = [
+          "bookmark"
+          "clone"
+          "create"
+          "destroy"
+          "diff"
+          "hold"
+          "mount"
+          "promote"
+          "receive"
+          "rename"
+          "rollback"
+          "send"
+          "snapshot"
+        ];
       };
     };
 
