@@ -2,14 +2,24 @@
 
 let
   types = lib.types;
-
-  childPerms = "create,mount,bookmark,hold,receive,snapshot";
   zfsBin = lib.getExe' config.boot.zfs.package "zfs";
-
   cfg = config.randomcat.services.backups;
   targetParent = cfg.target.parentDataset;
+
+  childPerms = [
+    "create"
+    "mount"
+    "bookmark"
+    "hold"
+    "receive"
+    "snapshot"
+  ];
 in
 {
+  imports = [
+    ../../impl/zfs-create.nix
+  ];
+
   options = {
     randomcat.services.backups.target = {
       enable = lib.mkEnableOption "Backups destination";
@@ -70,72 +80,8 @@ in
   };
 
   config = let
-    destTargetBaseName = "sync-dest";
-    destTargetName = "${destTargetBaseName}.target";
-
-    destTarget = {
-      wantedBy = [ "multi-user.target" ];
-    };
-
-    mkCreateDatasetService = sourceCfg: {
-      wantedBy = [ destTargetName ];
-
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-      };
-
-      script = ''
-        set -euo pipefail
-
-        if ${lib.escapeShellArgs [ zfsBin "list" "-Ho" "name" sourceCfg.fullDataset ]}; then
-          printf "Dataset %s already exists; not creating.\n" ${lib.escapeShellArg sourceCfg.fullDataset}
-          exit 0
-        fi
-
-        ${lib.escapeShellArgs [ zfsBin "create" sourceCfg.fullDataset ]}
-
-        printf "Created dataset %s\n" ${lib.escapeShellArg sourceCfg.fullDataset}
-      '';
-    };
-
-    mkAcceptPermsService = sourceCfg: {
-      wantedBy = [ destTargetName ];
-
-      requires = [ "sync-create-${sourceCfg.name}.service" ];
-      after = [ "sync-create-${sourceCfg.name}.service" ];
-
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-      };
-
-      script = ''
-        set -eu
-
-        ${lib.escapeShellArgs [
-          zfsBin
-          "allow"
-          "-u"
-          sourceCfg.user
-          childPerms
-          sourceCfg.fullDataset
-        ]} || printf "Could not grant permissions on dataset %s for user %s; ignoring.\n" ${lib.escapeShellArgs [sourceCfg.user sourceCfg.fullDataset]}
-      '';
-
-      postStop = ''
-        ${lib.escapeShellArgs [
-          zfsBin
-          "unallow"
-          "-u"
-          sourceCfg.user
-          sourceCfg.fullDataset
-        ]} || printf "Could not revoke permissions on dataset %s from user %s; ignoring.\n" ${lib.escapeShellArgs [sourceCfg.user sourceCfg.fullDataset]}
-      '';
-    };
-
     mkPruneSyncSnapsService = sourceCfg: {
-      wantedBy = [ destTargetName ];
+      wantedBy = [ "multi-user.target" ];
       startAt = "06:00";
 
       script = ''
@@ -215,24 +161,27 @@ in
     };
 
     mkGroup = sourceCfg: lib.mkIf (sourceCfg.user == "sync-${sourceCfg.name}") {};
+
+    sourcesList = lib.attrValues cfg.target.acceptSources;
   in
   lib.mkIf cfg.target.enable {
-    systemd.targets = {
-      "${destTargetBaseName}" = destTarget;
-    };
+    randomcat.services.zfs.create.datasets = lib.mkMerge (map (sourceCfg: {
+      "${sourceCfg.fullDataset}" = {
+        mountpoint = "none";
+        zfsPermissions.users."${sourceCfg.user}" = childPerms;
+      };
+    }) sourcesList);
 
     systemd.services = lib.mkMerge (map (sourceCfg: {
-      "sync-create-${sourceCfg.name}" = mkCreateDatasetService sourceCfg;
-      "sync-perms-${sourceCfg.name}" = mkAcceptPermsService sourceCfg;
       "sync-prune-${sourceCfg.name}" = mkPruneSyncSnapsService sourceCfg;
-    }) (lib.attrValues cfg.target.acceptSources));
+    }) sourcesList);
 
     users.users = lib.mkMerge (map (sourceCfg: {
       "${sourceCfg.user}" = mkUser sourceCfg;
-    }) (lib.attrValues cfg.target.acceptSources));
+    }) sourcesList);
 
     users.groups = lib.mkMerge (map (sourceCfg: {
       "${sourceCfg.user}" = mkGroup sourceCfg;
-    }) (lib.attrValues cfg.target.acceptSources));
+    }) sourcesList);
   };
 }
