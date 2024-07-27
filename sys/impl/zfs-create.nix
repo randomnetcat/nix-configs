@@ -52,6 +52,7 @@ in
     randomcat.services.zfs.create = {
       datasets = lib.mkOption {
         type = types.attrsOf datasetType;
+        default = {};
       };
     };
   };
