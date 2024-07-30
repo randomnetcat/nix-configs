@@ -9,11 +9,15 @@
     services.xserver.videoDrivers = [ "nvidia" ];
     hardware.graphics.enable = true;
 
-    hardware.nvidia.prime = {
-      offload.enable = true;
+    hardware.nvidia = {
+      open = true;
 
-      nvidiaBusId = "PCI:1:0:0";
-      intelBusId = "PCI:0:2:0";
+      prime = {
+        offload.enable = true;
+
+        nvidiaBusId = "PCI:1:0:0";
+        intelBusId = "PCI:0:2:0";
+      };
     };
 
     environment.systemPackages =
