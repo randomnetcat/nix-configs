@@ -17,7 +17,7 @@
     ./filesystem.nix
 
     # Features
-    # ./gaming.nix
+    ./gaming.nix
     ./backup.nix
     # ./bluetooth.nix
     # ./printing.nix
