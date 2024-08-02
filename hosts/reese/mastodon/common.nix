@@ -97,7 +97,7 @@ in
             tryFiles = "$uri @proxy";
           };
 
-          locations."/system/" = {
+          locations."/system/" = lib.mkIf (!conf.objectStorage.enable) {
             proxyPass = "http://${localIP4}";
           };
 
@@ -130,7 +130,7 @@ in
             set $s3_backend 'https://${conf.objectStorage.bucketName}.${conf.objectStorage.bucketHostname}';
           '';
 
-          locations."/".tryFiles = "$uri @s3";
+          locations."/".tryFiles = "@s3";
 
           locations."@s3".extraConfig = "
             limit_except GET {
@@ -250,7 +250,7 @@ in
             virtualHosts."${webDomain}" = {
               default = true;
 
-              locations."/system/".alias = "/var/lib/mastodon/public-system/";
+              locations."/system/".alias = lib.mkIf (!conf.objectStorage.enable) "/var/lib/mastodon/public-system/";
 
               locations."/api/v1/streaming/" = {
                 proxyPass = "http://mastodon-streaming";
