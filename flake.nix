@@ -53,9 +53,14 @@
     birdsong = {
       url = "git+https://git.qenya.tel/qenya/birdsong?ref=main";
     };
+
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, colmena, flake-utils, lix-module, birdsong,... }@inputs:
+  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, colmena, flake-utils, lix-module, birdsong, lanzaboote, ... }@inputs:
     let
       lib = nixpkgs.lib;
 
@@ -95,6 +100,8 @@
         lixCache
 
         birdsong.nixosModules.default
+
+        lanzaboote.nixosModules.lanzaboote
       ];
 
       systemModules = path: commonModules ++ [ path ];

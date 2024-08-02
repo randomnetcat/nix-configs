@@ -2,13 +2,29 @@
 
 {
   config = {
-    boot.loader.systemd-boot.enable = true;
     boot.loader.grub.enable = false;
 
-    boot.loader.efi.canTouchEfiVariables = true;
-    boot.loader.generationsDir.copyKernels = true;
+    boot.loader.systemd-boot = {
+      enable = false;
+      editor = false;
+      memtest86.enable = true;
+    };
 
-    boot.loader.systemd-boot.editor = false;
+    boot.lanzaboote = {
+      enable = true;
+      pkiBundle = "/etc/secureboot";
+    };
+
+    boot.loader.efi = {
+      canTouchEfiVariables = true;
+      efiSysMountPoint = "/boot";
+    };
+
+    environment.systemPackages = [
+      pkgs.sbctl
+    ];
+
+    boot.loader.generationsDir.copyKernels = true;
 
     fileSystems."/boot" = {
       device = "/dev/disk/by-partlabel/groves-esp";
@@ -20,9 +36,5 @@
         "umask=077"
       ];
     };
-
-    boot.loader.efi.efiSysMountPoint = "/boot";
-
-    boot.loader.systemd-boot.memtest86.enable = true;
   };
 }
