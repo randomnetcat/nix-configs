@@ -298,11 +298,11 @@
         "systems": "systems_6"
       },
       "locked": {
-        "lastModified": 1705309234,
-        "narHash": "sha256-uNRRNRKmJyCRC/8y1RqBkqWBLM034y4qN7EprSdmgyA=",
+        "lastModified": 1710146030,
+        "narHash": "sha256-SZ5L6eA7HJ/nmkzGG7/ISclqe6oZdOZTNoesiInkXPQ=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "1ef2e671c3b0c19053962c07dbda38332dcebf26",
+        "rev": "b1d9ab70662946ef0850d488da1c9019f3a9752a",
         "type": "github"
       },
       "original": {
@@ -398,11 +398,11 @@
     "lix": {
       "flake": false,
       "locked": {
-        "lastModified": 1722617984,
-        "narHash": "sha256-fA9PkQ8gKHSezxWyZeQhq/SMe1t6xw7KKFroTT5g9UQ=",
+        "lastModified": 1722643724,
+        "narHash": "sha256-FrM0DN/i5kKB06/4KYNkY3mMGpC5hYQhaKtx1mneReU=",
         "ref": "refs/heads/main",
-        "rev": "32ca194ebfa3610c8099e5713ee7d5cbb8fb125c",
-        "revCount": 16063,
+        "rev": "66469fc281fc4abb3284574f77a8051fee8116b9",
+        "revCount": 16064,
         "type": "git",
         "url": "https://git.lix.systems/lix-project/lix"
       },
@@ -492,11 +492,11 @@
     },
     "nixpkgsSmall": {
       "locked": {
-        "lastModified": 1722589669,
-        "narHash": "sha256-rxDnGBZK+Sp3df20nCCRrtQzRrJKxY7KtcYNPo5yfg8=",
+        "lastModified": 1722685361,
+        "narHash": "sha256-6Zn2SVJYffCtenHEHsb2PmzQsX5+cRsforNJZmlK630=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "42015a129a2ae1cd43a44490e8235d2b24c8a2e2",
+        "rev": "6602aa2586f35fc8c6c46246a1dcac6940ca3f0f",
         "type": "github"
       },
       "original": {
@@ -508,11 +508,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1722642354,
-        "narHash": "sha256-/jj/PMT0ppAF+Fsxb6BJ3WQkIHp2mlFkqD+XuzXDSWA=",
+        "lastModified": 1722728705,
+        "narHash": "sha256-JKdFS4B4Qlh2XIlbXyEAWDHM8RLWp07jm6gBh4g6T5k=",
         "owner": "nix-community",
         "repo": "nur",
-        "rev": "99aee73a6193fff32c3927f6cc18df73db45a3e4",
+        "rev": "d998ec700a2ea7116940073775fe8df2439bd656",
         "type": "github"
       },
       "original": {
@@ -533,11 +533,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1714113962,
-        "narHash": "sha256-7nVz2XUgVtnTQIYcuuqdLjZL8ifb7W8jciT+Szsx920=",
+        "lastModified": 1722515463,
+        "narHash": "sha256-6FVPz1WzHak65xJQg8tRjVyFEWMesGxfskKaCxDUnRk=",
         "owner": "nix-community",
         "repo": "poetry2nix",
-        "rev": "9245811b58905453033f1ef551f516cbee71c42c",
+        "rev": "8c25e871bba3f472e1569bbf6c0f52dcc34bf2a4",
         "type": "github"
       },
       "original": {
@@ -744,11 +744,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1708335038,
-        "narHash": "sha256-ETLZNFBVCabo7lJrpjD6cAbnE11eDOjaQnznmg/6hAE=",
+        "lastModified": 1719749022,
+        "narHash": "sha256-ddPKHcqaKCIFSFc/cvxS14goUhCOAwsM1PbMr0ZtHMg=",
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "rev": "e504621290a1fd896631ddbc5e9c16f4366c9f65",
+        "rev": "8df5ff62195d4e67e2264df0b7f5e8c9995fd0bd",
         "type": "github"
       },
       "original": {
@@ -760,11 +760,11 @@
     "wikiteam3": {
       "flake": false,
       "locked": {
-        "lastModified": 1711645859,
-        "narHash": "sha256-4HgjkOXwZsTzMZ7oHcNbSyMl/wtAv1U/CV2g+lJNBu0=",
+        "lastModified": 1716324212,
+        "narHash": "sha256-OFwjyAPBBS6oNmXDAlcPKTIT/gVA2AEgQT3RYgCiHiw=",
         "owner": "mediawiki-client-tools",
         "repo": "mediawiki-dump-generator",
-        "rev": "a8d2ef02ebb49cac6955fb2cd1411e208c27a3ae",
+        "rev": "3f7bfd738ed88065b3bb06296576a1e575ecb1d1",
         "type": "github"
       },
       "original": {
@@ -784,11 +784,11 @@
       },
       "locked": {
         "dir": "wikiteam3",
-        "lastModified": 1714197063,
-        "narHash": "sha256-ALfQHIoT0fy3++Oc/Kpa+cAGP3sCqXHNbRosh+14Ue0=",
+        "lastModified": 1722655293,
+        "narHash": "sha256-Cguzz52Woi9ShCEGKIh4WNr8xZgIJW6v3Neal9gv0GE=",
         "owner": "randomnetcat",
         "repo": "nix-wrappers",
-        "rev": "7972770df5799801bcd2a3b24d0bed8f71ddd709",
+        "rev": "76a3ed45d529696d7879a2968ab8c19dc14bd000",
         "type": "github"
       },
       "original": {
