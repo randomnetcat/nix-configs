@@ -2,18 +2,12 @@
 
 {
   imports = [ 
-    ../../../sys/wants/backup
+    ../../../sys/wants/backup/default.nix
+    ../../../sys/wants/backup/network.nix
+    ../../../network
   ];
 
   config = {
-    randomcat.services.backups.target = {
-      enable = true;
-      parentDataset = "nas_oabrke/data/backups";
-
-      acceptSources = {
-        groves = {};
-        reese.sshKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFkOFn/HmrUFe3/I8JI4tsRRmTtsjmSjMYruVaxrzmoV root@reese";
-      };
-    };
+    randomcat.services.backups.fromNetwork = true;
   };
 }
