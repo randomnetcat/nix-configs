@@ -15,7 +15,7 @@
     # From https://xeiaso.net/blog/paranoid-nixos-2021-07-18
     networking.firewall.enable = true;
     nix.settings.allowed-users = [ "root" ];
-    security.sudo.execWheelOnly = true;
+    security.sudo.execWheelOnly = lib.mkDefault true;
 
     programs.tmux.enable = true;
 
