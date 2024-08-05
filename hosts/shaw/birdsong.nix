@@ -1,5 +1,9 @@
 { config, lib, pkgs, inputs, ... }:
 
+let
+  usersDataset = "nas_oabrke/data/users";
+  qenyaDataset = "${usersDataset}/qenya";
+in
 {
   imports = [
     ../../sys/impl/fs-keys.nix
@@ -25,11 +29,11 @@
     };
 
     randomcat.services.zfs.create.datasets = {
-      "nas_oabrke/data/users" = {
+      "${usersDataset}" = {
         mountpoint = "none";
       };
 
-      "nas_oabrke/data/users/qenya" = {
+      "${qenyaDataset}" = {
         zfsOptions = {
           # Don't use a Nix-managed mountpoint in order to allow inheritance.
           mountpoint = "/home/qenya/data";
@@ -75,5 +79,24 @@
     nix.settings.allowed-users = [
       config.users.users.qenya.name
     ];
+
+    security.sudo = {
+      # qenya is not in wheel
+      execWheelOnly = false;
+
+      extraRules = [
+        {
+          users = [ "qenya" ];
+          commands = [
+            {
+              # This is safe because qenya does not have the permission to set
+              # the mountpoint property on child datasets they create.
+              command = "/run/current-system/sw/bin/zfs mount -R ${qenyaDataset}";
+              options = [ "NOPASSWD" ];
+            }
+          ];
+        }
+      ];
+    };
   };
 }
