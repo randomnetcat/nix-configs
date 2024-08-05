@@ -576,11 +576,11 @@
     "qenyaNixfiles": {
       "flake": false,
       "locked": {
-        "lastModified": 1722596592,
-        "narHash": "sha256-R/XUUqwjcpSU5HJgOtTOpwTxCMzQwWj4paDn4vOzjlI=",
+        "lastModified": 1722827673,
+        "narHash": "sha256-ZP7ZdFKMZEcXDey+VhOpl6EadjQMqTpCR+cK2UBGS3g=",
         "ref": "refs/heads/main",
-        "rev": "7f74fdbe874b4a6901dfbde1b9717355dd68ec4c",
-        "revCount": 122,
+        "rev": "2b9b157679ac34d8d1bd4d4c19b4602ccb047d1c",
+        "revCount": 127,
         "type": "git",
         "url": "https://git.qenya.tel/qenya/nixfiles.git"
       },
