@@ -20,6 +20,7 @@ let
     targetUser = movementSshUser networkMovement;
     sourceDataset = dataset.source;
     targetDataset = "${network.backups.targets."${networkMovement.targetHost}".backupsDataset}/${networkMovement.sourceHost}/${dataset.target}";
+    syncoidTag = movementSyncoidTag networkMovement;
   }) networkMovement.datasets;
 
   networkToTargetSources = networkMovement: {

@@ -39,6 +39,11 @@ let
         type = types.str;
         description = "Name of the dataset to backup to (on the target)";
       };
+
+      syncoidTag = lib.mkOption {
+        type = types.str;
+        description = "The syncoid identifier to use";
+      };
     };
   });
 in
@@ -81,6 +86,7 @@ in
             "--keep-sync-snap"
             "--no-rollback"
             "--sshport=${toString m.targetPort}"
+            "--identifier=${m.syncoidTag}"
           ];
         };
       }) cfg.movements);
