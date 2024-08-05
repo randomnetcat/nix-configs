@@ -573,6 +573,22 @@
         "type": "github"
       }
     },
+    "qenyaNixfiles": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1722596592,
+        "narHash": "sha256-R/XUUqwjcpSU5HJgOtTOpwTxCMzQwWj4paDn4vOzjlI=",
+        "ref": "refs/heads/main",
+        "rev": "7f74fdbe874b4a6901dfbde1b9717355dd68ec4c",
+        "revCount": 122,
+        "type": "git",
+        "url": "https://git.qenya.tel/qenya/nixfiles.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.qenya.tel/qenya/nixfiles.git"
+      }
+    },
     "root": {
       "inputs": {
         "agorabot-prod": "agorabot-prod",
@@ -587,6 +603,7 @@
         "nixpkgs": "nixpkgs",
         "nixpkgsSmall": "nixpkgsSmall",
         "nur": "nur",
+        "qenyaNixfiles": "qenyaNixfiles",
         "wikiteam3-nix": "wikiteam3-nix"
       }
     },

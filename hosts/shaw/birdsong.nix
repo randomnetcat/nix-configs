@@ -57,6 +57,7 @@
     users.users.qenya = {
       isNormalUser = true;
       group = config.users.groups.qenya.name;
+      shell = pkgs.zsh;
 
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEmkV9arotms79lJPsLHkdzAac4eu3pYS08ym0sB/on qenya@tohru"
@@ -64,5 +65,15 @@
     };
 
     users.groups.qenya = {};
+
+    programs.zsh.enable = true;
+
+    home-manager.users.qenya.imports = [
+      (builtins.toPath "${inputs.qenyaNixfiles}/home/default.nix")
+    ];
+
+    nix.settings.allowed-users = [
+      config.users.users.qenya.name
+    ];
   };
 }

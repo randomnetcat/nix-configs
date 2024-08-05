@@ -54,6 +54,11 @@
       url = "git+https://git.qenya.tel/qenya/birdsong?ref=main";
     };
 
+    qenyaNixfiles = {
+      url = "git+https://git.qenya.tel/qenya/nixfiles.git";
+      flake = false;
+    };
+
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.4.1";
       inputs.nixpkgs.follows = "nixpkgs";
