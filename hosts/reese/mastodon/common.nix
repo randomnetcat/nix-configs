@@ -130,9 +130,7 @@ in
             set $s3_backend 'https://${conf.objectStorage.bucketName}.${conf.objectStorage.bucketHostname}';
           '';
 
-          locations."/".tryFiles = "@s3";
-
-          locations."@s3".extraConfig = "
+          locations."/".extraConfig = "
             limit_except GET {
               deny all;
             }
