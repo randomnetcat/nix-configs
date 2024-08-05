@@ -99,5 +99,11 @@ in
         }
       ];
     };
+
+    # Syncthing
+    networking.firewall.interfaces.wg-birdsong = {
+      allowedTCPPorts = [ 8385 22001 ];
+      allowedUDPPorts = [ 21028 22001 ];
+    };
   };
 }
