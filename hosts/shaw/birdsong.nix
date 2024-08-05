@@ -74,6 +74,7 @@ in
 
     home-manager.users.qenya.imports = [
       (builtins.toPath "${inputs.qenyaNixfiles}/home/default.nix")
+      (builtins.toPath "${inputs.qenyaNixfiles}/hosts/shaw/home.nix")
     ];
 
     nix.settings.allowed-users = [
