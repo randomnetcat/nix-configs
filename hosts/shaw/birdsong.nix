@@ -100,8 +100,8 @@ in
       ];
     };
 
-    # Syncthing
-    networking.firewall.interfaces.wg-birdsong = {
+    # Syncthing. Note that ports are one greater than defaults.
+    networking.firewall = {
       allowedTCPPorts = [ 8385 22001 ];
       allowedUDPPorts = [ 21028 22001 ];
     };
