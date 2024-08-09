@@ -20,7 +20,7 @@
     ./gaming.nix
     ./backup.nix
     # ./bluetooth.nix
-    # ./printing.nix
+    ./printing.nix
     ./security.nix
     # ./vms.nix
     ./archive.nix
