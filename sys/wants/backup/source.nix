@@ -49,6 +49,7 @@ let
 in
 {
   imports = [
+    ./prune.nix
     ../../impl/fs-keys.nix
   ];
 
@@ -117,6 +118,14 @@ in
         user = config.users.users.syncoid.name;
         source.encrypted.path = cfg.encryptedSyncKey;
       };
+    };
+
+    randomcat.services.backups.prune = {
+      enable = true;
+
+      datasets = lib.mkMerge (map (m: {
+        "${m.sourceDataset}".syncoidTags = [ m.syncoidTag ];
+      }) cfg.movements);
     };
   };
 }

@@ -17,6 +17,7 @@ let
 in
 {
   imports = [
+    ./prune.nix
     ../../impl/zfs-create.nix
   ];
 
@@ -74,79 +75,13 @@ in
           };
         }));
 
+        default = {};
         description = "Descriptions of sources that this destination host should be prepared to accept backups from";
       };
     };
   };
 
   config = let
-    mkPruneSyncSnapsService = sourceCfg: {
-      wantedBy = [ "multi-user.target" ];
-      startAt = "06:00";
-
-      script = ''
-        set -euo pipefail
-
-        prune_dataset_snaps() {
-            declare -r dataset="$1"
-            declare -r prefix="$2"
-
-            echo "Pruning dataset: $dataset" >&2
-
-            # It's okay if grep returns no matches, so need to check exit status.
-            #
-            # Also, ignore the last two snapshots to ensure that the most recent
-            # common ancestor is not accidentally destroyed.
-
-            ${zfsBin} list -t snapshot -Ho name -s createtxg -s creation -- "$dataset" \
-                | (grep -F "$dataset@$prefix" || test "$?" = 1) \
-                | head -n -2 \
-                | {
-                    while IFS="" read -r snapshot; do
-                        # Refuse to ever destroy a snapshot not matching the pattern.
-                        if [[ "$snapshot" != "$dataset@$prefix"* ]]; then
-                            echo "Refusing to destroy snapshot: $snapshot"
-
-                            # There's a bug here, completely exit.
-                            exit 1
-                        fi
-
-                        ${zfsBin} destroy -v -- "$snapshot"
-                    done
-                }
-        }
-
-        prune_recursive_snaps() {
-            declare -r parent="$1"
-            declare -r snapshot_prefix="$2"
-
-            echo "Pruning recursively from: $parent" >&2
-
-            ${zfsBin} list -t filesystem -rHo name -- "$parent" | {
-                while IFS="" read -r dataset; do
-                    if [[ ( "$dataset" != "$parent" ) && ( "$dataset" != "$parent/"* ) ]]; then
-                        echo "Refusing to prune dataset: $dataset"
-                        exit 1
-                    fi
-
-                    prune_dataset_snaps "$dataset" "$snapshot_prefix"
-                done
-            }
-        }
-
-        if ! ${lib.escapeShellArgs [ zfsBin "list" "-Ho" "name" sourceCfg.fullDataset ]}; then
-          printf "Dataset %s does not exists; not pruning.\n" ${lib.escapeShellArg sourceCfg.fullDataset}
-          exit 0
-        fi
-
-        ${lib.escapeShellArgs [
-          "prune_recursive_snaps"
-          sourceCfg.fullDataset
-          "syncoid_${sourceCfg.syncoidTag}"
-        ]} || printf "Failed to prune dataset: %s\n" ${lib.escapeShellArg sourceCfg.fullDataset}
-      '';
-    };
-
     mkUser = sourceCfg: lib.mkIf (sourceCfg.user == "sync-${sourceCfg.name}") {
       isSystemUser = true;
       useDefaultShell = true;
@@ -172,9 +107,13 @@ in
       };
     }) sourcesList);
 
-    systemd.services = lib.mkMerge (map (sourceCfg: {
-      "sync-prune-${sourceCfg.name}" = mkPruneSyncSnapsService sourceCfg;
-    }) sourcesList);
+    randomcat.services.backups.prune = {
+      enable = true;
+
+      datasets = lib.mkMerge (map (sourceCfg: {
+        "${sourceCfg.fullDataset}".syncoidTags = [ sourceCfg.syncoidTag ];
+      }) sourcesList);
+    };
 
     users.users = lib.mkMerge (map (sourceCfg: {
       "${sourceCfg.user}" = mkUser sourceCfg;
