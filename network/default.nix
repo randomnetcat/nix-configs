@@ -22,6 +22,10 @@
           reese = {
             syncKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFkOFn/HmrUFe3/I8JI4tsRRmTtsjmSjMYruVaxrzmoV";
           };
+
+          groves = {
+            syncKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICH8LCAeIbGW+TRmKwoAwVa2m1JMWqLvOhKOsx+7Fg7u";
+          };
         };
 
         targets = {
@@ -39,6 +43,18 @@
               {
                 source = "rpool_sggau1/reese/system";
                 target = "system";
+              }
+            ];
+          }
+
+          {
+            sourceHost = "groves";
+            targetHost = "shaw";
+
+            datasets = [
+              {
+                source = "rpool_fxooop/groves/safe";
+                target = "safe";
               }
             ];
           }
