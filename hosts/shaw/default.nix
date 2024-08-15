@@ -42,6 +42,11 @@
       smtp.passwordEncryptedCredentialPath = ./secrets/notify-email-password;
     };
 
+    # Fix issue with systemd stuff running out of inotify watches.
+    boot.kernel.sysctl = {
+      "fs.inotify.max_user_watches" = 542288;
+    };
+
     services.fwupd.enable = true;
 
     system.autoUpgrade.allowReboot = false;
