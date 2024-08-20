@@ -22,7 +22,7 @@
     # ./bluetooth.nix
     ./printing.nix
     ./security.nix
-    # ./vms.nix
+    ./vms.nix
     ./archive.nix
     ./development.nix
   ];
