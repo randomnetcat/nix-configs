@@ -8,6 +8,7 @@ in
     let
       vmModules = {
         coe-env = ../coe-env;
+        csc-574-env = ../csc-574-env;
       };
 
       vmExtraModules = { name, targetPath }: [
