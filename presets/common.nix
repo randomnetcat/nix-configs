@@ -19,7 +19,10 @@
     };
 
     nix.nixPath = [ "nixpkgs=flake:nixpkgs" ];
-    nix.extraOptions = "experimental-features = nix-command flakes";
+    nix.extraOptions = ''
+      experimental-features = nix-command flakes
+      accept-flake-config = false
+    '';
 
     nixpkgs.config.allowUnfree = true;
 
