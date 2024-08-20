@@ -153,6 +153,12 @@
           system = "x86_64-linux";
           modules = [ ./hosts/shaw ];
         };
+
+        leon = {
+          pkgsFlake = nixpkgsSmall;
+          system = "x86_64-linux";
+          modules = [ ./hosts/leon ];
+        };
       };
 
       nixosConfigurations = lib.mapAttrs (n: v: defineSystem v) systemConfigs;
@@ -172,6 +178,11 @@
 
         shaw = {
           hostname = "shaw";
+          sshUser = "root";
+        };
+
+        leon = {
+          hostname = "leon";
           sshUser = "root";
         };
       };
