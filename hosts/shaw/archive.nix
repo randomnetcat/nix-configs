@@ -7,6 +7,7 @@ let
     "internet"
     "media"
     "ncsu-google"
+    "nebula"
     "nomic"
     "youtube"
   ];
