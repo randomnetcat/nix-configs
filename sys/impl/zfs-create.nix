@@ -107,6 +107,7 @@ in
                 [ datasetName ];
 
               setOpts =
+                [ "-u" ] ++
                 (lib.mapAttrsToList (name: value: "${name}=${value}") zfsOptions) ++
                 [ datasetName ];
             in
