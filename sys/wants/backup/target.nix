@@ -18,7 +18,6 @@ in
 {
   imports = [
     ./prune.nix
-    ../../impl/zfs-create.nix
   ];
 
   options = {

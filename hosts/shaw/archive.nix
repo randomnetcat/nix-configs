@@ -15,10 +15,6 @@ let
   baseMountpoint = "/srv/archive";
 in
 {
-  imports = [
-    ../../sys/impl/zfs-create.nix
-  ];
-
   config = {
     users.users.archive = {
       isNormalUser = true;

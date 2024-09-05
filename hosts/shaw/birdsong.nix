@@ -7,7 +7,6 @@ in
 {
   imports = [
     ../../sys/impl/fs-keys.nix
-    ../../sys/impl/zfs-create.nix
   ];
 
   config = {

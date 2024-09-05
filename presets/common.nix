@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../services
     ../sys/impl/networking/resolved.nix
     ../sys/impl/maintenance
     ../sys/impl/zfs-common.nix
