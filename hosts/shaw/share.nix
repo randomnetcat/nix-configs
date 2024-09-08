@@ -12,18 +12,17 @@
 
     services.samba = {
       enable = true;
-      enableNmbd = false;
-      securityType = "user";
+      nmbd.enable = false;
 
-      extraConfig = ''
-        workgroup = WORKGROUP
-        server string = shaw
-        netbios name = shaw
-        security = user
-        interfaces = lo tailscale0
-      '';
+      settings = {
+        global = {
+          "workgroup" = "WORKGROUP";
+          "server string" = "shaw";
+          "netbios name" = "shaw";
+          "security type" = "user";
+          "interfaces" = "lo tailscale0";
+        };
 
-      shares = {
         archive = {
           "path" = "/srv/archive";
           "browseable" = "yes";
