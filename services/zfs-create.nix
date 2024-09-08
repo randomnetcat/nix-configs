@@ -103,6 +103,7 @@ in
           script =
             let
               createOpts =
+                [ "-u" ] ++
                 (lib.concatMap ({ name, value }: [ "-o" "${name}=${value}" ]) (lib.attrsToList zfsOptions)) ++
                 [ datasetName ];
 
