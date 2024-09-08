@@ -29,7 +29,7 @@ in
 
     users.groups.archive = {};
 
-    randomcat.services.zfs.create.datasets = lib.mkMerge (
+    randomcat.services.zfs.datasets = lib.mkMerge (
       [
         {
           "${archiveParent}" = {

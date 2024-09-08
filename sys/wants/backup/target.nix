@@ -99,7 +99,7 @@ in
     sourcesList = lib.attrValues cfg.target.acceptSources;
   in
   lib.mkIf cfg.target.enable {
-    randomcat.services.zfs.create.datasets = lib.mkMerge (map (sourceCfg: {
+    randomcat.services.zfs.datasets = lib.mkMerge (map (sourceCfg: {
       "${sourceCfg.fullDataset}" = {
         mountpoint = "none";
         zfsPermissions.users."${sourceCfg.user}" = childPerms;

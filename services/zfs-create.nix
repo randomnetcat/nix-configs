@@ -1,7 +1,7 @@
 { config, lib, utils, pkgs, ... }:
 
 let
-  cfg = config.randomcat.services.zfs.create;
+  cfg = config.randomcat.services.zfs;
 
   types = lib.types;
 
@@ -49,7 +49,7 @@ let
 in
 {
   options = {
-    randomcat.services.zfs.create = {
+    randomcat.services.zfs = {
       datasets = lib.mkOption {
         type = types.attrsOf datasetType;
         default = {};

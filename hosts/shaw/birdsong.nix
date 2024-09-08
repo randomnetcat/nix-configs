@@ -27,7 +27,7 @@ in
       };
     };
 
-    randomcat.services.zfs.create.datasets = {
+    randomcat.services.zfs.datasets = {
       "${usersDataset}" = {
         mountpoint = "none";
       };
