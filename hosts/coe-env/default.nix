@@ -50,5 +50,11 @@
     boot.binfmt.emulatedSystems = lib.mkIf (pkgs.stdenv.hostPlatform.system != "aarch64-linux") [
       "aarch64-linux"
     ];
+
+    networking.hosts = {
+      "127.0.0.1" = [
+        "localhost.wolftech.ncsu.edu"
+      ];
+    };
   };
 }
