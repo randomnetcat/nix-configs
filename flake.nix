@@ -56,7 +56,11 @@
 
     qenyaNixfiles = {
       url = "git+https://git.qenya.tel/qenya/nixfiles.git";
-      flake = false;
+
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        nixpkgsSmall.follows = "nixpkgsSmall";
+      };
     };
 
     lanzaboote = {
