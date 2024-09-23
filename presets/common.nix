@@ -27,6 +27,8 @@
 
     nixpkgs.config.allowUnfree = true;
 
+    home-manager.useGlobalPkgs = true;
+
     assertions = [
       {
         assertion = inputs.nixpkgs.outPath == (toString pkgs.path);
