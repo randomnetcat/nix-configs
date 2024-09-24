@@ -24,11 +24,6 @@ let
         default = null;
       };
 
-      zfsPermissions.createTime = lib.mkOption {
-        type = types.listOf types.str;
-        default = [];
-      };
-
       zfsPermissions.users = lib.mkOption {
         type = types.attrsOf (types.listOf types.str);
         default = {};
