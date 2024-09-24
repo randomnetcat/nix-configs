@@ -3,6 +3,8 @@
 let
   cfg = config.randomcat.services.zfs;
 
+  anyDatasets = lib.length (lib.attrsToList cfg.datasets) > 0;
+
   types = lib.types;
 
   datasetType = types.submodule ({ name, config, ... }: {
@@ -57,7 +59,11 @@ in
     };
   };
 
-  config = {
+  config = lib.mkIf anyDatasets {
+    boot.supportedFilesystems.zfs = true;
+
+    boot.zfs.extraPools = map (datasetValue: lib.head (lib.splitString "/" datasetValue.datasetName)) (lib.attrValues cfg.datasets);
+
     systemd.services = lib.mkMerge (map (datasetValue:
       let
         datasetName = datasetValue.datasetName;
