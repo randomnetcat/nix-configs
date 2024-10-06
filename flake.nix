@@ -59,7 +59,7 @@
 
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        nixpkgsSmall.follows = "nixpkgsSmall";
+        nixpkgs-small.follows = "nixpkgsSmall";
       };
     };
 
