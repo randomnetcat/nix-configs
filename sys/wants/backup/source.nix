@@ -111,6 +111,15 @@ in
       };
     }) cfg.movements);
 
+    systemd.timers = lib.mkMerge (lib.imap0 (i: m: {
+      "syncoid-randomcat-${toString i}-${m.targetName}" = {
+        timerConfig = {
+          Persistent = true;
+          RandomizedDelaySec = "30m";
+        };
+      };
+    }) cfg.movements);
+
     users.users.syncoid.extraGroups = [ "keys" ];
 
     randomcat.services.fs-keys.sync-creds = {
