@@ -45,7 +45,7 @@ in
     #
     # [0]: https://github.com/NixOS/nixpkgs/pull/213773
 
-    boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages.extend (self: super: {
+    boot.kernelPackages = pkgs.linuxPackages.extend (self: super: {
       it87 = super.it87.overrideAttrs (old: rec {
         name = "it87-${version}-${self.kernel.version}";
         version = "unstable-2023-11-11";

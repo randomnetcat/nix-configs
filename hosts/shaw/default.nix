@@ -30,8 +30,6 @@
       system = "x86_64-linux";
     };
 
-    # boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
-
     networking.hostName = "shaw";
     networking.hostId = "df7b2245";
 
