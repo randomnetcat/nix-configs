@@ -31,7 +31,6 @@
         (pkgs.gradle.override {
           javaToolchains = map (p: p.home) (lib.attrValues jdks);
         })
-        pkgs.jd-gui
       ];
     };
 }
