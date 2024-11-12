@@ -51,7 +51,7 @@
     };
 
     birdsong = {
-      url = "git+https://git.qenya.tel/qenya/birdsong?ref=main";
+      url = "git+https://git.qenya.tel/qenya/birdsong?ref=compat-24.11";
     };
 
     qenyaNixfiles = {
