@@ -25,6 +25,7 @@
     ./vms.nix
     ./archive.nix
     ./development.nix
+    ./pi-development.nix
   ];
 
   options = {
