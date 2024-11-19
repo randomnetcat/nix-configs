@@ -167,6 +167,9 @@ in
               $wgAllowExternalImagesFrom = [
                 'https://nyhilo.website/cycle15/'
               ];
+
+              // Temporarily prohibit registrations due to spam.
+              $wgGroupPermissions['*']['createaccount'] = false;
             '';
           };
 
