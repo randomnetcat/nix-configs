@@ -190,6 +190,11 @@ in
 
       privateNetwork = true;
 
+      allowedDevices = [{
+        modifier = "rwm";
+        node = "/dev/net/tun";
+      }];
+
       hostAddress = containers.wiki.hostIP4;
       localAddress = containers.wiki.localIP4;
       hostAddress6 = containers.wiki.hostIP6;

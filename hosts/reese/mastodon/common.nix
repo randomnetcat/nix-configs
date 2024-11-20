@@ -313,6 +313,11 @@ in
 
       privateNetwork = true;
 
+      allowedDevices = [{
+        modifier = "rwm";
+        node = "/dev/net/tun";
+      }];
+
       hostAddress = hostIP4;
       localAddress = localIP4;
 
