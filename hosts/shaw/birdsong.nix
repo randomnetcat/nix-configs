@@ -18,6 +18,10 @@ in
       persistentKeepalive = 23;
     };
 
+    users.users.systemd-network.extraGroups = [
+      config.users.groups.keys.name
+    ];
+
     randomcat.services.fs-keys.wireguard-birdsong-creds = {
       wantedBy = [ "multi-user.target" ];
       wants = [ "network-pre.target" ];
