@@ -19,11 +19,16 @@ in
     };
 
     randomcat.services.fs-keys.wireguard-birdsong-creds = {
-      requiredBy = [ "wireguard-wg-birdsong.service" ];
-      before = [ "wireguard-wg-birdsong.service" ];
+      wantedBy = [ "multi-user.target" ];
+      wants = [ "network-pre.target" ];
+      before = [ "network-pre.target" ];
 
       keys.wireguard-birdsong-key = {
         source.encrypted.path = ./secrets/wireguard-birdsong-key;
+
+        user = config.users.users.root.name;
+        group = config.users.groups.systemd-network.name;
+        mode = "0640";
       };
     };
 
