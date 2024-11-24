@@ -84,6 +84,8 @@ let
           description = "Configuration for the credentials to add to the filesystem.";
         };
 
+        wants = mkServiceOption "wants";
+        requires = mkServiceOption "requires";
         wantedBy = mkServiceOption "wantedBy";
         requiredBy = mkServiceOption "requiredBy";
         before = mkServiceOption "before";
