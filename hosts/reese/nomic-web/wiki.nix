@@ -177,7 +177,11 @@ in
             before = [ "mediawiki-init.service" ];
             requiredBy = [ "mediawiki-init.service" ];
 
-            keys.smtp-pass.source.inherited = true;
+            keys.smtp-pass = {
+              source.inherited = true;
+              user = config.users.users.mediawiki.name;
+            };
+
             keys.password-file.source.inherited = true;
           };
 
