@@ -74,6 +74,11 @@ in
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEmkV9arotms79lJPsLHkdzAac4eu3pYS08ym0sB/on qenya@tohru"
       ];
+
+      extraGroups = [
+        # Temporary? I locked myself out. Good job me.
+        "wheel"
+      ];
     };
 
     users.groups.qenya = {};
