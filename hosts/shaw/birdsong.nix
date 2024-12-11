@@ -98,6 +98,9 @@ in
       # qenya is not in wheel
       execWheelOnly = false;
 
+      # qenya does not have a password, and I need them to have access for now!
+      wheelNeedsPassword = false;
+
       extraRules = [
         {
           users = [ "qenya" ];
