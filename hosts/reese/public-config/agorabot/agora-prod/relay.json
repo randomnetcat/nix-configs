@@ -20,6 +20,11 @@
         "server_name": "libera",
         "channel_name": "##nomic-drafting",
         "command_prefix": "!"
+      },
+      "libera_nomic_questions": {
+        "server_name": "libera",
+        "channel_name": "##nomic-questions",
+        "command_prefix": "!"
       }
     },
     "discord": {
@@ -28,6 +33,9 @@
       },
       "agora_drafting": {
         "channel_id": "770777770182836277"
+      },
+      "agora_questions": {
+        "channel_id": "724097300540162088"
       }
     }
   },
@@ -37,6 +45,9 @@
     },
     {
       "endpoints": ["libera_nomic_drafting", "agora_drafting"]
+    },
+    {
+      "endpoints": ["libera_nomic_questions", "agora_questions"]
     }
   ]
 }
