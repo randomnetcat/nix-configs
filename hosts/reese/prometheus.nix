@@ -1,16 +1,13 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, name, nodes, ... }:
 
 let
   prometheusHost = "monitoring.randomcat.org";
 
   # Map of host names to export names, for hosts using the export-metrics module.
-  hostExports = {
-    bear = [
-      "node"
-      "zfs"
-      "maddy"
-    ];
-  };
+  hostExports = lib.mapAttrs' (_: nodeConfig: {
+    name = nodeConfig.config.networking.hostName;
+    value = map (x: x.name) (lib.attrValues (lib.attrByPath ["randomcat" "services" "export-metrics" "exports"] [] nodeConfig.config));
+  }) (lib.filterAttrs (nodeName: nodeConfig: nodeName != name && (lib.attrByPath ["randomcat" "services" "export-metrics" "enable"] false nodeConfig.config) == true) nodes);
 in
 {
   config = {
