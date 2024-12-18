@@ -32,6 +32,12 @@ in
 
         {
           job_name = "${config.networking.hostName}_prometheus";
+
+          basic_auth = {
+            username = "local";
+            password_file = "/run/keys/prometheus-local-password";
+          };
+
           static_configs = [
             {
               targets = [
@@ -58,6 +64,9 @@ in
       serviceConfig = {
         # prometheus-web-config: basic_auth_users
         LoadCredentialEncrypted = "prometheus-web:${./secrets/prometheus-web-config}";
+
+        # Allow access to /run/keys
+        SupplementaryGroups = [ "keys" ];
       };
     };
 
@@ -68,6 +77,16 @@ in
       locations."/" = {
         recommendedProxySettings = true;
         proxyPass = "http://127.0.0.1:${toString config.services.prometheus.port}";
+      };
+    };
+
+    randomcat.services.fs-keys.prometheus-creds = {
+      before = [ "prometheus.service" ];
+      wantedBy = [ "prometheus.service" ];
+
+      keys.prometheus-local-password = {
+        user = config.users.users.prometheus.name;
+        source.encrypted.path = ./secrets/prometheus-local-password;
       };
     };
   };
