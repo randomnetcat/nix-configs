@@ -15,6 +15,7 @@
     ./auth
 
     ./networking.nix
+    ./metrics.nix
   ];
 
   networking.hostId = "b3302af3";

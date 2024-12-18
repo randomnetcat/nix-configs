@@ -340,7 +340,6 @@ in
 
         # Prometheus support
         openmetrics tcp://127.0.0.1:9749 { }
-        openmetrics tcp://${tailscaleIP}:9749 { }
       '';
     };
   };
