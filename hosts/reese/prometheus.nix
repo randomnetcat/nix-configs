@@ -2,6 +2,15 @@
 
 let
   prometheusHost = "monitoring.randomcat.org";
+
+  # Map of host names to export names, for hosts using the export-metrics module.
+  hostExports = {
+    bear = [
+      "node"
+      "zfs"
+      "maddy"
+    ];
+  };
 in
 {
   config = {
@@ -46,18 +55,18 @@ in
             }
           ];
         }
+      ] ++ (lib.concatMap ({ name, value }: map (exporter: {
+        job_name = "${name}_${exporter}";
+        metrics_path = "/export-metrics/${exporter}";
 
-        {
-          job_name = "bear_maddy";
-          static_configs = [
-            {
-              targets = [
-                "bear:9749"
-              ];
-            }
-          ];
-        }
-      ];
+        static_configs = [
+          {
+            targets = [
+              "${name}:9098"
+            ];
+          }
+        ];
+      }) value) (lib.attrsToList hostExports));
     };
 
     systemd.services.prometheus = {
