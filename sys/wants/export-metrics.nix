@@ -62,21 +62,26 @@ in
       };
     }) (lib.filter (value: value.enableService) (lib.attrValues cfg.exports)));
 
-    services.nginx.virtualHosts."${cfg.listenAddress}" = {
-      listen = [
-        {
-          addr = cfg.listenAddress;
-          port = cfg.port;
-        }
-      ];
+    services.nginx = {
+      enable = true;
 
-      default = true;
+      virtualHosts."${cfg.listenAddress}" = {
+        listen = [
+          {
+            addr = cfg.listenAddress;
+            port = cfg.port;
+          }
+        ];
 
-      locations = lib.mkMerge (map (value: {
-        "=/export-metrics/${value.name}" = {
-          proxyPass = "http://127.0.0.1:${toString (if value.enableService then config.services.prometheus.exporters."${value.name}".port else value.localPort)}/metrics";
-        };
-      }) (lib.attrValues cfg.exports));
+        default = true;
+
+        locations = lib.mkMerge (map (value: {
+          "=/export-metrics/${value.name}" = {
+            recommendedProxySettings = true;
+            proxyPass = "http://127.0.0.1:${toString (if value.enableService then config.services.prometheus.exporters."${value.name}".port else value.localPort)}/metrics";
+          };
+        }) (lib.attrValues cfg.exports));
+      };
     };
   };
 }
