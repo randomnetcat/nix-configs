@@ -15,6 +15,16 @@ let
         description = "SSH host key of the host";
         default = null;
       };
+
+      tailscaleIP4 = lib.mkOption {
+        type = types.str;
+        description = "The Tailscale IPv4 address of the host.";
+      };
+
+      tailscaleIP6 = lib.mkOption {
+        type = types.str;
+        description = "The Tailscale IPv6 address of the host.";
+      };
     };
 
     config = {
