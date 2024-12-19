@@ -26,6 +26,7 @@
     ./archive.nix
     ./development.nix
     ./pi-development.nix
+    ./metrics.nix
   ];
 
   options = {
