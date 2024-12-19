@@ -3,6 +3,7 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ../../presets/server.nix
+    ../../presets/network.nix
     ../../sys/wants/trungle-access.nix
     ../../sys/impl/notifications.nix
 

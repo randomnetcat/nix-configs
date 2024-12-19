@@ -3,6 +3,7 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ../../presets/server.nix
+    ../../presets/network.nix
 
     ./system.nix
     ./mounts/system

@@ -1,6 +1,7 @@
 { pkgs, lib, config, ... }: {
   imports = [
     ../../presets/server.nix
+    ../../presets/network.nix
 
     ./hardware-configuration.nix
 
