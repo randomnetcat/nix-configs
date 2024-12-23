@@ -214,7 +214,9 @@
         };
       }) systemConfigs);
     in
-    {
+    (flake-utils.lib.eachDefaultSystem (system: {
+      formatter = nixpkgs.legacyPackages."${system}".nixpkgs-fmt;
+    })) // {
       inherit nixosConfigurations colmena;
     };
 }
