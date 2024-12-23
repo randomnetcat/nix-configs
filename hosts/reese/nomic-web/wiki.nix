@@ -62,7 +62,7 @@ in
                   ssl = false;
                 }
               ];
-              
+
               extraConfig = ''
                 AllowEncodedSlashes NoDecode
                 RewriteEngine On

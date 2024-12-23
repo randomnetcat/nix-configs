@@ -75,7 +75,7 @@ let
         mkServiceOption = name: lib.mkOption {
           type = types.listOf types.str;
           description = "See `systemd.services.*.${name}`";
-          default = [];
+          default = [ ];
         };
       in
       {
@@ -107,111 +107,115 @@ in
   };
 
   config = {
-    systemd.services = lib.mapAttrs' (_: serviceCfg: {
-      name = serviceCfg.name;
+    systemd.services = lib.mapAttrs'
+      (_: serviceCfg: {
+        name = serviceCfg.name;
 
-      value =
-        let
-          keys = serviceCfg.keys;
+        value =
+          let
+            keys = serviceCfg.keys;
 
-          rawInheritedCreds = lib.sortOn (k: k.dest) (lib.filter (k: k.source ? inherited) (lib.attrValues keys));
+            rawInheritedCreds = lib.sortOn (k: k.dest) (lib.filter (k: k.source ? inherited) (lib.attrValues keys));
 
-          inheritedCreds = lib.imap0 (i: k: k // {
-            localName = "inherited-${toString i}";
-          }) rawInheritedCreds;
+            inheritedCreds = lib.imap0
+              (i: k: k // {
+                localName = "inherited-${toString i}";
+              })
+              rawInheritedCreds;
 
-          encryptedCreds = lib.sortOn (k: k.dest) (lib.filter (k: k.source ? encrypted) (lib.attrValues keys));
-        in
-        {
-          inherit (serviceCfg) wantedBy requiredBy before;
+            encryptedCreds = lib.sortOn (k: k.dest) (lib.filter (k: k.source ? encrypted) (lib.attrValues keys));
+          in
+          {
+            inherit (serviceCfg) wantedBy requiredBy before;
 
-          serviceConfig = {
-            Type = "oneshot";
-            RemainAfterExit = true;
+            serviceConfig = {
+              Type = "oneshot";
+              RemainAfterExit = true;
 
-            PrivateMounts = true;
-            PrivateTmp = true;
-            UMask = "077";
+              PrivateMounts = true;
+              PrivateTmp = true;
+              UMask = "077";
 
-            WorkingDirectory = "/var/empty";
+              WorkingDirectory = "/var/empty";
 
-            LoadCredential = map (k: "${k.localName}:${k.source.inherited}") inheritedCreds;
+              LoadCredential = map (k: "${k.localName}:${k.source.inherited}") inheritedCreds;
+            };
+
+            unitConfig = {
+              RequiresMountsFor = map (k: builtins.dirOf k.dest) (lib.attrValues keys);
+            };
+
+            script = ''
+              set -euo pipefail
+
+              # Mount a ramfs for storing credentials before movement.
+              # Don't need to clean this up due to PrivateMounts=true.
+              WORK_DIR="$(mktemp -d)"/creds
+              mkdir -- "$WORK_DIR"
+              ${lib.getExe' pkgs.util-linux "mount"} -t ramfs -o mode=0700,uid=0,gid=0 -- ramfs "$WORK_DIR"
+
+              install_cred() {
+                declare -r src="$1"
+                declare -r dest="$2"
+                declare -r mode="$3"
+                declare -r user="$4"
+                declare -r group="$5"
+
+                chmod -- "$mode" "$src"
+                chown -- "$user:$group" "$src"
+                mv -T -- "$src" "$dest"
+
+                echo "Installed credential to $dest" >&2
+              }
+
+              load_inherited() {
+                declare -r cred_name="$1"
+                declare -r dest="$2"
+                declare -r mode="$3"
+                declare -r user="$4"
+                declare -r group="$5"
+
+                declare -r work_file="$WORK_DIR/tmp-$cred_name"
+
+                cp -T -- "$CREDENTIALS_DIRECTORY/$cred_name" "$work_file"
+                install_cred "$work_file" "$dest" "$mode" "$user" "$group"
+              }
+
+              load_encrypted() {
+                declare -r encrypted_src="$1"
+                declare -r cred_name="$2"
+                declare -r dest="$3"
+                declare -r mode="$4"
+                declare -r user="$5"
+                declare -r group="$6"
+
+                declare -r work_file="$WORK_DIR/tmp-$cred_name"
+
+                systemd-creds --name="$cred_name" -- decrypt "$encrypted_src" "$work_file"
+                install_cred "$work_file" "$dest" "$mode" "$user" "$group"
+              }
+
+              ${lib.concatMapStringsSep "\n" (k: lib.escapeShellArgs [
+                "load_inherited"
+                k.localName
+                k.dest
+                k.mode
+                k.user
+                k.group
+              ]) inheritedCreds}
+
+              ${lib.concatMapStringsSep "\n" (k: lib.escapeShellArgs [
+                "load_encrypted"
+                k.source.encrypted.path
+                k.source.encrypted.credName
+                k.dest
+                k.mode
+                k.user
+                k.group
+              ]) encryptedCreds}
+            '';
           };
-
-          unitConfig = {
-            RequiresMountsFor = map (k: builtins.dirOf k.dest) (lib.attrValues keys);
-          };
-
-          script = ''
-            set -euo pipefail
-
-            # Mount a ramfs for storing credentials before movement.
-            # Don't need to clean this up due to PrivateMounts=true.
-            WORK_DIR="$(mktemp -d)"/creds
-            mkdir -- "$WORK_DIR"
-            ${lib.getExe' pkgs.util-linux "mount"} -t ramfs -o mode=0700,uid=0,gid=0 -- ramfs "$WORK_DIR"
-
-            install_cred() {
-              declare -r src="$1"
-              declare -r dest="$2"
-              declare -r mode="$3"
-              declare -r user="$4"
-              declare -r group="$5"
-
-              chmod -- "$mode" "$src"
-              chown -- "$user:$group" "$src"
-              mv -T -- "$src" "$dest"
-
-              echo "Installed credential to $dest" >&2
-            }
-
-            load_inherited() {
-              declare -r cred_name="$1"
-              declare -r dest="$2"
-              declare -r mode="$3"
-              declare -r user="$4"
-              declare -r group="$5"
-
-              declare -r work_file="$WORK_DIR/tmp-$cred_name"
-
-              cp -T -- "$CREDENTIALS_DIRECTORY/$cred_name" "$work_file"
-              install_cred "$work_file" "$dest" "$mode" "$user" "$group"
-            }
-
-            load_encrypted() {
-              declare -r encrypted_src="$1"
-              declare -r cred_name="$2"
-              declare -r dest="$3"
-              declare -r mode="$4"
-              declare -r user="$5"
-              declare -r group="$6"
-
-              declare -r work_file="$WORK_DIR/tmp-$cred_name"
-
-              systemd-creds --name="$cred_name" -- decrypt "$encrypted_src" "$work_file"
-              install_cred "$work_file" "$dest" "$mode" "$user" "$group"
-            }
-
-            ${lib.concatMapStringsSep "\n" (k: lib.escapeShellArgs [
-              "load_inherited"
-              k.localName
-              k.dest
-              k.mode
-              k.user
-              k.group
-            ]) inheritedCreds}
-
-            ${lib.concatMapStringsSep "\n" (k: lib.escapeShellArgs [
-              "load_encrypted"
-              k.source.encrypted.path
-              k.source.encrypted.credName
-              k.dest
-              k.mode
-              k.user
-              k.group
-            ]) encryptedCreds}
-          '';
-        };
-    }) config.randomcat.services.fs-keys;
+      })
+      config.randomcat.services.fs-keys;
   };
 }

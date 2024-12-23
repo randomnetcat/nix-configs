@@ -5,9 +5,7 @@
     ./randomcat
   ];
 
-  options = {
-  };
+  options = { };
 
-  config = {
- };
+  config = { };
 }

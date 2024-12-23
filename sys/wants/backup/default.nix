@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ 
+  imports = [
     ./source.nix
     ./target.nix
     ./network.nix

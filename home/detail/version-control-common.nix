@@ -4,7 +4,7 @@
   imports = [
   ];
 
-  options = {};
+  options = { };
 
   config = {
     programs.git = {

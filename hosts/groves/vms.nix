@@ -39,7 +39,7 @@ in
             services.spice-webdavd.enable = true;
 
             ## Force allowing X to determine its own resolutions.
-            services.xserver.resolutions = lib.mkOverride 0 [];
+            services.xserver.resolutions = lib.mkOverride 0 [ ];
 
             services.xserver.videoDrivers = lib.mkOverride 0 [
               "virtio"
@@ -85,21 +85,23 @@ in
     {
       home-manager.users.randomcat.imports = [
         ({ pkgs, lib, config, ... }: {
-          home.file = lib.mapAttrs' (name: path: {
-            name = "dev/vms/${name}/run-vm";
+          home.file = lib.mapAttrs'
+            (name: path: {
+              name = "dev/vms/${name}/run-vm";
 
-            value = {
-              source = 
-                let
-                  targetPath = "${config.home.homeDirectory}/dev/vms/${name}";
-                  vm = buildVm {
-                    inherit name targetPath;
-                    modules = [ path ];
-                  };
-                in
-                "${vm.config.system.build.vm}/bin/run-${vm.config.networking.hostName}-vm";
-            };
-          }) vmModules;
+              value = {
+                source =
+                  let
+                    targetPath = "${config.home.homeDirectory}/dev/vms/${name}";
+                    vm = buildVm {
+                      inherit name targetPath;
+                      modules = [ path ];
+                    };
+                  in
+                  "${vm.config.system.build.vm}/bin/run-${vm.config.networking.hostName}-vm";
+              };
+            })
+            vmModules;
         })
       ];
     };

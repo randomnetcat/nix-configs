@@ -5,6 +5,5 @@
     ./mounts/feature/archive.nix
   ];
 
-  config = {
-  };
+  config = { };
 }

@@ -14,10 +14,10 @@ in
       listenAddress = tailscaleIP;
 
       exports = {
-        node = {};
-        nvidia-gpu = {};
-        systemd = {};
-        zfs = {};
+        node = { };
+        nvidia-gpu = { };
+        systemd = { };
+        zfs = { };
       };
     };
   };

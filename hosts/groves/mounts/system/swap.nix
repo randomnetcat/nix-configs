@@ -4,8 +4,7 @@
   imports = [
   ];
 
-  options = {
-  };
+  options = { };
 
   config = {
     swapDevices = [

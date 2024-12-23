@@ -74,51 +74,57 @@ in
 
       interval = "*-*-* 06:00:00 UTC";
 
-      commands = lib.mkMerge (lib.imap0 (i: m: {
-        "randomcat-${toString i}-${m.targetName}" = {
-          source = m.sourceDataset;
-          target = "${m.targetUser}@${m.targetHost}:${m.targetDataset}";
-          recursive = true;
-          sshKey = "/run/keys/sync-key";
-          localSourceAllow = [ "bookmark" "hold" "send" "snapshot" "destroy" "mount" ];
-          
-          extraArgs = [
-            "--no-privilege-elevation"
-            "--keep-sync-snap"
-            "--no-rollback"
-            "--sshport=${toString m.targetPort}"
-            "--identifier=${m.syncoidTag}"
-          ];
-        };
-      }) cfg.movements);
+      commands = lib.mkMerge (lib.imap0
+        (i: m: {
+          "randomcat-${toString i}-${m.targetName}" = {
+            source = m.sourceDataset;
+            target = "${m.targetUser}@${m.targetHost}:${m.targetDataset}";
+            recursive = true;
+            sshKey = "/run/keys/sync-key";
+            localSourceAllow = [ "bookmark" "hold" "send" "snapshot" "destroy" "mount" ];
+
+            extraArgs = [
+              "--no-privilege-elevation"
+              "--keep-sync-snap"
+              "--no-rollback"
+              "--sshport=${toString m.targetPort}"
+              "--identifier=${m.syncoidTag}"
+            ];
+          };
+        })
+        cfg.movements);
     };
 
-    systemd.services = lib.mkMerge (lib.imap0 (i: m: {
-      "syncoid-randomcat-${toString i}-${m.targetName}" = {
-        requires = [ "sync-creds.service" ];
-        after = [ "sync-creds.service" ];
+    systemd.services = lib.mkMerge (lib.imap0
+      (i: m: {
+        "syncoid-randomcat-${toString i}-${m.targetName}" = {
+          requires = [ "sync-creds.service" ];
+          after = [ "sync-creds.service" ];
 
-        unitConfig = {
-          StartLimitBurst = 3;
-          StartLimitIntervalSec = "12 hours";
-        };
+          unitConfig = {
+            StartLimitBurst = 3;
+            StartLimitIntervalSec = "12 hours";
+          };
 
-        serviceConfig = {
-          Restart = "on-failure";
-          RestartSec = "15min";
-          TimeoutStartSec = "2 hours";
+          serviceConfig = {
+            Restart = "on-failure";
+            RestartSec = "15min";
+            TimeoutStartSec = "2 hours";
+          };
         };
-      };
-    }) cfg.movements);
+      })
+      cfg.movements);
 
-    systemd.timers = lib.mkMerge (lib.imap0 (i: m: {
-      "syncoid-randomcat-${toString i}-${m.targetName}" = {
-        timerConfig = {
-          Persistent = true;
-          RandomizedDelaySec = "30m";
+    systemd.timers = lib.mkMerge (lib.imap0
+      (i: m: {
+        "syncoid-randomcat-${toString i}-${m.targetName}" = {
+          timerConfig = {
+            Persistent = true;
+            RandomizedDelaySec = "30m";
+          };
         };
-      };
-    }) cfg.movements);
+      })
+      cfg.movements);
 
     users.users.syncoid.extraGroups = [ "keys" ];
 
@@ -132,9 +138,11 @@ in
     randomcat.services.backups.prune = {
       enable = true;
 
-      datasets = lib.mkMerge (map (m: {
-        "${m.sourceDataset}".syncoidTags = [ m.syncoidTag ];
-      }) cfg.movements);
+      datasets = lib.mkMerge (map
+        (m: {
+          "${m.sourceDataset}".syncoidTags = [ m.syncoidTag ];
+        })
+        cfg.movements);
     };
   };
 }

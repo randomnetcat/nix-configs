@@ -4,7 +4,7 @@ let
   kernelVersion = config.boot.kernelPackages.kernel.version;
 
   it87Object = "${config.boot.kernelPackages.it87}/lib/modules/${kernelVersion}/kernel/drivers/hwmon/it87.ko";
-in 
+in
 {
   config = {
     boot.loader.systemd-boot.enable = true;

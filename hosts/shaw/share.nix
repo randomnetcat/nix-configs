@@ -8,7 +8,7 @@
       extraGroups = [ "users" ];
     };
 
-    users.groups.randomcat = {};
+    users.groups.randomcat = { };
 
     services.samba = {
       enable = true;

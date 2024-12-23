@@ -5,7 +5,7 @@
     ../detail/cmdline/vim.nix
   ];
 
-  options = {};
+  options = { };
 
   config = {
     home.packages = [

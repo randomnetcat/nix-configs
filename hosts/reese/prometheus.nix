@@ -4,10 +4,12 @@ let
   prometheusHost = "monitoring.randomcat.org";
 
   # Map of host names to export names, for hosts using the export-metrics module.
-  hostExports = lib.mapAttrs' (_: nodeConfig: {
-    name = nodeConfig.config.networking.hostName;
-    value = map (x: x.name) (lib.attrValues (lib.attrByPath ["randomcat" "services" "export-metrics" "exports"] [] nodeConfig.config));
-  }) (lib.filterAttrs (nodeName: nodeConfig: nodeName != name && (lib.attrByPath ["randomcat" "services" "export-metrics" "enable"] false nodeConfig.config) == true) nodes);
+  hostExports = lib.mapAttrs'
+    (_: nodeConfig: {
+      name = nodeConfig.config.networking.hostName;
+      value = map (x: x.name) (lib.attrValues (lib.attrByPath [ "randomcat" "services" "export-metrics" "exports" ] [ ] nodeConfig.config));
+    })
+    (lib.filterAttrs (nodeName: nodeConfig: nodeName != name && (lib.attrByPath [ "randomcat" "services" "export-metrics" "enable" ] false nodeConfig.config) == true) nodes);
 in
 {
   config = {
@@ -52,18 +54,22 @@ in
             }
           ];
         }
-      ] ++ (lib.concatMap ({ name, value }: map (exporter: {
-        job_name = "${name}_${exporter}";
-        metrics_path = "/export-metrics/${exporter}";
+      ] ++ (lib.concatMap
+        ({ name, value }: map
+          (exporter: {
+            job_name = "${name}_${exporter}";
+            metrics_path = "/export-metrics/${exporter}";
 
-        static_configs = [
-          {
-            targets = [
-              "${name}:9098"
+            static_configs = [
+              {
+                targets = [
+                  "${name}:9098"
+                ];
+              }
             ];
-          }
-        ];
-      }) value) (lib.attrsToList hostExports));
+          })
+          value)
+        (lib.attrsToList hostExports));
     };
 
     systemd.services.prometheus = {

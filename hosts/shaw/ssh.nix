@@ -13,10 +13,12 @@ in
       listenAddresses = [{
         addr = tailscaleIP;
         port = 2222;
-      }] ++ (map (ip: {
-        addr = "[${ip}]";
-        port = 22;
-      }) birdsongIPs);
+      }] ++ (map
+        (ip: {
+          addr = "[${ip}]";
+          port = 22;
+        })
+        birdsongIPs);
 
       settings = {
         PermitRootLogin = "no";

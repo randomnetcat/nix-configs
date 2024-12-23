@@ -5,8 +5,7 @@
     ./general-development.nix
   ];
 
-  options = {
-  };
+  options = { };
 
   config =
     let
@@ -19,9 +18,11 @@
       };
     in
     {
-      home.file = lib.mkMerge (lib.mapAttrsToList (name: pkg: {
-        "dev/toolchains/java/jdks/${name}".source = pkg.home;
-      }) jdks);
+      home.file = lib.mkMerge (lib.mapAttrsToList
+        (name: pkg: {
+          "dev/toolchains/java/jdks/${name}".source = pkg.home;
+        })
+        jdks);
 
       programs.java.enable = true;
       programs.java.package = jdks.current;

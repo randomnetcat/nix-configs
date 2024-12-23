@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ 
+  imports = [
     ../../../sys/wants/backup/default.nix
     ../../../sys/wants/backup/network.nix
     ../../../network

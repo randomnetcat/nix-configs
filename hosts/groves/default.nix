@@ -30,8 +30,7 @@
     ./metrics.nix
   ];
 
-  options = {
-  };
+  options = { };
 
   config = {
     nixpkgs.localSystem = {

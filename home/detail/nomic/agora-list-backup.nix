@@ -19,7 +19,7 @@
         Unit = {
           Description = "Automatically backup Agora mailing lists";
         };
-        
+
         Service = {
           Type = "oneshot";
           ExecStart = "${agoraBackupScript}";

@@ -140,20 +140,22 @@ in
           };
 
           "~ ^/__webfinger/(acct:[^/]+@[^/]+)" = {
-            root = pkgs.linkFarm "webfinger-entries" (lib.listToAttrs (map (acct: {
-              name = "acct:${acct.user}";
-              value = pkgs.writeText "webfinger-${acct.user}" ''
-                {
-                  "subject": "acct:${acct.user}",
-                  "links": [
-                    {
-                      "rel": "http://openid.net/specs/connect/1.0/issuer",
-                      "href": "https://auth.unspecified.systems/realms/${acct.realm}"
-                    }
-                  ]
-                }
-              '';
-            }) accounts));
+            root = pkgs.linkFarm "webfinger-entries" (lib.listToAttrs (map
+              (acct: {
+                name = "acct:${acct.user}";
+                value = pkgs.writeText "webfinger-${acct.user}" ''
+                  {
+                    "subject": "acct:${acct.user}",
+                    "links": [
+                      {
+                        "rel": "http://openid.net/specs/connect/1.0/issuer",
+                        "href": "https://auth.unspecified.systems/realms/${acct.realm}"
+                      }
+                    ]
+                  }
+                '';
+              })
+              accounts));
 
             tryFiles = "/$1 =404";
 

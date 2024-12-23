@@ -4,8 +4,7 @@
   imports = [
   ];
 
-  options = {
-  };
+  options = { };
 
   config = let zfsMount = import ../zfs-mount.nix; in {
     fileSystems."/mnt/ephemeral" = (zfsMount "local/ephemeral");

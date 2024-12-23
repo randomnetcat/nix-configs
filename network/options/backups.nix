@@ -69,22 +69,27 @@ let
     };
   });
 
-  hostNameAssertions = lib.concatMap (opt: map (name: {
-    assertion = networkCfg.hosts ? "${name}";
-    message = "The backup host ${name} must exist in the network configuration.";
-  }) (lib.attrNames cfg."${opt}")) [ "sources" "targets" ];
+  hostNameAssertions = lib.concatMap
+    (opt: map
+      (name: {
+        assertion = networkCfg.hosts ? "${name}";
+        message = "The backup host ${name} must exist in the network configuration.";
+      })
+      (lib.attrNames cfg."${opt}")) [ "sources" "targets" ];
 
-  movementAssertions = lib.concatMap (movement: [
-    {
-      assertion = cfg.sources ? "${movement.sourceHost}";
-      message = "Host ${movement.sourceHost} is used as a movement sourceHost but is not defined as a source.";
-    }
+  movementAssertions = lib.concatMap
+    (movement: [
+      {
+        assertion = cfg.sources ? "${movement.sourceHost}";
+        message = "Host ${movement.sourceHost} is used as a movement sourceHost but is not defined as a source.";
+      }
 
-    {
-      assertion = cfg.targets ? "${movement.targetHost}";
-      message = "Host ${movement.targetHost} is used as a movement targetHost but is not defined as a target.";
-    }
-  ]) cfg.movements;
+      {
+        assertion = cfg.targets ? "${movement.targetHost}";
+        message = "Host ${movement.targetHost} is used as a movement targetHost but is not defined as a target.";
+      }
+    ])
+    cfg.movements;
 in
 {
   imports = [

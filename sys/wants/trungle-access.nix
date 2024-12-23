@@ -15,7 +15,7 @@
       ];
     };
 
-    users.groups.trungle = {};
+    users.groups.trungle = { };
 
     # Open a port for Trungle to play with
     networking.firewall = {

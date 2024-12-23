@@ -30,22 +30,24 @@ in
           };
         }
 
-        (lib.listToAttrs (map (domain: {
-          name = "mta-sts.${domain}";
+        (lib.listToAttrs (map
+          (domain: {
+            name = "mta-sts.${domain}";
 
-          value = {
-            addSSL = true;
-            acmeRoot = config.security.acme.certs."${primary}".webroot;
-            useACMEHost = primary;
+            value = {
+              addSSL = true;
+              acmeRoot = config.security.acme.certs."${primary}".webroot;
+              useACMEHost = primary;
 
-            locations."=/.well-known/mta-sts.txt".alias = pkgs.writeText "mta-sts.txt" ''
-              version: STSv1
-              mode: enforce
-              max_age: 604800
-              mx: mail.${primary}
-            '';
-          };
-        }) allDomains))
+              locations."=/.well-known/mta-sts.txt".alias = pkgs.writeText "mta-sts.txt" ''
+                version: STSv1
+                mode: enforce
+                max_age: 604800
+                mx: mail.${primary}
+              '';
+            };
+          })
+          allDomains))
       ];
     };
 
@@ -61,14 +63,16 @@ in
         "mail.${primary}"
         "mta-sts.${primary}"
         "www.${primary}"
-      ] ++ (lib.concatMap (d: [
-        "mta-sts.${d}"
-      ]) cfg.extraDomains);
+      ] ++ (lib.concatMap
+        (d: [
+          "mta-sts.${d}"
+        ])
+        cfg.extraDomains);
     };
 
     assertions = [
       {
-        assertion = config.systemd.services.acme-fixperms != {};
+        assertion = config.systemd.services.acme-fixperms != { };
         message = "acme-mail service depends on acme-fixperms";
       }
     ];
@@ -79,7 +83,7 @@ in
       after = [ "network.target" "network-online.target" "acme-fixperms.service" ];
 
       wantedBy = [ "maddy.service" ];
-      before = [ "maddy.service" ]; 
+      before = [ "maddy.service" ];
 
       serviceConfig = {
         Type = "oneshot";
@@ -142,10 +146,13 @@ in
 
           commonOpts = [
             "--accept-tos"
-            "--path" legoDir
-            "--email" config.security.acme.defaults.email
+            "--path"
+            legoDir
+            "--email"
+            config.security.acme.defaults.email
             "--http"
-            "--http.webroot" "/var/lib/acme/.challenges"
+            "--http.webroot"
+            "/var/lib/acme/.challenges"
           ];
 
           legoDir = "/var/lib/acme/.lego-mail/${domain}";

@@ -197,22 +197,26 @@
             system = "x86_64-linux";
           };
 
-          nodeNixpkgs = lib.mapAttrs (name: sysArgs: import (sysArgs.pkgsFlake or nixpkgs) {
-            system = sysArgs.system;
-          }) systemConfigs;
+          nodeNixpkgs = lib.mapAttrs
+            (name: sysArgs: import (sysArgs.pkgsFlake or nixpkgs) {
+              system = sysArgs.system;
+            })
+            systemConfigs;
         };
-      } // (lib.mapAttrs (name: sysArgs: {
-        imports = mkFullSystemModules sysArgs;
+      } // (lib.mapAttrs
+        (name: sysArgs: {
+          imports = mkFullSystemModules sysArgs;
 
-        config = {
-          nixpkgs.localSystem.system = sysArgs.system;
+          config = {
+            nixpkgs.localSystem.system = sysArgs.system;
 
-          deployment = {
-            buildOnTarget = true;
-            targetHost = name;
+            deployment = {
+              buildOnTarget = true;
+              targetHost = name;
+            };
           };
-        };
-      }) systemConfigs);
+        })
+        systemConfigs);
     in
     (flake-utils.lib.eachDefaultSystem (system: {
       formatter = nixpkgs.legacyPackages."${system}".nixpkgs-fmt;

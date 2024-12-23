@@ -4,8 +4,7 @@
   imports = [
   ];
 
-  options = {
-  };
+  options = { };
 
   config = {
     users.users.backup = {
@@ -20,6 +19,6 @@
       ];
     };
 
-    users.groups.backup = {};
+    users.groups.backup = { };
   };
 }

@@ -7,7 +7,7 @@
       group = "remote-build";
     };
 
-    users.groups.remote-build = {};
+    users.groups.remote-build = { };
 
     nix.settings.trusted-users = [ "remote-build" ];
   };

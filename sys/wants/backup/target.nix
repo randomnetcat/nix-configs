@@ -74,52 +74,61 @@ in
           };
         }));
 
-        default = {};
+        default = { };
         description = "Descriptions of sources that this destination host should be prepared to accept backups from";
       };
     };
   };
 
-  config = let
-    mkUser = sourceCfg: lib.mkIf (sourceCfg.user == "sync-${sourceCfg.name}") {
-      isSystemUser = true;
-      useDefaultShell = true;
-      group = sourceCfg.user;
-      openssh.authorizedKeys.keys = lib.mkIf (sourceCfg.sshKey != null) [ sourceCfg.sshKey ];
-      
-      # syncoid wants these packages
-      packages = [
-        pkgs.mbuffer
-        pkgs.lzop
-      ];
-    };
+  config =
+    let
+      mkUser = sourceCfg: lib.mkIf (sourceCfg.user == "sync-${sourceCfg.name}") {
+        isSystemUser = true;
+        useDefaultShell = true;
+        group = sourceCfg.user;
+        openssh.authorizedKeys.keys = lib.mkIf (sourceCfg.sshKey != null) [ sourceCfg.sshKey ];
 
-    mkGroup = sourceCfg: lib.mkIf (sourceCfg.user == "sync-${sourceCfg.name}") {};
-
-    sourcesList = lib.attrValues cfg.target.acceptSources;
-  in
-  lib.mkIf cfg.target.enable {
-    randomcat.services.zfs.datasets = lib.mkMerge (map (sourceCfg: {
-      "${sourceCfg.fullDataset}" = {
-        mountpoint = "none";
-        zfsPermissions.users."${sourceCfg.user}" = childPerms;
+        # syncoid wants these packages
+        packages = [
+          pkgs.mbuffer
+          pkgs.lzop
+        ];
       };
-    }) sourcesList);
 
-    randomcat.services.backups.prune = {
-      enable = true;
+      mkGroup = sourceCfg: lib.mkIf (sourceCfg.user == "sync-${sourceCfg.name}") { };
 
-      datasets = lib.mkMerge (map (sourceCfg: {
-        "${sourceCfg.fullDataset}".syncoidTags = [ sourceCfg.syncoidTag ];
-      }) sourcesList);
+      sourcesList = lib.attrValues cfg.target.acceptSources;
+    in
+    lib.mkIf cfg.target.enable {
+      randomcat.services.zfs.datasets = lib.mkMerge (map
+        (sourceCfg: {
+          "${sourceCfg.fullDataset}" = {
+            mountpoint = "none";
+            zfsPermissions.users."${sourceCfg.user}" = childPerms;
+          };
+        })
+        sourcesList);
+
+      randomcat.services.backups.prune = {
+        enable = true;
+
+        datasets = lib.mkMerge (map
+          (sourceCfg: {
+            "${sourceCfg.fullDataset}".syncoidTags = [ sourceCfg.syncoidTag ];
+          })
+          sourcesList);
+      };
+
+      users.users = lib.mkMerge (map
+        (sourceCfg: {
+          "${sourceCfg.user}" = mkUser sourceCfg;
+        })
+        sourcesList);
+
+      users.groups = lib.mkMerge (map
+        (sourceCfg: {
+          "${sourceCfg.user}" = mkGroup sourceCfg;
+        })
+        sourcesList);
     };
-
-    users.users = lib.mkMerge (map (sourceCfg: {
-      "${sourceCfg.user}" = mkUser sourceCfg;
-    }) sourcesList);
-
-    users.groups = lib.mkMerge (map (sourceCfg: {
-      "${sourceCfg.user}" = mkGroup sourceCfg;
-    }) sourcesList);
-  };
 }

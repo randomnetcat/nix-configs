@@ -5,8 +5,7 @@
     ./mounts/feature/gaming.nix
   ];
 
-  options = {
-  };
+  options = { };
 
   config = {
     programs.steam.enable = true;

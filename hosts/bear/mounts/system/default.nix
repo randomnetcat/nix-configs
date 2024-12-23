@@ -5,8 +5,7 @@
     ./root.nix
   ];
 
-  options = {
-  };
+  options = { };
 
   config = {
     boot.initrd.supportedFilesystems = [ "zfs" ];

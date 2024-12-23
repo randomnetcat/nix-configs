@@ -23,8 +23,7 @@
     ./birdsong.nix
   ];
 
-  options = {
-  };
+  options = { };
 
   config = {
     nixpkgs.localSystem = {

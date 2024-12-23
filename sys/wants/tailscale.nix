@@ -10,7 +10,7 @@
       extraArgs = lib.mkOption {
         type = lib.types.listOf lib.types.str;
         description = "Extra command line arguments to tailscale";
-        default = [];
+        default = [ ];
       };
     };
   };
@@ -27,7 +27,7 @@
       # creating shells for Tailscale SSH. So, for the moment, forcibly disable
       # this.
       package = lib.mkIf config.randomcat.services.tailscale.ssh (pkgs.tailscale.overrideAttrs (old: {
-        patches = lib.filter (p: (p.url or "") != "https://github.com/tailscale/tailscale/commit/2889fabaefc50040507ead652d6d2b212f476c2b.patch") (old.patches or []);
+        patches = lib.filter (p: (p.url or "") != "https://github.com/tailscale/tailscale/commit/2889fabaefc50040507ead652d6d2b212f476c2b.patch") (old.patches or [ ]);
       }));
     };
 

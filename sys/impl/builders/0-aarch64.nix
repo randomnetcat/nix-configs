@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  nix.buildMachines = [ {
+  nix.buildMachines = [{
     hostName = "nix-builder-0-aarch64";
     system = "aarch64-linux";
     maxJobs = 2;

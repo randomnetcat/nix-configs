@@ -27,7 +27,7 @@ in
       ];
     };
 
-    users.groups.archive = {};
+    users.groups.archive = { };
 
     randomcat.services.zfs.datasets = lib.mkMerge (
       [
@@ -37,11 +37,13 @@ in
           };
         }
       ] ++
-      (map (child: {
-        "${archiveParent}/${child}" = {
-          mountpoint = "${baseMountpoint}/${child}";
-        };
-      }) archiveDatasets)
+      (map
+        (child: {
+          "${archiveParent}/${child}" = {
+            mountpoint = "${baseMountpoint}/${child}";
+          };
+        })
+        archiveDatasets)
     );
   };
 }

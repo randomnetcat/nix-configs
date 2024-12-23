@@ -14,8 +14,8 @@ in
       listenAddress = tailscaleIP;
 
       exports = {
-        node = {};
-        zfs = {};
+        node = { };
+        zfs = { };
 
         maddy = {
           enableService = false;

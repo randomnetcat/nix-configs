@@ -5,8 +5,7 @@
     ../../sys/impl/networking/wifi.nix
   ];
 
-  options = {
-  };
+  options = { };
 
   config = {
     # Let NetworkManager handle DHCP

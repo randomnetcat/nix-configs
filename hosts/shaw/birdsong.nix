@@ -81,7 +81,7 @@ in
       ];
     };
 
-    users.groups.qenya = {};
+    users.groups.qenya = { };
 
     programs.zsh.enable = true;
 

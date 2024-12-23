@@ -8,7 +8,8 @@ let
   ];
 
   itemName = "agoranomic";
-in {
+in
+{
   systemd.services."archive-agora" = {
     serviceConfig = {
       DynamicUser = true;

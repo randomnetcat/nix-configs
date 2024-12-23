@@ -10,7 +10,7 @@
     users.users.jellyfin = {
       extraGroups = [
         "archive" # for file permissions
-        "render"  # for hardware transcoding
+        "render" # for hardware transcoding
       ];
 
       packages = [

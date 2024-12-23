@@ -14,14 +14,16 @@ let
   movementSshUser = networkMovement: "sync-${networkMovement.sourceHost}";
   movementSyncoidTag = networkMovement: "${networkMovement.sourceHost}:${networkMovement.targetHost}";
 
-  networkToLocalMovements = networkMovement: map (dataset: {
-    targetName = networkMovement.targetHost;
-    targetHost = network.hosts."${networkMovement.targetHost}".hostName;
-    targetUser = movementSshUser networkMovement;
-    sourceDataset = dataset.source;
-    targetDataset = "${network.backups.targets."${networkMovement.targetHost}".backupsDataset}/${networkMovement.sourceHost}/${dataset.target}";
-    syncoidTag = movementSyncoidTag networkMovement;
-  }) networkMovement.datasets;
+  networkToLocalMovements = networkMovement: map
+    (dataset: {
+      targetName = networkMovement.targetHost;
+      targetHost = network.hosts."${networkMovement.targetHost}".hostName;
+      targetUser = movementSshUser networkMovement;
+      sourceDataset = dataset.source;
+      targetDataset = "${network.backups.targets."${networkMovement.targetHost}".backupsDataset}/${networkMovement.sourceHost}/${dataset.target}";
+      syncoidTag = movementSyncoidTag networkMovement;
+    })
+    networkMovement.datasets;
 
   networkToTargetSources = networkMovement: {
     "${networkMovement.sourceHost}" = {

@@ -8,10 +8,14 @@ let
   backups = network.backups;
   hostMovements = lib.filter (m: m.sourceHost == hostName) backups.movements;
 
-  hostDatasets = lib.concatMap (m: map (d: {
-    inherit (m) targetHost;
-    inherit (d) source target;
-  }) m.datasets) hostMovements;
+  hostDatasets = lib.concatMap
+    (m: map
+      (d: {
+        inherit (m) targetHost;
+        inherit (d) source target;
+      })
+      m.datasets)
+    hostMovements;
 
   sshKeySecret = ./secrets/sync-key;
 in
@@ -23,9 +27,11 @@ in
   ];
 
   config = {
-    programs.ssh.knownHosts = lib.mkMerge (lib.mapAttrsToList (name: value: lib.mkIf (value.hostKey != null) {
-      "[${name}]:2222".publicKey = value.hostKey;
-    }) network.hosts);
+    programs.ssh.knownHosts = lib.mkMerge (lib.mapAttrsToList
+      (name: value: lib.mkIf (value.hostKey != null) {
+        "[${name}]:2222".publicKey = value.hostKey;
+      })
+      network.hosts);
 
     randomcat.services.backups = {
       fromNetwork = true;

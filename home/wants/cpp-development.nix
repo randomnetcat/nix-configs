@@ -5,8 +5,7 @@
     ./general-development.nix
   ];
 
-  options = {
-  };
+  options = { };
 
   config = {
     home.enableDebugInfo = true;
