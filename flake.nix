@@ -125,7 +125,7 @@
             (inputsNoPkgs // { nixpkgs = pkgsFlake; })
           ;
 
-          _module.args.defineNestedSystem = { modules }@nestedArgs: defineSystem (sysArgs // nestedArgs);
+          _module.args.defineNestedSystem = { modules }@nestedArgs: defineSystem (sysArgs // { name = null; } // nestedArgs);
 
           _module.args.name = lib.mkIf (name != null) name;
         })
