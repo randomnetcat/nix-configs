@@ -115,7 +115,7 @@
 
       systemModules = path: commonModules ++ [ path ];
 
-      mkFullSystemModules = { pkgsFlake ? nixpkgs, system, modules }@sysArgs: (commonModules ++ modules ++ [
+      mkFullSystemModules = { name ? null, pkgsFlake ? nixpkgs, system, modules }@sysArgs: (commonModules ++ modules ++ [
         # Provide only a single nixpkgs input to the configuration, regardless of which nixpkgs input is actually being used.
         ({
           _module.args.inputs =
@@ -126,12 +126,18 @@
           ;
 
           _module.args.defineNestedSystem = { modules }@nestedArgs: defineSystem (sysArgs // nestedArgs);
+
+          _module.args.name = lib.mkIf (name != null) name;
         })
       ]);
 
-      defineSystem = { pkgsFlake ? nixpkgs, system ? null, modules }@sysArgs: pkgsFlake.lib.nixosSystem {
+      defineSystem = { name ? null, pkgsFlake ? nixpkgs, system ? null, modules }@sysArgs: pkgsFlake.lib.nixosSystem {
         inherit system;
         modules = mkFullSystemModules sysArgs;
+
+        specialArgs = {
+          nodes = lib.mapAttrs (name: system: system) nixosConfigurations;
+        };
       };
 
       systemConfigs = {
@@ -165,7 +171,7 @@
         };
       };
 
-      nixosConfigurations = lib.mapAttrs (n: v: defineSystem v) systemConfigs;
+      nixosConfigurations = lib.mapAttrs (n: v: defineSystem (v // { name = v.name or n; })) systemConfigs;
 
       remoteConfigs = {
         reese = {
