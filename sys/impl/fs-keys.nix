@@ -82,6 +82,7 @@ let
         keys = lib.mkOption {
           type = types.attrsOf keySubmodule;
           description = "Configuration for the credentials to add to the filesystem.";
+          default = {};
         };
 
         wants = mkServiceOption "wants";
@@ -103,6 +104,7 @@ in
     randomcat.services.fs-keys = lib.mkOption {
       type = types.attrsOf serviceSubmodule;
       description = "Configuration for services that place systemd credentials into paths in the filesystem.";
+      default = {};
     };
   };
 
