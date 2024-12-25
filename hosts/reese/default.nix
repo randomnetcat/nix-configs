@@ -10,8 +10,10 @@
     ./system.nix
     ./mounts/system
     ./zfs.nix
+    ./networking.nix
     ./backup.nix
     ./network-backup.nix
+    ./birdsong.nix
 
     ./agorabot.nix
     ./remote-build.nix

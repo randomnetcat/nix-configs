@@ -16,6 +16,7 @@
     ./auth
 
     ./networking.nix
+    ./birdsong.nix
     ./metrics.nix
   ];
 

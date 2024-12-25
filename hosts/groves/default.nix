@@ -28,6 +28,7 @@
     ./development.nix
     ./pi-development.nix
     ./metrics.nix
+    ./birdsong.nix
   ];
 
   options = { };
