@@ -60,6 +60,7 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         nixpkgs-small.follows = "nixpkgsSmall";
+        birdsong.follows = "birdsong";
       };
     };
 
