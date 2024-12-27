@@ -75,32 +75,15 @@
     },
     "birdsong": {
       "locked": {
-        "lastModified": 1731357158,
-        "narHash": "sha256-RTFqn8DTPXEvkrhMuOODv198z9a0H96mlg4lrc2dplQ=",
-        "ref": "compat-24.11",
-        "rev": "fa0f559d3b41d5fff49ef081f95830270b4662ae",
-        "revCount": 13,
+        "lastModified": 1735100647,
+        "narHash": "sha256-cYcz1o/c8yHwVpWzIPkCMNnWH/73KMkL5pZSrCgvxHM=",
+        "ref": "refs/heads/main",
+        "rev": "fd3965ddee060739fb5b63b14e48ba4bb8c8588d",
+        "revCount": 17,
         "type": "git",
         "url": "https://git.qenya.tel/qenya/birdsong"
       },
       "original": {
-        "ref": "compat-24.11",
-        "type": "git",
-        "url": "https://git.qenya.tel/qenya/birdsong"
-      }
-    },
-    "birdsong_2": {
-      "locked": {
-        "lastModified": 1735095689,
-        "narHash": "sha256-8VdioC1gFMp0OMj4RUUA6zyOmq5eAZcK/d4q+MPdoIY=",
-        "ref": "main",
-        "rev": "881078abf8bdc5f7e8bff63288714c6ec245c758",
-        "revCount": 16,
-        "type": "git",
-        "url": "https://git.qenya.tel/qenya/birdsong"
-      },
-      "original": {
-        "ref": "main",
         "type": "git",
         "url": "https://git.qenya.tel/qenya/birdsong"
       }
@@ -831,11 +814,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1735253417,
-        "narHash": "sha256-lk3uyBHpIpHiict/mz8n8v2Cvrs+IkxQeTHLdVGy3ps=",
+        "lastModified": 1735261745,
+        "narHash": "sha256-FBDgM8gH0aNNTa93E3pQrblU5AyI9mMauWJfOyf+4fs=",
         "owner": "nix-community",
         "repo": "nur",
-        "rev": "c73c45e6080bc9495abda12ef1553b731a600785",
+        "rev": "4135a0ebb6cc01b35d33d60599cad8818f1313aa",
         "type": "github"
       },
       "original": {
@@ -940,7 +923,9 @@
       "inputs": {
         "actual": "actual",
         "agenix": "agenix",
-        "birdsong": "birdsong_2",
+        "birdsong": [
+          "birdsong"
+        ],
         "colmena": "colmena_2",
         "home-manager": "home-manager_2",
         "home-manager-unstable": "home-manager-unstable",
