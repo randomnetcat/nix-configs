@@ -212,6 +212,8 @@ in
     };
 
     systemd.services."container@wiki" = {
+      after = [ "network.target" ];
+
       serviceConfig = {
         LoadCredentialEncrypted = [
           "wiki-smtp-pass:${../secrets/wiki-smtp-pass}"

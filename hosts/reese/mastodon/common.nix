@@ -341,8 +341,20 @@ in
       ))
       enabledInstances;
 
+    systemd.network.networks."10-ignore-mastodon-containers" = {
+      matchConfig = {
+        Name = lib.mapAttrsToList (_: conf: "ve-${conf.containerName}") enabledInstances;
+      };
+
+      linkConfig = {
+        Unmanaged = true;
+      };
+    };
+
     systemd.services = lib.mapAttrs'
       (name: conf: lib.nameValuePair "container@${conf.containerName}" ({
+        after = [ "network.target" ];
+
         serviceConfig = {
           LoadCredentialEncrypted = lib.mkMerge [
             [
