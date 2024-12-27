@@ -91,7 +91,7 @@ in
     };
 
     # If this is a Tailscale address, set nginx to start after Tailscale.
-    systemd.service.nginx = lib.mkIf (lib.hasPrefix "100." cfg.listenAddress) {
+    systemd.services.nginx = lib.mkIf (lib.hasPrefix "100." cfg.listenAddress) {
       wants = [ "tailscale-autoconnect.service" ];
       after = [ "tailscale-autoconnect.service" ];
     };
