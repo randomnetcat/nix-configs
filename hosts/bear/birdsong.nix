@@ -4,7 +4,7 @@
   config = {
     birdsong.peering = {
       enable = true;
-      privateKeyCred = "wireguard-birdsong-key";
+      privateKeyCredential = "wireguard-birdsong-key";
       persistentKeepalive = 23;
     };
 
