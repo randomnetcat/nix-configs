@@ -12,7 +12,7 @@
         keybindingMaps = {
           "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
             binding = "<Primary><Alt>t";
-            command = "kgx";
+            command = "gnome-terminal";
             name = "Terimnal";
           };
         };

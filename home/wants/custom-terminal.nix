@@ -17,6 +17,16 @@
       pkgs.dnsutils
     ];
 
+    programs.gnome-terminal = {
+      enable = true;
+      themeVariant = "dark";
+
+      profile."6c87fbe5-1a93-47c4-90cd-0e008d61a5fd" = {
+        default = true;
+        visibleName = "randomcat";
+      };
+    };
+
     programs.bat.enable = true;
     programs.htop.enable = true;
     programs.btop.enable = true;
