@@ -83,7 +83,7 @@ in
           {
             virtualHosts."${conf.localDomain}" = {
               locations."/.well-known/webfinger" = {
-                return = "301 https://${conf.webDomain}$request_uri";
+                return = "302 https://${conf.webDomain}$request_uri";
                 extraConfig = ''
                   add_header Access-Control-Allow-Origin "*";
                 '';
