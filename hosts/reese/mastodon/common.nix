@@ -82,7 +82,12 @@ in
         let containerConfig = config.containers."${conf.containerName}".config; inherit (conf) localIP4; in [
           {
             virtualHosts."${conf.localDomain}" = {
-              locations."/.well-known/webfinger".return = "301 https://${conf.webDomain}$request_uri";
+              locations."/.well-known/webfinger" = {
+                return = "301 https://${conf.webDomain}$request_uri";
+                extraConfig = ''
+                  add_header Access-Control-Allow-Origin "*";
+                '';
+              };
             };
 
             virtualHosts."${conf.webDomain}" = {
