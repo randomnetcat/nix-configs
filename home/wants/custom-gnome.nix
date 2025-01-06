@@ -61,7 +61,7 @@
         "org/gnome/shell" = {
           favorite-apps = [
             "org.gnome.Nautilus.desktop"
-            "org.gnome.Console.desktop"
+            "org.gnome.Terminal.desktop"
             "firefox.desktop"
             "discord.desktop"
             "thunderbird.desktop"
