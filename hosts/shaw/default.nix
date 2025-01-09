@@ -12,6 +12,7 @@
     ./mounts/data.nix
 
     ./boot.nix
+    ./initrd.nix
     ./networking.nix
     ./filesystem.nix
 
