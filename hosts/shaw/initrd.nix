@@ -64,8 +64,9 @@ in
 
     boot.initrd.systemd.services.sshd-init-host-key = {
       after = [ "tpm2.target" ];
-      before = [ "sshd.service" ];
+      before = [ "sshd.service" "shutdown.target" ];
       wantedBy = [ "sshd.service" ];
+      conflicts = [ "shutdown.target" ];
 
       unitConfig = {
         # To match sshd.
