@@ -142,7 +142,12 @@ in
       systemd.services."failure-notification@" = {
         description = "Send a notification about a failure in %I";
         after = [ "network.target" ];
-        wants = [ "network.target" ];
+        before = [ "shutdown.target" ];
+        conflicts = [ "shutdown.target" ];
+
+        unitConfig = {
+          DefaultDependencies = false;
+        };
 
         serviceConfig =
           let
