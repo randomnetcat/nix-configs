@@ -24,6 +24,11 @@ let
         default = null;
       };
 
+      mountOptions = lib.mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+      };
+
       zfsPermissions.users = lib.mkOption {
         type = types.attrsOf (types.listOf types.str);
         default = { };
@@ -42,7 +47,8 @@ let
   permsServiceName = datasetName: "zfs-permissions-${lib.replaceStrings ["/"] ["-"] datasetName}";
 
   zfsBin = lib.getExe' config.boot.zfs.package "zfs";
-  nixDatasets = lib.filter (fs: fs.mountpoint != null && fs.mountpoint != "none") (lib.attrValues cfg.datasets);
+  isNixDataset = fs: fs.mountpoint != null && fs.mountpoint != "none";
+  nixDatasets = lib.filter isNixDataset (lib.attrValues cfg.datasets);
 in
 {
   options = {
@@ -171,15 +177,23 @@ in
         "${datasetValue.mountpoint}" = {
           fsType = "zfs";
           device = datasetValue.datasetName;
+          options = datasetValue.mountOptions;
         };
       })
       nixDatasets);
 
-    assertions = map
+    assertions = (map
       (datasetValue: {
         assertion = !(utils.fsNeededForBoot config.fileSystems."${datasetValue.mountpoint}");
         message = "Cannot zfs-create dataset for mount ${datasetValue.mountpoint}, as it is needed for boot.";
       })
-      nixDatasets;
+      nixDatasets) ++ (map
+      (
+        (datasetValue: {
+          assertion = (datasetValue.mountOptions != [ ]) -> (isNixDataset datasetValue);
+          message = "mountOptions is only implemented for datasets with fixed mount points";
+        })
+      )
+      (lib.attrValues cfg.datasets));
   };
 }
