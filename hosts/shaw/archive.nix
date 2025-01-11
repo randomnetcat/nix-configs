@@ -34,6 +34,7 @@ in
         {
           "${archiveParent}" = {
             mountpoint = baseMountpoint;
+            mountOptions = [ "nofail" ];
           };
         }
       ] ++
@@ -41,6 +42,7 @@ in
         (child: {
           "${archiveParent}/${child}" = {
             mountpoint = "${baseMountpoint}/${child}";
+            mountOptions = [ "nofail" ];
           };
         })
         archiveDatasets)
