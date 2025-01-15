@@ -21,7 +21,6 @@
 
     ./mastodon/personal.nix
 
-    ./archive/agora.nix
     ./archive/wiki.nix
 
     ./diplomacy-bot
@@ -55,5 +54,10 @@
     sender = "sys.reese@unspecified.systems";
     recipient = "sys_reese@randomcat.org";
     smtp.passwordEncryptedCredentialPath = ./secrets/notify-email-password;
+  };
+
+  randomcat.services.archive-agora = {
+    enable = true;
+    keysCredential = ./secrets/agora-ia-config;
   };
 }
