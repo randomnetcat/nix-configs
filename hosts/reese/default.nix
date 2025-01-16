@@ -60,4 +60,9 @@
     enable = true;
     keysCredential = ./secrets/agora-ia-config;
   };
+
+  randomcat.services.archive-wikis = {
+    enable = true;
+    keysCredential = ./secrets/wiki-ia-keys;
+  };
 }
