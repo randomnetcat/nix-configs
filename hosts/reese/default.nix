@@ -21,8 +21,6 @@
 
     ./mastodon/personal.nix
 
-    ./archive/wiki.nix
-
     ./diplomacy-bot
     ./nomic-web
   ];
