@@ -20,7 +20,6 @@
 
     ./mastodon/personal.nix
 
-    ./diplomacy-bot
     ./nomic-web
   ];
 
@@ -61,5 +60,11 @@
   randomcat.services.archive-wikis = {
     enable = true;
     keysCredential = ./secrets/wiki-ia-keys;
+  };
+
+  randomcat.services.diplomacy-bot = {
+    enable = true;
+    tokenCredential = ./secrets/diplomacy-bot-token;
+    settings = builtins.fromJSON (builtins.readFile ./diplomacy-bot/config.json);
   };
 }
