@@ -70,7 +70,7 @@ in
           ${pkgs.wget}/bin/wget -c -- "https://agora:nomic@mailman.agoranomic.org/archives/${list}.mbox"
 
           ${pkgs.internetarchive}/bin/ia \
-            --config-file="$CREDENTIALS_DIRECTORY/agora-ia-config" \
+            --config-file="$CREDENTIALS_DIRECTORY"/${lib.escapeShellArg credName} \
             upload \
             '${itemName}' \
             --remote-name='lists/${list}.mbox' \
