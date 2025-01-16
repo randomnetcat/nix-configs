@@ -11,7 +11,6 @@
     ./mounts/system
     ./zfs.nix
     ./networking.nix
-    ./backup.nix
     ./network-backup.nix
     ./birdsong.nix
 
