@@ -15,7 +15,7 @@ in
 {
   options = {
     randomcat.services.archive-wikis = {
-      enable = lib.mkEnableOption "service to dump MediaWiki wikis and upload them to the Internet Archive"
+      enable = lib.mkEnableOption "service to dump MediaWiki wikis and upload them to the Internet Archive";
 
       keysCredential = config.fountain.lib.mkCredentialOption {
         name = credName;
