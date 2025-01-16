@@ -24,7 +24,7 @@ in
     };
   };
 
-  config = {
+  config = lib.mkIf cfg.enable {
     systemd.services."archive-agora" = {
       serviceConfig = {
         DynamicUser = true;
