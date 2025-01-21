@@ -25,8 +25,8 @@ let
       };
 
       mountOptions = lib.mkOption {
-        type = types.listOf types.str;
-        default = [ ];
+        type = types.nonEmptyListOf types.nonEmptyStr;
+        default = [ "defaults" ];
       };
 
       zfsPermissions.users = lib.mkOption {
@@ -190,7 +190,7 @@ in
       nixDatasets) ++ (map
       (
         (datasetValue: {
-          assertion = (datasetValue.mountOptions != [ ]) -> (isNixDataset datasetValue);
+          assertion = (datasetValue.mountOptions != [ "defaults" ]) -> (isNixDataset datasetValue);
           message = "mountOptions is only implemented for datasets with fixed mount points";
         })
       )
