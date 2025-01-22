@@ -4,7 +4,7 @@ let
   inherit (lib) types;
 
   cfg = config.randomcat.services.diplomacy-bot;
-  settingsFormat = pkgs.formats.json {};
+  settingsFormat = pkgs.formats.json { };
   settingsFile = settingsFormat.generate "settings.json" cfg.settings;
   credName = "diplomacy-bot-token";
 in
@@ -20,7 +20,7 @@ in
 
       settings = lib.mkOption {
         description = "Configuration for Diplomacy Bot.";
-        default = {};
+        default = { };
 
         type = types.submodule {
           freeformType = settingsFormat.type;

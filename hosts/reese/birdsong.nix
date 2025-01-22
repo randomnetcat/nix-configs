@@ -36,7 +36,7 @@ in
         RuntimeDirectoryMode = "0700";
         DynamicUser = true;
 
-        StateDirectory = [];
+        StateDirectory = [ ];
 
         ExecStart = [
           "+${pkgs.writeShellScript "reresolve-write-output" ''
@@ -106,16 +106,18 @@ y           set -eu
         assertion = birdsongNetdev.netdevConfig.Name == birdsongInterface;
         message = "expected configured interface ${birdsongInterface} to match name in netdev ${birdsongNetdev.netdevConfig.Name}; could the module have changed unknowingly?";
       }
-    ] ++ (lib.concatMap (peer: [
-      {
-        assertion = !(lib.hasPrefix "@" peer.PublicKey);
-        message = "birdsong peer must have a known public key, but \"${peer.PublicKey}\" is a credential";
-      }
+    ] ++ (lib.concatMap
+      (peer: [
+        {
+          assertion = !(lib.hasPrefix "@" peer.PublicKey);
+          message = "birdsong peer must have a known public key, but \"${peer.PublicKey}\" is a credential";
+        }
 
-      {
-        assertion = (peer ? Endpoint) -> !(lib.hasPrefix "@" peer.Endpoint);
-        message = "birdsong peer must have a known endpoint, but \"${peer.Endpoint}\" is a credential";
-      }
-    ]) birdsongPeers);
+        {
+          assertion = (peer ? Endpoint) -> !(lib.hasPrefix "@" peer.Endpoint);
+          message = "birdsong peer must have a known endpoint, but \"${peer.Endpoint}\" is a credential";
+        }
+      ])
+      birdsongPeers);
   };
 }

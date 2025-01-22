@@ -5,7 +5,7 @@
     fountain.lib = lib.mkOption {
       type = lib.types.attrs;
       description = "Helpers for defining configurations (e.g. options).";
-      default = {};
+      default = { };
     };
   };
 
