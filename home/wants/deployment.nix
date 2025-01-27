@@ -3,7 +3,7 @@
 {
   config = {
     home.packages = [
-      (pkgs.extend inputs.colmena.overlays.default).colmena
+      # (pkgs.extend inputs.colmena.overlays.default).colmena
     ];
   };
 }
