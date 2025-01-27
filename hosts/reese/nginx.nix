@@ -1,6 +1,10 @@
 { config, lib, pkgs, ... }:
 
 {
+  imports = [
+    ./sites
+  ];
+
   config = {
     networking.firewall.allowedTCPPorts = [ 80 443 ];
 
@@ -18,15 +22,6 @@
 
     networking.nat.enable = true;
     networking.nat.externalInterface = "enp0s6";
-
-    services.nginx.virtualHosts."randomcat.org" = {
-      default = true;
-
-      forceSSL = true;
-      enableACME = true;
-
-      locations."/".return = "307 https://randomnetcat.github.io$request_uri";
-    };
 
     services.nginx.virtualHosts."jecobb.com" = {
       forceSSL = true;
