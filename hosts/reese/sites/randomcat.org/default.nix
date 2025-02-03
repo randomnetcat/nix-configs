@@ -1,14 +1,21 @@
 { config, lib, pkgs, ... }:
 
 let
-  proxyRawGithub = path: {
+  proxyRawGithub' = { path, contentType ? null }: {
     proxyPass = "https://raw.githubusercontent.com/${path}";
     recommendedProxySettings = false;
 
     extraConfig = ''
       proxy_set_header Host "raw.githubusercontent.com";
+
+      ${lib.optionalString (contentType != null) ''
+        proxy_hide_header Content-Type;
+        add_header Content-Type "${contentType}";
+      ''}
     '';
   };
+
+  proxyRawGithub = path: proxyRawGithub' { inherit path; };
 in
 {
   config = {
@@ -25,6 +32,13 @@ in
 
       locations."/agora-historical-proposals/" = proxyRawGithub "randomnetcat/agora-historical-proposals/gh-pages/";
       locations."= /agora-historical-proposals/".return = "307 https://github.com/randomnetcat/agora-historical-proposals";
+
+      locations."= /cpp_next/specification/launder_arrays" = proxyRawGithub' {
+        path = "randomnetcat/cpp_next/refs/heads/gh-pages/specification/launder_arrays.html";
+        contentType = "text/html";
+      };
+
+      locations."= /cpp_next/specification/launder_arrays.html".return = "308 https://randomcat.org/cpp_next/specification/launder_arrays";
     };
   };
 }
