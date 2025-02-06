@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 let
   proxyRawGithub' = { path, contentType ? null }: {
@@ -38,7 +38,24 @@ in
         contentType = "text/html";
       };
 
-      locations."= /cpp_next/specification/launder_arrays.html".return = "308 https://randomcat.org/cpp_next/specification/launder_arrays";
+      locations."= /cpp_next/specification/launder_arrays.html".return = "308 /cpp_next/specification/launder_arrays";
+
+      locations."= /assessor-thesis".return = "308 /assessor-thesis/";
+
+      locations."/assessor-thesis/" = {
+        # Trailing / is necessary
+        alias = "${inputs.assessor-thesis.packages.${pkgs.buildPlatform.system}.site}/";
+        index = "index.html";
+      };
+
+      locations."/assessor-thesis/statistics/" = {
+        # Trailing / is necessary
+        alias = "${inputs.assessor-thesis.packages.${pkgs.buildPlatform.system}.site}/statistics/";
+
+        extraConfig = ''
+          autoindex on;
+        '';
+      };
     };
   };
 }
