@@ -68,6 +68,11 @@
       url = "github:nix-community/lanzaboote/v0.4.2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    assessor-thesis = {
+      url = "github:randomnetcat/assessor-thesis/nix";
+      # Don't set nixpkgs to follow because we aren't linking any binaries from this.
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, colmena, flake-utils, lix-module, birdsong, lanzaboote, ... }@inputs:
