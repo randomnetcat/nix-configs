@@ -56,6 +56,20 @@ in
           autoindex on;
         '';
       };
+
+      locations."= /cases" = {
+        # Use rewrite to ensure query arguments are preserved.
+        extraConfig = ''
+          rewrite "^/cases$" "https://agoranomic.org/cases/";
+        '';
+      };
+
+      locations."/cases/" = {
+        # Use rewrite to ensure query arguments are preserved.
+        extraConfig = ''
+          rewrite "^/cases/(.*)$" "https://agoranomic.org/cases/$1";
+        '';
+      };
     };
   };
 }
