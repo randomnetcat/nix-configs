@@ -75,11 +75,11 @@
     },
     "birdsong": {
       "locked": {
-        "lastModified": 1738699106,
-        "narHash": "sha256-pAe4pHn9OmVWBHdZOMQBO21mHnshOxQOaLu/mKycM6Q=",
+        "lastModified": 1738782723,
+        "narHash": "sha256-tQ8DZrB9pucCl0qOEzvqRBrrYS0f72Sxhf+jYJQV1eE=",
         "ref": "refs/heads/main",
-        "rev": "007130e869f1223713d588ba0f125c586ca13623",
-        "revCount": 20,
+        "rev": "a40220a4b977bc04cbe9e13ff5c667ed6f252677",
+        "revCount": 22,
         "type": "git",
         "url": "https://git.qenya.tel/qenya/birdsong"
       },
@@ -521,11 +521,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1738709900,
-        "narHash": "sha256-8Bo5xFlCH5q72ExvAnH7TzStMlLZldKOSLMClRSfmTc=",
+        "lastModified": 1738789832,
+        "narHash": "sha256-HdlMPfObPu5y7oDfH/w3vvlU3UTQ/bQjSULChZARm5M=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "f2d32e46fac9d51da6912948ae1156044c71774b",
+        "rev": "30ea6fed4e4b41693cebc2263373dd810de4de49",
         "type": "github"
       },
       "original": {
@@ -792,11 +792,11 @@
     },
     "nixpkgsSmall": {
       "locked": {
-        "lastModified": 1738667108,
-        "narHash": "sha256-dX80jcKirVDmu0vdX+ZD/eHJldqFGTfsuDYlHRT/wxM=",
+        "lastModified": 1738758495,
+        "narHash": "sha256-CZ8T4vP3ag2hwkpSZjatxJb55ouszvmnWw09qxGW9TU=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "a1e849ff441fa1315afa27e1fd18c791f61de06b",
+        "rev": "ceaea203f3ae1787b1bd13f021f686391696fc5b",
         "type": "github"
       },
       "original": {
@@ -829,11 +829,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1738712484,
-        "narHash": "sha256-bm23E8lHJntAEj0MDaSAL8MT1NOI9sfISGaGcxeGoj0=",
+        "lastModified": 1738797982,
+        "narHash": "sha256-2rdOIlbut/u3yABuqEkDY6RgG/BOXBiBVzpsnMa4tGY=",
         "owner": "nix-community",
         "repo": "nur",
-        "rev": "160b085afaac103dec684b19c0ca4a56186c6fe0",
+        "rev": "88013117ca3b0921a2ddd3cfa9cd7b3bf085851f",
         "type": "github"
       },
       "original": {
@@ -944,11 +944,11 @@
         "scoutshonour": "scoutshonour"
       },
       "locked": {
-        "lastModified": 1738689619,
-        "narHash": "sha256-yvQQUTzeOk6G8DA0DJ5pORqmNhUB74FlgHXWrL6bdf4=",
+        "lastModified": 1738782790,
+        "narHash": "sha256-I0kygkyqJ8TAaXCLB44OXfi5XwUQw67mfCILF2MS7Ho=",
         "ref": "refs/heads/main",
-        "rev": "2d42894fa73dfcd83e0e3dc1e6c0644ff888a477",
-        "revCount": 319,
+        "rev": "868ffd64e4a685d4e8dab3e866c8b3a146e13cd7",
+        "revCount": 321,
         "type": "git",
         "url": "https://git.qenya.tel/qenya/nixfiles.git"
       },
