@@ -44,7 +44,13 @@
       9003 # Allow PHP XDebug
     ];
 
-    virtualisation.docker.enable = true;
+    virtualisation.docker = {
+      enable = true;
+      package = pkgs.docker.override {
+        composeSupport = true;
+      };
+    };
+
     users.users.randomcat.extraGroups = [ "docker" ];
 
     boot.binfmt.emulatedSystems = lib.mkIf (pkgs.stdenv.hostPlatform.system != "aarch64-linux") [
