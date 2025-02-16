@@ -1,7 +1,8 @@
 {
   imports = [
+    ./wiki
+
     ../nginx.nix
-    ./wiki.nix
     ./discord.nix
     ./infinite-redirect.nix
   ];

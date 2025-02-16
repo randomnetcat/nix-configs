@@ -1,11 +1,11 @@
 { config, lib, pkgs, ... }:
 
 let
-  containers = import ../container-def.nix;
+  containers = import ../../container-def.nix;
   wikiHost = "infinite.nomic.space";
   wikiPort = 8080;
   wikiSubpath = "/wiki"; # Subpath, either empty or starting but not ending with slash
-  wikiLogo = "${./resources/infnom-wiki-logo.png}";
+  wikiLogo = "${./logo.png}";
 in
 {
   config = {
@@ -14,7 +14,7 @@ in
     containers.wiki = {
       config = { config, options, lib, pkgs, ... }: {
         imports = [
-          ../../../sys/impl/fs-keys.nix
+          ../../../../sys/impl/fs-keys.nix
         ];
 
         config = {
@@ -73,34 +73,27 @@ in
 
             passwordFile = "/run/keys/password-file";
 
-            extensions = {
-              # null -> use built-in plugin
+            extensions =
+              let
+                builtinPluginNames = [
+                  "CodeEditor"
+                  "CategoryTree"
+                  "Cite"
+                  "CiteThisPage"
+                  "ParserFunctions"
+                  "TemplateData"
+                  "TextExtracts"
+                  "VisualEditor"
+                  "WikiEditor"
+                ];
 
-              CodeEditor = null;
-              CategoryTree = null;
-              Cite = null;
-              CiteThisPage = null;
-              ParserFunctions = null;
-              TemplateData = null;
-              TextExtracts = null;
-              VisualEditor = null;
-              WikiEditor = null;
 
-              CodeMirror = pkgs.fetchzip {
-                url = "https://web.archive.org/web/20240707231609if_/https://extdist.wmflabs.org/dist/extensions/CodeMirror-REL1_42-77850cc.tar.gz";
-                sha256 = "sha256-iytXlOjAXvYq+elWM8z//edI3FV2O6ICuRBqipWmk1s=";
-              };
+                builtinPlugins = lib.genAttrs builtinPluginNames (_: null);
 
-              MobileFrontend = pkgs.fetchzip {
-                url = "https://web.archive.org/web/20240707233348if_/https://extdist.wmflabs.org/dist/extensions/MobileFrontend-REL1_42-762b528.tar.gz";
-                sha256 = "sha256-FUtLVQdRylFOGBvLQax85nTD6QWzQ7gt+BoJVobXd5Q=";
-              };
-
-              DarkMode = pkgs.fetchzip {
-                url = "https://web.archive.org/web/20240707234759if_/https://extdist.wmflabs.org/dist/extensions/DarkMode-REL1_42-01e7144.tar.gz";
-                sha256 = "sha256-K2sd3I6WvZ//JN6csAL4y5jTtdzQ9mRLcHZ16qsoN7E=";
-              };
-            };
+                mediawikiMajorMinor = lib.concatStringsSep "." (lib.take 2 (lib.splitString "." config.services.mediawiki.package.version));
+                versionedPlugins = import (./plugins + "/mediawiki-${mediawikiMajorMinor}.nix") { inherit pkgs; };
+              in
+              builtinPlugins // versionedPlugins;
 
             skins = {
               MinervaNeue = "${config.services.mediawiki.package}/share/mediawiki/skins/MinervaNeue";
@@ -216,8 +209,8 @@ in
 
       serviceConfig = {
         LoadCredentialEncrypted = [
-          "wiki-smtp-pass:${../secrets/wiki-smtp-pass}"
-          "wiki-password-file:${../secrets/wiki-password-file}"
+          "wiki-smtp-pass:${../../secrets/wiki-smtp-pass}"
+          "wiki-password-file:${../../secrets/wiki-password-file}"
         ];
       };
     };
