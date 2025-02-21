@@ -5,14 +5,9 @@
     boot.loader.grub.enable = false;
 
     boot.loader.systemd-boot = {
-      enable = false;
+      enable = true;
       editor = false;
       memtest86.enable = true;
-    };
-
-    boot.lanzaboote = {
-      enable = true;
-      pkiBundle = "/etc/secureboot";
     };
 
     boot.loader.efi = {
