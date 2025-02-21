@@ -152,6 +152,11 @@
           modules = [ ./hosts/groves ];
         };
 
+        carter = {
+          system = "x86_64-linux";
+          modules = [ ./hosts/carter ];
+        };
+
         reese = {
           pkgsFlake = nixpkgsSmall;
           system = "aarch64-linux";
