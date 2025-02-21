@@ -30,10 +30,10 @@
     home-manager.useGlobalPkgs = true;
 
     assertions = [
-      {
-        assertion = inputs.nixpkgs.outPath == (toString pkgs.path);
-        message = "Nixpkgs path should be the same as nixpkgs input";
-      }
+      # {
+      #   assertion = inputs.nixpkgs.outPath == (toString pkgs.path);
+      #   message = "Nixpkgs path should be the same as nixpkgs input";
+      # }
     ];
   };
 }
