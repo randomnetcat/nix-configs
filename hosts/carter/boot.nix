@@ -27,7 +27,7 @@
     boot.loader.generationsDir.copyKernels = true;
 
     fileSystems."/boot" = {
-      device = "/dev/disk/by-partlabel/groves-esp";
+      device = "/dev/disk/by-partlabel/carter-esp";
       fsType = "vfat";
 
       options = [
