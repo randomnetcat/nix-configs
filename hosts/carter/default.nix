@@ -15,6 +15,8 @@
     ./graphical.nix
     ./networking.nix
     ./locale.nix
+
+    ./gaming.nix
   ];
 
   options = { };
