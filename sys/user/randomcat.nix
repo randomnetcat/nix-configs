@@ -3,6 +3,7 @@
 {
   config = {
     users.users.randomcat = {
+      uid = 1000;
       isNormalUser = true;
       group = "randomcat";
       home = "/home/randomcat";
@@ -11,6 +12,7 @@
     };
 
     users.groups.randomcat = {
+      gid = config.users.users.randomcat.uid;
       members = [ "randomcat" ];
     };
 
