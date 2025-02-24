@@ -7,6 +7,11 @@
 
   config = {
     services.xserver.videoDrivers = [ "amd" ];
-    hardware.graphics.enable = true;
+    boot.initrd.kernelModules = [ "amdgpu" ];
+
+    hardware.graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
   };
 }
