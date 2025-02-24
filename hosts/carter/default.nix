@@ -17,6 +17,7 @@
     ./locale.nix
 
     ./gaming.nix
+    ./security.nix
   ];
 
   options = { };
