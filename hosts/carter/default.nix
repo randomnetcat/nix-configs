@@ -18,6 +18,7 @@
 
     ./gaming.nix
     ./security.nix
+    ./vms.nix
   ];
 
   options = { };
