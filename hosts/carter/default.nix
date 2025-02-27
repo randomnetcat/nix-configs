@@ -15,6 +15,7 @@
     ./graphical.nix
     ./networking.nix
     ./locale.nix
+    ./power.nix
 
     ./gaming.nix
     ./security.nix
