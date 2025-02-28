@@ -11,6 +11,8 @@
     home.enableDebugInfo = true;
 
     home.packages = [
+      pkgs.cmake
+      pkgs.gnumake
       pkgs.jetbrains.clion
     ];
 
