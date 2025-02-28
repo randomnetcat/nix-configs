@@ -54,6 +54,7 @@
     users.users.randomcat.extraGroups = [ "docker" ];
 
     home-manager.users.randomcat.imports = [
+      ../../home/wants/cpp-development.nix
       ../../home/wants/java-development.nix
     ];
 
