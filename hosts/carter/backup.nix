@@ -27,7 +27,7 @@
         autoprune = true;
       };
 
-      datasets."rpool_fxooop/groves/safe" = {
+      datasets."rpool_ez8ryx/carter/safe" = {
         useTemplate = [ "safe" ];
         recursive = "zfs";
       };
