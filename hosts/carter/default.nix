@@ -17,6 +17,7 @@
     ./locale.nix
     ./power.nix
 
+    ./backup.nix
     ./gaming.nix
     ./security.nix
     ./vms.nix
