@@ -11,6 +11,18 @@
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
 
+  swapDevices = [
+    {
+      device = "/var/swapfile";
+      size = 4096;
+      randomEncryption.enable = true;
+    }
+  ];
+
+  boot.kernelParams = [
+    "nohibernate"
+  ];
+
   networking.hostId = "2b20be51";
   networking.hostName = "leon";
   networking.domain = "zfs.rent";
