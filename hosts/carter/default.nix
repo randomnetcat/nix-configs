@@ -19,6 +19,7 @@
 
     ./backup.nix
     ./gaming.nix
+    ./printing.nix
     ./security.nix
     ./vms.nix
   ];
