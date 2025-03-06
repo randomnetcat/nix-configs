@@ -6,6 +6,7 @@
     ./hardware-configuration.nix
 
     ./tailscale.nix
+    ./networking.nix
   ];
 
   boot.tmp.cleanOnBoot = true;
