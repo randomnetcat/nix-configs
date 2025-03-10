@@ -186,11 +186,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1741482629,
-        "narHash": "sha256-NoamiWlMgy9LACM8/q0KEWURYajjRPXYPF0Uvn2vh54=",
+        "lastModified": 1741570729,
+        "narHash": "sha256-iVWVtyT2XSIG+kgs1p5Pxrtk5LK0FwwKwZdzT6og3po=",
         "owner": "randomnetcat",
         "repo": "diplomacy-bot",
-        "rev": "b8aacd6f5921f20afd34ca4710db25965507236c",
+        "rev": "d9d007b15f44bcaf1b42b096ec250397821b1824",
         "type": "gitlab"
       },
       "original": {
