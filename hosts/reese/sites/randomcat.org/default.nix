@@ -30,7 +30,7 @@ in
       # };
 
       extraConfig = ''
-        rewrite "^/cpp_initialization(.*)$" "/cpp-initialization$1" redirect;
+        rewrite "^/cpp_initialization(|/.*)$" "/cpp-initialization$1" redirect;
       '';
 
       locations."/" = {
