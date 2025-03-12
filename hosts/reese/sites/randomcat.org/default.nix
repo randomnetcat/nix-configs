@@ -29,6 +29,10 @@ in
       #   alias = "${./webroot}/index.html";
       # };
 
+      extraConfig = ''
+        rewrite "^/cpp_initialization(.*)$" "/cpp-initialization$1" redirect;
+      '';
+
       locations."/" = {
         alias = "${./webroot}/";
         tryFiles = "$uri $uri.html $uri/index.html =404";
@@ -38,8 +42,8 @@ in
         '';
       };
 
-      locations."= /cpp_initialization/initialization.png" = proxyRawGithub "randomnetcat/cpp_initialization/gh-pages/initialization.png";
-      locations."= /cpp_initialization/initialization.svg" = proxyRawGithub "randomnetcat/cpp_initialization/gh-pages/initialization.svg";
+      locations."= /cpp-initialization/initialization.png" = proxyRawGithub "randomnetcat/cpp_initialization/gh-pages/initialization.png";
+      locations."= /cpp-initialization/initialization.svg" = proxyRawGithub "randomnetcat/cpp_initialization/gh-pages/initialization.svg";
 
       locations."/agora-historical-proposals/" = proxyRawGithub "randomnetcat/agora-historical-proposals/gh-pages/";
       locations."= /agora-historical-proposals/".return = "307 https://github.com/randomnetcat/agora-historical-proposals";
