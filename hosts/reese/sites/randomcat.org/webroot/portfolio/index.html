@@ -1,0 +1,101 @@
+<html>
+
+<head>
+    <title>Janet's Basic Portfolio</title>
+	
+	<meta charset="UTF-8" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    />
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+
+        body {
+            max-width: 60em;
+            margin: 0 auto;
+            padding: 16px 2em;
+
+            font-family: "Source Sans 3", Helvetica, Arial, sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        h1 {
+            padding-bottom: 0.25em;
+            border-bottom: 1px solid lightgray;
+        }
+
+        code {
+            font-size: 110%;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Janet's Basic Portfolio</h1>
+
+    Hello there! I’m Janet. This is a basic list of the things that I’ve done that I think are worth sharing.
+
+    <section>
+        <h2>Nomic-Related Things</h2>
+
+        I am currently the Rulekeepor and Assessor for <a href="https://agoranomic.org/">Agora Nomic</a>, and I maintain
+        AgoraBot, a Discord bot for the Agora chat server. The repositories for those projects are listed below.
+
+        <ul>
+            <li>
+                <a href="https://github.com/agoranomic/ruleset">Rulekeepor</a>: Report generation.
+            </li>
+
+            <li>
+                <a href="https://github.com/AgoraNomic/assessor/">Assessor</a>: Report generation. There’s also some
+                statistics and graph generation, the results of which are visible on the <a
+                    href="https://github.com/AgoraNomic/assessor/tree/gh-pages"
+                ><code>gh-pages</code> branch</a>.
+            </li>
+
+            <li>
+                <a href="https://github.com/randomnetcat/AgoraBot">AgoraBot</a>: Discord bot.
+            </li>
+        </ul>
+
+        <section>
+            <h3>Writeups</h3>
+
+            In addition to writing code for report generation, I've made a few writeups analyzing data from Agora:
+
+            <ul>
+                <li>
+                    <a href="https://agoranomic.org/ruleset-thesis">Ruleset thesis</a>: 2019 writeup on the dependencies
+                    between rules.
+                </li>
+
+                <li>
+                    <a href="https://randomcat.org/assessor-thesis">Assessor thesis</a>: 2021 writeup on voting patterns
+                </li>
+            </ul>
+        </section>
+    </section>
+
+    <section>
+        <h2>Other Things</h2>
+
+        <ul>
+            <li>
+                I made a <a href="https://randomcat.org/cpp_initialization/initialization.svg">flowchart for
+                    the C++20 initialization rules</a> (not a blank page, scroll right + down) to assist with
+                determining what the very complicated rules should do in a given circumstance and to assist with
+                standard pedantry.
+
+                This was made using GNU M4 to preprocess a hand-written source file into Graphviz code, which is then
+                passed to <code>dot</code>. <a href="https://github.com/randomnetcat/cpp_initialization">Source
+                    code</a>.
+            </li>
+        </ul>
+    </section>
+</body>
+
+</html>

@@ -25,7 +25,18 @@ in
       forceSSL = true;
       enableACME = true;
 
-      locations."/".return = "307 https://randomnetcat.github.io$request_uri";
+      # locations."=/" = {
+      #   alias = "${./webroot}/index.html";
+      # };
+
+      locations."/" = {
+        alias = "${./webroot}/";
+        tryFiles = "$uri $uri.html $uri/index.html =404";
+
+        extraConfig = ''
+          rewrite "^/(.*)/$" "/$1";
+        '';
+      };
 
       locations."= /cpp_initialization/initialization.png" = proxyRawGithub "randomnetcat/cpp_initialization/gh-pages/initialization.png";
       locations."= /cpp_initialization/initialization.svg" = proxyRawGithub "randomnetcat/cpp_initialization/gh-pages/initialization.svg";
