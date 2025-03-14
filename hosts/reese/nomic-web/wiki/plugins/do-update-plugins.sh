@@ -56,9 +56,11 @@ while read -r plugin_name; do
 		printf '%s\n' "$plugin_url"
 	fi
 
-	existing_url="$(curl 'http://archive.org/wayback/available' -G --data "url=$plugin_url" | jq -r '.archived_snapshots.closest.url // empty')"
+	echo "Raw URL: $plugin_url" > /dev/stderr
 
-	if [[ "$existing_url" ]]; then
+	existing_url="$(curl 'https://archive.org/wayback/available' -G --data "url=$plugin_url" | jq -r '.archived_snapshots.closest.url // empty')"
+
+	if [[ -n "$existing_url" ]]; then
 		effective_url="$(ia_snapshot_to_raw "$existing_url")"
 	else
 		# Since this URL is not guaranteed to be stable, try to archive it with the
@@ -70,13 +72,11 @@ while read -r plugin_name; do
 		# it works.)
 		effective_url="$(ia_snapshot_to_raw "$(savepagenow -c "$plugin_url")")" \
 			|| effective_url="$plugin_url"
-
 	fi
 
 	prefetch_hash="$(nix store prefetch-file --unpack --json -- "$plugin_url" | jq -r '.hash')"
 
 	{
-		echo "Raw URL: $plugin_url"
 		echo "Effective URL: $effective_url"
 		echo "Hash: $prefetch_hash"
 	} > /dev/stderr
