@@ -33,7 +33,7 @@ jobs:
 
           if [[ -n "$(git status --porcelain data)" ]]; then
             git add data
-            git commit data -m "ci: update MediaWiki plugins"
+            git commit data -m "reese: update MediaWiki plugins"
           fi
 
       - name: Push changes
