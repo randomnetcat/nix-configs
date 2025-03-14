@@ -1,4 +1,4 @@
-name: Flake auto update
+name: Automatic update
 
 on:
   schedule:
