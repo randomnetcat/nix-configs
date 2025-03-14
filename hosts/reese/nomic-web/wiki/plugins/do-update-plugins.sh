@@ -42,8 +42,29 @@ curl -- "$plugins_index" \
 # We will use jq to build a json object and build the arguments in this array.
 jq_args=()
 
+# We add if_ after the IA snapshot timestamp because this tells IA to just
+# give us the raw file. (I do not know if or where this is documented, but
+# it works.)
 ia_snapshot_to_raw() {
 	printf '%s\n' "$1" | sed -E 's/\/web\/([0-9]+)\//\/web\/\1if_\//'
+}
+
+ia_preexisting_snapshot_url() {
+	declare snapshot_url="$(curl 'https://archive.org/wayback/available' -G --data "url=$plugin_url" | jq -r '.archived_snapshots.closest.url // empty')"
+
+	# Print the result to stdout if non-empty; otherwise, output nothing.
+	if [[ -n "$snapshot_url" ]]; then
+		ia_snapshot_to_raw "$snapshot_url"
+	fi
+}
+
+ia_create_new_snapshot_url() {
+	declare snapshot_url="$(ia_snapshot_to_raw "$(savepagenow -c "$plugin_url")")"
+
+	# Print the result to stdout if non-empty; otherwise, output nothing.
+	if [[ -n "$snapshot_url" ]]; then
+		ia_snapshot_to_raw "$snapshot_url"
+	fi
 }
 
 while read -r plugin_name; do
@@ -58,20 +79,21 @@ while read -r plugin_name; do
 
 	echo "Raw URL: $plugin_url" > /dev/stderr
 
-	existing_url="$(curl 'https://archive.org/wayback/available' -G --data "url=$plugin_url" | jq -r '.archived_snapshots.closest.url // empty')"
+	# Since the plugin URL is not guaranteed to be stable, try to archive it
+	# with the Internet Archive and use a snapshot URL. If this doesn't work,
+	# fall back to just using the original URL.
 
-	if [[ -n "$existing_url" ]]; then
-		effective_url="$(ia_snapshot_to_raw "$existing_url")"
-	else
-		# Since this URL is not guaranteed to be stable, try to archive it with the
-		# Internet Archive and use a snapshot URL. If this doesn't work, fall back
-		# to just using the original URL.
-		# 
-		# We add if_ after the IA snapshot timestamp because this tells IA to just
-		# give us the raw file. (I do not know if or where this is documented, but
-		# it works.)
-		effective_url="$(ia_snapshot_to_raw "$(savepagenow -c "$plugin_url")")" \
-			|| effective_url="$plugin_url"
+	# Try using an existing snapshot, if one exists.
+	effective_url="$(ia_preexisting_snapshot_url)"
+
+	# Otherwise, try to create a new snapshot and use that.
+	if [[ -z "$effective_url" ]]; then
+		effective_url="$(ia_create_new_snapshot_url)"
+	fi
+
+	# Otherwise, fall back to using the raw plugin URL.
+	if [[ -z "$effective_url" ]]; then
+		effective_url="$plugin_url"
 	fi
 
 	prefetch_hash="$(nix store prefetch-file --unpack --json -- "$plugin_url" | jq -r '.hash')"
