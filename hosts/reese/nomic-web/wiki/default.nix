@@ -90,8 +90,14 @@ in
 
                 builtinPlugins = lib.genAttrs builtinPluginNames (_: null);
 
-                mediawikiMajorMinor = lib.concatStringsSep "." (lib.take 2 (lib.splitString "." config.services.mediawiki.package.version));
-                versionedPlugins = import (./plugins + "/mediawiki-${mediawikiMajorMinor}.nix") { inherit pkgs; };
+                mediawikiRelease = "REL" + (lib.concatStringsSep "_" (lib.take 2 (lib.splitString "." config.services.mediawiki.package.version)));
+
+                versionedPlugins = lib.mapAttrs
+                  (n: v: pkgs.fetchzip {
+                    url = v.url;
+                    hash = v.hash;
+                  })
+                  (builtins.fromJSON (builtins.readFile (./plugins/data + "/plugins-${mediawikiRelease}.json")));
               in
               builtinPlugins // versionedPlugins;
 
