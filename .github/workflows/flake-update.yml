@@ -26,6 +26,16 @@ jobs:
         run: |
           nix flake update --commit-lock-file
 
+      - name: Update MediaWiki plugins
+        run: |
+          cd hosts/reese/nomic-web/wiki/plugins
+          ./update-plugins.sh
+
+          if [[ -n "$(git status --porcelain data)" ]]; then
+            git add data
+            git commit data -m "ci: update MediaWiki plugins"
+          fi
+
       - name: Push changes
         run: |
           git push
