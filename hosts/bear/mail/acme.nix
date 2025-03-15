@@ -72,15 +72,15 @@ in
 
     assertions = [
       {
-        assertion = config.systemd.services.acme-fixperms != { };
-        message = "acme-mail service depends on acme-fixperms";
+        assertion = (config.systemd.services ? acme-setup) && (config.systemd.services.acme-setup != { });
+        message = "acme-mail service depends on acme-setup";
       }
     ];
 
     systemd.services.acme-mail = {
-      requires = [ "acme-fixperms.service" ];
+      requires = [ "acme-setup.service" ];
       wants = [ "network-online.target" ];
-      after = [ "network.target" "network-online.target" "acme-fixperms.service" ];
+      after = [ "network.target" "network-online.target" "acme-setup.service" ];
 
       wantedBy = [ "maddy.service" ];
       before = [ "maddy.service" ];
