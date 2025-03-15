@@ -86,6 +86,12 @@ in
       localAddress = localIP4;
       localAddress6 = localIP6;
 
+      # Per https://discourse.nixos.org/t/error-cannot-open-tun-tap-dev-dev-net-tun-inside-systemd-nspawn-container/18079/4
+      allowedDevices = [{
+        modifier = "rwm";
+        node = "/dev/net/tun";
+      }];
+
       extraFlags = [
         "-U"
         "--load-credential=db-password:keycloak-db-password"
