@@ -18,6 +18,7 @@
     ./power.nix
 
     ./backup.nix
+    ./development.nix
     ./gaming.nix
     ./printing.nix
     ./security.nix
