@@ -27,11 +27,22 @@
       programs.java.enable = true;
       programs.java.package = jdks.current;
 
+      programs.gradle = {
+        enable = true;
+
+        package = pkgs.gradle.override {
+          javaToolchains = map (p: p.home) (lib.attrValues jdks);
+        };
+
+        # Add settings to ensure that Gradle wrappers are also configured to
+        # find these JVMs.
+        settings = {
+          "org.gradle.java.installations.paths" = lib.concatStringsSep "," (map (jdk: jdk.home) (lib.attrValues jdks));
+        };
+      };
+
       home.packages = [
         pkgs.jetbrains.idea-ultimate
-        (pkgs.gradle.override {
-          javaToolchains = map (p: p.home) (lib.attrValues jdks);
-        })
       ];
     };
 }
