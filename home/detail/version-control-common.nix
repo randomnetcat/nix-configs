@@ -13,18 +13,23 @@
       package = pkgs.gitAndTools.gitFull;
 
       ignores = [
+        # Text editors
         "*~"
         "*.swp"
 
-        "local" 
-
-        ".envrc" 
-        ".direnv/" 
-
+        # IDEs
         ".idea/"
         "*.iml"
 
+        # nix direnv
+        ".envrc"
+        ".direnv/"
+
+        # Programming languages
         "__pycache__"
+
+        # Directory for custom files
+        "local"
       ];
 
       difftastic.enable = true;
