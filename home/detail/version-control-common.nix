@@ -27,6 +27,7 @@
 
         # Programming languages
         "__pycache__"
+        ".kotlin"
 
         # Directory for custom files
         "local"
