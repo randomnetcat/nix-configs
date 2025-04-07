@@ -96,6 +96,8 @@ while read -r plugin_name; do
 		effective_url="$plugin_url"
 	fi
 
+	effective_url="$(printf '%s\n' "$effective_url" | sed 's/^http:/https:/g')"
+
 	prefetch_hash="$(nix store prefetch-file --unpack --json -- "$plugin_url" | jq -r '.hash')"
 
 	{
