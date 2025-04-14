@@ -7,6 +7,7 @@
     ../sys/impl/maintenance
     ../sys/impl/zfs-common.nix
     ../sys/impl/ssh-security.nix
+    ../sys/impl/gnome-presets.nix
   ];
 
   config = {
