@@ -31,6 +31,22 @@
               "[vue]" = {
                 "editor.defaultFormatter" = "Vue.volar";
               };
+
+              # Disable stupid AI features.
+              "chat.agent.enabled" = false;
+              "chat.commandCenter.enabled" = false;
+              "chat.extensionTools.enabled" = false;
+              "chat.focusWindowOnConfirmation" = false;
+              "chat.setupFromDialog" = false;
+              "telemetry.feedback.enabled" = false;
+
+              ## In extensions...
+              "gitlens.ai.model" = null;
+              "python.analysis.aiCodeActions" = {
+                "generateDocstring" = false;
+                "generateSymbol" = false;
+                "implementAbstractClasses" = false;
+              };
             };
           };
         }
