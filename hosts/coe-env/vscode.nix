@@ -27,6 +27,10 @@
               "php.validate.executablePath" = "${php}/bin/php";
 
               "html.format.wrapAttributes" = "force-expand-multiline";
+
+              "[vue]" = {
+                "editor.defaultFormatter" = "Vue.volar";
+              };
             };
           };
         }
