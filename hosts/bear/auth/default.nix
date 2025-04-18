@@ -45,8 +45,8 @@ in
             };
 
             settings = {
-              hostname = keycloakHost;
-              hostname-admin-url = "http://${tailscaleName}:${toString tailscalePort}/";
+              hostname = "https://${keycloakHost}";
+              hostname-admin = "http://${tailscaleName}:${toString tailscalePort}/";
               http-port = listenPort;
               proxy-headers = "xforwarded";
               http-enabled = true;
