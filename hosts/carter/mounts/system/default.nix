@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./ephemeral.nix
     ./root.nix
     ./tmp.nix
   ];
