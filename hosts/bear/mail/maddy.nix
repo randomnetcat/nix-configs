@@ -13,6 +13,11 @@ let
   ];
 
   agoraListsNameRegex = "(" + (lib.concatMapStringsSep "|" (list: "(${list})") agoraLists) + ")";
+
+  imapFilter = pkgs.writeShellApplication {
+    name = "maddy-imap-filter";
+    text = builtins.readFile ./imap-filter.sh;
+  };
 in
 {
   config = {
@@ -124,6 +129,10 @@ in
         storage.imapsql local_mailboxes {
             driver sqlite3
             dsn imapsql.db
+
+            imap_filter {
+                command ${lib.getExe imapFilter} {account_name} {original_rcpt_to} { }
+            }
         }
 
         # ----------------------------------------------------------------------------
