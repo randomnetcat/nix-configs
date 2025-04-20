@@ -37,9 +37,9 @@
       timerConfig.Persistent = true;
     };
 
-    # randomcat.services.backups.source = {
-    #   fromNetwork = true;
-    #   encryptedSyncKey = ./secrets/sync-key;
-    # };
+    randomcat.services.backups.source = {
+      fromNetwork = true;
+      encryptedSyncKey = ./secrets/sync-key;
+    };
   };
 }

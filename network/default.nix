@@ -15,6 +15,12 @@
           tailscaleIP6 = "fd7a:115c:a1e0:ab12:4843:cd96:6255:a582";
         };
 
+        carter = {
+          hostKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEHHHYG6A995Po05+JXQsvB79ZoIiSOJnW6AiJgVYPic";
+          tailscaleIP4 = "100.101.241.29";
+          tailscaleIP6 = "fd7a:115c:a1e0::101:f11f";
+        };
+
         groves = {
           tailscaleIP4 = "100.68.110.33";
           tailscaleIP6 = "fd7a:115c:a1e0:ab12:4843:cd96:6244:6e21";
@@ -48,6 +54,10 @@
           groves = {
             syncKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICH8LCAeIbGW+TRmKwoAwVa2m1JMWqLvOhKOsx+7Fg7u";
           };
+
+          carter = {
+            syncKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINuQQ1ITsz6WGY/zBPu0tO5Nlov9RlqYjzGoCMA/dAZB";
+          };
         };
 
         targets = {
@@ -76,6 +86,18 @@
             datasets = [
               {
                 source = "rpool_fxooop/groves/safe";
+                target = "safe";
+              }
+            ];
+          }
+
+          {
+            sourceHost = "carter";
+            targetHost = "shaw";
+
+            datasets = [
+              {
+                source=  "rpool_ez8ryx/carter/safe";
                 target = "safe";
               }
             ];
