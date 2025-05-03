@@ -115,9 +115,11 @@ in
                   (lib.concatMap ({ name, value }: [ "-o" "${name}=${value}" ]) (lib.attrsToList zfsOptions)) ++
                   [ datasetName ];
 
+                optionValues = (lib.mapAttrsToList (name: value: "${name}=${value}") zfsOptions);
+
                 setOpts =
                   [ "-u" ] ++
-                  (lib.mapAttrsToList (name: value: "${name}=${value}") zfsOptions) ++
+                  optionValues ++
                   [ datasetName ];
               in
               ''
@@ -126,8 +128,10 @@ in
                 if ${lib.escapeShellArgs [ zfsBin "list" "-Ho" "name" datasetName ]} > /dev/null 2> /dev/null; then
                   printf "Dataset %s already exists; not creating.\n" ${lib.escapeShellArg datasetName}
 
-                  ${lib.escapeShellArgs ([ zfsBin "set" ] ++ setOpts)}
-                  printf "Updated options for dataset %s\n" ${lib.escapeShellArg datasetName}
+                  ${lib.optionalString (optionValues != [ ]) ''
+                    ${lib.escapeShellArgs ([ zfsBin "set" ] ++ setOpts)}
+                    printf "Updated options for dataset %s\n" ${lib.escapeShellArg datasetName}
+                  ''}
                 else
                   ${lib.escapeShellArgs ([ zfsBin "create" ] ++ createOpts)}
                   printf "Created dataset %s\n" ${lib.escapeShellArg datasetName}
