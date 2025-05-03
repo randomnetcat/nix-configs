@@ -3,7 +3,7 @@
 {
   imports = [
     ../../network
-    ../../sys/wants/backup/network.nix
+    ../../sys/wants/backup
   ];
 
   config = {
@@ -39,6 +39,8 @@
 
     randomcat.services.backups.source = {
       fromNetwork = true;
+      ssh.enable = true;
+      ssh.enableVpnAddresses = true;
     };
   };
 }
