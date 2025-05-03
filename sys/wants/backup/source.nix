@@ -64,6 +64,7 @@ in
       targetsList = lib.attrValues cfg.acceptTargets;
 
       targetPerms = [
+        "snapshot"
         "bookmark"
         "hold"
         "send"
