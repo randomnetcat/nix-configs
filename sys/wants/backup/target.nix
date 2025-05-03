@@ -164,9 +164,6 @@ in
       systemd.services = lib.mkMerge (lib.imap0
         (i: m: {
           "syncoid-randomcat-${toString i}-${m.sourceName}" = {
-            requires = [ "sync-creds.service" ];
-            after = [ "sync-creds.service" ];
-
             unitConfig = {
               StartLimitBurst = 2;
               StartLimitIntervalSec = "1 hour";
