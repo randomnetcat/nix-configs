@@ -70,7 +70,7 @@ in
 
       unitConfig = {
         # To match sshd.
-        # See https://github.com/NixOS/nixpkgs/blob/nixos-24.11/nixos/modules/system/boot/initrd-ssh.nix#L350
+        # See https://github.com/NixOS/nixpkgs/blob/f02fddb8acef29a8b32f10a335d44828d7825b78/nixos/modules/system/boot/initrd-ssh.nix#L350
         DefaultDependencies = false;
 
         RequiresMountsFor = [
