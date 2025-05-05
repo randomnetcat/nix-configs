@@ -6,7 +6,7 @@ let
 
   targetsList = lib.attrValues sourceCfg.acceptTargets;
   acceptsAnyTargets = (lib.length targetsList) != 0;
-  actuallyEnabled = cfg.enable && (lib.length cfg.addresses) != 0 && acceptsAnyTargets;
+  actuallyEnabled = cfg.enable && sourceCfg.enable && (lib.length cfg.addresses) != 0 && acceptsAnyTargets;
 
   acceptedUsers = lib.naturalSort (lib.unique (map (target: target.user) targetsList));
 
