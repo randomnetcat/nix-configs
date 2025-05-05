@@ -11,6 +11,7 @@
 
       target = {
         encryptedSyncKey = ../secrets/sync-key;
+        enableMetrics = true;
       };
     };
 
