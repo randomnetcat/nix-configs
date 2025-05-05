@@ -6,8 +6,6 @@
       pkgs._1password-gui
     ];
 
-    nixpkgs.config.allowUnfree = true;
-
     programs.firefox = {
       enable = true;
 
