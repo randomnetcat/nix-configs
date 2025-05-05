@@ -88,7 +88,7 @@
       homeManagerNurOverlay = { pkgs, ... }: {
         config = {
           home-manager.extraSpecialArgs = {
-            nurPkgs = pkgs.extend nur.overlay;
+            nurPkgs = pkgs.extend nur.overlays.default;
           };
         };
       };
