@@ -30,12 +30,7 @@
         autoprune = true;
       };
 
-      datasets."nas_oabrke/data/backups/groves" = {
-        useTemplate = [ "safe_backup" ];
-        recursive = "zfs";
-      };
-
-      datasets."nas_oabrke/data/backups/reese" = {
+      datasets."nas_oabrke/data/backups" = {
         useTemplate = [ "safe_backup" ];
         recursive = "zfs";
       };
