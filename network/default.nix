@@ -50,6 +50,7 @@
           reese = { };
           groves = { };
           carter = { };
+          bear = { };
         };
 
         targets = {
@@ -79,6 +80,18 @@
             datasets = [
               {
                 source = "rpool_ez8ryx/carter/safe";
+                target = "safe";
+              }
+            ];
+          }
+
+          {
+            sourceHost = "bear";
+            targetHost = "shaw";
+
+            datasets = [
+              {
+                source = "rpool_zpnzkc/bear/safe";
                 target = "safe";
               }
             ];

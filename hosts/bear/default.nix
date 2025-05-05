@@ -15,6 +15,7 @@
     ./mail
     ./auth
 
+    ./backup.nix
     ./networking.nix
     ./birdsong.nix
     ./metrics.nix
