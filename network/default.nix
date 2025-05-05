@@ -73,18 +73,6 @@
           }
 
           {
-            sourceHost = "groves";
-            targetHost = "shaw";
-
-            datasets = [
-              {
-                source = "rpool_fxooop/groves/safe";
-                target = "safe";
-              }
-            ];
-          }
-
-          {
             sourceHost = "carter";
             targetHost = "shaw";
 
