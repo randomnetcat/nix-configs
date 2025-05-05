@@ -3,6 +3,7 @@
 {
   imports = [
     ../services
+    ../sys/wants/backup
     ../sys/impl/networking/resolved.nix
     ../sys/impl/maintenance
     ../sys/impl/zfs-common.nix
