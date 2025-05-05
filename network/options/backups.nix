@@ -99,14 +99,17 @@ in
       backups = {
         sources = lib.mkOption {
           type = types.attrsOf sourceType;
+          default = { };
         };
 
         targets = lib.mkOption {
           type = types.attrsOf targetType;
+          default = { };
         };
 
         movements = lib.mkOption {
           type = types.listOf movementType;
+          default = [ ];
         };
       };
     };
