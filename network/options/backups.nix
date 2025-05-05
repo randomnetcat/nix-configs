@@ -6,15 +6,7 @@ let
 
   types = lib.types;
 
-  sourceType = types.submodule ({
-    options = {
-      syncKey = lib.mkOption {
-        type = types.nullOr types.str;
-        description = "The public SSH key to be used for backups";
-        default = null;
-      };
-    };
-  });
+  sourceType = types.submodule { };
 
   targetType = types.submodule ({
     options = {
@@ -26,6 +18,12 @@ let
           For example, if this is pool/backups, and host foo backups to this, the dataset
           pool/backups/foo will be created.
         '';
+      };
+
+      syncKey = lib.mkOption {
+        type = types.nullOr types.str;
+        description = "The public SSH key to be used for backups";
+        default = null;
       };
     };
   });
