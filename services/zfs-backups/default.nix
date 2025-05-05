@@ -2,9 +2,10 @@
 
 {
   imports = [
-    ./source.nix
-    ./target.nix
     ./network.nix
-    ./ssh.nix
+    ./prune.nix
+    ./source.nix
+    ./source-ssh.nix
+    ./target.nix
   ];
 }

@@ -22,7 +22,6 @@ in
 {
   imports = [
     ../../network
-    ../../sys/wants/backup/network.nix
     ../../sys/impl/fs-keys.nix
   ];
 

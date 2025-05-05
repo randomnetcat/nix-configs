@@ -17,10 +17,6 @@ let
   vpnAddresses = lib.filter (ip: ip != null) (randomcatAddresses ++ birdsongAddresses);
 in
 {
-  imports = [
-    ../../impl/ssh-security.nix
-  ];
-
   options = {
     randomcat.services.backups.source.ssh = {
       enable = lib.mkEnableOption "SSH configuration for backup source";

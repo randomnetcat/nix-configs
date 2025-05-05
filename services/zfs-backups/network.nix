@@ -39,8 +39,8 @@ in
   imports = [
     ./source.nix
     ./target.nix
-    ../../../network/options/backups.nix
-    ../../../network/options/hosts.nix
+    ../../network/options/backups.nix
+    ../../network/options/hosts.nix
   ];
 
   options = {

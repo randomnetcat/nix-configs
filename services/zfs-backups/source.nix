@@ -44,7 +44,6 @@ in
 {
   imports = [
     ./prune.nix
-    ../../impl/fs-keys.nix
   ];
 
   options = {

@@ -3,7 +3,6 @@
 {
   imports = [
     ../../network
-    ../../sys/wants/backup
   ];
 
   config = {
