@@ -24,7 +24,7 @@
           "dom.private-attribution.submission.enabled" = false;
         };
 
-        extensions =
+        extensions.packages =
           let
             addons = nurPkgs.nur.repos.rycee.firefox-addons;
           in
