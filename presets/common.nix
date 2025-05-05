@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../network
     ../services
     ../sys/impl/networking/resolved.nix
     ../sys/impl/maintenance
