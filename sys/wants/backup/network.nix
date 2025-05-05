@@ -11,25 +11,26 @@ let
   isSource = network.backups.sources ? "${selfHostAttr}";
   isTarget = network.backups.targets ? "${selfHostAttr}";
 
-  movementSshUser = networkMovement: "sync-${networkMovement.sourceHost}";
+  movementSshUser = networkMovement: "sync-${networkMovement.targetHost}";
   movementSyncoidTag = networkMovement: "${networkMovement.sourceHost}:${networkMovement.targetHost}";
 
   networkToLocalMovements = networkMovement: map
     (dataset: {
-      targetName = networkMovement.targetHost;
-      targetHost = network.hosts."${networkMovement.targetHost}".hostName;
-      targetUser = movementSshUser networkMovement;
+      sourceName = networkMovement.sourceHost;
+      sourceUser = movementSshUser networkMovement;
+      sourceHost = network.hosts."${networkMovement.sourceHost}".hostName;
       sourceDataset = dataset.source;
-      targetDataset = "${network.backups.targets."${networkMovement.targetHost}".backupsDataset}/${networkMovement.sourceHost}/${dataset.target}";
+      targetGroupDataset = networkMovement.sourceHost;
+      targetChildDataset = dataset.target;
       syncoidTag = movementSyncoidTag networkMovement;
     })
     networkMovement.datasets;
 
-  networkToTargetSources = networkMovement: {
-    "${networkMovement.sourceHost}" = {
+  networkToAcceptTarget = networkMovement: {
+    "${networkMovement.targetHost}" = {
       user = movementSshUser networkMovement;
-      sshKey = network.backups.sources."${networkMovement.sourceHost}".syncKey;
-      childDataset = networkMovement.sourceHost;
+      sshKey = network.backups.targets."${networkMovement.targetHost}".syncKey;
+      sourceDatasets = map (d: d.source) networkMovement.datasets;
       syncoidTag = movementSyncoidTag networkMovement;
     };
   };
@@ -61,13 +62,13 @@ in
       {
         source = lib.mkIf cfg.source.fromNetwork {
           enable = lib.mkDefault isSource;
-          movements = lib.mkIf isSource (lib.concatMap networkToLocalMovements (lib.filter (m: m.sourceHost == selfHostAttr) network.backups.movements));
+          acceptTargets = lib.mkMerge (map networkToAcceptTarget (lib.filter (m: m.sourceHost == selfHostAttr) network.backups.movements));
         };
 
         target = lib.mkIf cfg.target.fromNetwork {
           enable = lib.mkDefault isTarget;
           parentDataset = network.backups.targets."${selfHostAttr}".backupsDataset;
-          acceptSources = lib.mkMerge (map networkToTargetSources (lib.filter (m: m.targetHost == selfHostAttr) network.backups.movements));
+          movements = lib.mkIf isTarget (lib.concatMap networkToLocalMovements (lib.filter (m: m.targetHost == selfHostAttr) network.backups.movements));
         };
       }
     ];

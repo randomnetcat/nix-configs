@@ -5,5 +5,6 @@
     ./source.nix
     ./target.nix
     ./network.nix
+    ./ssh.nix
   ];
 }

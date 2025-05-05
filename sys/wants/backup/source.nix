@@ -1,49 +1,43 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.randomcat.services.backups.source;
-
   types = lib.types;
 
-  movementType = types.submodule ({ config, ... }: {
+  cfg = config.randomcat.services.backups.source;
+
+  movementType = types.submodule ({ name, config, ... }: {
     options = {
-      targetName = lib.mkOption {
+      name = lib.mkOption {
         type = types.str;
-        description = "Friendly name of the host to backup to";
+        description = "The name of the host";
       };
 
-      targetHost = lib.mkOption {
+      user = lib.mkOption {
         type = types.str;
-        description = "DNS name of the host to backup to";
-        default = config.targetName;
+        description = "The name of the username to accept for backups";
       };
 
-      targetUser = lib.mkOption {
-        type = types.str;
-        description = "User to login to the target host with";
-        default = "sync-${config.networking.hostName}";
+      sshKey = lib.mkOption {
+        type = types.nullOr types.str;
+        description = "The SSH key to add to the user";
+        default = null;
       };
 
-      targetPort = lib.mkOption {
-        type = types.port;
-        description = "Port to connect to the target host on";
-        default = 2222;
-      };
-
-      sourceDataset = lib.mkOption {
-        type = types.str;
-        description = "Name of the dataset to backup from (on the source)";
-      };
-
-      targetDataset = lib.mkOption {
-        type = types.str;
-        description = "Name of the dataset to backup to (on the target)";
+      sourceDatasets = lib.mkOption {
+        type = types.listOf types.str;
+        description = "The name of the dataset to grant access to";
       };
 
       syncoidTag = lib.mkOption {
         type = types.str;
-        description = "The syncoid identifier to use";
+        description = "The tag that syncoid uses in sync snapshots for this source";
       };
+    };
+
+    config = {
+      name = lib.mkDefault name;
+      user = lib.mkDefault ("sync-" + config.name);
+      syncoidTag = lib.mkDefault config.name;
     };
   });
 in
@@ -57,92 +51,70 @@ in
     randomcat.services.backups.source = {
       enable = lib.mkEnableOption "Backups source";
 
-      encryptedSyncKey = lib.mkOption {
-        type = types.path;
-        description = "Path to systemd-encrypted credential (with name sync-key) containing SSH key used to login to targets";
-      };
-
-      movements = lib.mkOption {
-        type = types.listOf movementType;
+      acceptTargets = lib.mkOption {
+        type = types.attrsOf movementType;
+        description = "Descriptions of backup targets that this source host should be prepared to accept connections from.";
+        default = { };
       };
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    services.syncoid = {
-      enable = true;
+  config =
+    let
+      targetsList = lib.attrValues cfg.acceptTargets;
 
-      interval = "*-*-* 06:00:00 UTC";
+      targetPerms = [
+        "bookmark"
+        "hold"
+        "send"
+      ];
 
-      commands = lib.mkMerge (lib.imap0
-        (i: m: {
-          "randomcat-${toString i}-${m.targetName}" = {
-            source = m.sourceDataset;
-            target = "${m.targetUser}@${m.targetHost}:${m.targetDataset}";
-            recursive = true;
-            sshKey = "/run/keys/sync-key";
-            localSourceAllow = [ "bookmark" "hold" "send" "snapshot" "destroy" "mount" ];
+      mkUser = targetCfg: lib.mkIf (targetCfg.user == "sync-${targetCfg.name}") {
+        isSystemUser = true;
+        useDefaultShell = true;
+        group = targetCfg.user;
+        openssh.authorizedKeys.keys = lib.mkIf (targetCfg.sshKey != null) [ targetCfg.sshKey ];
 
-            extraArgs = [
-              "--no-privilege-elevation"
-              "--keep-sync-snap"
-              "--no-rollback"
-              "--sshport=${toString m.targetPort}"
-              "--identifier=${m.syncoidTag}"
-            ];
-          };
+        # syncoid wants these packages
+        packages = [
+          pkgs.mbuffer
+          pkgs.lzop
+        ];
+      };
+
+      mkGroup = targetCfg: lib.mkIf (targetCfg.user == "sync-${targetCfg.name}") { };
+    in
+    lib.mkIf cfg.enable {
+      users.users = lib.mkMerge (map
+        (targetCfg: {
+          "${targetCfg.user}" = mkUser targetCfg;
         })
-        cfg.movements);
-    };
+        targetsList);
 
-    systemd.services = lib.mkMerge (lib.imap0
-      (i: m: {
-        "syncoid-randomcat-${toString i}-${m.targetName}" = {
-          requires = [ "sync-creds.service" ];
-          after = [ "sync-creds.service" ];
+      users.groups = lib.mkMerge (map
+        (targetCfg: {
+          "${targetCfg.user}" = mkGroup targetCfg;
+        })
+        targetsList);
 
-          unitConfig = {
-            StartLimitBurst = 3;
-            StartLimitIntervalSec = "12 hours";
-          };
+      randomcat.services.zfs.datasets = lib.mkMerge (lib.concatMap
+        (targetCfg: map
+          (dataset: {
+            "${dataset}".zfsPermissions.users."${targetCfg.user}" = targetPerms;
+          })
+          (targetCfg.sourceDatasets))
+        targetsList);
 
-          serviceConfig = {
-            Restart = "on-failure";
-            RestartSec = "15min";
-            TimeoutStartSec = "2 hours";
-          };
-        };
-      })
-      cfg.movements);
+      randomcat.services.backups.prune = {
+        enable = true;
 
-    systemd.timers = lib.mkMerge (lib.imap0
-      (i: m: {
-        "syncoid-randomcat-${toString i}-${m.targetName}" = {
-          timerConfig = {
-            Persistent = true;
-            RandomizedDelaySec = "30m";
-          };
-        };
-      })
-      cfg.movements);
-
-    users.users.syncoid.extraGroups = [ "keys" ];
-
-    randomcat.services.fs-keys.sync-creds = {
-      keys.sync-key = {
-        user = config.users.users.syncoid.name;
-        source.encrypted.path = cfg.encryptedSyncKey;
+        datasets = lib.mkMerge (lib.concatMap
+          (targetCfg: map
+            (dataset: {
+              "${dataset}".syncoidTags = [ targetCfg.syncoidTag ];
+            })
+            (targetCfg.sourceDatasets))
+          (lib.attrValues cfg.acceptTargets));
       };
     };
-
-    randomcat.services.backups.prune = {
-      enable = true;
-
-      datasets = lib.mkMerge (map
-        (m: {
-          "${m.sourceDataset}".syncoidTags = [ m.syncoidTag ];
-        })
-        cfg.movements);
-    };
-  };
 }
