@@ -8,7 +8,13 @@
   ];
 
   config = {
-    randomcat.services.backups.fromNetwork = true;
+    randomcat.services.backups = {
+      fromNetwork = true;
+
+      target = {
+        encryptedSyncKey = ../secrets/sync-key;
+      };
+    };
 
     services.sanoid = {
       enable = true;

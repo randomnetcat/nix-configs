@@ -39,7 +39,6 @@
 
     randomcat.services.backups.source = {
       fromNetwork = true;
-      encryptedSyncKey = ./secrets/sync-key;
     };
   };
 }

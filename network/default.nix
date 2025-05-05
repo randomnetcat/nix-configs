@@ -47,22 +47,15 @@
 
       backups = {
         sources = {
-          reese = {
-            syncKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFkOFn/HmrUFe3/I8JI4tsRRmTtsjmSjMYruVaxrzmoV";
-          };
-
-          groves = {
-            syncKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICH8LCAeIbGW+TRmKwoAwVa2m1JMWqLvOhKOsx+7Fg7u";
-          };
-
-          carter = {
-            syncKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINuQQ1ITsz6WGY/zBPu0tO5Nlov9RlqYjzGoCMA/dAZB";
-          };
+          reese = { };
+          groves = { };
+          carter = { };
         };
 
         targets = {
           shaw = {
             backupsDataset = "nas_oabrke/data/backups";
+            syncKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILgZ9hC4iGeYOxKaiN9w9JuIv30KYBv7k9cdtAkd0COg";
           };
         };
 
@@ -97,7 +90,7 @@
 
             datasets = [
               {
-                source=  "rpool_ez8ryx/carter/safe";
+                source = "rpool_ez8ryx/carter/safe";
                 target = "safe";
               }
             ];
