@@ -22,6 +22,7 @@
     ./playback.nix
     ./ssh.nix
     ./birdsong.nix
+    ./metrics.nix
   ];
 
   options = { };
