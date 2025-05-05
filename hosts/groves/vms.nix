@@ -7,7 +7,6 @@ in
   config =
     let
       vmModules = {
-        coe-env = ../coe-env;
       };
 
       vmExtraModules = { name, targetPath }: [
