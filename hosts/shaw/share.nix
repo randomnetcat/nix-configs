@@ -19,7 +19,7 @@
           "workgroup" = "WORKGROUP";
           "server string" = "shaw";
           "netbios name" = "shaw";
-          "security type" = "user";
+          "security" = "user";
           "interfaces" = "lo tailscale0";
         };
 
