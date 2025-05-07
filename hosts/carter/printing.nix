@@ -4,15 +4,9 @@
   config = {
     services.printing.enable = true;
 
-    services.printing.drivers = lib.mkMerge [
-      (lib.mkIf (!(lib.hasPrefix "3.23." pkgs.hplipWithPlugin.version)) [
-        pkgs.hplipWithPlugin
-      ])
-
-      # Apartment Epson ET02760
-      [
-        pkgs.utsushi
-      ]
+    services.printing.drivers = [
+      pkgs.hplipWithPlugin
+      pkgs.utsushi
     ];
   };
 }
