@@ -16,8 +16,6 @@
         PasswordAuthentication = false;
         AuthenticationMethods = "publickey";
       };
-
-      allowSFTP = false;
     };
   };
 }
