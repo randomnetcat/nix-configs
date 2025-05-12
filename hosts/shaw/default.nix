@@ -34,11 +34,18 @@
     networking.hostName = "shaw";
     networking.hostId = "df7b2245";
 
-    randomcat.notifications.mail = {
-      enable = true;
-      sender = "sys.shaw@unspecified.systems";
-      recipient = "sys_shaw@randomcat.org";
-      smtp.passwordEncryptedCredentialPath = ./secrets/notify-email-password;
+    randomcat.notifications = {
+      discord = {
+        enable = true;
+        webhookUrlCredential = ./secrets/notify-discord-webhook;
+      };
+
+      mail = {
+        enable = true;
+        sender = "sys.shaw@unspecified.systems";
+        recipient = "sys_shaw@randomcat.org";
+        smtp.passwordEncryptedCredentialPath = ./secrets/notify-email-password;
+      };
     };
 
     # Fix issue with systemd stuff running out of inotify watches.
