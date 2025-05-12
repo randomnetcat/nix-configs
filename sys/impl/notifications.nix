@@ -145,70 +145,62 @@ in
         before = [ "shutdown.target" ];
         conflicts = [ "shutdown.target" ];
 
+        enableStrictShellChecks = true;
+
+        script = ''
+          set -euo pipefail
+
+          host=${lib.escapeShellArg config.networking.hostName}
+          logs_file="$(mktemp)"
+          journalctl -u "$1" -b -n100 > "$logs_file"
+
+          {
+              echo "Subject: [$host] Service failure: $1"
+              echo ""
+              echo "The service unit $1 has failed on host $host. It is currently $(date -u)."
+              echo ""
+              echo "Up to 100 lines of journal context follow:"
+              echo ""
+              cat "$logs_file"
+          } | ${notifyScript} ${lib.escapeShellArg cfg.recipient} "cat -- \"\$CREDENTIALS_DIRECTORY/notify-email-password\""
+        '';
+
+        scriptArgs = "%i";
+
         unitConfig = {
           DefaultDependencies = false;
         };
 
-        serviceConfig =
-          let
-            gatherJournal = pkgs.writeShellScript "failure-gather-journal" ''
-              set -euo pipefail
+        serviceConfig = {
+          Type = "oneshot";
 
-              journalctl -u "$1" -b -n100 > "$RUNTIME_DIRECTORY/log"
+          LoadCredentialEncrypted = [
+            "notify-email-password:${cfg.smtp.passwordEncryptedCredentialPath}"
+          ];
 
-              # Access to file is protected by RuntimeDirectoryMode
-              chmod 0444 -- "$RUNTIME_DIRECTORY/log"
-            '';
+          DynamicUser = true;
 
-            escapedHost = lib.escapeShellArg config.networking.hostName;
+          # Ensure that the script can read the systemd journal.
+          SupplementaryGroups = [
+            config.users.groups.systemd-journal.name
+          ];
 
-            sendNotification = pkgs.writeShellScript "failure-send-notification" ''
-              set -euo pipefail
-
-              {
-                  echo "Subject: ["${escapedHost}"] Service failure: $1"
-                  echo ""
-                  echo "The service unit $1 has failed on host "${escapedHost}". It is currently $(date -u)."
-                  echo ""
-                  echo "Up to 100 lines of journal context follow:"
-                  echo ""
-                  cat "$RUNTIME_DIRECTORY/log"
-              } | ${notifyScript} ${lib.escapeShellArg cfg.recipient} "cat -- \"\$CREDENTIALS_DIRECTORY/notify-email-password\""
-            '';
-          in
-          {
-            Type = "oneshot";
-
-            LoadCredentialEncrypted = [
-              "notify-email-password:${cfg.smtp.passwordEncryptedCredentialPath}"
-            ];
-
-            ExecStart = [
-              "+${gatherJournal} %i" # Need root in order to read journal
-              "${sendNotification} %i"
-            ];
-
-            RuntimeDirectory = "notify-failure/%i";
-            RuntimeDirectoryMode = "0700";
-
-            DynamicUser = true;
-
-            CapabilityBoundingSet = "";
-            LockPersonality = true;
-            PrivateDevices = true;
-            PrivateUsers = true;
-            ProtectClock = true;
-            ProtectControlGroups = true;
-            ProtectHome = true;
-            ProtectHostname = true;
-            ProtectKernelLogs = true;
-            ProtectKernelModules = true;
-            ProtectKernelTunables = true;
-            ProtectProc = "invisible";
-            RestrictNamespaces = true;
-            SystemCallArchitectures = "native";
-            SystemCallFilter = [ "@system-service" "~@privileged @resources" ];
-          };
+          CapabilityBoundingSet = "";
+          LockPersonality = true;
+          PrivateDevices = true;
+          PrivateUsers = true;
+          ProtectClock = true;
+          ProtectControlGroups = true;
+          ProtectHome = true;
+          ProtectHostname = true;
+          ProtectKernelLogs = true;
+          ProtectKernelModules = true;
+          ProtectKernelTunables = true;
+          ProtectProc = "invisible";
+          RestrictNamespaces = true;
+          SystemCallArchitectures = "native";
+          SystemCallFilter = [ "@system-service" "~@privileged @resources" ];
+        };
       };
     };
 }
