@@ -34,7 +34,7 @@
     networking.hostName = "shaw";
     networking.hostId = "df7b2245";
 
-    randomcat.notifications = {
+    randomcat.notifications.mail = {
       enable = true;
       sender = "sys.shaw@unspecified.systems";
       recipient = "sys_shaw@randomcat.org";

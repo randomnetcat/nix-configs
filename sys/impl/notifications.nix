@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.randomcat.notifications;
+  cfg = config.randomcat.notifications.mail;
 in
 {
   imports = [
@@ -9,8 +9,8 @@ in
   ];
 
   options = {
-    randomcat.notifications = {
-      enable = lib.mkEnableOption "automatic failure notifications";
+    randomcat.notifications.mail = {
+      enable = lib.mkEnableOption "automatic failure notifications by email";
 
       sender = lib.mkOption {
         type = lib.types.str;
@@ -80,8 +80,8 @@ in
       '';
     in
     lib.mkIf cfg.enable {
-      randomcat.notifications.smtp.user = lib.mkDefault cfg.sender;
-      randomcat.notifications.smtp.port = lib.mkDefault (if cfg.smtp.tls then 465 else 587);
+      randomcat.notifications.mail.smtp.user = lib.mkDefault cfg.sender;
+      randomcat.notifications.mail.smtp.port = lib.mkDefault (if cfg.smtp.tls then 465 else 587);
 
       services.zfs.zed = {
         enableMail = false;

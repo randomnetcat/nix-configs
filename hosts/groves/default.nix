@@ -41,7 +41,7 @@
 
     services.fwupd.enable = true;
 
-    randomcat.notifications = {
+    randomcat.notifications.mail = {
       enable = true;
       sender = "sys.groves@unspecified.systems";
       recipient = "sys_groves@randomcat.org";
