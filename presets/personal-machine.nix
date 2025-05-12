@@ -45,6 +45,11 @@
       extraArgs = [ "--operator=randomcat" ];
     };
 
+    services.automatic-timezoned.enable = true;
+
+    # Required for automatic-timezoned to work. See https://github.com/NixOS/nixpkgs/issues/68489
+    services.geoclue2.enableDemoAgent = lib.mkForce true;
+
     # Ensure nixpkgs source is kept so it isn't constantly redownloaded.
     system.extraDependencies = [
       inputs.nixpkgs.outPath

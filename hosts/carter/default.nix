@@ -13,7 +13,6 @@
     ./boot.nix
     ./graphical.nix
     ./networking.nix
-    ./locale.nix
     ./power.nix
 
     ./backup.nix
