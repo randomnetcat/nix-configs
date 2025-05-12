@@ -7,7 +7,6 @@
     ../../presets/personal-machine.nix
     ../../presets/network.nix
     ../../sys/impl/builders
-    ../../sys/impl/notifications.nix
 
     ./mounts/system
 

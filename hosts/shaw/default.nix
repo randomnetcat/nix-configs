@@ -6,7 +6,6 @@
 
     ../../presets/server.nix
     ../../presets/network.nix
-    ../../sys/impl/notifications.nix
 
     ./mounts/system.nix
     ./mounts/data.nix

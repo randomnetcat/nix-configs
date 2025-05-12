@@ -5,7 +5,6 @@
     ../../presets/server.nix
     ../../presets/network.nix
     ../../sys/wants/trungle-access.nix
-    ../../sys/impl/notifications.nix
 
     ./system.nix
     ./mounts/system
