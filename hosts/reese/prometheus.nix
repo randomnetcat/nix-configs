@@ -28,11 +28,18 @@ in
       alertmanager = {
         enable = true;
         webExternalUrl = "https://${host}/${alertManagerPath}";
+        checkConfig = false;
 
         configuration = {
           receivers = [
             {
               name = "default-receiver";
+
+              discord_configs = [
+                {
+                  webhook_url = "$DISCORD_WEBHOOK_URL";
+                }
+              ];
             }
           ];
 
@@ -171,6 +178,23 @@ in
         LoadCredentialEncrypted = [
           "alertmanager-web:${./secrets/alertmanager-web-config}"
         ];
+
+        # We cannot use a credential path here, since systemd apparently reads the environment variable file
+        # before setting up credentials.
+        EnvironmentFile = "/run/keys/alertmanager-env";
+      };
+    };
+
+    randomcat.services.fs-keys.alertmanager-creds = {
+      requiredBy = [ "alertmanager.service" ];
+      before = [ "alertmanager.service" ];
+
+      keys.alertmanager-env = {
+        source.encrypted.path = ./secrets/alertmanager-env;
+
+        user = "root";
+        group = "root";
+        mode = "0400";
       };
     };
 
