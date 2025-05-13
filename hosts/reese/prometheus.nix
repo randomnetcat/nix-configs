@@ -1,7 +1,9 @@
 { config, lib, pkgs, name, nodes, ... }:
 
 let
-  prometheusHost = "monitoring.randomcat.org";
+  host = "monitoring.unspecified.systems";
+  prometheusPath = "prometheus";
+  alertManagerPath = "alertmanager";
 
   # Map of host names to export names, for hosts using the export-metrics module.
   hostExports = lib.mapAttrs'
@@ -10,19 +12,89 @@ let
       value = map (x: x.name) (lib.attrValues (lib.attrByPath [ "randomcat" "services" "export-metrics" "exports" ] [ ] nodeConfig.config));
     })
     (lib.filterAttrs (nodeName: nodeConfig: nodeName != name && (lib.attrByPath [ "randomcat" "services" "export-metrics" "enable" ] false nodeConfig.config) == true) nodes);
+
+    alerts = {
+      ScrapeDown = "ScrapeDown";
+    };
 in
 {
   config = {
     services.prometheus = {
       enable = true;
       listenAddress = "127.0.0.1";
-      webExternalUrl = "https://${prometheusHost}";
+      webExternalUrl = "https://${host}/${prometheusPath}";
       webConfigFile = "/run/credentials/prometheus.service/prometheus-web";
+
+      alertmanager = {
+        enable = true;
+        webExternalUrl = "https://${host}/${alertManagerPath}";
+
+        configuration = {
+          receivers = [
+            {
+              name = "default-receiver";
+            }
+          ];
+
+          route = {
+            receiver = "default-receiver";
+
+            group_by = [
+              "alertname"
+            ];
+
+            routes = [
+              {
+                matchers = [
+                  "alertname = ${alerts.ScrapeDown}"
+                ];
+
+                group_by = [
+                  "alertname"
+                  "hostname"
+                ];
+              }
+            ];
+          };
+        };
+      };
 
       exporters.node = {
         enable = true;
         port = 9100;
       };
+
+      rules = [
+        ''
+          groups:
+          - name: test
+            rules:
+            - alert: ${alerts.ScrapeDown}
+              expr: up == 0
+              for: 5m
+              annotations:
+                summary: "Host {{ $labels.hostname }} down"
+        ''
+      ];
+
+      alertmanagers = [
+        {
+          basic_auth = {
+            username = "prometheus";
+            password_file = "/run/credentials/prometheus.service/prometheus-local-password";
+          };
+
+          path_prefix = "/${alertManagerPath}";
+
+          static_configs = [
+            {
+              targets = [
+                "localhost:${toString config.services.prometheus.alertmanager.port}"
+              ];
+            }
+          ];
+        }
+      ];
 
       scrapeConfigs = [
         {
@@ -32,12 +104,17 @@ in
               targets = [
                 "localhost:${toString config.services.prometheus.exporters.node.port}"
               ];
+
+              labels = {
+                hostname = config.networking.hostName;
+              };
             }
           ];
         }
 
         {
           job_name = "${config.networking.hostName}_prometheus";
+          metrics_path = "/${prometheusPath}/metrics";
 
           basic_auth = {
             username = "local";
@@ -49,6 +126,10 @@ in
               targets = [
                 "localhost:${toString config.services.prometheus.port}"
               ];
+
+              labels = {
+                hostname = config.networking.hostName;
+              };
             }
           ];
         }
@@ -63,6 +144,10 @@ in
                 targets = [
                   "${name}:9098"
                 ];
+
+                labels = {
+                  hostname = name;
+                };
               }
             ];
           })
@@ -80,13 +165,31 @@ in
       };
     };
 
-    services.nginx.virtualHosts."${prometheusHost}" = {
+    systemd.services.alertmanager = {
+      serviceConfig = {
+        # Currently, alertmanager-web has passwords for two users: randomcat and prometheus.
+        LoadCredentialEncrypted = [
+          "alertmanager-web:${./secrets/alertmanager-web-config}"
+        ];
+      };
+    };
+
+    services.nginx.virtualHosts."${host}" = {
       enableACME = true;
       forceSSL = true;
 
-      locations."/" = {
+      locations."=/" = {
+        return = "307 https://${host}/prometheus";
+      };
+
+      locations."/${prometheusPath}" = {
         recommendedProxySettings = true;
         proxyPass = "http://127.0.0.1:${toString config.services.prometheus.port}";
+      };
+
+      locations."/${alertManagerPath}" = {
+        recommendedProxySettings = true;
+        proxyPass = "http://127.0.0.1:${toString config.services.prometheus.alertmanager.port}";
       };
     };
   };
