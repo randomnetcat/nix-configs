@@ -62,9 +62,11 @@ in
         set -eu -o pipefail
 
         metric_name="randomcat_zfs_backups_last_snapshot_timestamp_seconds"
+        parent_dataset=${lib.escapeShellArg targetCfg.parentDataset}
 
         produce_group() {
-          local root_dataset="$1"
+          local group_name="$1"
+          local root_dataset="$parent_dataset/$group_name"
 
           ${zfsBin} list -Hr -o name -- "$root_dataset" | while IFS="" read -r child_dataset; do
             # We do not sync anything to the root dataset of a group, so don't report it.
@@ -80,7 +82,7 @@ in
               continue
             fi
 
-            printf '%s{dataset="%s"} %s\n'  "$metric_name" "$child_dataset" "$last_snapshot"
+            printf '%s{backup_group="%s",dataset="%s"} %s\n' "$metric_name" "$group_name" "$child_dataset" "$last_snapshot"
           done
         }
 
@@ -89,7 +91,7 @@ in
           echo "# TYPE $metric_name gauge"
 
           ${lib.concatMapStringsSep "\n" (group: ''
-            produce_group ${lib.escapeShellArg "${targetCfg.parentDataset}/${group}"}
+            produce_group ${lib.escapeShellArg group}
           '') groups}
         }
 
