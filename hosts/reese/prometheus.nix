@@ -14,6 +14,7 @@ let
     (lib.filterAttrs (nodeName: nodeConfig: nodeName != name && (lib.attrByPath [ "randomcat" "services" "export-metrics" "enable" ] false nodeConfig.config) == true) nodes);
 
     alerts = {
+      BackupsOld = "BackupsOld";
       ScrapeDown = "ScrapeDown";
     };
 in
@@ -61,6 +62,18 @@ in
                   "hostname"
                 ];
               }
+
+              {
+                matchers = [
+                  "alertname = ${alerts.BackupsOld}"
+                ];
+
+                group_by = [
+                  "alertname"
+                  "backup_group"
+                  "hostname"
+                ];
+              }
             ];
           };
         };
@@ -74,13 +87,19 @@ in
       rules = [
         ''
           groups:
-          - name: test
+          - name: scrape_status
             rules:
             - alert: ${alerts.ScrapeDown}
               expr: up == 0
               for: 5m
               annotations:
                 summary: "Host {{ $labels.hostname }} down"
+          - name: backups
+            rules:
+            - alert: ${alerts.BackupsOld}
+              expr: '(time() - randomcat_zfs_backups_last_snapshot_timestamp_seconds) / (24 * 60 * 60) > 2'
+              annotations:
+                summary: "Backups for host {{ $labels.backup_group }} on {{ $labels.hostname }} are out of date (more than 2 days old)."
         ''
       ];
 
