@@ -95,11 +95,11 @@
     },
     "birdsong": {
       "locked": {
-        "lastModified": 1738782723,
-        "narHash": "sha256-tQ8DZrB9pucCl0qOEzvqRBrrYS0f72Sxhf+jYJQV1eE=",
+        "lastModified": 1747153062,
+        "narHash": "sha256-R1xc7qTh+QOzAeJD6uP5kgZZ4wuKkjs+ChWF0Gfpj98=",
         "ref": "refs/heads/main",
-        "rev": "a40220a4b977bc04cbe9e13ff5c667ed6f252677",
-        "revCount": 22,
+        "rev": "253e5b1528e6c571912b2c00cc1a8c874242ccba",
+        "revCount": 23,
         "type": "git",
         "url": "https://git.qenya.tel/qenya/birdsong"
       },
