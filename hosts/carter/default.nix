@@ -22,6 +22,7 @@
     ./security.nix
     ./vms.nix
     ./metrics.nix
+    ./birdsong.nix
   ];
 
   options = { };
