@@ -147,11 +147,6 @@
       };
 
       systemConfigs = {
-        groves = {
-          system = "x86_64-linux";
-          modules = [ ./hosts/groves ];
-        };
-
         carter = {
           system = "x86_64-linux";
           modules = [ ./hosts/carter ];

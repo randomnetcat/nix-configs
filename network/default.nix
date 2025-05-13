@@ -21,11 +21,6 @@
           tailscaleIP6 = "fd7a:115c:a1e0::101:f11f";
         };
 
-        groves = {
-          tailscaleIP4 = "100.68.110.33";
-          tailscaleIP6 = "fd7a:115c:a1e0:ab12:4843:cd96:6244:6e21";
-        };
-
         leon = {
           hostKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJCuMBdSMXPBTj00Z4oRcFuo/BEzbVogwYsvixhkBuU9";
           tailscaleIP4 = "100.94.148.11";
@@ -48,7 +43,6 @@
       backups = {
         sources = {
           reese = { };
-          groves = { };
           carter = { };
           bear = { };
         };
