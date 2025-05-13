@@ -21,6 +21,7 @@
     ./printing.nix
     ./security.nix
     ./vms.nix
+    ./metrics.nix
   ];
 
   options = { };
