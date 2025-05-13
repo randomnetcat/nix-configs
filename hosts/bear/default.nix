@@ -33,4 +33,9 @@
 
   services.resolved.enable = true;
   services.resolved.dnssec = "false";
+
+  randomcat.notifications.discord = {
+    enable = true;
+    webhookUrlCredential = ./secrets/notify-discord-webhook;
+  };
 }

@@ -44,11 +44,18 @@
     DNS=1.1.1.1%enp0s6#cloudflare-dns.com 1.0.0.1%enp0s6#cloudflare-dns.com 2606:4700:4700::1111%enp0s6#cloudflare-dns.com 2606:4700:4700::1001%enp0s6#cloudflare-dns.com
   '';
 
-  randomcat.notifications.mail = {
-    enable = true;
-    sender = "sys.reese@unspecified.systems";
-    recipient = "sys_reese@randomcat.org";
-    smtp.passwordEncryptedCredentialPath = ./secrets/notify-email-password;
+  randomcat.notifications = {
+    discord = {
+      enable = true;
+      webhookUrlCredential = ./secrets/notify-discord-webhook;
+    };
+
+    mail = {
+      enable = true;
+      sender = "sys.reese@unspecified.systems";
+      recipient = "sys_reese@randomcat.org";
+      smtp.passwordEncryptedCredentialPath = ./secrets/notify-email-password;
+    };
   };
 
   randomcat.services.archive-agora = {
