@@ -127,7 +127,6 @@ in
 
           script = lib.mkBefore ''
             set -eu -o pipefail
-            set -x
 
             service_name="$1"
             host=${lib.escapeShellArg config.networking.hostName}
