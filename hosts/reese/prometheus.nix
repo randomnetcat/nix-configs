@@ -17,9 +17,7 @@ in
       enable = true;
       listenAddress = "127.0.0.1";
       webExternalUrl = "https://${prometheusHost}";
-
-      # Cannot use webConfigFile because that requires a nix path (rather than a string).
-      extraFlags = [ "--web.config.file=\"\${CREDENTIALS_DIRECTORY}/prometheus-web\"" ];
+      webConfigFile = "/run/credentials/prometheus.service/prometheus-web";
 
       exporters.node = {
         enable = true;
@@ -43,7 +41,7 @@ in
 
           basic_auth = {
             username = "local";
-            password_file = "/run/keys/prometheus-local-password";
+            password_file = "/run/credentials/prometheus.service/prometheus-local-password";
           };
 
           static_configs = [
@@ -75,10 +73,10 @@ in
     systemd.services.prometheus = {
       serviceConfig = {
         # prometheus-web-config: basic_auth_users
-        LoadCredentialEncrypted = "prometheus-web:${./secrets/prometheus-web-config}";
-
-        # Allow access to /run/keys
-        SupplementaryGroups = [ "keys" ];
+        LoadCredentialEncrypted = [
+          "prometheus-local-password:${./secrets/prometheus-local-password}"
+          "prometheus-web:${./secrets/prometheus-web-config}"
+        ];
       };
     };
 
@@ -89,16 +87,6 @@ in
       locations."/" = {
         recommendedProxySettings = true;
         proxyPass = "http://127.0.0.1:${toString config.services.prometheus.port}";
-      };
-    };
-
-    randomcat.services.fs-keys.prometheus-creds = {
-      before = [ "prometheus.service" ];
-      wantedBy = [ "prometheus.service" ];
-
-      keys.prometheus-local-password = {
-        user = config.users.users.prometheus.name;
-        source.encrypted.path = ./secrets/prometheus-local-password;
       };
     };
   };
