@@ -10,6 +10,12 @@ let
         description = "The hostname of the host";
       };
 
+      isPortable = lib.mkOption {
+        type = types.bool;
+        description = "Whether the host is portable and thus might not always be powered on (e.g. a laptop).";
+        default = false;
+      };
+
       hostKey = lib.mkOption {
         type = types.nullOr types.str;
         description = "SSH host key of the host";

@@ -19,6 +19,7 @@
           hostKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEHHHYG6A995Po05+JXQsvB79ZoIiSOJnW6AiJgVYPic";
           tailscaleIP4 = "100.101.241.29";
           tailscaleIP6 = "fd7a:115c:a1e0::101:f11f";
+          isPortable = true;
         };
 
         leon = {
