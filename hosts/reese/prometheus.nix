@@ -17,6 +17,8 @@ let
       BackupsOld = "BackupsOld";
       ScrapeDown = "ScrapeDown";
     };
+
+  portableHosts = lib.attrNames (lib.filterAttrs (n: v: v.isPortable) config.randomcat.network.hosts);
 in
 {
   config = {
@@ -90,8 +92,13 @@ in
           - name: scrape_status
             rules:
             - alert: ${alerts.ScrapeDown}
-              expr: up == 0
+              expr: up{${lib.concatMapStringsSep "," (h: "hostname!=\"${h}\"") portableHosts}} == 0
               for: 5m
+              annotations:
+                summary: "Host {{ $labels.hostname }} down"
+            - alert: ${alerts.ScrapeDown}
+              expr: ${lib.concatMapStringsSep " or " (h: "(up{hostname=\"${h}\"} == 0)") portableHosts}
+              for: 48h
               annotations:
                 summary: "Host {{ $labels.hostname }} down"
           - name: backups
