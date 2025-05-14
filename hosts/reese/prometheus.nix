@@ -13,10 +13,13 @@ let
     })
     (lib.filterAttrs (nodeName: nodeConfig: nodeName != name && (lib.attrByPath [ "randomcat" "services" "export-metrics" "enable" ] false nodeConfig.config) == true) nodes);
 
-    alerts = {
-      BackupsOld = "BackupsOld";
-      ScrapeDown = "ScrapeDown";
-    };
+    alertNames = [
+      "BackupsOld"
+      "ScrapeDownNonPortable"
+      "ScrapeDownPortable"
+    ];
+
+    alerts = lib.genAttrs alertNames (x: x);
 
   portableHosts = lib.attrNames (lib.filterAttrs (n: v: v.isPortable) config.randomcat.network.hosts);
 in
@@ -32,6 +35,10 @@ in
         enable = true;
         webExternalUrl = "https://${host}/${alertManagerPath}";
         checkConfig = false;
+
+        extraFlags = [
+          "--web.config.file=/run/credentials/alertmanager.service/alertmanager-web"
+        ];
 
         configuration = {
           receivers = [
@@ -56,7 +63,7 @@ in
             routes = [
               {
                 matchers = [
-                  "alertname = ${alerts.ScrapeDown}"
+                  "alertname =~ ^(${alerts.ScrapeDownNonPortable}|${alerts.ScrapeDownPortable})$"
                 ];
 
                 group_by = [
@@ -91,12 +98,12 @@ in
           groups:
           - name: scrape_status
             rules:
-            - alert: ${alerts.ScrapeDown}
+            - alert: ${alerts.ScrapeDownNonPortable}
               expr: up{${lib.concatMapStringsSep "," (h: "hostname!=\"${h}\"") portableHosts}} == 0
               for: 5m
               annotations:
                 summary: "Host {{ $labels.hostname }} down"
-            - alert: ${alerts.ScrapeDown}
+            - alert: ${alerts.ScrapeDownPortable}
               expr: ${lib.concatMapStringsSep " or " (h: "(up{hostname=\"${h}\"} == 0)") portableHosts}
               for: 48h
               annotations:
