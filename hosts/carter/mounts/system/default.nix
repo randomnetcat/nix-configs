@@ -4,6 +4,7 @@
   imports = [
     ./ephemeral.nix
     ./root.nix
+    ./swap.nix
     ./tmp.nix
   ];
 
