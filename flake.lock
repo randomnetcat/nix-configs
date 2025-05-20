@@ -561,11 +561,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1747565775,
-        "narHash": "sha256-B6jmKHUEX1jxxcdoYHl7RVaeohtAVup8o3nuVkzkloA=",
+        "lastModified": 1747688838,
+        "narHash": "sha256-FZq4/3OtGV/cti9Vccsy2tGSUrxTO4hkDF9oeGRTen4=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "97118a310eb8e13bc1b9b12d67267e55b7bee6c8",
+        "rev": "45c2985644b60ab64de2a2d93a4d132ecb87cf66",
         "type": "github"
       },
       "original": {
@@ -646,11 +646,11 @@
     "lix": {
       "flake": false,
       "locked": {
-        "lastModified": 1747602556,
-        "narHash": "sha256-/rrZ4D7CGPycujUe8JX6YVqZal0tcGQ00Wulqn6a0ho=",
+        "lastModified": 1747664434,
+        "narHash": "sha256-ph9fCCvzgZ1PNOu82SSoceX/tYZ5MfmX3PkBxBiNxwA=",
         "ref": "refs/heads/main",
-        "rev": "8fa0363b91162515bdf3b5d0a940ace7c324ed4d",
-        "revCount": 17898,
+        "rev": "eb18a90afbe0ade000d957cda344a5bcb3d565d4",
+        "revCount": 17900,
         "type": "git",
         "url": "https://git.lix.systems/lix-project/lix"
       },
@@ -671,11 +671,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1746839253,
-        "narHash": "sha256-pRwi8Wn8Yofj459gq+3oIRy8F3SXeEJ6mzfIAUgM9nA=",
+        "lastModified": 1747667424,
+        "narHash": "sha256-7EICjbmG6lApWKhFtwvZovdcdORY1CEe6/K7JwtpYfs=",
         "ref": "refs/heads/main",
-        "rev": "58baedd53f9da81fd728a4f3b08c378e5ba9ae58",
-        "revCount": 142,
+        "rev": "3c23c6ae2aecc1f76ae7993efe1a78b5316f0700",
+        "revCount": 144,
         "type": "git",
         "url": "https://git.lix.systems/lix-project/nixos-module"
       },
@@ -844,11 +844,11 @@
     },
     "nixpkgsSmall": {
       "locked": {
-        "lastModified": 1747554148,
-        "narHash": "sha256-aeAOz1/fSKEjEJG6eVjLC4RmxzTe2RkUERPD9yUQIGc=",
+        "lastModified": 1747644487,
+        "narHash": "sha256-0Ub4ws2UGgXAQ7qJ6JEhYOjrrf2Ky/7iEWkyEDkKa/U=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "d0afebfe3e464cf20f0952275f8220a9502af465",
+        "rev": "949fb7f3087b8d086fd8c92acfa8412c43cfc116",
         "type": "github"
       },
       "original": {
@@ -897,11 +897,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1747619942,
-        "narHash": "sha256-w7iHGw19Vl+BWbhzlwI2i/za9721Mhh720QeFZp/TAw=",
+        "lastModified": 1747704429,
+        "narHash": "sha256-1hCuT+I3kWrVMegl9jAAMqFopulkI/gBBbcaoqVlqJ0=",
         "owner": "nix-community",
         "repo": "nur",
-        "rev": "163f657edb5d8ef55a6bf70b531126da1cfab50e",
+        "rev": "47d6cc95cd1537b8c299e0226115e7f5afc65941",
         "type": "github"
       },
       "original": {
