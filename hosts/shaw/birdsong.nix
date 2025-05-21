@@ -76,7 +76,6 @@ in
       ];
 
       extraGroups = [
-        # Temporary? I locked myself out. Good job me.
         "wheel"
       ];
     };
@@ -93,28 +92,6 @@ in
     nix.settings.allowed-users = [
       config.users.users.qenya.name
     ];
-
-    security.sudo = {
-      # qenya is not in wheel
-      execWheelOnly = false;
-
-      # qenya does not have a password, and I need them to have access for now!
-      wheelNeedsPassword = false;
-
-      extraRules = [
-        {
-          users = [ "qenya" ];
-          commands = [
-            {
-              # This is safe because qenya does not have the permission to set
-              # the mountpoint property on child datasets they create.
-              command = "/run/current-system/sw/bin/zfs mount -R ${qenyaDataset}";
-              options = [ "NOPASSWD" ];
-            }
-          ];
-        }
-      ];
-    };
 
     # Syncthing. Note that ports are one greater than defaults.
     networking.firewall = {
