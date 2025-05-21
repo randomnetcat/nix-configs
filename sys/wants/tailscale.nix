@@ -33,27 +33,26 @@
 
     randomcat.services.tailscale.extraArgs = lib.mkIf config.randomcat.services.tailscale.ssh [ "--ssh" ];
 
-    # Allow tailscale devices access to all ports (since tailscale will enforce this)
+    # Allow devices connecting over Tailscale to access all ports (since Tailscale will enforce its own ACLs).
     networking.firewall.trustedInterfaces = [ config.services.tailscale.interfaceName ];
 
     systemd.services.tailscale-autoconnect = {
       description = "Automatic connection to Tailscale";
 
-      # make sure tailscale is running before trying to connect to tailscale
-      after = [ "network-pre.target" "tailscale.service" "tailscaled.service" ];
-      wants = [ "network-pre.target" "tailscale.service" "tailscaled.service" ];
+      after = [ "tailscaled.service" "network-online.target" ];
+      requires = [ "tailscaled.service" ];
+      wants = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
 
-      # set this service as a oneshot job
-      serviceConfig.Type = "oneshot";
+      serviceConfig = {
+        Type = "oneshot";
+      };
 
-      # have the job run this shell script
       script = with pkgs; ''
-        # wait for tailscaled to settle
+        # Wait for tailscaled to settle.
         sleep 2
 
-        # otherwise authenticate with tailscale
-        ${pkgs.tailscale}/bin/tailscale up --reset ${lib.escapeShellArgs config.randomcat.services.tailscale.extraArgs}
+        ${lib.getExe config.services.tailscale.package} up --reset ${lib.escapeShellArgs config.randomcat.services.tailscale.extraArgs}
       '';
     };
   };
