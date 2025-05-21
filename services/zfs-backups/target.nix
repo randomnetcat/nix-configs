@@ -105,7 +105,7 @@ in
         "mount"
         "bookmark"
         "hold"
-        "receive"
+        "receive:append"
         "snapshot"
       ];
     in
