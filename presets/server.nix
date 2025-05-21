@@ -34,7 +34,10 @@
 
     randomcat.services.tailscale = {
       enable = true;
-      ssh = true;
+
+      extraArgs = [
+        "--login-server=https://headscale.unspecified.systems"
+      ];
     };
 
     services.openssh = {

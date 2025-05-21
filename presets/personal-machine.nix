@@ -44,6 +44,7 @@
       enable = true;
 
       extraArgs = [
+        "--login-server=https://headscale.unspecified.systems"
         "--operator=randomcat"
       ];
     };
