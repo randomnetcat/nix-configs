@@ -4,19 +4,7 @@
   config = {
     services.openssh = {
       enable = true;
-      openFirewall = false;
-
-      listenAddresses = [
-        {
-          addr = "0.0.0.0";
-          port = 22;
-        }
-
-        {
-          addr = "[::]";
-          port = 22;
-        }
-      ];
+      openFirewall = true;
 
       settings = {
         PermitRootLogin = "no";
@@ -25,8 +13,6 @@
         PasswordAuthentication = false;
       };
     };
-
-    networking.firewall.allowedTCPPorts = [ 22 ];
 
     systemd.services.sshd = {
       wants = [ "wireguard-wg-birdsong.service" ];
