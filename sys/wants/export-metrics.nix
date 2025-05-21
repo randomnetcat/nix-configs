@@ -3,17 +3,21 @@
 let
   cfg = config.randomcat.services.export-metrics;
   inherit (lib) types;
+
+  socketName = "/run/nginx/randomcat-export-metrics.sock";
 in
 {
   options = {
     randomcat.services.export-metrics = {
       enable = lib.mkEnableOption "exporting Prometheus metrics to the network";
 
-      listenAddress = lib.mkOption {
-        type = types.str;
-        description = "The address to listen on.";
-        default = "127.0.0.1";
+      listenInterface = lib.mkOption {
+        type = types.nullOr types.str;
+        description = "The network interface to listen on.";
+        default = null;
       };
+
+      tailscaleOnly = lib.mkEnableOption "exporting Prometheus metrics on Tailscale only";
 
       port = lib.mkOption {
         type = types.port;
@@ -55,6 +59,8 @@ in
       })
       (lib.attrsToList cfg.exports);
 
+    randomcat.services.export-metrics.listenInterface = lib.mkIf (cfg.tailscaleOnly) config.services.tailscale.interfaceName;
+
     services.prometheus.exporters = lib.mkMerge (map
       (value: {
         "${value.name}" = {
@@ -69,11 +75,10 @@ in
     services.nginx = {
       enable = true;
 
-      virtualHosts."${cfg.listenAddress}" = {
+      virtualHosts."export-metrics" = {
         listen = [
           {
-            addr = cfg.listenAddress;
-            port = cfg.port;
+            addr = "unix:${socketName}";
           }
         ];
 
@@ -90,10 +95,69 @@ in
       };
     };
 
-    # If this is a Tailscale address, set nginx to start after Tailscale.
-    systemd.services.nginx = lib.mkIf (lib.hasPrefix "100." cfg.listenAddress) {
-      wants = [ "tailscale-autoconnect.service" ];
-      after = [ "tailscale-autoconnect.service" ];
+    systemd.services.export-metrics-proxy = 
+      let
+        dependencyUnits = lib.mkIf cfg.tailscaleOnly [
+          "tailscaled.service"
+          "tailscale-autoconnect.service"
+        ];
+      in
+      {
+        bindsTo = [ "nginx.service" ];
+        requires = [ "export-metrics-proxy.socket" ];
+        wants = dependencyUnits;
+        after = lib.mkMerge [
+          [ "export-metrics-proxy.socket" "nginx.service" ]
+          dependencyUnits
+        ];
+
+        unitConfig = {
+          JoinsNamespaceOf = "nginx.service";
+        };
+
+        serviceConfig = {
+          DynamicUser = true;
+          RuntimeDirectory = "export-metrics-proxy";
+          RuntimeDirectoryMode = "0700";
+
+          # Ensure the service has access to the socket that nginx is listening on.
+          BindPaths = "${socketName}:/run/export-metrics-proxy/target.sock";
+
+          Type = "exec";
+          ExecStart = "${lib.getLib config.systemd.package}/lib/systemd/systemd-socket-proxyd /run/export-metrics-proxy/target.sock";
+
+          CapabilityBoundingSet = "";
+          LockPersonality = true;
+          RestrictNamespaces = true;
+          RestrictRealtime = true;
+          PrivateDevices = true;
+          PrivateNetwork = true;
+          PrivateUsers = true;
+          ProtectClock = true;
+          ProtectControlGroups = true;
+          ProtectHome = true;
+          ProtectHostname = true;
+          ProtectKernelLogs = true;
+          ProtectKernelModules = true;
+          ProtectKernelTunables = true;
+          ProtectProc = "invisible";
+          ProtectSystem = true;
+          RestrictAddressFamilies = "AF_UNIX";
+          SystemCallArchitectures = "native";
+          SystemCallFilter = [ "@system-service" "~@privileged" ];
+          UMask = "077";
+        };
+      };
+
+    systemd.sockets.export-metrics-proxy = {
+      wantedBy = [ "sockets.target" ];
+
+      socketConfig = {
+        Accept = false;
+        ListenStream = cfg.port;
+        BindIPv6Only = "both";
+        BindToDevice = lib.mkIf (cfg.listenInterface != null) cfg.listenInterface;
+      };
     };
   };
 }
