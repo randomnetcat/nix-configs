@@ -4,7 +4,6 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     ../../presets/server.nix
     ../../presets/network.nix
-    ../../sys/wants/trungle-access.nix
 
     ./system.nix
     ./mounts/system
@@ -35,8 +34,6 @@
   boot.tmp.cleanOnBoot = true;
   networking.hostName = "reese";
   networking.firewall.allowPing = true;
-
-  features.trungle-access.enable = true;
 
   services.resolved.enable = true;
 
