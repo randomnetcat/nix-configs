@@ -28,7 +28,7 @@ let
       sourcePort = lib.mkOption {
         type = types.port;
         description = "Port to connect to the target host on.";
-        default = 2222;
+        default = 22;
       };
 
       sourceDataset = lib.mkOption {

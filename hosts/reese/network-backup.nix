@@ -26,19 +26,8 @@ in
   ];
 
   config = {
-    programs.ssh.knownHosts = lib.mkMerge (lib.mapAttrsToList
-      (name: value: lib.mkIf (value.hostKey != null) {
-        "[${name}]:2222".publicKey = value.hostKey;
-      })
-      network.hosts);
-
     randomcat.services.backups = {
       fromNetwork = true;
-
-     source.ssh = {
-        enable = true;
-        enableVpnAddresses = true;
-      };
     };
   };
 }

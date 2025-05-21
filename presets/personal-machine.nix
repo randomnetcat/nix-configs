@@ -42,7 +42,15 @@
 
     randomcat.services.tailscale = {
       enable = true;
-      extraArgs = [ "--operator=randomcat" ];
+
+      extraArgs = [
+        "--operator=randomcat"
+      ];
+    };
+
+    services.openssh = {
+      enable = true;
+      openFirewall = true;
     };
 
     services.automatic-timezoned.enable = true;

@@ -6,6 +6,7 @@
     ../sys/wants/tailscale.nix
     ../sys/wants/auto-upgrade/auto-reboot.nix
     ../sys/impl/auto-prune-system.nix
+    ../sys/user/randomcat.nix
   ];
 
   config = {
@@ -14,8 +15,8 @@
     # Simple security things
     # From https://xeiaso.net/blog/paranoid-nixos-2021-07-18
     networking.firewall.enable = true;
-    nix.settings.allowed-users = [ "root" ];
-    security.sudo.execWheelOnly = lib.mkDefault true;
+
+    nix.settings.allowed-users = [ "root" "@wheel" ];
 
     programs.tmux.enable = true;
 
@@ -34,6 +35,17 @@
     randomcat.services.tailscale = {
       enable = true;
       ssh = true;
+    };
+
+    services.openssh = {
+      enable = true;
+      openFirewall = true;
+    };
+
+    # Since only publickey authentication is allowed anyway.
+    security.sudo = {
+      execWheelOnly = true;
+      wheelNeedsPassword = false;
     };
   };
 }

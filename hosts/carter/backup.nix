@@ -38,8 +38,6 @@
 
     randomcat.services.backups.source = {
       fromNetwork = true;
-      ssh.enable = true;
-      ssh.enableVpnAddresses = true;
     };
   };
 }
