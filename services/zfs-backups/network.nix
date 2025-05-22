@@ -18,7 +18,7 @@ let
     (dataset: {
       sourceName = networkMovement.sourceHost;
       sourceUser = movementSshUser networkMovement;
-      sourceHost = network.hosts."${networkMovement.sourceHost}".hostName;
+      sourceHost = network.hosts."${networkMovement.sourceHost}".tailscaleIP4;
       sourceDataset = dataset.source;
       targetGroupDataset = networkMovement.sourceHost;
       targetChildDataset = dataset.target;
