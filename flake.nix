@@ -50,17 +50,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    birdsong = {
-      url = "git+https://git.qenya.tel/qenya/birdsong";
-    };
-
     qenyaNixfiles = {
       url = "git+https://git.qenya.tel/qenya/nixfiles.git";
 
       inputs = {
         nixpkgs.follows = "nixpkgs";
         nixpkgs-small.follows = "nixpkgsSmall";
-        birdsong.follows = "birdsong";
       };
     };
 
@@ -75,7 +70,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, colmena, flake-utils, lix-module, birdsong, lanzaboote, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, colmena, flake-utils, lix-module, lanzaboote, ... }@inputs:
     let
       lib = nixpkgs.lib;
 
@@ -113,8 +108,6 @@
 
         lix-module.nixosModules.default
         lixCache
-
-        birdsong.nixosModules.default
 
         lanzaboote.nixosModules.lanzaboote
       ];

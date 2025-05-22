@@ -10,7 +10,6 @@
     ./zfs.nix
     ./networking.nix
     ./network-backup.nix
-    ./birdsong.nix
 
     ./agorabot.nix
     ./remote-build.nix

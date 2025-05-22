@@ -97,13 +97,14 @@
       "locked": {
         "lastModified": 1747153132,
         "narHash": "sha256-sGFCyWhTcI4TP+4ZlZniBEF41NWyKrojfpsHP7ld54c=",
-        "ref": "refs/heads/main",
+        "ref": "main",
         "rev": "9955b1ae4eb0cbeff2ae0ed6520e651753880445",
         "revCount": 23,
         "type": "git",
         "url": "https://git.qenya.tel/qenya/birdsong"
       },
       "original": {
+        "ref": "main",
         "type": "git",
         "url": "https://git.qenya.tel/qenya/birdsong"
       }
@@ -991,9 +992,7 @@
       "inputs": {
         "actual": "actual",
         "agenix": "agenix",
-        "birdsong": [
-          "birdsong"
-        ],
+        "birdsong": "birdsong",
         "colmena": "colmena_2",
         "firefox-addons": "firefox-addons",
         "flake-parts": "flake-parts_3",
@@ -1046,7 +1045,6 @@
       "inputs": {
         "agorabot-prod": "agorabot-prod",
         "assessor-thesis": "assessor-thesis",
-        "birdsong": "birdsong",
         "colmena": "colmena",
         "diplomacy-bot": "diplomacy-bot",
         "flake-utils": "flake-utils_5",
