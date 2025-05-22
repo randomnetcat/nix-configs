@@ -21,6 +21,7 @@
     ./playback.nix
     ./ssh.nix
     ./metrics.nix
+    ./users.nix
   ];
 
   options = { };
