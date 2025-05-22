@@ -179,30 +179,6 @@
 
       nixosConfigurations = lib.mapAttrs (n: v: defineSystem (v // { name = v.name or n; })) systemConfigs;
 
-      remoteConfigs = {
-        reese = {
-          hostname = "reese";
-          sshUser = "root";
-          remoteBuild = true;
-        };
-
-        bear = {
-          hostname = "bear";
-          sshUser = "root";
-          remoteBuild = true;
-        };
-
-        shaw = {
-          hostname = "shaw";
-          sshUser = "root";
-        };
-
-        leon = {
-          hostname = "leon";
-          sshUser = "root";
-        };
-      };
-
       colmena = {
         meta = {
           nixpkgs = import nixpkgs {
