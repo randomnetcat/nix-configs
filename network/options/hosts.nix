@@ -6,8 +6,9 @@ let
   hostType = types.submodule ({ name, ... }: {
     options = {
       hostName = lib.mkOption {
-        type = types.str;
+        type = types.uniq types.str;
         description = "The hostname of the host";
+        readOnly = true;
       };
 
       isPortable = lib.mkOption {
