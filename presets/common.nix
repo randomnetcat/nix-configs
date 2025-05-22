@@ -13,10 +13,14 @@
   ];
 
   config = {
-    nix.extraOptions = ''
-      experimental-features = nix-command flakes
-      accept-flake-config = false
-    '';
+    nix = {
+      channel.enable = false;
+
+      extraOptions = ''
+        experimental-features = nix-command flakes
+        accept-flake-config = false
+      '';
+    };
 
     nixpkgs.config.allowUnfree = true;
 
