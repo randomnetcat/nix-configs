@@ -192,7 +192,7 @@
             systemConfigs;
         };
       } // (lib.mapAttrs
-        (name: sysArgs: {
+        (name: sysArgs: { config, lib, pkgs, ... }: {
           imports = mkFullSystemModules sysArgs;
 
           config = {
@@ -200,7 +200,8 @@
 
             deployment = {
               buildOnTarget = true;
-              targetHost = name;
+              targetHost = config.randomcat.network.hosts.${name}.tailscaleIP4;
+              targetUser = null;
             };
           };
         })
