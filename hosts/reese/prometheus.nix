@@ -5,21 +5,26 @@ let
   prometheusPath = "prometheus";
   alertManagerPath = "alertmanager";
 
-  # Map of host names to export names, for hosts using the export-metrics module.
-  hostExports = lib.mapAttrs'
-    (_: nodeConfig: {
-      name = nodeConfig.config.networking.hostName;
-      value = map (x: x.name) (lib.attrValues (lib.attrByPath [ "randomcat" "services" "export-metrics" "exports" ] [ ] nodeConfig.config));
-    })
-    (lib.filterAttrs (nodeName: nodeConfig: nodeName != name && (lib.attrByPath [ "randomcat" "services" "export-metrics" "enable" ] false nodeConfig.config) == true) nodes);
+  # For clarity later.
+  selfNodeName = name;
 
-    alertNames = [
-      "BackupsOld"
-      "ScrapeDownNonPortable"
-      "ScrapeDownPortable"
-    ];
+  # Map of host names to export names, for hosts using the export-metrics
+  # module.
+  #
+  # We handle exports from the current host separately.
+  otherNodes = lib.filterAttrs (nodeName: _: nodeName != selfNodeName) nodes;
+  enabledNodes = lib.filterAttrs (_: nodeConfig: nodeConfig.config.randomcat.services.export-metrics.enable or false) otherNodes;
 
-    alerts = lib.genAttrs alertNames (x: x);
+  nodeExports = lib.mapAttrs (_: nodeConfig: map (export: export.name) (lib.attrValues (nodeConfig.config.randomcat.services.export-metrics.exports or { }))) enabledNodes;
+
+  alertNames = [
+    "BackupsOld"
+    "ScrapeDownNonPortable"
+    "ScrapeDownPortable"
+  ];
+
+  # This helps to prevent typos in the service configurations later.
+  alerts = lib.genAttrs alertNames (x: x);
 
   portableHosts = lib.attrNames (lib.filterAttrs (n: v: v.isPortable) config.randomcat.network.hosts);
 in
@@ -182,7 +187,7 @@ in
             static_configs = [
               {
                 targets = [
-                  "${name}:9098"
+                  "${config.randomcat.network.hosts.${name}.tailscaleIP4}:9098"
                 ];
 
                 labels = {
@@ -192,7 +197,7 @@ in
             ];
           })
           value)
-        (lib.attrsToList hostExports));
+        (lib.attrsToList nodeExports));
     };
 
     systemd.services.prometheus = {
