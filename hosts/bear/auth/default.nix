@@ -14,7 +14,7 @@ let
   webfingerHost = "unspecified.systems";
 
   tailscaleName = "bear";
-  tailscaleIP = "100.85.165.130";
+  tailscaleIP = config.randomcat.network.hosts.${config.networking.hostName}.tailscaleIP4;
   tailscalePort = 82;
 in
 {

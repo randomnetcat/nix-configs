@@ -5,7 +5,7 @@ let
   primary = cfg.primaryDomain;
   allDomains = [ primary ] ++ cfg.extraDomains;
   maddyIP = "192.168.166.100";
-  tailscaleIP = "100.85.165.130";
+  tailscaleIP = config.randomcat.network.hosts.${config.networking.hostName}.tailscaleIP4;
 
   agoraLists = [
     "agora-test"
