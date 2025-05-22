@@ -1,4 +1,4 @@
-{ config, lib, pkgs, name, nodes, ... }:
+{ config, lib, pkgs, nodes, ... }:
 
 let
   host = "monitoring.unspecified.systems";
@@ -9,7 +9,7 @@ let
   # module.
   #
   # We handle exports from the current host separately.
-  otherNodes = lib.removeAttrs nodes [ name ];
+  otherNodes = lib.removeAttrs nodes [ config.networking.hostName ];
   enabledNodes = lib.filterAttrs (_: nodeConfig: nodeConfig.config.randomcat.services.export-metrics.enable or false) otherNodes;
 
   nodeExports = lib.mapAttrs (_: nodeConfig: map (export: export.name) (lib.attrValues (nodeConfig.config.randomcat.services.export-metrics.exports or { }))) enabledNodes;
