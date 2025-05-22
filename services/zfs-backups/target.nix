@@ -108,6 +108,8 @@ in
         "receive:append"
         "snapshot"
       ];
+
+      commandNameFor = movement: "${movement.targetGroupDataset}-${movement.targetChildDataset}";
     in
     lib.mkIf cfg.enable {
       randomcat.services.zfs.datasets = lib.mkMerge ([{
@@ -139,7 +141,7 @@ in
 
         commands = lib.mkMerge (lib.imap0
           (i: m:
-            let commandName = "randomcat-${toString i}-${m.sourceName}"; in {
+            let commandName = commandNameFor m; in {
               ${commandName} = {
                 source = "${m.sourceUser}@${m.sourceHost}:${m.sourceDataset}";
                 target = m.targetFullDataset;
@@ -163,7 +165,7 @@ in
 
       systemd.services = lib.mkMerge (lib.imap0
         (i: m: {
-          "syncoid-randomcat-${toString i}-${m.sourceName}" = {
+          "syncoid-${commandNameFor m}" = {
             unitConfig = {
               StartLimitBurst = 2;
               StartLimitIntervalSec = "1 hour";
@@ -182,7 +184,7 @@ in
 
       systemd.timers = lib.mkMerge (lib.imap0
         (i: m: {
-          "syncoid-randomcat-${toString i}-${m.sourceName}" = {
+          "syncoid-${commandNameFor m}" = {
             timerConfig = {
               Persistent = true;
               RandomizedDelaySec = "30m";
