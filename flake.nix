@@ -135,7 +135,7 @@
         modules = mkFullSystemModules sysArgs;
 
         specialArgs = {
-          nodes = lib.mapAttrs (name: system: system) nixosConfigurations;
+          nodes = nixosConfigurations;
         };
       };
 
