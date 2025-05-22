@@ -5,14 +5,11 @@ let
   prometheusPath = "prometheus";
   alertManagerPath = "alertmanager";
 
-  # For clarity later.
-  selfNodeName = name;
-
   # Map of host names to export names, for hosts using the export-metrics
   # module.
   #
   # We handle exports from the current host separately.
-  otherNodes = lib.filterAttrs (nodeName: _: nodeName != selfNodeName) nodes;
+  otherNodes = lib.removeAttrs nodes [ name ];
   enabledNodes = lib.filterAttrs (_: nodeConfig: nodeConfig.config.randomcat.services.export-metrics.enable or false) otherNodes;
 
   nodeExports = lib.mapAttrs (_: nodeConfig: map (export: export.name) (lib.attrValues (nodeConfig.config.randomcat.services.export-metrics.exports or { }))) enabledNodes;
