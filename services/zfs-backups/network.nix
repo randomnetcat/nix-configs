@@ -67,7 +67,6 @@ in
 
         target = lib.mkIf cfg.target.fromNetwork {
           enable = lib.mkDefault isTarget;
-          parentDataset = network.backups.targets."${selfHostAttr}".backupsDataset;
           movements = lib.mkIf isTarget (lib.concatMap networkToLocalMovements (lib.filter (m: m.targetHost == selfHostAttr) network.backups.movements));
         };
       }

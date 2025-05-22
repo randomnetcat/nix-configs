@@ -10,16 +10,6 @@ let
 
   targetType = types.submodule ({
     options = {
-      backupsDataset = lib.mkOption {
-        type = types.str;
-        description = ''
-          The dataset to store backups in. Sub-datasets for each source host will be created.
-
-          For example, if this is pool/backups, and host foo backups to this, the dataset
-          pool/backups/foo will be created.
-        '';
-      };
-
       syncKey = lib.mkOption {
         type = types.nullOr types.str;
         description = "The public SSH key to be used for backups";
@@ -51,8 +41,9 @@ let
             target = lib.mkOption {
               type = types.str;
               description = ''
-                The name of the dataset under the target's backupsDataset to
-                copy to.
+                The name of the dataset under the target's parent backups
+                dataset to copy to.
+
 
                 For instance, if the target's backup dataset is pool/backups,
                 the source's name is source, and the target dataset is foo, the

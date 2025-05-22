@@ -52,7 +52,6 @@
 
         targets = {
           shaw = {
-            backupsDataset = "nas_oabrke/data/backups";
             syncKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILgZ9hC4iGeYOxKaiN9w9JuIv30KYBv7k9cdtAkd0COg";
           };
         };
