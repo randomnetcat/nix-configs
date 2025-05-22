@@ -95,62 +95,79 @@ in
       };
     };
 
-    systemd.services.export-metrics-proxy = 
-      let
-        dependencyUnits = lib.mkIf cfg.tailscaleOnly [
-          "tailscaled.service"
-          "tailscale-autoconnect.service"
-        ];
-      in
-      {
-        bindsTo = [ "nginx.service" ];
-        requires = [ "export-metrics-proxy.socket" ];
-        wants = dependencyUnits;
-        after = lib.mkMerge [
-          [ "export-metrics-proxy.socket" "nginx.service" ]
-          dependencyUnits
-        ];
+    systemd.services.export-metrics-proxy = {
+      bindsTo = [ "nginx.service" ];
+      requires = [ "export-metrics-proxy.socket" ];
+      after = [ "export-metrics-proxy.socket" "nginx.service" ];
 
-        unitConfig = {
-          JoinsNamespaceOf = "nginx.service";
-        };
-
-        serviceConfig = {
-          DynamicUser = true;
-          RuntimeDirectory = "export-metrics-proxy";
-          RuntimeDirectoryMode = "0700";
-
-          # Ensure the service has access to the socket that nginx is listening on.
-          BindPaths = "${socketName}:/run/export-metrics-proxy/target.sock";
-
-          Type = "exec";
-          ExecStart = "${lib.getLib config.systemd.package}/lib/systemd/systemd-socket-proxyd /run/export-metrics-proxy/target.sock";
-
-          CapabilityBoundingSet = "";
-          LockPersonality = true;
-          RestrictNamespaces = true;
-          RestrictRealtime = true;
-          PrivateDevices = true;
-          PrivateNetwork = true;
-          PrivateUsers = true;
-          ProtectClock = true;
-          ProtectControlGroups = true;
-          ProtectHome = true;
-          ProtectHostname = true;
-          ProtectKernelLogs = true;
-          ProtectKernelModules = true;
-          ProtectKernelTunables = true;
-          ProtectProc = "invisible";
-          ProtectSystem = true;
-          RestrictAddressFamilies = "AF_UNIX";
-          SystemCallArchitectures = "native";
-          SystemCallFilter = [ "@system-service" "~@privileged" ];
-          UMask = "077";
-        };
+      unitConfig = {
+        JoinsNamespaceOf = "nginx.service";
       };
 
+      serviceConfig = {
+        DynamicUser = true;
+        RuntimeDirectory = "export-metrics-proxy";
+        RuntimeDirectoryMode = "0700";
+
+        # Ensure the service has access to the socket that nginx is listening on.
+        BindPaths = "${socketName}:/run/export-metrics-proxy/target.sock";
+
+        Type = "exec";
+        ExecStart = "${lib.getLib config.systemd.package}/lib/systemd/systemd-socket-proxyd /run/export-metrics-proxy/target.sock";
+
+        CapabilityBoundingSet = "";
+        LockPersonality = true;
+        RestrictNamespaces = true;
+        RestrictRealtime = true;
+        PrivateDevices = true;
+        PrivateNetwork = true;
+        PrivateUsers = true;
+        ProtectClock = true;
+        ProtectControlGroups = true;
+        ProtectHome = true;
+        ProtectHostname = true;
+        ProtectKernelLogs = true;
+        ProtectKernelModules = true;
+        ProtectKernelTunables = true;
+        ProtectProc = "invisible";
+        ProtectSystem = true;
+        RestrictAddressFamilies = "AF_UNIX";
+        SystemCallArchitectures = "native";
+        SystemCallFilter = [ "@system-service" "~@privileged" ];
+        UMask = "077";
+      };
+    };
+
     systemd.sockets.export-metrics-proxy = {
-      wantedBy = [ "sockets.target" ];
+      # Here, we are sure to include all DefaultDependencies other than
+      # Before=sockets.target.
+
+      wantedBy = [ "multi-user.target" ];
+
+      requires = [ "sysinit.target" ];
+      bindsTo = lib.mkIf cfg.tailscaleOnly [ "tailscaled.service" ];
+      wants = lib.mkIf cfg.tailscaleOnly [ "tailscale-autoconnect.service" ];
+
+      after = lib.mkMerge [
+        [ "sysinit.target" ]
+        (lib.mkIf cfg.tailscaleOnly [ "tailscaled.service" "tailscale-autoconnect.service" ])
+      ];
+
+      before = [ "shutdown.target" ];
+      conflicts = [ "shutdown.target" ];
+
+      unitConfig = {
+        # We have to start late in boot because the tailscale0 interface is
+        # not available until tailscaled runs. tailscaled is a normal system
+        # service, so it starts after basic.target. basic.taget pulls in
+        # sockets.target, and, by default, we will have
+        # Before=sockets.target. This causes a circular dependency.
+        #
+        # This isn't a service that is used locally on the system and isn't
+        # required early in boot, so we just remove the dependency to solve
+        # the ordering issue.
+        DefaultDependencies = false;
+      };
 
       socketConfig = {
         Accept = false;
