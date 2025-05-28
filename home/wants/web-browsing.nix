@@ -2,10 +2,6 @@
 
 {
   config = {
-    home.packages = [
-      pkgs._1password-gui
-    ];
-
     programs.firefox = {
       enable = true;
 

@@ -58,6 +58,14 @@
     # Required for automatic-timezoned to work. See https://github.com/NixOS/nixpkgs/issues/68489
     services.geoclue2.enableDemoAgent = lib.mkForce true;
 
+    programs._1password-gui = {
+      enable = true;
+
+      polkitPolicyOwners = [
+        config.users.users.randomcat.name
+      ];
+    };
+
     # Ensure nixpkgs source is kept so it isn't constantly redownloaded.
     system.extraDependencies = [
       inputs.nixpkgs.outPath
