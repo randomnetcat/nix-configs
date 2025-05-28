@@ -11,7 +11,7 @@ let
   isSource = network.backups.sources ? "${selfHostAttr}";
   isTarget = network.backups.targets ? "${selfHostAttr}";
 
-  movementSshUser = networkMovement: "sync-${networkMovement.targetHost}";
+  movementSshUser = networkMovement: "backup-${networkMovement.targetHost}";
   movementSyncoidTag = networkMovement: "${networkMovement.sourceHost}:${networkMovement.targetHost}";
 
   networkToLocalMovements = networkMovement: map

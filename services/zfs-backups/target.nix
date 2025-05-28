@@ -16,7 +16,7 @@ let
       sourceUser = lib.mkOption {
         type = types.str;
         description = "Name of the user to login to the source as.";
-        default = "sync-${config.networking.hostName}";
+        default = "backup-${config.networking.hostName}";
       };
 
       sourceHost = lib.mkOption {

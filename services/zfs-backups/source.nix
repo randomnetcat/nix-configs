@@ -36,7 +36,7 @@ let
 
     config = {
       name = lib.mkDefault name;
-      user = lib.mkDefault ("sync-" + config.name);
+      user = lib.mkDefault ("backup-" + config.name);
       syncoidTag = lib.mkDefault config.name;
     };
   });
@@ -69,7 +69,7 @@ in
         "send"
       ];
 
-      mkUser = targetCfg: lib.mkIf (targetCfg.user == "sync-${targetCfg.name}") {
+      mkUser = targetCfg: lib.mkIf (targetCfg.user == "backup-${targetCfg.name}") {
         isSystemUser = true;
         useDefaultShell = true;
         group = targetCfg.user;
@@ -82,7 +82,7 @@ in
         ];
       };
 
-      mkGroup = targetCfg: lib.mkIf (targetCfg.user == "sync-${targetCfg.name}") { };
+      mkGroup = targetCfg: lib.mkIf (targetCfg.user == "backup-${targetCfg.name}") { };
     in
     lib.mkIf cfg.enable {
       users.users = lib.mkMerge (map
