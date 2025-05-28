@@ -64,6 +64,12 @@ let
         description = "The syncoid identifier to use";
         default = name;
       };
+
+      interval = lib.mkOption {
+        type = types.str;
+        description = "The interval at which to run the backup for this movement.";
+        default = cfg.defaultInterval;
+      };
     };
 
     config = {
@@ -94,6 +100,12 @@ in
         type = types.listOf movementType;
         default = [ ];
         description = "Descriptions of sources that this destination host should be prepared to accept backups from";
+      };
+
+      defaultInterval = lib.mkOption {
+        type = types.str;
+        description = "The interval at which to run backups for movements that are not otherwise configured.";
+        default = "*-*-* 06:00:00 UTC";
       };
     };
   };
@@ -137,8 +149,6 @@ in
       services.syncoid = {
         enable = true;
 
-        interval = "*-*-* 06:00:00 UTC";
-
         commands = lib.mkMerge (lib.imap0
           (i: m:
             let commandName = commandNameFor m; in {
@@ -173,6 +183,10 @@ in
       systemd.services = lib.mkMerge (lib.imap0
         (i: m: {
           "syncoid-${commandNameFor m}" = {
+            # The syncoid module only accepts a single global interval for some reason. So, we
+            # just override it per unit here.
+            startAt = lib.mkForce [ m.interval ];
+
             unitConfig = {
               StartLimitBurst = 2;
               StartLimitIntervalSec = "1 hour";
