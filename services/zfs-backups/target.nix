@@ -148,6 +148,13 @@ in
                 recursive = true;
                 localTargetAllow = targetPerms;
 
+                # u -> don't mount datasets
+                # x [property] -> ignore property from stream
+                # * recordsize: set for specific access patterns; we don't need to preserve them
+                # * compression: compression is a local policy
+                # * encryption: encryption is a local policy
+                recvOptions = "ux recordsize x compression x encryption";
+
                 # Load the SSH key as a systemd credential. LoadCredentialEncrypted is set below.
                 sshKey = "/run/credentials/syncoid-${commandName}.service/sync-key";
 
