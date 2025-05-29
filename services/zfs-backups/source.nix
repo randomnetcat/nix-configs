@@ -70,7 +70,6 @@ in
         isSystemUser = true;
         useDefaultShell = true;
         group = targetCfg.user;
-        openssh.authorizedKeys.keys = targetCfg.authorizedKeys;
 
         # syncoid wants these packages
         packages = [
@@ -84,7 +83,14 @@ in
     lib.mkIf cfg.enable {
       users.users = lib.mkMerge (map
         (targetCfg: {
-          "${targetCfg.user}" = mkUser targetCfg;
+          "${targetCfg.user}" = lib.mkMerge [
+            (mkUser targetCfg)
+
+            # Ensure that we always set authorizedKeys, even if we don't create the rest of the user.
+            {
+              openssh.authorizedKeys.keys = targetCfg.authorizedKeys;
+            }
+          ];
         })
         targetsList);
 
