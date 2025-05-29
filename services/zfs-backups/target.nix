@@ -35,10 +35,13 @@ let
         description = "Name of the dataset to backup from (on the source).";
       };
 
-      targetGroupDataset = lib.mkOption {
+      targetParentDataset = lib.mkOption {
         type = types.str;
         description = ''
-          Each movement is stored in a dataset constructed as follows: <parent>/<group>/<child>. This allows controlling permissions for each <group> separately while still allowing syncoid to create the <child> dataset itself (which it insists on doing).
+          Each movement is stored in a dataset constructed as follows:
+          <parent>/<child>. This allows creating the <parent> dataset
+          separately while still allowing syncoid to create the <child> dataset
+          itself (which it inisists on doing).
         
           This option controls the <group> portion.
         '';
@@ -47,8 +50,11 @@ let
       targetChildDataset = lib.mkOption {
         type = types.str;
         description = ''
-          Each movement is stored in a dataset constructed as follows: <parent>/<group>/<child>. This allows controlling permissions for each <group> separately while still allowing syncoid to create the <child> dataset itself (which it insists on doing).
-        
+          Each movement is stored in a dataset constructed as follows:
+          <parent>/<child>. This allows creating the <parent> dataset
+          separately while still allowing syncoid to create the <child> dataset
+          itself (which it inisists on doing).
+
           This option controls the <child> portion.
         '';
       };
@@ -56,6 +62,7 @@ let
       targetFullDataset = lib.mkOption {
         type = types.str;
         description = "The full (absolute) name of the dataset to grant access to (on the target).";
+        readOnly = true;
       };
 
       syncoidTag = lib.mkOption {
@@ -75,7 +82,7 @@ let
     };
 
     config = {
-      targetFullDataset = "${cfg.parentDataset}/${config.targetGroupDataset}/${config.targetChildDataset}";
+      targetFullDataset = "${config.targetParentDataset}/${config.targetChildDataset}";
     };
   });
 in
@@ -91,11 +98,6 @@ in
       encryptedSyncKey = lib.mkOption {
         type = types.path;
         description = "Path to systemd-encrypted credential (with name sync-key) containing SSH key used to login to targets";
-      };
-
-      parentDataset = lib.mkOption {
-        type = types.str;
-        description = "The parent dataset under which to store backups from other hosts";
       };
 
       movements = lib.mkOption {
@@ -117,17 +119,13 @@ in
       commandNameFor = movement: movement.name;
     in
     lib.mkIf cfg.enable {
-      randomcat.services.zfs.datasets = lib.mkMerge ([{
-        "${cfg.parentDataset}" = {
-          mountpoint = "none";
-        };
-      }] ++ (map
-        (group: {
-          "${cfg.parentDataset}/${group}" = {
+      randomcat.services.zfs.datasets = lib.mkMerge (map
+        (parentDataset: {
+          "${parentDataset}" = {
             mountpoint = "none";
           };
         })
-        (lib.unique (map (movement: movement.targetGroupDataset) movements))));
+        (lib.unique (map (movement: movement.targetParentDataset) movements)));
 
       randomcat.services.backups.prune = {
         enable = true;

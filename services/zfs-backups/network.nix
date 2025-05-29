@@ -18,9 +18,9 @@ let
     (dataset: {
       sourceUser = movementSshUser networkMovement;
       sourceHost = network.hosts."${networkMovement.sourceHost}".tailscaleIP4;
-      sourceDataset = dataset.source;
-      targetGroupDataset = networkMovement.sourceHost;
-      targetChildDataset = dataset.target;
+      sourceDataset = "${dataset.source}/${dataset.datasetName}";
+      targetParentDataset = dataset.target;
+      targetChildDataset = dataset.datasetName;
       syncoidTag = movementSyncoidTag networkMovement;
       enableSyncSnapshots = true;
     })
@@ -30,7 +30,7 @@ let
     "${networkMovement.targetHost}" = {
       user = movementSshUser networkMovement;
       authorizedKeys = [ network.backups.targets."${networkMovement.targetHost}".syncKey ];
-      sourceDatasets = map (d: d.source) networkMovement.datasets;
+      sourceDatasets = map (d: "${d.source}/${d.datasetName}") networkMovement.datasets;
       syncoidTag = movementSyncoidTag networkMovement;
       enableSyncSnapshots = true;
     };

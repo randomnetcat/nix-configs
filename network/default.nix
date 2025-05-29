@@ -63,8 +63,9 @@
 
             datasets = [
               {
-                source = "rpool_sggau1/reese/system";
-                target = "system";
+                source = "rpool_sggau1/reese";
+                target = "nas_oabrke/data/backups/reese";
+                datasetName = "system";
               }
             ];
           }
@@ -75,8 +76,9 @@
 
             datasets = [
               {
-                source = "rpool_ez8ryx/carter/safe";
-                target = "safe";
+                source = "rpool_ez8ryx/carter";
+                target = "nas_oabrke/data/backups/carter";
+                datasetName = "safe";
               }
             ];
           }
@@ -87,8 +89,9 @@
 
             datasets = [
               {
-                source = "rpool_zpnzkc/bear/safe";
-                target = "safe";
+                source = "rpool_zpnzkc/bear";
+                target = "nas_oabrke/data/backups/bear";
+                datasetName = "safe";
               }
             ];
           }

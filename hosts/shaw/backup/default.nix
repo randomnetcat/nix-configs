@@ -10,7 +10,6 @@
       fromNetwork = true;
 
       target = {
-        parentDataset = "nas_oabrke/data/backups";
         encryptedSyncKey = ../secrets/sync-key;
         enableMetrics = true;
       };

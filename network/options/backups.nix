@@ -35,19 +35,25 @@ let
           options = {
             source = lib.mkOption {
               type = types.str;
-              description = "The name of the dataset to copy from";
+              description = ''
+                The name of the parent dataset to copy from on the source. Will
+                have datasetName appended to determine the full dataset.
+              '';
             };
 
             target = lib.mkOption {
               type = types.str;
               description = ''
-                The name of the dataset under the target's parent backups
-                dataset to copy to.
+                The name of the parent dataset to copy to on the target. Will
+                have datasetName appended to determine the full dataset.
+              '';
+            };
 
-
-                For instance, if the target's backup dataset is pool/backups,
-                the source's name is source, and the target dataset is foo, the
-                source dataset will be copied to pool/backups/source/foo.
+            datasetName = lib.mkOption {
+              type = types.str;
+              description = ''
+                The name of the child dataset to copy on both the source and
+                the target.
               '';
             };
           };
