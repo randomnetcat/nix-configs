@@ -23,6 +23,7 @@ let
       targetGroupDataset = networkMovement.sourceHost;
       targetChildDataset = dataset.target;
       syncoidTag = movementSyncoidTag networkMovement;
+      enableSyncSnapshots = true;
     })
     networkMovement.datasets;
 
@@ -32,6 +33,7 @@ let
       sshKey = network.backups.targets."${networkMovement.targetHost}".syncKey;
       sourceDatasets = map (d: d.source) networkMovement.datasets;
       syncoidTag = movementSyncoidTag networkMovement;
+      enableSyncSnapshots = true;
     };
   };
 in

@@ -70,6 +70,10 @@ let
         description = "The interval at which to run the backup for this movement.";
         default = cfg.defaultInterval;
       };
+
+      enableSyncSnapshots = (lib.mkEnableOption "syncoid sync snapshots") // {
+        default = true;
+      };
     };
 
     config = {
@@ -112,15 +116,6 @@ in
 
   config =
     let
-      targetPerms = [
-        "create"
-        "mount"
-        "bookmark"
-        "hold"
-        "receive:append"
-        "snapshot"
-      ];
-
       commandNameFor = movement: "${movement.targetGroupDataset}-${movement.targetChildDataset}";
     in
     lib.mkIf cfg.enable {
@@ -143,7 +138,7 @@ in
           (movement: {
             "${movement.targetFullDataset}".syncoidTags = [ movement.syncoidTag ];
           })
-          cfg.movements);
+          (lib.filter (m: m.enableSyncSnapshots) cfg.movements));
       };
 
       services.syncoid = {
@@ -156,7 +151,16 @@ in
                 source = "${m.sourceUser}@${m.sourceHost}:${m.sourceDataset}";
                 target = m.targetFullDataset;
                 recursive = true;
-                localTargetAllow = targetPerms;
+
+                localTargetAllow = [
+                  "create"
+                  "mount"
+                  "receive:append"
+                ] ++ lib.optionals m.enableSyncSnapshots [
+                  "hold"
+                  "bookmark"
+                  "snapshot"
+                ];
 
                 # u -> don't mount datasets
                 # x [property] -> ignore property from stream
@@ -170,11 +174,14 @@ in
 
                 extraArgs = [
                   "--no-privilege-elevation"
-                  "--keep-sync-snap"
                   "--no-rollback"
                   "--sshport=${toString m.sourcePort}"
                   "--identifier=${m.syncoidTag}"
-                ];
+                ] ++ (if m.enableSyncSnapshots then [
+                  "--keep-sync-snap"
+                ] else [
+                  "--no-sync-snap"
+                ]);
               };
             })
           cfg.movements);

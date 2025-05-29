@@ -32,6 +32,10 @@ let
         type = types.str;
         description = "The tag that syncoid uses in sync snapshots for this source";
       };
+
+      enableSyncSnapshots = (lib.mkEnableOption "syncoid sync snapshots") // {
+        default = true;
+      };
     };
 
     config = {
@@ -61,13 +65,6 @@ in
   config =
     let
       targetsList = lib.attrValues cfg.acceptTargets;
-
-      targetPerms = [
-        "snapshot"
-        "bookmark"
-        "hold"
-        "send"
-      ];
 
       mkUser = targetCfg: lib.mkIf (targetCfg.user == "backup-${targetCfg.name}") {
         isSystemUser = true;
@@ -100,7 +97,13 @@ in
       randomcat.services.zfs.datasets = lib.mkMerge (lib.concatMap
         (targetCfg: map
           (dataset: {
-            "${dataset}".zfsPermissions.users."${targetCfg.user}" = targetPerms;
+            "${dataset}".zfsPermissions.users."${targetCfg.user}" = [
+              "hold"
+              "send"
+            ] ++ lib.optionals targetCfg.enableSyncSnapshots [
+              "snapshot"
+              "bookmark"
+            ];
           })
           (targetCfg.sourceDatasets))
         targetsList);
@@ -114,7 +117,7 @@ in
               "${dataset}".syncoidTags = [ targetCfg.syncoidTag ];
             })
             (targetCfg.sourceDatasets))
-          (lib.attrValues cfg.acceptTargets));
+          (lib.filter (targetCfg: targetCfg.enableSyncSnapshots) (lib.attrValues cfg.acceptTargets)));
       };
     };
 }
