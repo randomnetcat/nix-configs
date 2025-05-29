@@ -17,10 +17,10 @@ let
         description = "The name of the username to accept for backups";
       };
 
-      sshKey = lib.mkOption {
-        type = types.nullOr types.str;
+      authorizedKeys = lib.mkOption {
+        type = types.listOf types.str;
         description = "The SSH key to add to the user";
-        default = null;
+        default = [ ];
       };
 
       sourceDatasets = lib.mkOption {
@@ -70,7 +70,7 @@ in
         isSystemUser = true;
         useDefaultShell = true;
         group = targetCfg.user;
-        openssh.authorizedKeys.keys = lib.mkIf (targetCfg.sshKey != null) [ targetCfg.sshKey ];
+        openssh.authorizedKeys.keys = targetCfg.authorizedKeys;
 
         # syncoid wants these packages
         packages = [

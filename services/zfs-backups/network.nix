@@ -30,7 +30,7 @@ let
   networkToAcceptTarget = networkMovement: {
     "${networkMovement.targetHost}" = {
       user = movementSshUser networkMovement;
-      sshKey = network.backups.targets."${networkMovement.targetHost}".syncKey;
+      authorizedKeys = [ network.backups.targets."${networkMovement.targetHost}".syncKey ];
       sourceDatasets = map (d: d.source) networkMovement.datasets;
       syncoidTag = movementSyncoidTag networkMovement;
       enableSyncSnapshots = true;
