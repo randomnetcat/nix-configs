@@ -4,12 +4,12 @@ let
   types = lib.types;
   zfsBin = lib.getExe' config.boot.zfs.package "zfs";
   cfg = config.randomcat.services.backups.target;
+  movements = lib.attrValues cfg.movements;
 
   movementType = types.submodule ({ config, name, ... }: {
     options = {
-      sourceName = lib.mkOption {
+      name = lib.mkOption {
         type = types.str;
-        description = "Friendly name of the host to pull data from.";
         default = name;
       };
 
@@ -22,7 +22,6 @@ let
       sourceHost = lib.mkOption {
         type = types.str;
         description = "DNS name of the host to backup to";
-        default = config.sourceName;
       };
 
       sourcePort = lib.mkOption {
@@ -62,7 +61,6 @@ let
       syncoidTag = lib.mkOption {
         type = types.str;
         description = "The syncoid identifier to use";
-        default = name;
       };
 
       interval = lib.mkOption {
@@ -101,7 +99,7 @@ in
       };
 
       movements = lib.mkOption {
-        type = types.listOf movementType;
+        type = types.attrsOf movementType;
         default = [ ];
         description = "Descriptions of sources that this destination host should be prepared to accept backups from";
       };
@@ -116,7 +114,7 @@ in
 
   config =
     let
-      commandNameFor = movement: "${movement.targetGroupDataset}-${movement.targetChildDataset}";
+      commandNameFor = movement: movement.name;
     in
     lib.mkIf cfg.enable {
       randomcat.services.zfs.datasets = lib.mkMerge ([{
@@ -129,7 +127,7 @@ in
             mountpoint = "none";
           };
         })
-        (lib.unique (map (movement: movement.targetGroupDataset) cfg.movements))));
+        (lib.unique (map (movement: movement.targetGroupDataset) movements))));
 
       randomcat.services.backups.prune = {
         enable = true;
@@ -138,14 +136,14 @@ in
           (movement: {
             "${movement.targetFullDataset}".syncoidTags = [ movement.syncoidTag ];
           })
-          (lib.filter (m: m.enableSyncSnapshots) cfg.movements));
+          (lib.filter (m: m.enableSyncSnapshots) movements));
       };
 
       services.syncoid = {
         enable = true;
 
-        commands = lib.mkMerge (lib.imap0
-          (i: m:
+        commands = lib.mkMerge (map
+          (m:
             let commandName = commandNameFor m; in {
               ${commandName} = {
                 source = "${m.sourceUser}@${m.sourceHost}:${m.sourceDataset}";
@@ -184,11 +182,11 @@ in
                 ]);
               };
             })
-          cfg.movements);
+          movements);
       };
 
-      systemd.services = lib.mkMerge (lib.imap0
-        (i: m: {
+      systemd.services = lib.mkMerge (map
+        (m: {
           "syncoid-${commandNameFor m}" = {
             # The syncoid module only accepts a single global interval for some reason. So, we
             # just override it per unit here.
@@ -208,10 +206,10 @@ in
             };
           };
         })
-        cfg.movements);
+        movements);
 
-      systemd.timers = lib.mkMerge (lib.imap0
-        (i: m: {
+      systemd.timers = lib.mkMerge (map
+        (m: {
           "syncoid-${commandNameFor m}" = {
             timerConfig = {
               Persistent = true;
@@ -219,6 +217,6 @@ in
             };
           };
         })
-        cfg.movements);
+        movements);
     };
 }

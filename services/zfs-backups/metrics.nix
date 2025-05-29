@@ -4,7 +4,7 @@ let
   targetCfg = config.randomcat.services.backups.target;
   nodeExporterCfg = config.services.prometheus.exporters.node;
 
-  movements = targetCfg.movements;
+  movements = lib.attrValues targetCfg.movements;
   groups = lib.naturalSort (lib.unique (map (m: m.targetGroupDataset) movements));
   hasAnyGroups = (lib.length groups) > 0;
 

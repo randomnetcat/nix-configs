@@ -16,7 +16,6 @@ let
 
   networkToLocalMovements = networkMovement: map
     (dataset: {
-      sourceName = networkMovement.sourceHost;
       sourceUser = movementSshUser networkMovement;
       sourceHost = network.hosts."${networkMovement.sourceHost}".tailscaleIP4;
       sourceDataset = dataset.source;
@@ -69,7 +68,15 @@ in
 
         target = lib.mkIf cfg.target.fromNetwork {
           enable = lib.mkDefault isTarget;
-          movements = lib.mkIf isTarget (lib.concatMap networkToLocalMovements (lib.filter (m: m.targetHost == selfHostAttr) network.backups.movements));
+          movements = lib.mkMerge (
+            (lib.concatMap
+              (networkMovement: map
+                (localMovement: {
+                  "${networkMovement.sourceHost}-${localMovement.targetChildDataset}" = localMovement;
+                })
+                (networkToLocalMovements networkMovement))
+              (lib.filter (m: m.targetHost == selfHostAttr) (lib.optionals isTarget network.backups.movements)))
+          );
         };
       }
     ];
