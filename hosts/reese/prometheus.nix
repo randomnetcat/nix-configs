@@ -81,7 +81,7 @@ in
 
                 group_by = [
                   "alertname"
-                  "backup_group"
+                  "movement"
                   "hostname"
                 ];
               }
@@ -115,7 +115,7 @@ in
             - alert: ${alerts.BackupsOld}
               expr: '(time() - randomcat_zfs_backups_last_snapshot_timestamp_seconds) / (24 * 60 * 60) > 2'
               annotations:
-                summary: "Backups for host {{ $labels.backup_group }} on {{ $labels.hostname }} are out of date (more than 2 days old)."
+                summary: "Backups for movement {{ $labels.movement }} on {{ $labels.hostname }} are out of date (more than 2 days old)."
         ''
       ];
 

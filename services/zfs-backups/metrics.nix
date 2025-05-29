@@ -5,8 +5,7 @@ let
   nodeExporterCfg = config.services.prometheus.exporters.node;
 
   movements = lib.attrValues targetCfg.movements;
-  groups = lib.naturalSort (lib.unique (map (m: m.targetGroupDataset) movements));
-  hasAnyGroups = (lib.length groups) > 0;
+  hasAnyMovements = lib.length movements > 0;
 
   zfsBin = lib.getExe' config.boot.zfs.package "zfs";
   runtimeDirName = "randomcat-backup-metrics";
@@ -35,11 +34,11 @@ in
 
     users.groups.backup-metrics = { };
 
-    services.prometheus.exporters.node.extraFlags = lib.mkIf hasAnyGroups [
+    services.prometheus.exporters.node.extraFlags = lib.mkIf hasAnyMovements [
       "--collector.textfile.directory=/run/${runtimeDirName}"
     ];
 
-    systemd.services.randomcat-backup-metrics = lib.mkIf hasAnyGroups {
+    systemd.services.randomcat-backup-metrics = lib.mkIf hasAnyMovements {
       serviceConfig = {
         RuntimeDirectory = runtimeDirName;
         RuntimeDirectoryMode = "0755";
@@ -62,18 +61,12 @@ in
         set -eu -o pipefail
 
         metric_name="randomcat_zfs_backups_last_snapshot_timestamp_seconds"
-        parent_dataset=${lib.escapeShellArg targetCfg.parentDataset}
 
-        produce_group() {
-          local group_name="$1"
-          local root_dataset="$parent_dataset/$group_name"
+        produce_movement() {
+          local movement_name="$1"
+          local movement_dataset="$2"
 
-          ${zfsBin} list -Hr -o name -- "$root_dataset" | while IFS="" read -r child_dataset; do
-            # We do not sync anything to the root dataset of a group, so don't report it.
-            if [[ "$child_dataset" = "$root_dataset" ]]; then
-              continue
-            fi
-
+          ${zfsBin} list -Hr -o name -- "$movement_dataset" | while IFS="" read -r child_dataset; do
             local last_snapshot
             last_snapshot="$(${zfsBin} list -Hp -t snapshot -o creation -- "$child_dataset" | tail -n 1)"
 
@@ -82,7 +75,7 @@ in
               continue
             fi
 
-            printf '%s{backup_group="%s",dataset="%s"} %s\n' "$metric_name" "$group_name" "$child_dataset" "$last_snapshot"
+            printf '%s{movement="%s",dataset="%s"} %s\n' "$metric_name" "$movement_name" "$child_dataset" "$last_snapshot"
           done
         }
 
@@ -90,9 +83,13 @@ in
           echo "# HELP $metric_name The Unix timestamp of the last snapshot in the backed-up dataset."
           echo "# TYPE $metric_name gauge"
 
-          ${lib.concatMapStringsSep "\n" (group: ''
-            produce_group ${lib.escapeShellArg group}
-          '') groups}
+          ${lib.concatMapStringsSep "\n" (movement: ''
+            ${lib.escapeShellArgs [
+              "produce_movement"
+              movement.name
+              movement.targetFullDataset
+            ]}
+          '') movements}
         }
 
         # This idiom is suggested by the node exporter README.
