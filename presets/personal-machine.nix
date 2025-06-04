@@ -66,6 +66,11 @@
       ];
     };
 
+    programs.gnupg.agent = {
+      enable = true;
+      pinentryPackage = pkgs.pinentry-gnome3;
+    };
+
     # Ensure nixpkgs source is kept so it isn't constantly redownloaded.
     system.extraDependencies = [
       inputs.nixpkgs.outPath
