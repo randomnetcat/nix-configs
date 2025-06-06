@@ -3,6 +3,15 @@
 {
   config = {
     services.nginx.virtualHosts = {
+      "janet.tel" = {
+        addSSL = true;
+        enableACME = true;
+
+        locations."/" = {
+          return = "302 https://unspecified.systems";
+        };
+      };
+
       "unspecified.systems" = {
         addSSL = true;
         acmeRoot = config.security.acme.certs."unspecified.systems".webroot;
