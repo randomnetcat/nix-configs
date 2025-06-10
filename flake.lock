@@ -71,22 +71,6 @@
         "type": "github"
       }
     },
-    "birdsong": {
-      "locked": {
-        "lastModified": 1747153132,
-        "narHash": "sha256-sGFCyWhTcI4TP+4ZlZniBEF41NWyKrojfpsHP7ld54c=",
-        "ref": "main",
-        "rev": "9955b1ae4eb0cbeff2ae0ed6520e651753880445",
-        "revCount": 23,
-        "type": "git",
-        "url": "https://git.qenya.tel/qenya/birdsong"
-      },
-      "original": {
-        "ref": "main",
-        "type": "git",
-        "url": "https://git.qenya.tel/qenya/birdsong"
-      }
-    },
     "colmena": {
       "inputs": {
         "flake-compat": "flake-compat_2",
@@ -129,11 +113,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1746816769,
-        "narHash": "sha256-ymQzXrfHVT8/RJiGbfrNjEeuzXQan46lUJdxEhgivdM=",
+        "lastModified": 1749409980,
+        "narHash": "sha256-I/Tvv5UN5DRYXTEy/+j7mYRsdoWQ+rCfrVoNEw0K/Ek=",
         "owner": "zhaofengli",
         "repo": "colmena",
-        "rev": "df694ee23be7ed7b2d8b42c245a640f0724eb06c",
+        "rev": "58f1beb074881d7208def140af71b7864b6139e0",
         "type": "github"
       },
       "original": {
@@ -187,11 +171,11 @@
       },
       "locked": {
         "dir": "pkgs/firefox-addons",
-        "lastModified": 1748837002,
-        "narHash": "sha256-K6//1B2kN+gZ2kOIRLqvY6LuOWHjiV7+7eFS4JNXR/g=",
+        "lastModified": 1749441800,
+        "narHash": "sha256-bN4tccrmczfR4PUuepHpxNNmWG3cLZTFIt4BaD8YyvA=",
         "owner": "rycee",
         "repo": "nur-expressions",
-        "rev": "0a907047c5b56503dd2e889dbbb694c61b8daf25",
+        "rev": "fe13e6abfe72b39ad8381595c3c404849330c3cb",
         "type": "gitlab"
       },
       "original": {
@@ -297,11 +281,11 @@
         "nixpkgs-lib": "nixpkgs-lib"
       },
       "locked": {
-        "lastModified": 1748821116,
-        "narHash": "sha256-F82+gS044J1APL0n4hH50GYdPRv/5JWm34oCJYmVKdE=",
+        "lastModified": 1749398372,
+        "narHash": "sha256-tYBdgS56eXYaWVW3fsnPQ/nFlgWi/Z2Ymhyu21zVM98=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "49f0870db23e8c1ca0b5259734a02cd9e1e371a1",
+        "rev": "9305fe4e5c2a6fcf5ba6a3ff155720fbe4076569",
         "type": "github"
       },
       "original": {
@@ -540,11 +524,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1749400020,
-        "narHash": "sha256-0nTmHO8AYgRYk5v6zw5oZ3x9nh+feb+Isn7WNe318M0=",
+        "lastModified": 1749499854,
+        "narHash": "sha256-V1BgwiX8NjbRreU6LC2EzmuqFSQAHhoSeNlYJyZ40NE=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "2835e8ba0ad99ba86d4a5e497a962ec9fa35e48f",
+        "rev": "1df816c407d3a5090c8496c9b00170af7891f021",
         "type": "github"
       },
       "original": {
@@ -561,11 +545,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1748830238,
-        "narHash": "sha256-EB+LzYHK0D5aqxZiYoPeoZoOzSAs8eqBDxm3R+6wMKU=",
+        "lastModified": 1749483884,
+        "narHash": "sha256-HdyfdVx0NbgrVtLY4lXdX9X/YE3PZjGZFnSyoAy1GJc=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "c7fdb7e90bff1a51b79c1eed458fb39e6649a82a",
+        "rev": "74d196c9943a67908d1883f61154e594d03863e5",
         "type": "github"
       },
       "original": {
@@ -582,11 +566,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1748665073,
-        "narHash": "sha256-RMhjnPKWtCoIIHiuR9QKD7xfsKb3agxzMfJY8V9MOew=",
+        "lastModified": 1749154018,
+        "narHash": "sha256-gjN3j7joRvT3a8Zgcylnd4NFsnXeDBumqiu4HmY1RIg=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "282e1e029cb6ab4811114fc85110613d72771dea",
+        "rev": "7aae0ee71a17b19708b93b3ed448a1a0952bf111",
         "type": "github"
       },
       "original": {
@@ -625,11 +609,11 @@
     "lix": {
       "flake": false,
       "locked": {
-        "lastModified": 1749302831,
-        "narHash": "sha256-s+dF/43F7a2VwGidUxNVyAjpd7paBpEAJ7cfpwH93k4=",
+        "lastModified": 1749471044,
+        "narHash": "sha256-a1KdOuDF2NJj+tM/2fufIyW5dDX0cHdmXWjli+0GRh4=",
         "ref": "refs/heads/main",
-        "rev": "b70bbbe680ff5f5ab6e35a21a091d0f845278cda",
-        "revCount": 17997,
+        "rev": "d8b1bb58622ee7af6cfa260d32d84859b3dc2ea2",
+        "revCount": 17998,
         "type": "git",
         "url": "https://git.lix.systems/lix-project/lix"
       },
@@ -791,11 +775,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1748693115,
-        "narHash": "sha256-StSrWhklmDuXT93yc3GrTlb0cKSS0agTAxMGjLKAsY8=",
+        "lastModified": 1749285348,
+        "narHash": "sha256-frdhQvPbmDYaScPFiCnfdh3B/Vh81Uuoo0w5TkWmmjU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "910796cabe436259a29a72e8d3f5e180fc6dfacc",
+        "rev": "3e3afe5174c561dee0df6f2c2b2236990146329f",
         "type": "github"
       },
       "original": {
@@ -807,11 +791,11 @@
     },
     "nixpkgs-unstable-small": {
       "locked": {
-        "lastModified": 1748762463,
-        "narHash": "sha256-rb8vudY2u0SgdWh83SAhM5QZT91ZOnvjOLGTO4pdGTc=",
+        "lastModified": 1749411262,
+        "narHash": "sha256-gRBkeW9l5lb/90lv1waQFNT+18OhITs11HENarh6vNo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "0d0bc640d371e9e8c9914c42951b3d6522bc5dda",
+        "rev": "0fc422d6c394191338c9d6a05786c63fc52a0f29",
         "type": "github"
       },
       "original": {
@@ -876,11 +860,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1749431778,
-        "narHash": "sha256-KBZLAEHL/ngi2kO0YcuxCUxkuCypr1XiO4sFzk1tH+g=",
+        "lastModified": 1749520857,
+        "narHash": "sha256-omBxJ30WO9oizqsjsUbF6nat+iVoeUAR/E8OLUlGmmY=",
         "owner": "nix-community",
         "repo": "nur",
-        "rev": "747adf23200d1b6411fab7dc21c2bd37799cd3b7",
+        "rev": "b1341c00a1fec6833295c070ffe200c760c99ffb",
         "type": "github"
       },
       "original": {
@@ -969,7 +953,6 @@
     "qenyaNixfiles": {
       "inputs": {
         "agenix": "agenix",
-        "birdsong": "birdsong",
         "colmena": "colmena_2",
         "firefox-addons": "firefox-addons",
         "flake-parts": "flake-parts_3",
@@ -989,11 +972,11 @@
         "scoutshonour": "scoutshonour"
       },
       "locked": {
-        "lastModified": 1748869732,
-        "narHash": "sha256-zZx/I+iTsYWYmXCAaAmr46gDfVKvf+2U2+1iBfOoWEU=",
+        "lastModified": 1749507953,
+        "narHash": "sha256-MBmzlHHiOdqs8KQnVbytto63YDBP9nHxv6Kts0G3Etc=",
         "ref": "refs/heads/main",
-        "rev": "3a9a3c40b0240835a472add9f57c6ce205d45b88",
-        "revCount": 388,
+        "rev": "fd31dbed5aec1869a927a38a3f0c21abe19e3e5d",
+        "revCount": 396,
         "type": "git",
         "url": "https://git.qenya.tel/qenya/nixfiles.git"
       },
@@ -1005,11 +988,11 @@
     "randomcat": {
       "flake": false,
       "locked": {
-        "lastModified": 1748830122,
-        "narHash": "sha256-HCfK60MexMb1/2IKxw4dq7wZ2GH+jNr8NKELb3m3Mac=",
+        "lastModified": 1749435035,
+        "narHash": "sha256-hgkMTlwU1HGcGcP6Z8vuMupIBOZxqy2bX60TusJEnJA=",
         "owner": "randomnetcat",
         "repo": "nix-configs",
-        "rev": "7db88aafc6ff326ed1987a1fc4d639820c305843",
+        "rev": "3cc561e5c7c463785f0e79a518572afaa74c8377",
         "type": "github"
       },
       "original": {
