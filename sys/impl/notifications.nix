@@ -19,7 +19,7 @@ in
         enable = lib.mkEnableOption "automatic failure notifications by discord webhook";
 
         webhookUrlCredential = config.fountain.lib.mkCredentialOption {
-          name= "notify-discord-webhook";
+          name = "notify-discord-webhook";
           description = "The wehbhook URL (with token) to use for sending failure notifications.";
         };
       };
@@ -71,6 +71,12 @@ in
           };
         };
       };
+
+      disabledServices = lib.mkOption {
+        type = lib.types.listOf (lib.types.strMatching ".*\\.service");
+        description = "The services for which failure notifications should be disabled.";
+        default = [ ];
+      };
     };
   };
 
@@ -98,10 +104,10 @@ in
       '';
     in
     lib.mkIf anyEnabled {
-      systemd.packages = [
-        (pkgs.linkFarm "failure-notification-overrides" [
+      systemd.packages = let dropInName = "90-toplevel-failure-notification.conf"; in [
+        (pkgs.linkFarm "failure-notification-overrides" ([
           {
-            name = "etc/systemd/system/service.d/90-toplevel-failure-notification.conf";
+            name = "etc/systemd/system/service.d/${dropInName}";
             path = pkgs.writeText "90-toplevel-failure-notification.conf" ''
               [Unit]
               OnFailure=failure-notification@%n
@@ -110,10 +116,18 @@ in
 
           # Prevent recursion of failure-notification@.service
           {
-            name = "etc/systemd/system/failure-notification@.service.d/90-toplevel-failure-notification.conf";
+            name = "etc/systemd/system/failure-notification@.service.d/${dropInName}";
             path = pkgs.emptyFile;
           }
-        ])
+        ] ++ (
+          # Mask the drop-in for any disabled services.
+          map
+            (serviceName: {
+              name = "etc/systemd/system/${serviceName}.d/${dropInName}";
+              path = pkgs.emptyFile;
+            })
+            cfg.disabledServices
+        )))
       ];
 
       systemd.services."failure-notification@" = lib.mkMerge [
