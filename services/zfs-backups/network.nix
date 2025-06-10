@@ -23,6 +23,8 @@ let
       targetChildDataset = dataset.datasetName;
       syncoidTag = movementSyncoidTag networkMovement;
       enableSyncSnapshots = true;
+
+      inherit (networkMovement) alertOnServiceFailure;
     })
     networkMovement.datasets;
 

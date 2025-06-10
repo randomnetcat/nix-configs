@@ -79,6 +79,10 @@ let
       enableSyncSnapshots = (lib.mkEnableOption "syncoid sync snapshots") // {
         default = true;
       };
+
+      alertOnServiceFailure = (lib.mkEnableOption "systemd failure notifications") // {
+        default = true;
+      };
     };
 
     config = {
@@ -89,6 +93,7 @@ in
 {
   imports = [
     ./prune.nix
+    ../../sys/impl/notifications.nix
   ];
 
   options = {
@@ -212,5 +217,7 @@ in
           };
         })
         movements);
+
+      randomcat.notifications.disabledServices = (map (m: "syncoid-${commandNameFor m}.service") (lib.filter (m: !m.alertOnServiceFailure) movements));
     };
 }

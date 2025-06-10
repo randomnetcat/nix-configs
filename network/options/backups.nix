@@ -30,6 +30,10 @@ let
         description = "The name of the host to backup to";
       };
 
+      alertOnServiceFailure = (lib.mkEnableOption "systemd failure notifications") // {
+        default = true;
+      };
+
       datasets = lib.mkOption {
         type = types.listOf (types.submodule {
           options = {
