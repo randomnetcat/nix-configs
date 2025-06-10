@@ -74,6 +74,9 @@
             sourceHost = "carter";
             targetHost = "shaw";
 
+            # carter is a laptop, so backups might fail if it is off.
+            alertOnServiceFailure = false;
+
             datasets = [
               {
                 source = "rpool_ez8ryx/carter";
