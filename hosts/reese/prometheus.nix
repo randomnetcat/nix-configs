@@ -79,6 +79,9 @@ in
                   "alertname = ${alerts.BackupsOld}"
                 ];
 
+                group_interval = "30m";
+                repeat_interval = "24h";
+
                 group_by = [
                   "alertname"
                   "movement"
