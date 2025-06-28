@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   archiveParent = "nas_oabrke/data/archive";
@@ -25,6 +25,8 @@ in
         pkgs.rclone
         pkgs.makemkv
       ];
+
+      openssh.authorizedKeys = (config.users.users.randomcat.openssh.authorizedKeys or { });
     };
 
     users.groups.archive = { };
