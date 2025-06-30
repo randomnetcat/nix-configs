@@ -166,6 +166,11 @@
           system = "x86_64-linux";
           modules = [ ./hosts/leon ];
         };
+
+        groves = {
+          system = "x86_64-linux";
+          modules = [ ./hosts/groves ];
+        };
       };
 
       nixosConfigurations = lib.mapAttrs (n: v: defineSystem v) systemConfigs;
