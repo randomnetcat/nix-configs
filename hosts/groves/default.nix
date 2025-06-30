@@ -9,6 +9,7 @@
     ./mounts/system
 
     ./boot.nix
+    ./ephemeral.nix
     ./filesystem.nix
     ./networking.nix
     ./ssh.nix

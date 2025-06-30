@@ -5,7 +5,6 @@
     ./root.nix
     ./swap.nix
     ./tmp.nix
-    ./ephemeral.nix
   ];
 
   options = { };
