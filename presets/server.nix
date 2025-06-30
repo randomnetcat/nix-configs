@@ -47,7 +47,6 @@
 
     # Since only publickey authentication is allowed anyway.
     security.sudo = {
-      execWheelOnly = true;
       wheelNeedsPassword = false;
     };
   };

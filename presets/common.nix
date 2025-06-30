@@ -32,5 +32,10 @@
         inherit inputs;
       };
     };
+
+    # This should help security, and I don't tend to use interesting sudo rules anyway.
+    security.sudo = {
+      execWheelOnly = true;
+    };
   };
 }
