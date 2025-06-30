@@ -60,7 +60,8 @@
   };
 
   randomcat.services.archive-wikis = {
-    enable = true;
+    # Currently broken.
+    enable = false;
     keysCredential = ./secrets/wiki-ia-keys;
   };
 
