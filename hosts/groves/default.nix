@@ -13,6 +13,7 @@
     ./filesystem.nix
     ./networking.nix
     ./ssh.nix
+    ./streaming.nix
     ./users.nix
   ];
 
