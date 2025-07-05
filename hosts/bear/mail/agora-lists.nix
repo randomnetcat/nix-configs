@@ -121,20 +121,15 @@ in
       ephemeral = false;
       autoStart = true;
 
+      privateUsers = "pick";
+
       privateNetwork = true;
       hostAddress = hostIP4;
       hostAddress6 = hostIP6;
       localAddress = localIP4;
       localAddress6 = localIP6;
 
-      # Per https://discourse.nixos.org/t/error-cannot-open-tun-tap-dev-dev-net-tun-inside-systemd-nspawn-container/18079/4
-      allowedDevices = [{
-        modifier = "rwm";
-        node = "/dev/net/tun";
-      }];
-
       extraFlags = [
-        "-U"
         "--load-credential=mailman-smtp-pass:agora-mailman-smtp-pass"
         "--load-credential=django-config:agora-django-config"
         "--load-credential=mailman-arc-key:agora-mailman-arc-key"

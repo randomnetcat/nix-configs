@@ -191,13 +191,9 @@ in
       ephemeral = false;
       autoStart = true;
 
+      privateUsers = "pick";
+
       privateNetwork = true;
-
-      allowedDevices = [{
-        modifier = "rwm";
-        node = "/dev/net/tun";
-      }];
-
       hostAddress = containers.wiki.hostIP4;
       localAddress = containers.wiki.localIP4;
       hostAddress6 = containers.wiki.hostIP6;
@@ -206,7 +202,6 @@ in
       extraFlags = [
         "--load-credential=smtp-pass:wiki-smtp-pass"
         "--load-credential=password-file:wiki-password-file"
-        "-U"
       ];
     };
 
