@@ -36,6 +36,10 @@
 
     services.fwupd.enable = true;
 
+    # As of writing, attempt to fix graphical artifacts by running 6.15.
+    # See https://gitlab.freedesktop.org/drm/amd/-/issues/3388#note_2970798
+    boot.kernelPackages = pkgs.linuxPackages_latest;
+
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions
     # on your system were taken. It‘s perfectly fine and recommended to leave
