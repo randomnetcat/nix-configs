@@ -61,6 +61,12 @@ parse_target_folder() {
 		declare list_name
 		list_name="$(parse_local_annotation "$address" "lists+" "randomcat.org")"
 
+		# Special case capitalization.
+		if [[ "$list_name" == "npr" ]]; then
+			printf "Lists.NPR\n"
+			return 0
+		fi
+
 		if [[ "$list_name" != "" ]]; then
 			printf "Lists.%s\n" "$(capitalize_words "$list_name")"
 			return 0
