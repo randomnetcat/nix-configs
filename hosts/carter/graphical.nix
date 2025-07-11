@@ -12,7 +12,8 @@
     # Fix graphical artifacts
     # https://bbs.archlinux.org/viewtopic.php?id=296990
     boot.kernelParams = [
-      "amdgpu.dcdebugmask=0x10"
+      "amdgpu.dcdebugmask=0x410"
+      "amdgpu.sg_display=0"
     ];
 
     hardware.graphics = {
