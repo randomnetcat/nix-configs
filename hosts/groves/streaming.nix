@@ -40,6 +40,19 @@
         "nodev"
         "noexec"
 
+        "nofail"
+        "x-systemd.device-bound=tailscaled.service"
+        "x-systemd.after=tailscaled.service"
+        "x-systemd.wants=tailscale-autoconnect.service"
+        "x-systemd.after=tailscale-autoconnect.service"
+
+        # Based on https://nixos.wiki/wiki/Samba
+        "noauto"
+        "x-systemd.automount"
+        "x-systemd.idle-timeout=120"
+        "x-systemd.device-timeout=30s"
+        "x-systemd.mount-timeout=30s"
+
         # TODO: Convince these to work? I'm not sure why they aren't.
         # "forceuid=${toString config.users.users.archive.uid}"
         # "forcegid=${toString config.users.groups.archive.gid}"
