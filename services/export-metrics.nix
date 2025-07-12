@@ -146,11 +146,10 @@ in
 
       requires = [ "sysinit.target" ];
       bindsTo = lib.mkIf cfg.tailscaleOnly [ "tailscaled.service" ];
-      wants = lib.mkIf cfg.tailscaleOnly [ "tailscale-autoconnect.service" ];
 
       after = lib.mkMerge [
         [ "sysinit.target" ]
-        (lib.mkIf cfg.tailscaleOnly [ "tailscaled.service" "tailscale-autoconnect.service" ])
+        (lib.mkIf cfg.tailscaleOnly [ "tailscaled.service" ])
       ];
 
       before = [ "shutdown.target" ];
