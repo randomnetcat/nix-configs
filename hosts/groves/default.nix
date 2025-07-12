@@ -11,6 +11,7 @@
     ./boot.nix
     ./ephemeral.nix
     ./filesystem.nix
+    ./graphical.nix
     ./networking.nix
     ./ssh.nix
     ./streaming.nix
