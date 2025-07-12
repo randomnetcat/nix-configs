@@ -27,6 +27,10 @@
     networking.hostName = "groves";
     networking.hostId = "8556b001";
 
+    boot.kernelParams = [
+      "consoleblank=60"
+    ];
+
     services.fwupd.enable = true;
 
     # This value determines the NixOS release from which the default
