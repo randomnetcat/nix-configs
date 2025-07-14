@@ -138,42 +138,49 @@ in
       };
     };
 
-    systemd.sockets.export-metrics-proxy = {
-      # Here, we are sure to include all DefaultDependencies other than
-      # Before=sockets.target.
+    systemd.sockets.export-metrics-proxy = lib.mkMerge [
+      {
+        # We sometimes set DefaultDependencies=no below, so always ensure we
+        # have at least some ordering with the rest of startup.
+        wantedBy = [ "multi-user.target" ];
+        before = [ "multi-user.target" ];
 
-      wantedBy = [ "multi-user.target" ];
+        socketConfig = {
+          Accept = false;
+          ListenStream = cfg.port;
+          BindIPv6Only = "both";
+          BindToDevice = lib.mkIf (cfg.listenInterface != null) cfg.listenInterface;
+        };
+      }
 
-      requires = [ "sysinit.target" ];
-      bindsTo = lib.mkIf cfg.tailscaleOnly [ "tailscaled.service" ];
+      (lib.mkIf cfg.tailscaleOnly {
+        unitConfig = {
+          # We have to start late in boot because the tailscale0 interface is
+          # not available until tailscaled runs. tailscaled is a normal system
+          # service, so it starts after basic.target. basic.taget pulls in
+          # sockets.target, and, by default, we will have
+          # Before=sockets.target. This causes a circular dependency.
+          #
+          # This isn't a service that is used locally on the system and isn't
+          # required early in boot, so we just remove the dependency to solve
+          # the ordering issue.
+          DefaultDependencies = false;
+        };
 
-      after = lib.mkMerge [
-        [ "sysinit.target" ]
-        (lib.mkIf cfg.tailscaleOnly [ "tailscaled.service" ])
-      ];
+        # Here, we are sure to include all DefaultDependencies other than
+        # Before=sockets.target.
 
-      before = [ "shutdown.target" ];
-      conflicts = [ "shutdown.target" ];
+        requires = [ "sysinit.target" ];
+        bindsTo = [ "tailscaled.service" ];
 
-      unitConfig = {
-        # We have to start late in boot because the tailscale0 interface is
-        # not available until tailscaled runs. tailscaled is a normal system
-        # service, so it starts after basic.target. basic.taget pulls in
-        # sockets.target, and, by default, we will have
-        # Before=sockets.target. This causes a circular dependency.
-        #
-        # This isn't a service that is used locally on the system and isn't
-        # required early in boot, so we just remove the dependency to solve
-        # the ordering issue.
-        DefaultDependencies = false;
-      };
+        after = [
+          "sysinit.target"
+          "tailscaled.service"
+        ];
 
-      socketConfig = {
-        Accept = false;
-        ListenStream = cfg.port;
-        BindIPv6Only = "both";
-        BindToDevice = lib.mkIf (cfg.listenInterface != null) cfg.listenInterface;
-      };
-    };
+        before = [ "shutdown.target" ];
+        conflicts = [ "shutdown.target" ];
+      })
+    ];
   };
 }
