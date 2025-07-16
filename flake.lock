@@ -309,24 +309,6 @@
         "type": "github"
       }
     },
-    "flake-utils_10": {
-      "inputs": {
-        "systems": "systems_8"
-      },
-      "locked": {
-        "lastModified": 1726560853,
-        "narHash": "sha256-X6rJYSESBVr3hBoH0WbKE5KvhPU5bloyZ2L4K60/fPQ=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "c1dfcf08411b08f6b8615f7d8971a2bfa81d5e8a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
     "flake-utils_2": {
       "inputs": {
         "systems": "systems"
@@ -452,11 +434,11 @@
         "systems": "systems_7"
       },
       "locked": {
-        "lastModified": 1726560853,
-        "narHash": "sha256-X6rJYSESBVr3hBoH0WbKE5KvhPU5bloyZ2L4K60/fPQ=",
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "c1dfcf08411b08f6b8615f7d8971a2bfa81d5e8a",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
         "type": "github"
       },
       "original": {
@@ -704,28 +686,6 @@
         "type": "github"
       }
     },
-    "nix-github-actions_2": {
-      "inputs": {
-        "nixpkgs": [
-          "wikiteam3-nix",
-          "poetry2nix",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1720066371,
-        "narHash": "sha256-uPlLYH2S0ACj0IcgaK9Lsf4spmJoGejR9DotXiXSBZQ=",
-        "owner": "nix-community",
-        "repo": "nix-github-actions",
-        "rev": "622f829f5fe69310a866c8a6cd07e747c44ef820",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "nix-github-actions",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1738680400,
@@ -859,11 +819,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1752629799,
-        "narHash": "sha256-RaX2vBaELUhcacElBTyrYOn+uvk6v13q1dB85g/G83w=",
+        "lastModified": 1752633451,
+        "narHash": "sha256-8cokzH9qvffNXKvJnSxkGCrvgRLfXchXlvBHytz5Lzg=",
         "owner": "nix-community",
         "repo": "nur",
-        "rev": "97d257c9b34d590683acc90193f6ddc067c5ad2c",
+        "rev": "7139df8e79abd5724b01366fcab41c8315dbd5d4",
         "type": "github"
       },
       "original": {
@@ -897,31 +857,6 @@
         "type": "github"
       }
     },
-    "poetry2nix": {
-      "inputs": {
-        "flake-utils": "flake-utils_10",
-        "nix-github-actions": "nix-github-actions_2",
-        "nixpkgs": [
-          "wikiteam3-nix",
-          "nixpkgs"
-        ],
-        "systems": "systems_9",
-        "treefmt-nix": "treefmt-nix"
-      },
-      "locked": {
-        "lastModified": 1728564116,
-        "narHash": "sha256-BkEqM5zUrYAwRKrfqi7hPOqjgD6+N0NCJvooaY8aQoE=",
-        "owner": "nix-community",
-        "repo": "poetry2nix",
-        "rev": "8a18db56dd62edd26458a87e4d335b7df84c3f3f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "poetry2nix",
-        "type": "github"
-      }
-    },
     "pre-commit-hooks-nix": {
       "inputs": {
         "flake-compat": [
@@ -946,6 +881,56 @@
       "original": {
         "owner": "cachix",
         "repo": "pre-commit-hooks.nix",
+        "type": "github"
+      }
+    },
+    "pyproject-build-systems": {
+      "inputs": {
+        "nixpkgs": [
+          "wikiteam3-nix",
+          "nixpkgs"
+        ],
+        "pyproject-nix": [
+          "wikiteam3-nix",
+          "pyproject-nix"
+        ],
+        "uv2nix": [
+          "wikiteam3-nix",
+          "uv2nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1752574539,
+        "narHash": "sha256-Dl/TGWnrsmmyFVApbpoVosAwOjocJRP2VAoOVbYK+KA=",
+        "owner": "pyproject-nix",
+        "repo": "build-system-pkgs",
+        "rev": "dfa1792728c7a3c34e22491e9fa272ed24e53012",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pyproject-nix",
+        "repo": "build-system-pkgs",
+        "type": "github"
+      }
+    },
+    "pyproject-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "wikiteam3-nix",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1752578158,
+        "narHash": "sha256-zWBxipfOc+BNj5WjGC6HiZinDnUHgO+23F1tNiSZmyE=",
+        "owner": "pyproject-nix",
+        "repo": "pyproject.nix",
+        "rev": "833df4a9531932e3320a18e5496c51b9f89ea06f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pyproject-nix",
+        "repo": "pyproject.nix",
         "type": "github"
       }
     },
@@ -1182,69 +1167,44 @@
         "type": "github"
       }
     },
-    "systems_8": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
-      }
-    },
-    "systems_9": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "id": "systems",
-        "type": "indirect"
-      }
-    },
-    "treefmt-nix": {
+    "uv2nix": {
       "inputs": {
         "nixpkgs": [
           "wikiteam3-nix",
-          "poetry2nix",
           "nixpkgs"
+        ],
+        "pyproject-nix": [
+          "wikiteam3-nix",
+          "pyproject-nix"
         ]
       },
       "locked": {
-        "lastModified": 1727984844,
-        "narHash": "sha256-xpRqITAoD8rHlXQafYZOLvUXCF6cnZkPfoq67ThN0Hc=",
-        "owner": "numtide",
-        "repo": "treefmt-nix",
-        "rev": "4446c7a6fc0775df028c5a3f6727945ba8400e64",
+        "lastModified": 1752545833,
+        "narHash": "sha256-mnYQICW9vf9F6wTgfUGlb32ie1OHxHRv2Delxul2LIU=",
+        "owner": "pyproject-nix",
+        "repo": "uv2nix",
+        "rev": "24a98828b90224ed8a811d7a54315e0f9d0ec3cd",
         "type": "github"
       },
       "original": {
-        "owner": "numtide",
-        "repo": "treefmt-nix",
+        "owner": "pyproject-nix",
+        "repo": "uv2nix",
         "type": "github"
       }
     },
     "wikiteam3": {
       "flake": false,
       "locked": {
-        "lastModified": 1727131590,
-        "narHash": "sha256-X3HPS41jITR75MVsX1tBXbrg95YV5bqOxpqsHsrek2o=",
+        "lastModified": 1752636983,
+        "narHash": "sha256-p1NWRfo/TAa8HSsXNJSnl+bJrosGl8Hkf93RsAYe/9g=",
         "owner": "mediawiki-client-tools",
         "repo": "mediawiki-dump-generator",
-        "rev": "fb18862180c211fc81bfdde61e6e3f4a999f3dd0",
+        "rev": "2955aa1f58dc50c90b4eeae14cec7b6555eafe83",
         "type": "github"
       },
       "original": {
         "owner": "mediawiki-client-tools",
+        "ref": "uv",
         "repo": "mediawiki-dump-generator",
         "type": "github"
       }
@@ -1255,16 +1215,18 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "poetry2nix": "poetry2nix",
+        "pyproject-build-systems": "pyproject-build-systems",
+        "pyproject-nix": "pyproject-nix",
+        "uv2nix": "uv2nix",
         "wikiteam3": "wikiteam3"
       },
       "locked": {
         "dir": "wikiteam3",
-        "lastModified": 1728575967,
-        "narHash": "sha256-W74p5EekK73QB+RlGI5Icke1kpy7YbEGSPincvymtLs=",
+        "lastModified": 1752638288,
+        "narHash": "sha256-p3QZB4DVXF9rHZQRDnwUlhSl1aTcRA21mSgax1w09AQ=",
         "owner": "randomnetcat",
         "repo": "nix-wrappers",
-        "rev": "de97c2f67de93ea17bb3c9d9ecd0a1506d24c6e0",
+        "rev": "5aa80c9e4d17a854fafd5a080c4402732cb29903",
         "type": "github"
       },
       "original": {
