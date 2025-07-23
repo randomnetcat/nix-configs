@@ -25,25 +25,6 @@ in
 
           services.resolved.enable = true;
 
-          # Temporary hack for [0] (which prevents MediaWiki building) until [1] is merged.
-          #
-          # [0]: https://github.com/NixOS/nixpkgs/issues/331126
-          # [1]: https://github.com/NixOS/nixpkgs/pull/331887
-          nixpkgs.overlays = lib.mkIf (!(options.services.mediawiki ? phpPackage)) [
-            (final: prev: {
-              php81 = prev.php82;
-              php81Extensions = prev.php82Extensions;
-              php81Packages = prev.php82Package;
-            })
-          ];
-
-          assertions = [
-            {
-              assertion = lib.versionAtLeast config.services.mediawiki.package.version "1.42.0";
-              message = "MediaWiki must be at least v1.42.0 due to forcing PHP 8.2";
-            }
-          ];
-
           services.mediawiki = {
             enable = true;
             name = "Infinite Nomic Wiki";
