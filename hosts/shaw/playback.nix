@@ -20,26 +20,28 @@
       ];
     };
 
-    # From https://nixos.wiki/wiki/Jellyfin
+    hardware = {
+      intel-gpu-tools.enable = true;
 
-    nixpkgs.config.packageOverrides = pkgs: {
-      intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
+      graphics = {
+        enable = true;
+
+        extraPackages = [
+          pkgs.intel-media-driver
+          pkgs.intel-compute-runtime-legacy1
+          pkgs.intel-ocl
+        ];
+      };
     };
 
-    hardware.intel-gpu-tools.enable = true;
+    # Configure the use of intel-media-driver.
 
-    hardware.graphics = {
-      enable = true;
+    environment.sessionVariables = {
+      LIBVA_DRIVER_NAME = "iHD";
+    };
 
-      extraPackages = [
-        pkgs.intel-media-driver
-        pkgs.intel-vaapi-driver
-        pkgs.intel-compute-runtime-legacy1
-        pkgs.vaapiVdpau
-        pkgs.libvdpau-va-gl
-        pkgs.intel-ocl
-        pkgs.vpl-gpu-rt
-      ];
+    systemd.services.jellyfin.environment = {
+      LIBVA_DRIVER_NAME = "iHD";
     };
   };
 }
