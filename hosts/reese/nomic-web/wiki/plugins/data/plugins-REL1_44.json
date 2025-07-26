@@ -4,8 +4,8 @@
     "hash": "sha256-JIxEqrLpOuL4O7E+AhVZDMANbMo0Lei+/0dKIKn/EV0="
   },
   "DarkMode": {
-    "url": "https://web.archive.org/web/20250712072746if_/https://extdist.wmflabs.org/dist/extensions/DarkMode-REL1_44-b3a976e.tar.gz",
-    "hash": "sha256-Ncf/btT+/7llFeHtvBuATNshf3Xw0j7xg1kYG6BxkkE="
+    "url": "https://web.archive.org/web/20250726021040if_/https://extdist.wmflabs.org/dist/extensions/DarkMode-REL1_44-99fe78d.tar.gz",
+    "hash": "sha256-gx9mqCeHYNEhWD/KeKwCC9LbHpM11qreJv6CIyYZGo8="
   },
   "MobileFrontend": {
     "url": "https://web.archive.org/web/20250725021333if_/https://extdist.wmflabs.org/dist/extensions/MobileFrontend-REL1_44-7bfa239.tar.gz",
