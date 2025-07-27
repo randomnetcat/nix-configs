@@ -54,6 +54,7 @@
           reese = { };
           carter = { };
           bear = { };
+          groves = { };
         };
 
         targets = {
@@ -100,6 +101,19 @@
               {
                 source = "rpool_zpnzkc/bear";
                 target = "nas_oabrke/data/backups/bear";
+                datasetName = "safe";
+              }
+            ];
+          }
+
+          {
+            sourceHost = "groves";
+            targetHost = "shaw";
+
+            datasets = [
+              {
+                source = "rpool_fxooop/groves";
+                target = "nas_oabrke/data/backups/groves";
                 datasetName = "safe";
               }
             ];
