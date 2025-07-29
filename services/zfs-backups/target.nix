@@ -176,6 +176,7 @@ in
                   "--identifier=${m.syncoidTag}"
                 ] ++ (if m.enableSyncSnapshots then [
                   "--keep-sync-snap"
+                  "--use-hold"
                 ] else [
                   "--no-sync-snap"
                 ]);
