@@ -32,6 +32,9 @@
       "consoleblank=60"
     ];
 
+    # Cannot reboot due to disk encryption.
+    system.autoUpgrade.rebootWindow = null;
+
     services.fwupd.enable = true;
 
     randomcat.services.backups.fromNetwork = true;
