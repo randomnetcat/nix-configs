@@ -159,6 +159,7 @@ in
                   "receive:append"
                 ] ++ lib.optionals m.enableSyncSnapshots [
                   "hold"
+                  "release"
                   "bookmark"
                   "snapshot"
                 ];

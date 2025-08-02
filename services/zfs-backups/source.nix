@@ -105,6 +105,7 @@ in
           (dataset: {
             "${dataset}".zfsPermissions.users."${targetCfg.user}" = [
               "hold"
+              "release"
               "send"
             ] ++ lib.optionals targetCfg.enableSyncSnapshots [
               "snapshot"
