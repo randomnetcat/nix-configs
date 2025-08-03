@@ -20,6 +20,9 @@
     }
   ];
 
+  # Paranoia; I'm worried this has caused issues in the past.
+  system.autoUpgrade.enable = lib.mkForce false;
+
   boot.kernelParams = [
     "nohibernate"
   ];
