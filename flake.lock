@@ -482,11 +482,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1754263839,
-        "narHash": "sha256-ck7lILfCNuunsLvExPI4Pw9OOCJksxXwozum24W8b+8=",
+        "lastModified": 1754444017,
+        "narHash": "sha256-PyxmeamNheSNZICr8vvanf0F3YQf9DPCu2qErVC2A7k=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "1d7abbd5454db97e0af51416f4960b3fb64a4773",
+        "rev": "a3790776751d1a6365aa0717f509d05adee90734",
         "type": "github"
       },
       "original": {
@@ -567,11 +567,11 @@
     "lix": {
       "flake": false,
       "locked": {
-        "lastModified": 1754137273,
-        "narHash": "sha256-lyj/k4SU0aHUHnbGu4r67splMWwsC/QLlKo7Mzq0XA4=",
+        "lastModified": 1754416151,
+        "narHash": "sha256-H/SM37tCftT1gPWUmPv3q+FIwBoVf7JnxzRjZSeDPEw=",
         "ref": "refs/heads/main",
-        "rev": "cad6118e20a520b7536879d951ab6c3228b3e111",
-        "revCount": 18235,
+        "rev": "7e8b44d718a69364f7bfd58f463c345a555c2cfc",
+        "revCount": 18236,
         "type": "git",
         "url": "https://git.lix.systems/lix-project/lix"
       },
@@ -745,11 +745,11 @@
     },
     "nixpkgsSmall": {
       "locked": {
-        "lastModified": 1754330460,
-        "narHash": "sha256-L5eUA2YptCeQn3IKcJXCKZ8Vb97BCG/SgxnHpNLSEi0=",
+        "lastModified": 1754410885,
+        "narHash": "sha256-wRBHrPkxEHIP3YeCogFwCKQp2loa446f5+iAF892r90=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "23c58a9c308f6652ab64a27595d75861a5f51fa6",
+        "rev": "18b83096918e5a6a4ca0a0801cb29c8d7edd9584",
         "type": "github"
       },
       "original": {
@@ -797,11 +797,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1754359704,
-        "narHash": "sha256-Hv5FgHASSALoj2ooV/eo501zVVr0xpR58BBsklEPtQc=",
+        "lastModified": 1754433317,
+        "narHash": "sha256-6k/ZzS+PvzbkpSzfT7lf+RDZGEjjIhNn+66x3JyovnM=",
         "owner": "nix-community",
         "repo": "nur",
-        "rev": "24615e65ddbb87121696af57341e502d7e3bab1d",
+        "rev": "4fcbb42f9696a850b55481ded21c8dab51ed3af5",
         "type": "github"
       },
       "original": {
