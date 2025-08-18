@@ -31,6 +31,8 @@ in
 
       extraConfig = ''
         rewrite "^/cpp_initialization(|/.*)$" "/cpp-initialization$1" redirect;
+        rewrite "^/cpp-initialization/initialization.(svg|png)$" "/cpp-initialization/std-2020/initialization.$1" redirect;
+        rewrite "^/cpp-initialization/std-latest(|/.*)$" "/cpp-initialization/std-2023$1" redirect;
       '';
 
       locations."/" = {
@@ -42,8 +44,11 @@ in
         '';
       };
 
-      locations."= /cpp-initialization/initialization.png" = proxyRawGithub "randomnetcat/cpp_initialization/gh-pages/initialization.png";
-      locations."= /cpp-initialization/initialization.svg" = proxyRawGithub "randomnetcat/cpp_initialization/gh-pages/initialization.svg";
+      locations."= /cpp-initialization/std-2020/initialization.png" = proxyRawGithub "randomnetcat/cpp_initialization/gh-pages/std-2020/initialization.png";
+      locations."= /cpp-initialization/std-2020/initialization.svg" = proxyRawGithub "randomnetcat/cpp_initialization/gh-pages/std-2020/initialization.svg";
+
+      locations."= /cpp-initialization/std-2023/initialization.png" = proxyRawGithub "randomnetcat/cpp_initialization/gh-pages/std-2023/initialization.png";
+      locations."= /cpp-initialization/std-2023/initialization.svg" = proxyRawGithub "randomnetcat/cpp_initialization/gh-pages/std-2023/initialization.svg";
 
       locations."/agora-historical-proposals/" = proxyRawGithub "randomnetcat/agora-historical-proposals/gh-pages/";
       locations."= /agora-historical-proposals/".return = "307 https://github.com/randomnetcat/agora-historical-proposals";
