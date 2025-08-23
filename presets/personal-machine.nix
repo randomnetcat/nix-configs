@@ -9,6 +9,7 @@
     ../sys/wants/android.nix
     ../sys/wants/auto-upgrade/manual-reboot.nix
     ../sys/wants/tailscale.nix
+    ../sys/impl/graphical/gnome-gdm.nix
   ];
 
   config = {
