@@ -4,7 +4,7 @@
   imports = [
     ./hardware-configuration.nix
 
-    ../../presets/server.nix
+    ../../presets/personal-machine.nix
 
     ./mounts/system
 
