@@ -2,7 +2,7 @@
 
 {
   config = {
-    services.printing.enable = true;
+    services.printing.enable = false;
 
     services.printing.drivers = lib.mkMerge [
       (lib.mkIf (!(lib.hasPrefix "3.23." pkgs.hplipWithPlugin.version)) [

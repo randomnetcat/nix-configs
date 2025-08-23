@@ -24,7 +24,7 @@
     ./printing.nix
     ./security.nix
     ./vms.nix
-    ./archive.nix
+    # ./archive.nix
     ./development.nix
     ./metrics.nix
     ./birdsong.nix
