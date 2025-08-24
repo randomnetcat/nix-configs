@@ -72,6 +72,9 @@
       pinentryPackage = pkgs.pinentry-gnome3;
     };
 
+    programs.steam.enable = true;
+    services.joycond.enable = true;
+
     # Ensure nixpkgs source is kept so it isn't constantly redownloaded.
     system.extraDependencies = [
       inputs.nixpkgs.outPath
