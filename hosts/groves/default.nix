@@ -11,6 +11,7 @@
     ./boot.nix
     ./ephemeral.nix
     ./filesystem.nix
+    ./gaming.nix
     ./graphical.nix
     ./networking.nix
     ./ssh.nix
