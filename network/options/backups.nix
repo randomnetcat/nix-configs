@@ -18,7 +18,7 @@ let
     };
   });
 
-  movementType = types.submodule ({
+  movementType = types.submodule ({ config, ... }: {
     options = {
       sourceHost = lib.mkOption {
         type = types.str;
@@ -31,7 +31,7 @@ let
       };
 
       alertOnServiceFailure = (lib.mkEnableOption "systemd failure notifications") // {
-        default = true;
+        default = !(networkCfg.hosts."${config.sourceHost}".isPortable);
       };
 
       datasets = lib.mkOption {
