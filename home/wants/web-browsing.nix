@@ -11,13 +11,19 @@
         name = "randomcat";
 
         settings = {
+          # Configuration
           "browser.ctrlTab.sortByRecentlyUsed" = false;
           "browser.startup.page" = 3;
-          "privacy.donottrackheader.enabled" = true;
+
+          # Privacy settings
           "privacy.trackingprotection.enabled" = true;
           "privacy.trackingprotection.emailtracking.enabled" = true;
           "privacy.trackingprotection.socialtracking.enabled" = true;
           "dom.private-attribution.submission.enabled" = false;
+
+          # AI settings
+          "browser.ml.enable" = false;
+          "browser.ml.chat.enabled" = false;
         };
 
         extensions.packages =
