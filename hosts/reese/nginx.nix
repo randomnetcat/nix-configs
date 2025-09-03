@@ -34,5 +34,12 @@
       forceSSL = true;
       enableACME = true;
     };
+
+    services.nginx.virtualHosts."dance.a.powerful.dance" = {
+      forceSSL = true;
+      enableACME = true;
+
+      locations."= /".return = "302 https://agora-ruleset.gaelan.me/#Rule2029";
+    };
   };
 }
