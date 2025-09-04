@@ -32,12 +32,20 @@ in
           wantedBy = [ "multi-user.target" ];
           startAt = "06:00";
 
+          serviceConfig = {
+            PrivateTmp = true;
+          };
+
+          enableStrictShellChecks = true;
+
           script = ''
             set -euo pipefail
 
             prune_dataset_snaps() {
                 declare -r dataset="$1"
                 declare -r prefix="$2"
+
+                declare -r work="$(mktemp)"
 
                 echo "Pruning dataset: $dataset" >&2
 
@@ -59,7 +67,26 @@ in
                                 exit 1
                             fi
 
-                            ${zfsBin} destroy -v -- "$snapshot"
+                            {
+                              {
+                                ${zfsBin} destroy -v -- "$snapshot" 2> "$work" && {
+                                  if [[ -s "$work" ]]; then
+                                    echo "zfs destroy log:"
+                                    cat -- "$work"
+                                  fi
+                                }
+                              } || {
+                                echo "zfs destroy error: "
+                                cat -- "$work"
+
+                                if cat -- "$work" | grep -qF "it's being held"; then
+                                  echo "zfs destroy failed due to hold; ignoring."
+                                else
+                                  echo "zfs destroy failed for unexpected reason."
+                                  exit 1
+                                fi
+                              }
+                            } >&2
                         done
                     }
             }
