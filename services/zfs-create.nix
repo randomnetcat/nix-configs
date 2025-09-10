@@ -43,11 +43,13 @@ let
     };
   });
 
+  specialMountpoints = [ "none" "legacy" ];
+
   createServiceName = datasetName: "zfs-create-${lib.replaceStrings ["/"] ["-"] datasetName}";
   permsServiceName = datasetName: "zfs-permissions-${lib.replaceStrings ["/"] ["-"] datasetName}";
 
   zfsBin = lib.getExe' config.boot.zfs.package "zfs";
-  isNixDataset = fs: fs.mountpoint != null && fs.mountpoint != "none";
+  isNixDataset = fs: fs.mountpoint != null && !(lib.elem fs.mountpoint specialMountpoints);
   nixDatasets = lib.filter isNixDataset (lib.attrValues cfg.datasets);
 in
 {
@@ -76,9 +78,9 @@ in
           parentName = lib.concatStringsSep "/" parentParts;
           parentUnits = lib.optional (cfg.datasets ? "${parentName}") "${createServiceName parentName}.service";
 
-          hasZfsMountpoint = (zfsOptions ? mountpoint) && (zfsOptions.mountpoint != "none") && (zfsOptions.mountpoint != "legacy");
+          hasZfsMountpoint = (zfsOptions ? mountpoint) && !(lib.elem zfsOptions.mountpoint specialMountpoints);
 
-          hasNixMountpoint = datasetValue.mountpoint != null && datasetValue.mountpoint != "none";
+          hasNixMountpoint = (datasetValue.mountpoint != null) && !(lib.elem datasetValue.mountpoint specialMountpoints);
           nixMountpoint = datasetValue.mountpoint;
 
           # TODO: this logic is untested and who knows if it works? but I feel bad not attempting to handle this at all, so...
