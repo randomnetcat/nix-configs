@@ -116,6 +116,8 @@ in
         description = "The interval at which to run backups for movements that are not otherwise configured.";
         default = "*-*-* 06:00:00 UTC";
       };
+
+      enableLegacyMountPoint = lib.mkEnableOption "legacy mountpoint for backup destinations";
     };
   };
 
@@ -126,9 +128,19 @@ in
     lib.mkIf cfg.enable {
       randomcat.services.zfs.datasets = lib.mkMerge (map
         (parentDataset: {
-          "${parentDataset}" = {
-            mountpoint = "none";
-          };
+          "${parentDataset}" = lib.mkMerge [
+            (lib.mkIf cfg.enableLegacyMountPoint {
+              mountpoint = "legacy";
+
+              zfsOptions = lib.mkIf cfg.enableLegacyMountPoint {
+                readonly = "on";
+              };
+            })
+
+            (lib.mkIf (!cfg.enableLegacyMountPoint) {
+              mountpoint = "none";
+            })
+          ];
         })
         (lib.unique (map (movement: movement.targetParentDataset) movements)));
 
