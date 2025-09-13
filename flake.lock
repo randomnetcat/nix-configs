@@ -449,11 +449,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1757598712,
-        "narHash": "sha256-5PWVrdMp8u31Q247jqnJcwxKg3MJrs1TadTyTBRVBDY=",
+        "lastModified": 1757698511,
+        "narHash": "sha256-UqHHGydF/q3jfYXCpvYLA0TWtvByOp1NwOKCUjhYmPs=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "6d7c11a0adee0db21e3a8ef90ae07bb89bc20b8f",
+        "rev": "a3fcc92180c7462082cd849498369591dfb20855",
         "type": "github"
       },
       "original": {
@@ -534,11 +534,11 @@
     "lix": {
       "flake": false,
       "locked": {
-        "lastModified": 1757618151,
-        "narHash": "sha256-tJtyTagzB7VKAdjGn4KNb3TSbKkgBdHBnZWI84WDW/g=",
+        "lastModified": 1757712131,
+        "narHash": "sha256-rbf0ptj4BTSwsitKQu3FuaiJwhNDePGBeBJovm5HLdQ=",
         "ref": "refs/heads/main",
-        "rev": "b5cf7dff7b8118e11c18c8d10a4b569b695d044f",
-        "revCount": 18332,
+        "rev": "d90e4a65812c6d3dd90aed7e44941eba3215f876",
+        "revCount": 18340,
         "type": "git",
         "url": "https://git.lix.systems/lix-project/lix"
       },
@@ -674,11 +674,11 @@
     },
     "nixpkgsSmall": {
       "locked": {
-        "lastModified": 1757579273,
-        "narHash": "sha256-CVZy9AvxlkyiSeiRLRLl5NA3DpzJFE81Y3ZMdRAq8fA=",
+        "lastModified": 1757666457,
+        "narHash": "sha256-z4n3ILedWTBVYvWgyR22rdVexTxXawGOANDF3czPTz4=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "b1809fe3b9fbee0944dd597082aff7b8648f3e6e",
+        "rev": "cb07f7da10cafa0330c57b7f24a0b82a076a8da1",
         "type": "github"
       },
       "original": {
@@ -726,11 +726,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1757640044,
-        "narHash": "sha256-yCT3LRuwIqZGZ/o66JP+Wbv8dO6YFQjQ53M8bhWrOJI=",
+        "lastModified": 1757726380,
+        "narHash": "sha256-LqbyKrFIcgKJxkQfDenOELErQyugbw2SaQ2A7hkmmYA=",
         "owner": "nix-community",
         "repo": "nur",
-        "rev": "ed551cfa6022de7399dee1d31a0c95295683b3e7",
+        "rev": "567f0297e5c1fdf9484b30319727e8e587456ce9",
         "type": "github"
       },
       "original": {
@@ -861,11 +861,11 @@
         "scoutshonour": "scoutshonour"
       },
       "locked": {
-        "lastModified": 1757501912,
-        "narHash": "sha256-05+5FFdmV6K8KM0afWOHIshgZtjTqRu0BLzOzXuRwUY=",
+        "lastModified": 1757693887,
+        "narHash": "sha256-BUrAMEZZfyKSoZobok+b4tf/h0WTGbFdBBQ9gQcQ2i0=",
         "ref": "refs/heads/main",
-        "rev": "f6dedeea790c003c1c01266a5de086aaf05af391",
-        "revCount": 440,
+        "rev": "165c179b3f13a0c0a5d0dec527342c8bfde48065",
+        "revCount": 441,
         "type": "git",
         "url": "https://git.qenya.tel/qenya/nixfiles.git"
       },
