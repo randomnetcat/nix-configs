@@ -106,16 +106,16 @@ in
         restic_owns "$HOME"
         cd -- "$HOME"
 
-        export REPO="/mnt/restic-repo"
-        restic_owns "$REPO"
+        repo="/mnt/restic-repo"
+        restic_owns "$repo"
 
         # Modelled after syncoid & sanoid modules. Use the booted ZFS in order to guarantee stability.
         zfs="/run/booted-system/sw/bin/zfs"
 
-        export BACKUPS_DIR="/mnt/backups"
+        backups_dir="/mnt/backups"
         base_dataset="nas_oabrke/data/backups"
 
-        mkdir -m 0700 -- "$BACKUPS_DIR"
+        mkdir -m 0700 -- "$backups_dir"
 
         "$zfs" list -t filesystem -H -o name -r -- "$base_dataset" | while IFS="" read -r fs; do
             echo "Filesystem: $fs" 2>&1
@@ -143,8 +143,8 @@ in
             mount_str="${"$"}{suffix//"/"/"-"}"
             echo "Mount string: $mount_str" >&2
 
-            mkdir -- "$BACKUPS_DIR/$mount_str"
-            mount -t zfs -o ro -- "$fs" "$BACKUPS_DIR/$mount_str"
+            mkdir -- "$backups_dir/$mount_str"
+            mount -t zfs -o ro,nodev,nosuid -- "$fs" "$backups_dir/$mount_str"
         done
 
         RESTIC_PASSWORD="$(cat -- "$CREDENTIALS_DIRECTORY/birdhouse-restic-password")"
@@ -157,12 +157,7 @@ in
           ambient-caps = "-all,+dac_read_search";
           clear-groups = true;
           no-new-privs = true;
-        }} -- ${pkgs.writeShellScript "restic-backups" ''
-          set -eu -o pipefail
-          umask 0077
-
-          restic --repo "$REPO" backup --json -- "$BACKUPS_DIR"
-        ''}
+        }} -- restic --repo "$repo" backup --json -- "$backups_dir"
       '';
     };
   };
