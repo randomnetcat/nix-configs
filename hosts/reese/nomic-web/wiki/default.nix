@@ -6,6 +6,8 @@ let
   wikiPort = 8080;
   wikiSubpath = "/wiki"; # Subpath, either empty or starting but not ending with slash
   wikiLogo = "${./logo.png}";
+
+  runDir = "/run/wiki-nomic";
 in
 {
   config = {
@@ -150,6 +152,28 @@ in
 
               // Temporarily prohibit registrations due to spam.
               $wgGroupPermissions['*']['createaccount'] = false;
+
+              # Allow putting the wiki into read-only mode by creating a file in a specific directory.
+              # We allow using multiple files so that, if two processes need to do it concurrently, they
+              # don't step on each other's toes.
+              if ($readOnlyHandle = opendir("${runDir}/read-only")) {
+                # Arbitrarily use the first file as the user-facing reason.
+                while (($readOnlyEntry = readdir($readOnlyHandle)) !== false) {
+                  if (($readOnlyEntry === ".") || ($readOnlyEntry === "..")) {
+                    continue;
+                  }
+
+                  $readOnlyReason = file_get_contents("${runDir}/read-only/" . $readOnlyEntry);
+
+                  # If we can't read the file, use a default message.
+                  if ($readOnlyReason === false) {
+                    $readOnlyReason = "This wiki is currently read-only.";
+                  }
+
+                  $wgReadOnly = $readOnlyReason;
+                  break;
+                }
+              }
             '';
           };
 
@@ -183,7 +207,22 @@ in
       extraFlags = [
         "--load-credential=smtp-pass:wiki-smtp-pass"
         "--load-credential=password-file:wiki-password-file"
+        "--bind-ro=${runDir}"
       ];
+    };
+
+    systemd.tmpfiles.settings.wiki-nomic = {
+      "${runDir}".d = {
+        user = config.users.users.root.name;
+        group = config.users.groups.root.name;
+        mode = "0755";
+      };
+
+      "${runDir}/read-only".d = {
+        user = config.users.users.root.name;
+        group = config.users.groups.root.name;
+        mode = "0755";
+      };
     };
 
     systemd.services."container@wiki" = {
