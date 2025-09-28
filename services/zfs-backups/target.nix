@@ -206,6 +206,9 @@ in
             startAt = lib.mkForce [ m.interval ];
 
             unitConfig = {
+              # Garbage collect the unit so that nixos-rebuild switch doesn't fail due to missed backups.
+              CollectMode = "inactive-or-failed";
+
               StartLimitBurst = 2;
               StartLimitIntervalSec = "1 hour";
             };
