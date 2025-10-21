@@ -51,6 +51,7 @@
 
       shellAliases = {
         ls = "eza -l";
+        rm = "rm -Iv --one-file-system";
       };
     };
 
