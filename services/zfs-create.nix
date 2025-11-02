@@ -128,6 +128,7 @@ in
               in
               ''
                 set -euo pipefail
+                set -x
 
                 printf "Attempting to create dataset %s\n" ${lib.escapeShellArg datasetName}
                 ${lib.escapeShellArgs ([ zfsBin "create" ] ++ createOpts)}
@@ -152,6 +153,8 @@ in
             };
 
             script = ''
+              set -x
+
               ${lib.concatMapStringsSep "\n" ({ name, value }: lib.escapeShellArgs [
                 zfsBin
                 "allow"
@@ -163,6 +166,8 @@ in
             '';
 
             postStop = ''
+              set -x
+
               ${lib.concatMapStringsSep "\n" ({ name, value }: lib.escapeShellArgs [
                 zfsBin
                 "unallow"
