@@ -39,17 +39,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    lix = {
-      url = "git+https://git.lix.systems/lix-project/lix";
-      flake = false;
-    };
-
-    lix-module = {
-      url = "git+https://git.lix.systems/lix-project/nixos-module";
-      inputs.lix.follows = "lix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     qenyaNixfiles = {
       url = "git+https://git.qenya.tel/qenya/nixfiles.git";
 
@@ -70,7 +59,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, colmena, flake-utils, lix-module, lanzaboote, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, colmena, flake-utils, lanzaboote, ... }@inputs:
     let
       lib = nixpkgs.lib;
 
@@ -88,26 +77,11 @@
         };
       };
 
-      lixCache = {
-        config = {
-          nix.settings.extra-substituters = [
-            "https://cache.lix.systems"
-          ];
-
-          nix.settings.trusted-public-keys = [
-            "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
-          ];
-        };
-      };
-
       commonModules = [
         systemConfigurationRevision
 
         home-manager.nixosModules.home-manager
         homeManagerNurOverlay
-
-        lix-module.nixosModules.default
-        lixCache
 
         lanzaboote.nixosModules.lanzaboote
       ];
