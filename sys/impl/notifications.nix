@@ -87,6 +87,8 @@ in
       # 
       # password-script is a string that, when eval-ed, prints the SMTP password on stdout.
       notifyScript = pkgs.writeShellScript "notify-sendmail" ''
+        set -eu -o pipefail
+
         exec ${lib.escapeShellArg "${pkgs.msmtp}/bin/msmtp"} \
             --host=${lib.escapeShellArg cfg.mail.smtp.host} \
             --port=${lib.escapeShellArg cfg.mail.smtp.port} \
@@ -265,7 +267,7 @@ in
           ZED_SCRUB_AFTER_RESILVER = true;
 
           ZED_EMAIL_PROG = "${pkgs.writeShellScript "zed-sendmail" ''
-            set -euo pipefail
+            set -eu -o pipefail
 
             {
                 echo "Subject: $2"
