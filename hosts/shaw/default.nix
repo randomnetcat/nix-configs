@@ -48,6 +48,8 @@
       };
     };
 
+    services.tuned.enable = true;
+
     # Fix issue with systemd stuff running out of inotify watches.
     boot.kernel.sysctl = {
       "fs.inotify.max_user_watches" = 542288;
