@@ -17,6 +17,7 @@ in
 {
   config = {
     users.users.archive = {
+      uid = 2000;
       isNormalUser = true;
       group = "archive";
 
@@ -29,7 +30,9 @@ in
       openssh.authorizedKeys = (config.users.users.randomcat.openssh.authorizedKeys or { });
     };
 
-    users.groups.archive = { };
+    users.groups.archive = {
+      gid = config.users.users.archive.uid;
+    };
 
     randomcat.services.zfs.datasets = lib.mkMerge (
       [
