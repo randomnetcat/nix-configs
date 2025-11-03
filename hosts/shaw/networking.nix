@@ -32,8 +32,8 @@
     };
 
     # For container support
-    # networking.nat.enable = true;
-    # networking.nat.externalInterface = "enp0s4";
-    # networking.nat.internalInterfaces = [ "ve-+" ];
+    networking.nat.enable = true;
+    networking.nat.externalInterface = "enp3s0";
+    networking.nat.internalInterfaces = [ "ve-+" ];
   };
 }

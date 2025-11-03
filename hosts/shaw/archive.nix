@@ -52,5 +52,40 @@ in
         })
         archiveDatasets)
     );
+
+    containers.archive = {
+      config = { pkgs, ... }: {
+        environment.systemPackages = [
+          pkgs.wireguard-tools
+          pkgs.python3
+          pkgs.yt-dlp
+          pkgs.deno
+          pkgs.ffmpeg
+        ];
+
+        users.users.archive = {
+          isNormalUser = true;
+
+          uid = config.users.users.archive.uid;
+          group = "archive";
+        };
+
+        users.groups.archive = {
+          gid = config.users.groups.archive.gid;
+        };
+      };
+
+      privateUsers = "pick";
+      privateNetwork = true;
+
+      localAddress = "10.232.149.12";
+      hostAddress = "10.232.148.12";
+      localAddress6 = "fd50:fe53:b223:1::2";
+      hostAddress6 = "fd50:fe53:b223:2::2";
+
+      extraFlags = [
+        "--bind=/srv/archive/youtube:/srv/archive/youtube:owneridmap"
+      ];
+    };
   };
 }
