@@ -416,11 +416,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1762721397,
-        "narHash": "sha256-E428EuouA4nFTNlLuqlL4lVR78X+EbBIqDqsBFnB79w=",
+        "lastModified": 1762787259,
+        "narHash": "sha256-t2U/GLLXHa2+kJkwnFNRVc2fEJ/lUfyZXBE5iKzJdcs=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "b8645b18b0f5374127bbade6de7381ef0b3d5720",
+        "rev": "37a3d97f2873e0f68711117c34d04b7c7ead8f4e",
         "type": "github"
       },
       "original": {
@@ -600,11 +600,11 @@
     },
     "nixpkgsSmall": {
       "locked": {
-        "lastModified": 1762721782,
-        "narHash": "sha256-ftv0n3xkKawHQgxZ6FGr2F1GdaYT/79aESm4t1LQ6X4=",
+        "lastModified": 1762808364,
+        "narHash": "sha256-nwxa9s+cjXZyFuTdFSKP5enPmhLfVOnNLlMhF25Uyf4=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "e5d07586ec39f74b390308f2e00040c23bdef530",
+        "rev": "e1ce86c3e40327779390e98edab843d4a1cc9224",
         "type": "github"
       },
       "original": {
@@ -652,11 +652,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1762738330,
-        "narHash": "sha256-Kz1N+165TK/0rhx//Z8yqMGwuHb/NF87g/U+tibSPNE=",
+        "lastModified": 1762823996,
+        "narHash": "sha256-vsEB9vpCSSLk7Fi2QjlylwmDcyBbF/vCPw0kpijEsTw=",
         "owner": "nix-community",
         "repo": "nur",
-        "rev": "b426f46516c8c6e15c83a14b9d765491003d692d",
+        "rev": "f0767215468947c9092c54842a72a5e64fdf327e",
         "type": "github"
       },
       "original": {
@@ -787,11 +787,11 @@
         "scoutshonour": "scoutshonour"
       },
       "locked": {
-        "lastModified": 1762618945,
-        "narHash": "sha256-K/rjW5Ny/GNSF8X2wE13/f0czrHKeYITSAUEFUA6gwM=",
+        "lastModified": 1762821912,
+        "narHash": "sha256-8blD40jL1y2KkhraN1pPXb8ryaQWmn9eeiq9RQTpR8Q=",
         "ref": "refs/heads/main",
-        "rev": "132b4f945c51fbdd27c05aed7c970862f462779d",
-        "revCount": 459,
+        "rev": "d86b2faf8cce79690d9b4b58da69717b9ed2242d",
+        "revCount": 461,
         "type": "git",
         "url": "https://git.qenya.tel/qenya/nixfiles.git"
       },
