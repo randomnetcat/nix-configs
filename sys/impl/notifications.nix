@@ -141,13 +141,6 @@ in
 
           enableStrictShellChecks = true;
 
-          script = lib.mkBefore ''
-            set -eu -o pipefail
-
-            service_name="$1"
-            host=${lib.escapeShellArg config.networking.hostName}
-          '';
-
           scriptArgs = "%i";
 
           unitConfig = {
@@ -167,6 +160,7 @@ in
             CapabilityBoundingSet = "";
             LockPersonality = true;
             PrivateDevices = true;
+            PrivateTmp = true;
             PrivateUsers = true;
             ProtectClock = true;
             ProtectControlGroups = true;
@@ -179,78 +173,86 @@ in
             RestrictNamespaces = true;
             SystemCallArchitectures = "native";
             SystemCallFilter = [ "@system-service" "~@privileged @resources" ];
+
+            LoadCredentialEncrypted = lib.concatLists [
+              (lib.optional cfg.discord.enable "notify-discord-webhook:${cfg.discord.webhookUrlCredential}")
+              (lib.optional cfg.mail.enable "notify-email-password:${cfg.mail.smtp.passwordEncryptedCredentialPath}")
+            ];
           };
-        }
 
-        (lib.mkIf cfg.discord.enable {
-          script = ''
-            send_by_discord() {
-              local webhook_url
-              webhook_url="$(cat -- "$CREDENTIALS_DIRECTORY"/notify-discord-webhook)"
+          path = lib.mkMerge [
+            (lib.mkIf cfg.discord.enable [
+              pkgs.curl
+              pkgs.jq
+            ])
 
-              local body
-              body="$(mktemp)"
-
-              local embed
-              embed="$(jq -n '$ARGS.named' \
-                --arg title "Service failure" \
-                --arg description "The following service has failed: \`$service_name\`." \
-                --argjson footer "$(jq -n '$ARGS.named' \
-                  --arg text "Host: $host" \
-                )" \
-                --argjson color 16711680 \
-              )"
-
-              jq -n '$ARGS.named' \
-                --argjson embeds "$(jq -s <<< "$embed")" \
-                > "$body"
-
-              curl -X POST -H "Content-Type: application/json" --data @"$body" -K - <<< "url = \"$webhook_url\""
-            }
-
-            send_by_discord || echo "Failed to send notification by Discord." > /dev/stderr
-          '';
-
-          path = [
-            pkgs.curl
-            pkgs.jq
+            (lib.mkIf cfg.mail.enable [
+              pkgs.msmtp
+            ])
           ];
 
-          serviceConfig = {
-            LoadCredentialEncrypted = [
-              "notify-discord-webhook:${cfg.discord.webhookUrlCredential}"
-            ];
-          };
-        })
+          script =
+            let
+              subscript = { name, description }: script: ''
+                # Run this as a completely separate script so that set -eu works correctly on the LHS of ||.
+                ${pkgs.writeShellScript "send-${name}" ''
+                  set -eu -o pipefail
 
-        (lib.mkIf cfg.mail.enable {
-          script = ''
-            send_by_mail() {
-              local logs_file
-              logs_file="$(mktemp)"
+                  ${script}
+                ''} || {
+                  echo ${lib.escapeShellArg "Failed to send notification by ${description}."} 1>&2
+                  send_failed=1
+                }
+              '';
+            in
+            ''
+              set -eu -o pipefail
+              send_failed=0
 
-              journalctl -u "$service_name" -b -n100 > "$logs_file"
+              export service_name="$1"
+              export host=${lib.escapeShellArg config.networking.hostName}
 
-              {
-                  echo "Subject: [$host] Service failure: $service_name"
-                  echo ""
-                  echo "The service unit $service_name has failed on host $host. It is currently $(date -u)."
-                  echo ""
-                  echo "Up to 100 lines of journal context follow:"
-                  echo ""
-                  cat "$logs_file"
-              } | ${notifyScript} ${lib.escapeShellArg cfg.mail.recipient} "cat -- \"\$CREDENTIALS_DIRECTORY/notify-email-password\""
-            }
+              ${subscript { name = "discord"; description = "Discord webhook"; } ''
+                webhook_url="$(cat -- "$CREDENTIALS_DIRECTORY"/notify-discord-webhook)"
+                body="$(mktemp)"
 
-            send_by_mail || echo "Failed to send notification by mail." > /dev/stderr
-          '';
+                embed="$(jq -n '$ARGS.named' \
+                  --arg title "Service failure" \
+                  --arg description "The following service has failed: \`$service_name\`." \
+                  --argjson footer "$(jq -n '$ARGS.named' \
+                    --arg text "Host: $host" \
+                  )" \
+                  --argjson color 16711680 \
+                )"
 
-          serviceConfig = {
-            LoadCredentialEncrypted = [
-              "notify-email-password:${cfg.mail.smtp.passwordEncryptedCredentialPath}"
-            ];
-          };
-        })
+                jq -n '$ARGS.named' \
+                  --argjson embeds "$(jq -s <<< "$embed")" \
+                  > "$body"
+
+                curl -X POST -H "Content-Type: application/json" --data @"$body" -K - <<< "url = \"$webhook_url\""
+              ''}
+
+              ${subscript { name = "mail"; description = "email"; } ''
+                logs_file="$(mktemp)"
+                journalctl -u "$service_name" -b -n100 > "$logs_file"
+
+                {
+                    echo "Subject: [$host] Service failure: $service_name"
+                    echo ""
+                    echo "The service unit $service_name has failed on host $host. It is currently $(date -u)."
+                    echo ""
+                    echo "Up to 100 lines of journal context follow:"
+                    echo ""
+                    cat "$logs_file"
+                } | ${notifyScript} ${lib.escapeShellArg cfg.mail.recipient} "cat -- \"\$CREDENTIALS_DIRECTORY/notify-email-password\""
+              ''}
+
+              if [[ "$send_failed" != "0" ]]; then
+                echo "At least one message failed to be sent." 1>&2
+                exit 1
+              fi
+            '';
+        }
       ];
 
       services.zfs.zed = lib.mkIf cfg.mail.enable {
