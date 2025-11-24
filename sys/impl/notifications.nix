@@ -193,7 +193,7 @@ in
 
           script =
             let
-              subscript = { name, description }: script: ''
+              subscript = { enable, name, description }: script: lib.optionalString enable ''
                 # Run this as a completely separate script so that set -eu works correctly on the LHS of ||.
                 ${pkgs.writeShellScript "send-${name}" ''
                   set -eu -o pipefail
@@ -212,7 +212,7 @@ in
               export service_name="$1"
               export host=${lib.escapeShellArg config.networking.hostName}
 
-              ${subscript { name = "discord"; description = "Discord webhook"; } ''
+              ${subscript { enable = cfg.discord.enable; name = "discord"; description = "Discord webhook"; } ''
                 webhook_url="$(cat -- "$CREDENTIALS_DIRECTORY"/notify-discord-webhook)"
                 body="$(mktemp)"
 
@@ -232,7 +232,7 @@ in
                 curl -X POST -H "Content-Type: application/json" --data @"$body" -K - <<< "url = \"$webhook_url\""
               ''}
 
-              ${subscript { name = "mail"; description = "email"; } ''
+              ${subscript { enable = cfg.mail.enable; name = "mail"; description = "email"; } ''
                 logs_file="$(mktemp)"
                 journalctl -u "$service_name" -b -n100 > "$logs_file"
 
