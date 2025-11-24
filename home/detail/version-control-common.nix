@@ -10,7 +10,7 @@
     programs.git = {
       enable = true;
       aliases = { fpush = "push --force-with-lease"; };
-      package = pkgs.gitAndTools.gitFull;
+      package = pkgs.gitFull;
 
       ignores = [
         # Text editors
