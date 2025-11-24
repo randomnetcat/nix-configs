@@ -10,6 +10,7 @@
     ./zfs.nix
     ./networking.nix
     ./network-backup.nix
+    ./database.nix
 
     ./agorabot.nix
     ./remote-build.nix
