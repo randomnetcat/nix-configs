@@ -140,11 +140,6 @@ in
 
     systemd.sockets.export-metrics-proxy = lib.mkMerge [
       {
-        # We sometimes set DefaultDependencies=no below, so always ensure we
-        # have at least some ordering with the rest of startup.
-        wantedBy = [ "multi-user.target" ];
-        before = [ "multi-user.target" ];
-
         socketConfig = {
           Accept = false;
           ListenStream = cfg.port;
@@ -152,6 +147,11 @@ in
           BindToDevice = lib.mkIf (cfg.listenInterface != null) cfg.listenInterface;
         };
       }
+
+      (lib.mkIf (!cfg.tailscaleOnly) {
+        wantedBy = [ "multi-user.target" ];
+        before = [ "multi-user.target" ];
+      })
 
       (lib.mkIf cfg.tailscaleOnly {
         unitConfig = {
@@ -167,15 +167,22 @@ in
           DefaultDependencies = false;
         };
 
-        # Here, we are sure to include all DefaultDependencies other than
+        # Make this a dependency of the tailscale0 device rather than the
+        # multi-user.target. This should solve the issue with systemd waiting
+        # for tailscale0 to appear during early boot. (Also note the After=
+        # dependency below.)
+        wantedBy = [ "sys-subsystem-net-devices-tailscale0.device" ];
+        bindsTo = [ "sys-subsystem-net-devices-tailscale0.device" ];
+
+        # Below, we are sure to include all DefaultDependencies other than
         # Before=sockets.target.
 
         requires = [ "sysinit.target" ];
-        bindsTo = [ "tailscaled.service" ];
 
         after = [
           "sysinit.target"
           "tailscaled.service"
+          "sys-subsystem-net-devices-tailscale0.device"
         ];
 
         before = [ "shutdown.target" ];
