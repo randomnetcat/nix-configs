@@ -4,7 +4,7 @@ let
   cfg = config.randomcat.services.export-metrics;
   inherit (lib) types;
 
-  socketName = "/run/nginx/randomcat-export-metrics.sock";
+  socketName = "/run/nginx/sockets/export-metrics-proxy/listen.sock";
 in
 {
   options = {
@@ -52,12 +52,20 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    assertions = map
-      ({ name, value }: {
-        assertion = value.enableService -> value.localPort == null;
-        message = "In randomcat.services.export-metrics.exports.${name}: localPort must not be set if enableService is true.";
-      })
-      (lib.attrsToList cfg.exports);
+    assertions =
+      (
+        map
+          ({ name, value }: {
+            assertion = value.enableService -> value.localPort == null;
+            message = "In randomcat.services.export-metrics.exports.${name}: localPort must not be set if enableService is true.";
+          })
+          (lib.attrsToList cfg.exports)
+      ) ++ [
+        {
+          assertion = config.systemd.services.nginx.serviceConfig.RuntimeDirectory == "nginx";
+          message = "Expected nginx RuntimeDirectory to be 'nginx'.";
+        }
+      ];
 
     randomcat.services.export-metrics.listenInterface = lib.mkIf (cfg.tailscaleOnly) config.services.tailscale.interfaceName;
 
@@ -74,6 +82,12 @@ in
 
     services.nginx = {
       enable = true;
+
+      # We have to create these directories before starting nginx so that they always exist to be bind-mounted.
+      preStart = lib.mkBefore ''
+        mkdir -p -m 0700 -- "$RUNTIME_DIRECTORY/sockets"
+        mkdir -m 0777 -- "$RUNTIME_DIRECTORY/sockets/export-metrics-proxy"
+      '';
 
       virtualHosts."export-metrics" = {
         listen = [
@@ -109,11 +123,11 @@ in
         RuntimeDirectory = "export-metrics-proxy";
         RuntimeDirectoryMode = "0700";
 
-        # Ensure the service has access to the socket that nginx is listening on.
-        BindPaths = "${socketName}:/run/export-metrics-proxy/target.sock";
-
         Type = "exec";
-        ExecStart = "${lib.getLib config.systemd.package}/lib/systemd/systemd-socket-proxyd /run/export-metrics-proxy/target.sock";
+
+        # Bind the directory here because we create it before nginx actually starts. (We previously bound the socket, which resulted in a race condition.)
+        BindPaths = "${dirOf socketName}:/run/export-metrics-proxy/sockets";
+        ExecStart = "${lib.getLib config.systemd.package}/lib/systemd/systemd-socket-proxyd /run/export-metrics-proxy/sockets/listen.sock";
 
         CapabilityBoundingSet = "";
         LockPersonality = true;
