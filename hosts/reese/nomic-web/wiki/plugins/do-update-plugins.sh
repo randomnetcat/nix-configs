@@ -14,7 +14,7 @@ if ! [[ "$mw_raw_version" =~ ^.+\..*\..+$ ]]; then
 	{
 		echo "Unexpected MediaWiki version: $mw_raw_version"
 		echo "Expected a.b.c"
-	} > /dev/stderr
+	} >&2
 
 	exit 1
 fi
@@ -25,7 +25,7 @@ mw_release="$(printf '%s\n' "$mw_raw_version" | sed -E 's/^(.+)\.(.+)\.(.+)$/REL
 {
 	echo "Raw version: $mw_raw_version"
 	echo "Release: $mw_release"
-} > /dev/stderr
+} >&2
 
 work="$(mktemp -d)"
 
@@ -70,7 +70,7 @@ ia_create_new_snapshot_url() {
 }
 
 while read -r plugin_name; do
-	echo "Plugin: $plugin_name" > /dev/stderr
+	echo "Plugin: $plugin_name" >&2
 
 	plugin_url="$(cat -- "$work/plugin-urls" | grep -F -- "extensions/${plugin_name}-${mw_release}-")"
 
@@ -79,12 +79,12 @@ while read -r plugin_name; do
 			echo "Found unexpected plugin urls for plugin %s:" "$plugin_name"
 			printf '%s\n' "$plugin_url"
 			echo "Using first URL."
-		} > /dev/stderr
+		} >&2
 
 		plugin_url="$(printf '%s\n' "$plugin_url" | head -n 1)"
 	fi
 
-	echo "Raw URL: $plugin_url" > /dev/stderr
+	echo "Raw URL: $plugin_url" >&2
 
 	# Since the plugin URL is not guaranteed to be stable, try to archive it
 	# with the Internet Archive and use a snapshot URL. If this doesn't work,
@@ -110,7 +110,7 @@ while read -r plugin_name; do
 	{
 		echo "Effective URL: $effective_url"
 		echo "Hash: $prefetch_hash"
-	} > /dev/stderr
+	} >&2
 
 	jq_args+=(--argjson "$plugin_name" "$(jq -n '$ARGS.named' --arg 'url' "$effective_url" --arg 'hash' "$prefetch_hash")")
 done < ./plugin-names.txt
