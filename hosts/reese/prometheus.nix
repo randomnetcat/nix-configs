@@ -16,6 +16,7 @@ let
 
   alertNames = [
     "BackupsOld"
+    "ConfigOld"
     "ScrapeDownNonPortable"
     "ScrapeDownPortable"
   ];
@@ -88,6 +89,17 @@ in
                   "hostname"
                 ];
               }
+
+              {
+                matchers = [
+                  "alertname = ${alerts.ConfigOld}"
+                ];
+
+                group_by = [
+                  "alertname"
+                  "hostname"
+                ];
+              }
             ];
           };
         };
@@ -119,6 +131,12 @@ in
               expr: '(time() - randomcat_zfs_backups_last_snapshot_timestamp_seconds) / (24 * 60 * 60) > 2'
               annotations:
                 summary: "Backups for movement {{ $labels.movement }} on {{ $labels.hostname }} are out of date (more than 2 days old)."
+          - name: configuration
+            rules:
+            - alert: ${alerts.ConfigOld}
+              expr: '(time() - nixos_configuration_timestamp_seconds) / (24 * 60 * 60) > 2'
+              annotations:
+                summary: "Configuration for host {{ $labels.hostname }} is out of date (more than 2 days old)."
         ''
       ];
 
