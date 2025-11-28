@@ -20,6 +20,8 @@
 
     programs.tmux.enable = true;
 
+    randomcat.services.configuration-time-metric.enable = true;
+
     # Chosen to be when I am likely to be asleep
     system.autoUpgrade = {
       dates = "08:00";
