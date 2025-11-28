@@ -76,6 +76,7 @@ in
       lib.mapAttrsToList
         (name: value: {
           "periodic-metrics-${name}" = {
+            wantedBy = [ "multi-user.target" ];
             startAt = "*:0/15:00";
 
             serviceConfig = {
