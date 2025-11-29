@@ -32,7 +32,7 @@
     ];
 
     # Cannot reboot due to disk encryption.
-    system.autoUpgrade.rebootWindow = null;
+    system.autoUpgrade.allowReboot = false;
 
     services.fwupd.enable = true;
 
