@@ -4,15 +4,13 @@
   imports = [
     ./hardware-configuration.nix
 
-    ../../presets/personal-machine.nix
+    ../../presets/server.nix
 
     ./mounts/system
 
     ./boot.nix
     ./ephemeral.nix
     ./filesystem.nix
-    ./gaming.nix
-    ./graphical.nix
     ./networking.nix
     ./ssh.nix
     ./streaming.nix
