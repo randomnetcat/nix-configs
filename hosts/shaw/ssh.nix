@@ -7,7 +7,6 @@
       openFirewall = true;
 
       settings = {
-        PermitRootLogin = "no";
         AuthenticationMethods = "publickey";
         KbdInteractiveAuthentication = false;
         PasswordAuthentication = false;
