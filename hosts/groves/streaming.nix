@@ -76,6 +76,7 @@
       extraGroups = [
         "archive" # for file permissions
         "render" # for hardware transcoding
+        "video" # for hardware transcoding
       ];
 
       packages = [
