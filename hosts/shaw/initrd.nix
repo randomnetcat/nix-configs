@@ -18,8 +18,21 @@ in
         enable = true;
 
         # Reuse existing definitions for these interfaces.
-        networks."50-enp3s0" = config.systemd.network.networks."50-enp3s0";
-        networks."50-enp4s0" = config.systemd.network.networks."50-enp4s0";
+        networks."50-enp3s0" = lib.mkMerge [
+         config.systemd.network.networks."50-enp3s0"
+
+         {
+           linkConfig.MACAddress = "FE:90:40:66:25:09";
+         }
+        ];
+
+        networks."50-enp4s0" = lib.mkMerge [
+          config.systemd.network.networks."50-enp4s0"
+
+          {
+            linkConfig.MACAddress = "6A:83:E5:37:69:FB";
+          }
+        ];
       };
     };
 
