@@ -101,6 +101,7 @@
         pkgs.intel-vaapi-driver
         pkgs.libva-vdpau-driver
         pkgs.libvdpau-va-gl
+        pkgs.vpl-gpu-rt
       ];
     };
   };
