@@ -10,11 +10,6 @@
       memtest86.enable = true;
     };
 
-    boot.lanzaboote = {
-      enable = true;
-      pkiBundle = "/etc/secureboot";
-    };
-
     boot.loader.efi = {
       canTouchEfiVariables = true;
       efiSysMountPoint = "/boot";
