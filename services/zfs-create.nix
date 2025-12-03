@@ -110,34 +110,41 @@ in
               RemainAfterExit = true;
             };
 
-            script =
-              let
-                optionValues = (lib.mapAttrsToList (name: value: "${name}=${value}") zfsOptions);
+            script = ''
+              set -euo pipefail
+              set -x
 
-                createOpts =
-                  [ "-p" "-u" ] ++
-                  (lib.concatMap (arg: [ "-o" arg ]) optionValues) ++
-                  [ datasetName ];
+              zfs=${lib.escapeShellArg zfsBin}
 
-                setOpts =
-                  if lib.length optionValues != 0 then
-                    [ "-u" ] ++
-                    optionValues ++
-                    [ datasetName ]
-                  else null;
-              in
-              ''
-                set -euo pipefail
-                set -x
+              printf "Attempting to create dataset %s\n" ${lib.escapeShellArg datasetName} >&2
 
-                printf "Attempting to create dataset %s\n" ${lib.escapeShellArg datasetName}
-                ${lib.escapeShellArgs ([ zfsBin "create" ] ++ createOpts)}
+              "$zfs" create -p -u ${lib.escapeShellArgs (
+                lib.concatLists (
+                  lib.mapAttrsToList
+                    (name: value: [ "-o" "${name}=${value}" ])
+                    zfsOptions
+                )
+              )} -- ${lib.escapeShellArg datasetName}
+              
+              printf "Updating options for dataset %s\n" ${lib.escapeShellArg datasetName} >&2
 
-                ${lib.optionalString (setOpts != null) ''
-                  printf "Updating options for dataset %s\n" ${lib.escapeShellArg datasetName}
-                  ${lib.escapeShellArgs ([ zfsBin "set" ] ++ setOpts)}
-                ''}
-              '';
+              ${lib.concatStringsSep "\n" (
+                lib.mapAttrsToList
+                  (name: value: ''
+                    current="$("$zfs" get -Ho value -- ${lib.escapeShellArgs [ name datasetName ]})"
+                    source="$("$zfs" get -Ho source -- ${lib.escapeShellArgs [ name datasetName ]})"
+                    expected=${lib.escapeShellArg value}
+
+                    # Update the value if it is not the expected value or if it
+                    # has been inherited from a parent dataset.
+                    if [[ "$current" != "$expected" ]] || [[ "$source" != "local" ]]; then
+                      printf "Updating option %s for dataset %s to %s\n" ${lib.escapeShellArgs [ name datasetName value ]} >&2
+                      "$zfs" set -u -- ${lib.escapeShellArgs [ "${name}=${value}" datasetName ]}
+                    fi
+                  '')
+                  zfsOptions
+              )}
+            '';
           };
 
           "${permsServiceName datasetName}" = lib.mkIf ((lib.length permissionEntries) != 0) {
