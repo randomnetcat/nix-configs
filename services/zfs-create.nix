@@ -48,7 +48,8 @@ let
   createServiceName = datasetName: "zfs-create-${lib.replaceStrings ["/"] ["-"] datasetName}";
   permsServiceName = datasetName: "zfs-permissions-${lib.replaceStrings ["/"] ["-"] datasetName}";
 
-  zfsBin = lib.getExe' config.boot.zfs.package "zfs";
+  # Always use the ZFS from initial boot in order to guarantee compatibility with the kernel module.
+  zfsBin = "/run/booted-system/sw/bin/zfs";
   isNixDataset = fs: fs.mountpoint != null && !(lib.elem fs.mountpoint specialMountpoints);
   nixDatasets = lib.filter isNixDataset (lib.attrValues cfg.datasets);
 in
