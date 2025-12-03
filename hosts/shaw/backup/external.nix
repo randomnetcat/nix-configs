@@ -2,6 +2,15 @@
 
 let
   targetPath = "/mnt/birdhouse/restic/repo";
+
+  extraBackupPaths = [
+    "/srv/archive/internet"
+    "/srv/archive/media/bluray"
+    "/srv/archive/media/dvd"
+    "/srv/archive/ncsu-google"
+    "/srv/archive/nebula"
+    "/srv/archive/nomic"
+  ];
 in
 {
   config = {
@@ -121,7 +130,7 @@ in
           ambient-caps = "-all,+dac_read_search";
           clear-groups = true;
           no-new-privs = true;
-        }} -- restic --repo "$repo" backup --json -- "$backups_dir"
+        }} -- restic --repo "$repo" backup --json -- "$backups_dir" ${lib.escapeShellArgs extraBackupPaths}
       '';
     };
   };
