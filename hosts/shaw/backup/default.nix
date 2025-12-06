@@ -2,9 +2,9 @@
 
 {
   imports = [
+    ./external.nix
     ./network-target.nix
     ./prune.nix
-
-    ./external.nix
+    ./snapshots.nix
   ];
 }

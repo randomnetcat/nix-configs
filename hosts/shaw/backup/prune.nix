@@ -1,12 +1,12 @@
 { config, lib, pkgs, ... }:
 
 {
+  imports = [
+    ./sanoid-defaults.nix
+  ];
+
   config = {
     services.sanoid = {
-      enable = true;
-      interval = "*:0/15";
-      extraArgs = [ "--verbose" "--debug" ];
-
       templates."safe_backup" = {
         yearly = 999999;
         monthly = 999999;
