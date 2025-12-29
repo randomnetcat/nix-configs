@@ -32,9 +32,7 @@ in
     pkgs.strawberry
     pkgs.makemkv
     pkgs.helvum
+    pkgs.jellyfin-media-player
     wrappedVlc
-
-    # Temporarily broken (2025-09-03).
-    # pkgs.jellyfin-media-player
   ];
 }
