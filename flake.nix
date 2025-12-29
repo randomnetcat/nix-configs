@@ -52,9 +52,14 @@
       url = "github:randomnetcat/assessor-thesis/nix";
       # Don't set nixpkgs to follow because we aren't linking any binaries from this.
     };
+
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/e8c096ade12ec9130ff931b0f0e25d2f1bc63607";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, colmena, flake-utils, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, colmena, flake-utils, lanzaboote, ... }@inputs:
     let
       lib = nixpkgs.lib;
 
@@ -77,6 +82,8 @@
 
         home-manager.nixosModules.home-manager
         homeManagerNurOverlay
+
+        lanzaboote.nixosModules.lanzaboote
       ];
 
       systemModules = path: commonModules ++ [ path ];
