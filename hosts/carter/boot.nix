@@ -5,9 +5,22 @@
     boot.loader.grub.enable = false;
 
     boot.loader.systemd-boot = {
-      enable = true;
+      enable = false;
+
+      # The default Lanzaboote configuration reads this value.
       editor = false;
-      memtest86.enable = true;
+    };
+
+    boot.lanzaboote = {
+      enable = true;
+      pkiBundle = "/var/lib/sbctl";
+
+      autoGenerateKeys.enable = true;
+
+      autoEnrollKeys = {
+        enable = true;
+        autoReboot = true;
+      };
     };
 
     boot.loader.efi = {
