@@ -17,6 +17,7 @@ let
   alertNames = [
     "BackupsOld"
     "ConfigOld"
+    "DiskFreeLow"
     "ScrapeDownNonPortable"
     "ScrapeDownPortable"
   ];
@@ -100,6 +101,19 @@ in
                   "hostname"
                 ];
               }
+
+              {
+                matchers = [
+                  "alertname = ${alerts.DiskFreeLow}"
+                ];
+
+                repeat_interval = "24h";
+
+                group_by = [
+                  "alertname"
+                  "hostname"
+                ];
+              }
             ];
           };
         };
@@ -137,6 +151,12 @@ in
               expr: '(time() - nixos_configuration_timestamp_seconds) / (24 * 60 * 60) > 2'
               annotations:
                 summary: "Configuration for host {{ $labels.hostname }} is out of date (more than 2 days old)."
+          - name: disk
+            rules:
+            - alert: ${alerts.DiskFreeLow}
+              expr: 'node_filesystem_free_bytes{mountpoint=~"/|/nix(/store)?|/boot|/var(/lib)?|/tmp|/var/tmp"} / node_filesystem_size_bytes < 0.1'
+              annotations:
+                summary: "Host {{ $labels.hostname }} has less than 10% free disk space on {{ $labels.mountpoint }}"
         ''
       ];
 
