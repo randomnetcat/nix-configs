@@ -5,10 +5,12 @@
     ../../sys/impl/networking/wifi.nix
   ];
 
-  options = { };
-
   config = {
     # Let NetworkManager handle DHCP
     networking.useDHCP = false;
+
+    environment.systemPackages = [
+      pkgs.wireguard-tools
+    ];
   };
 }
