@@ -36,6 +36,10 @@
 
     services.fwupd.enable = true;
 
+    environment.systemPackages = [
+      pkgs.fw-ectool
+    ];
+
     # Ensure that builds don't consume *all* of the available CPU.
     nix.settings.max-jobs = 12;
 
