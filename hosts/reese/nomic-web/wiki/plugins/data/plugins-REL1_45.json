@@ -8,7 +8,7 @@
     "hash": "sha256-HjkSImPRTXzwBu9H1yzfTa/vKnH2dPYqJn32X0DuuA8="
   },
   "MobileFrontend": {
-    "url": "https://web.archive.org/web/20251228022713if_/https://extdist.wmflabs.org/dist/extensions/MobileFrontend-REL1_45-2bccb7e.tar.gz",
+    "url": "https://extdist.wmflabs.org/dist/extensions/MobileFrontend-REL1_45-2bccb7e.tar.gz",
     "hash": "sha256-plQ5hgFO3k/Pz8TAigx3vT3aW+ZtyvM6Vv1lCUbfVCE="
   }
 }
