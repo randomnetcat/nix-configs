@@ -2,6 +2,8 @@
 
 {
   config = {
-    programs.adb.enable = true;
+    environment.systemPackages = [
+      pkgs.android-tools
+    ];
   };
 }
