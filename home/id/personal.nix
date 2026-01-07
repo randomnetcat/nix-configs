@@ -3,8 +3,10 @@
 {
   config = {
     programs.git = {
-      userEmail = "git@randomcat.org";
-      userName = "Janet Cobb";
+      settings = {
+        user.name = "Janet Cobb";
+        user.email = "git@randomcat.org";
+      };
     };
   };
 }

@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  config = lib.mkIf (config.services.xserver.desktopManager.gnome.enable) {
+  config = lib.mkIf (config.services.desktopManager.gnome.enable) {
     services.gnome.gnome-keyring.enable = true;
   };
 }

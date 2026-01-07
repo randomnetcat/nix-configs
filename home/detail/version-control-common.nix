@@ -9,7 +9,6 @@
   config = {
     programs.git = {
       enable = true;
-      aliases = { fpush = "push --force-with-lease"; };
       package = pkgs.gitFull;
 
       ignores = [
@@ -33,13 +32,20 @@
         "local"
       ];
 
-      difftastic.enable = true;
-
-      extraConfig = {
+      settings = {
         pull.rebase = true;
         push.autoSetupRemote = true;
         init.defaultBranch = "main";
+
+        aliases = {
+          fpush = "push --force-with-lease";
+        };
       };
+    };
+
+    programs.difftastic = {
+      enable = true;
+      git.enable = true;
     };
   };
 }
