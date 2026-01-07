@@ -70,6 +70,8 @@ in
                   "alertname =~ ^(${alerts.ScrapeDownNonPortable}|${alerts.ScrapeDownPortable})$"
                 ];
 
+                repeat_interval = "24h";
+
                 group_by = [
                   "alertname"
                   "hostname"
@@ -95,6 +97,8 @@ in
                 matchers = [
                   "alertname = ${alerts.ConfigOld}"
                 ];
+
+                repeat_interval = "48h";
 
                 group_by = [
                   "alertname"
