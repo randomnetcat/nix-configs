@@ -80,8 +80,10 @@ let
         default = true;
       };
 
-      alertOnServiceFailure = (lib.mkEnableOption "systemd failure notifications") // {
-        default = true;
+      ignoreFailure = lib.mkOption {
+        type = types.bool;
+        description = "Whether to ignore failures in the backup for this movement (e.g. because the source is not always on).";
+        default = false;
       };
     };
 
@@ -206,9 +208,6 @@ in
             startAt = lib.mkForce [ m.interval ];
 
             unitConfig = {
-              # Garbage collect the unit so that nixos-rebuild switch doesn't fail due to missed backups.
-              CollectMode = "inactive-or-failed";
-
               StartLimitBurst = 2;
               StartLimitIntervalSec = "1 hour";
             };
@@ -217,6 +216,17 @@ in
               Restart = "on-failure";
               RestartSec = "1 hour";
               TimeoutStartSec = "2 hours";
+
+              # If failures should be ignored, tell systemd to treat all of these exit statuses
+              # as successful.
+              #
+              # (These are the exit statuses observed to occur in practice during backups that
+              # fail due to an inaccessible machine.)
+              SuccessExitStatus = lib.mkIf m.ignoreFailure [
+                0
+                1
+                2
+              ];
 
               LoadCredentialEncrypted = "sync-key:${cfg.encryptedSyncKey}";
             };
@@ -235,6 +245,6 @@ in
         })
         movements);
 
-      randomcat.notifications.disabledServices = (map (m: "syncoid-${commandNameFor m}.service") (lib.filter (m: !m.alertOnServiceFailure) movements));
+      randomcat.notifications.disabledServices = (map (m: "syncoid-${commandNameFor m}.service") (lib.filter (m: m.ignoreFailure) movements));
     };
 }

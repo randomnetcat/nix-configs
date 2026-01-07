@@ -30,8 +30,10 @@ let
         description = "The name of the host to backup to";
       };
 
-      alertOnServiceFailure = (lib.mkEnableOption "systemd failure notifications") // {
-        default = !(networkCfg.hosts."${config.sourceHost}".isPortable);
+      ignoreFailure = lib.mkOption {
+        type = types.bool;
+        description = "Whether to ignore failures that occur during this backup.";
+        default = networkCfg.hosts."${config.sourceHost}".isPortable;
       };
 
       datasets = lib.mkOption {

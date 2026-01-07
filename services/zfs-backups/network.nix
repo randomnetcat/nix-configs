@@ -24,7 +24,7 @@ let
       syncoidTag = movementSyncoidTag networkMovement;
       enableSyncSnapshots = true;
 
-      inherit (networkMovement) alertOnServiceFailure;
+      inherit (networkMovement) ignoreFailure;
     })
     networkMovement.datasets;
 
