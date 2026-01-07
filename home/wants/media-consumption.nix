@@ -1,16 +1,8 @@
 { config, lib, pkgs, ... }:
 
 let
-  blurayJava = pkgs.jdk17;
-
-  rawVlc = pkgs.vlc.override {
-    libbluray = pkgs.libbluray.override {
-      jdk17 = blurayJava;
-      withAACS = true;
-      withBDplus = true;
-      withJava = true;
-    };
-  };
+  blurayJava = pkgs.jdk21_headless;
+  rawVlc = pkgs.vlc;
 
   # libbluray breaks with Java that is too recent. (It appears that it pokes around in JDK
   # internals that have since changed.) As a workaround, set JAVA_HOME when using VLC
