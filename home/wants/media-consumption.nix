@@ -3,9 +3,11 @@
 let
   blurayJava = pkgs.jdk17;
 
-  rawVlc = pkgs.vlc.overrideAttrs {
-    libbluray-full = pkgs.libbluray-full.overrideAttrs {
-      libbluray = pkgs.libbluray.overrideAttrs {
+  rawVlc = pkgs.vlc.override {
+    libbluray-full = pkgs.libbluray-full.override {
+      libbluray = pkgs.libbluray.override {
+        withAACS = true;
+        withBDplus = true;
         jdk21_headless = blurayJava;
       };
     };
