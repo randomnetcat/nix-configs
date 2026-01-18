@@ -50,6 +50,7 @@
       '';
 
       shellAliases = {
+        cp = "cp -i";
         ls = "eza -l";
         mv = "mv -i";
         rm = "rm -Iv --one-file-system";
