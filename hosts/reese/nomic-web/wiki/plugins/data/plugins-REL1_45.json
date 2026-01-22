@@ -4,7 +4,7 @@
     "hash": "sha256-kUPRW920R8U3C3lbyGAVwwVIXvAnj6iG38JZ+/D9Rbw="
   },
   "DarkMode": {
-    "url": "https://web.archive.org/web/20260101022734if_/https://extdist.wmflabs.org/dist/extensions/DarkMode-REL1_45-769cde0.tar.gz",
+    "url": "https://extdist.wmflabs.org/dist/extensions/DarkMode-REL1_45-769cde0.tar.gz",
     "hash": "sha256-HjkSImPRTXzwBu9H1yzfTa/vKnH2dPYqJn32X0DuuA8="
   },
   "MobileFrontend": {
