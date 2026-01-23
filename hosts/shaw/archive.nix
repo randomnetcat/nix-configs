@@ -73,6 +73,9 @@ in
         users.groups.archive = {
           gid = config.users.groups.archive.gid;
         };
+
+        networking.useHostResolvConf = false;
+        services.resolved.enable = true;
       };
 
       privateUsers = "pick";
