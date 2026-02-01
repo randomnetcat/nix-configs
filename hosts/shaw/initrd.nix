@@ -51,6 +51,7 @@ in
       # guaranteed by systemd.exec(5).
       extraConfig = ''
         HostKey /run/credentials/sshd.service/${hostKeyCredName}
+        ForceCommand ${lib.getExe' config.boot.initrd.systemd.package "systemd-tty-ask-password-agent"}
       '';
 
       authorizedKeys = [
