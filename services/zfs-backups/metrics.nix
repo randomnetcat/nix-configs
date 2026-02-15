@@ -30,13 +30,23 @@ in
 
         metric_name="randomcat_zfs_backups_last_snapshot_timestamp_seconds"
 
+        latest_snapshot_of() {
+          local dataset="$1"
+
+          ${zfsBin} list -Hp -t snapshot -o name,creation -- "$dataset" \
+            | grep -v syncoid \
+            | cut -f 2 \
+            | sort -n \
+            | tail -n 1
+        }
+
         produce_movement() {
           local movement_name="$1"
           local movement_dataset="$2"
 
           ${zfsBin} list -Hr -o name -- "$movement_dataset" | while IFS="" read -r child_dataset; do
             local last_snapshot
-            last_snapshot="$(${zfsBin} list -Hp -t snapshot -o creation -- "$child_dataset" | tail -n 1)"
+            last_snapshot="$(latest_snapshot_of "$child_dataset")" || last_snapshot=""
 
             if [[ -z "$last_snapshot" ]]; then
               echo "Found no snapshot time for $child_dataset?" 1>&2
