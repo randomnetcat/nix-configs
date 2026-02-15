@@ -8,6 +8,7 @@
 
     ./mounts/system
 
+    ./backup.nix
     ./boot.nix
     ./ephemeral.nix
     ./filesystem.nix
