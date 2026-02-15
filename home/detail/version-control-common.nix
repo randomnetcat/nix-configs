@@ -37,7 +37,7 @@
         push.autoSetupRemote = true;
         init.defaultBranch = "main";
 
-        aliases = {
+        alias = {
           fpush = "push --force-with-lease";
         };
       };
