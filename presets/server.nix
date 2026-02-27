@@ -22,6 +22,10 @@
 
     randomcat.services.configuration-time-metric.enable = true;
 
+    # Prevent upgrade to broken kernel 6.19.4.
+    # WHEN REMOVING: also unpin from shaw.
+    boot.kernelPackages = pkgs.linuxPackages_6_18;
+
     # Chosen to be when I am likely to be asleep
     system.autoUpgrade = {
       dates = "08:00";

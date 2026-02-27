@@ -31,7 +31,7 @@
     #
     # [0]: https://github.com/NixOS/nixpkgs/pull/213773
 
-    boot.kernelPackages = pkgs.linuxPackages.extend (self: super: {
+    boot.kernelPackages = lib.mkForce (pkgs.linuxPackages_6_18.extend (self: super: {
       it87 = super.it87.overrideAttrs (old: rec {
         name = "it87-${version}-${self.kernel.version}";
         version = "unstable-2023-11-11";
@@ -48,7 +48,7 @@
           "COMPRESS_XZ=y"
         ];
       });
-    });
+    }));
 
     boot.extraModulePackages = [
       config.boot.kernelPackages.it87
