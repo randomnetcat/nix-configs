@@ -24,7 +24,9 @@ in
       packages = [
         pkgs.yt-dlp
         pkgs.rclone
-        pkgs.makemkv
+
+        # Temporarily removed due to build failure.
+        # pkgs.makemkv
       ];
 
       openssh.authorizedKeys = (config.users.users.randomcat.openssh.authorizedKeys or { });
