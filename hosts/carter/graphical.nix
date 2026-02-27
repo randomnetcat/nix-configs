@@ -6,7 +6,7 @@
   ];
 
   config = {
-    services.xserver.videoDrivers = [ "amd" ];
+    services.xserver.videoDrivers = [ "amdgpu" ];
     boot.initrd.kernelModules = [ "amdgpu" ];
 
     # Fix graphical artifacts
