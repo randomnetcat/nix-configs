@@ -3,6 +3,7 @@
 {
   imports = [
     ./common.nix
+    ../services/export-metrics.nix
     ../sys/wants/tailscale.nix
     ../sys/wants/auto-upgrade/auto-reboot.nix
     ../sys/impl/auto-prune-system.nix
@@ -58,7 +59,23 @@
 
     # Might as well just add the keys for randomcat here, given passwordless sudo.
     users.users.root.openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDHagOaeTR+/7FL9sErciMw30cmV/VW8HU7J3ZFU5nj9 janet@randomcat.org"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDHagOaeTR+/7FL9sErciMw30cmV/VW8HU7J3ZFU5nj9 janet@randomcat.org"
+    ];
+
+    randomcat.services.export-metrics = {
+      enable = true;
+      tailscaleOnly = true;
+
+      exports = lib.mkMerge [
+        {
+          node = {};
+          systemd = {};
+        }
+
+        (lib.mkIf (config.boot.supportedFilesystems.zfs or false) {
+          zfs = {};
+        })
       ];
+    };
   };
 }
