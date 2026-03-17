@@ -4,7 +4,7 @@
   home.packages = [
     pkgs.strawberry
     pkgs.makemkv
-    pkgs.helvum
+    pkgs.crosspipe
     pkgs.jellyfin-media-player
     pkgs.vlc
   ];
