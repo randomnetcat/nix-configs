@@ -41,9 +41,7 @@ in
       group = config.users.groups.qenya.name;
       shell = pkgs.zsh;
 
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEmkV9arotms79lJPsLHkdzAac4eu3pYS08ym0sB/on qenya@tohru"
-      ];
+      openssh.authorizedKeys.keys = (import "${inputs.qenyaNixfiles}/keys.nix").users.qenya;
 
       extraGroups = [
         "wheel"
