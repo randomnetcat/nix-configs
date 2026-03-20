@@ -39,6 +39,7 @@ in
         enable = true;
         webExternalUrl = "https://${host}/${alertManagerPath}";
         checkConfig = false;
+        logLevel = "debug";
 
         extraFlags = [
           "--web.config.file=/run/credentials/alertmanager.service/alertmanager-web"
