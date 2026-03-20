@@ -68,5 +68,9 @@
           ];
         };
       } // keybindingMaps;
+
+    home.packages = [
+      pkgs.file-roller
+    ];
   };
 }
