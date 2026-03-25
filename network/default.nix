@@ -59,7 +59,7 @@
 
         targets = {
           shaw = {
-            syncKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILgZ9hC4iGeYOxKaiN9w9JuIv30KYBv7k9cdtAkd0COg";
+            syncKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIlL/HUKrnU2+TS2MFXF1ayvGyjtSIDX5uZWWqNO+4pu";
           };
         };
 
