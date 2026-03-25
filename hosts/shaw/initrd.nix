@@ -121,7 +121,7 @@ in
 
           # Store the host key on the ESP (or XBOOTLDR if it exists). This is
           # encrypted only with the TPM key (which the initrd has access to).
-          ${lib.getExe' config.boot.initrd.systemd.package "systemd-creds"} encrypt --with-key=tpm2 --name=${lib.escapeShellArg hostKeyCredName} -- "$WORK/host-key" "$HOST_KEY_CRED"
+          ${lib.getExe' config.boot.initrd.systemd.package "systemd-creds"} encrypt --with-key=tpm2 --tpm2-pcrs= --name=${lib.escapeShellArg hostKeyCredName} -- "$WORK/host-key" "$HOST_KEY_CRED"
         fi
       '';
     };
