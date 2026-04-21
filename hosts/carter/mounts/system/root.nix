@@ -14,6 +14,11 @@
       };
     };
 
+    boot.initrd.systemd.services."zfs-import-rpool_ez8ryx" = {
+      after = [ "systemd-cryptsetup@rpool\\x2d0.service" ];
+      requires = [ "systemd-cryptsetup@rpool\\x2d0.service" ];
+    };
+
     fileSystems."/" = zfsMount "safe/system";
     fileSystems."/var" = zfsMount "safe/system/var";
     fileSystems."/nix" = zfsMount "local/system/nix";
