@@ -13,7 +13,7 @@
     home.packages = [
       pkgs.cmake
       pkgs.gnumake
-      pkgs.jetbrains.clion
+      # pkgs.jetbrains.clion
     ];
 
     home.file."dev/toolchains/cpp/gcc".source = pkgs.gcc;
