@@ -1,6 +1,13 @@
 { config, lib, pkgs, ... }:
 
+let
+  jellyfinUpstream = "127.0.0.1";
+in
 {
+  imports = [
+    ./proxy.nix
+  ];
+
   config = {
     randomcat.services.fs-keys.cifs-shaw-archive-creds = {
       requiredBy = [ "srv-archive.mount" ];
@@ -69,7 +76,7 @@
 
     services.jellyfin = {
       enable = true;
-      openFirewall = true;
+      openFirewall = false;
     };
 
     users.users.jellyfin = {
@@ -104,5 +111,48 @@
         pkgs.vpl-gpu-rt
       ];
     };
+
+    systemd.tmpfiles.rules = [
+      "d /var/lib/manual-certs 0750 root ${config.users.groups.nginx.name} -"
+      "Z /var/lib/manual-certs/* 0640 root ${config.users.groups.nginx.name} -"
+    ];
+
+    services.nginx = {
+      virtualHosts."tv.randomcat.gay" = {
+        forceSSL = true;
+        sslCertificate = "/var/lib/manual-certs/tv.randomcat.gay.crt";
+        sslCertificateKey = "/var/lib/manual-certs/tv.randomcat.gay.key";
+
+        locations."/" = {
+          proxyPass = "http://${jellyfinUpstream}:8096";
+          recommendedProxySettings = true;
+
+          extraConfig = ''
+            proxy_buffering off;
+          '';
+        };
+
+        locations."/socket" = {
+          proxyPass = "http://${jellyfinUpstream}:8096";
+          proxyWebsockets = true;
+          recommendedProxySettings = true;
+        };
+
+        extraConfig = ''
+          client_max_body_size 20M;
+
+          add_header X-Content-Type-Options "nosniff";
+          add_header Permissions-Policy "accelerometer=(), ambient-light-sensor=(), battery=(), bluetooth=(), camera=(), clipboard-read=(), display-capture=(), document-domain=(), encrypted-media=(), gamepad=(), geolocation=(), gyroscope=(), hid=(), idle-detection=(), interest-cohort=(), keyboard-map=(), local-fonts=(), magnetometer=(), microphone=(), payment=(), publickey-credentials-get=(), serial=(), sync-xhr=(), usb=(), xr-spatial-tracking=()" always;
+          add_header Content-Security-Policy "default-src https: data: blob: ; img-src 'self' https://* ; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.youtube.com blob:; worker-src 'self' blob:; connect-src 'self'; object-src 'none'; font-src 'self'";
+        '';
+      };
+    };
+
+    assertions = [
+      {
+        assertion = config.services.nginx.enable;
+        message = "nginx must be enabled for reverse proxying";
+      }
+    ];
   };
 }
