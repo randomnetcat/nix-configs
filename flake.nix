@@ -118,7 +118,7 @@
         };
 
         reese = {
-          pkgsFlake = nixpkgsSmall;
+          pkgsFlake = nixpkgs;
           system = "aarch64-linux";
           modules = [ ./hosts/reese ];
         };
