@@ -12,7 +12,6 @@
       primaryDomain = "unspecified.systems";
 
       extraDomains = [
-        "randomcat.gay"
         "randomcat.org"
       ];
     };

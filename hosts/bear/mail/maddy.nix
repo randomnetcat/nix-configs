@@ -147,7 +147,6 @@ in
                 entry postmaster postmaster@$(primary_domain)
             }
             optional_step regexp "(postmaster|abuse|security)@(.+)" "postmaster@$(primary_domain)"
-            optional_step regexp "(.+)@randomcat.gay" "janet@unspecified.systems"
             optional_step regexp "(.+)@randomcat.org" "janet@unspecified.systems"
             optional_step file /etc/maddy/aliases
         }
