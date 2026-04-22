@@ -88,7 +88,7 @@ in
         DefaultDependencies = false;
 
         RequiresMountsFor = [
-          (dirOf hostKeyCredPath)
+          hostKeyCredPath
         ];
       };
 
