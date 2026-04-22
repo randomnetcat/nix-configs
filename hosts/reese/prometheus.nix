@@ -254,6 +254,9 @@ in
     };
 
     systemd.services.alertmanager = {
+      bindsTo = [ "alertmanager-creds.service" ];
+      after = [ "alertmanager-creds.service" ];
+
       serviceConfig = {
         # Currently, alertmanager-web has passwords for two users: randomcat and prometheus.
         LoadCredentialEncrypted = [
