@@ -8,6 +8,8 @@
 
   config = {
     randomcat.network = {
+      dns.hostBaseDomain = "birdsong.network";
+
       hosts = {
         bear = {
           hostKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIZ9Kn1CIcDHaleKHf7zO6O30Rbxs/FwL0/Ie+mEjZJr";

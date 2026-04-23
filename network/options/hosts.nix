@@ -2,8 +2,9 @@
 
 let
   types = lib.types;
+  cfg = config.randomcat.network;
 
-  hostType = types.submodule ({ name, ... }: {
+  hostType = types.submodule ({ name, config, ... }: {
     options = {
       hostName = lib.mkOption {
         type = types.uniq types.str;
@@ -32,6 +33,12 @@ let
         type = types.str;
         description = "The Tailscale IPv6 address of the host.";
       };
+
+      internalDomainName = lib.mkOption {
+        type = types.str;
+        description = "The domain name for the host in internal DNS.";
+        default = "${config.hostName}.${cfg.dns.hostBaseDomain}";
+      };
     };
 
     config = {
@@ -42,6 +49,13 @@ in
 {
   options = {
     randomcat.network = {
+      dns = {
+        hostBaseDomain = lib.mkOption {
+          type = types.str;
+          description = "The domain name used for internal DNS.";
+        };
+      };
+
       hosts = lib.mkOption {
         type = types.attrsOf hostType;
         description = "The hosts in the network";
