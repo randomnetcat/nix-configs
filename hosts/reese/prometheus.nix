@@ -12,7 +12,17 @@ let
   otherNodes = lib.removeAttrs nodes [ config.networking.hostName ];
   enabledNodes = lib.filterAttrs (_: nodeConfig: nodeConfig.config.randomcat.services.export-metrics.enable or false) otherNodes;
 
-  nodeExports = lib.mapAttrs (_: nodeConfig: map (export: export.name) (lib.attrValues (nodeConfig.config.randomcat.services.export-metrics.exports or { }))) enabledNodes;
+  nodeExports =
+    lib.mapAttrs
+      (_: nodeConfig: 
+        map
+          (export: export.name)
+          (lib.optionals
+            (nodeConfig.config.randomcat.services.export-metrics.enable or false)
+            (lib.attrValues (nodeConfig.config.randomcat.services.export-metrics.exports or { }))
+          )
+      )
+      enabledNodes;
 
   alertNames = [
     "BackupsOld"
@@ -230,7 +240,7 @@ in
             static_configs = [
               {
                 targets = [
-                  "${config.randomcat.network.hosts.${name}.tailscaleIP4}:9098"
+                  "${config.randomcat.network.hosts.${name}.internalDomainName}:9098"
                 ];
 
                 labels = {
