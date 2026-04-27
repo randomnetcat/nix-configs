@@ -236,6 +236,7 @@ in
           (exporter: {
             job_name = "${name}_${exporter}";
             metrics_path = "/export-metrics/${exporter}";
+            scrape_timeout = "30s";
 
             static_configs = [
               {
