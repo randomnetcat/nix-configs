@@ -5,6 +5,7 @@
     ./acme.nix
     ./maddy.nix
     ./agora-lists.nix
+    ./rspamd.nix
   ];
 
   config = {

@@ -191,10 +191,17 @@ in
             }
 
             dmarc yes
+
             check {
                 require_mx_record
                 dkim
                 spf
+
+                ${lib.optionalString config.services.rspamd.enable ''
+                  rspamd {
+                    api_path http://127.0.0.1:11333
+                  }
+                ''}
             }
 
             source $(local_domains) {
