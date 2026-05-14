@@ -52,6 +52,9 @@
       openFirewall = true;
     };
 
+    # Recommended by NixOS.
+    services.nginx.package = pkgs.nginxMainline;
+
     # Since only publickey authentication is allowed anyway.
     security.sudo = {
       wheelNeedsPassword = false;
