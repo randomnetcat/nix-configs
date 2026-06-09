@@ -11,11 +11,8 @@ let
   listenPort = 80;
 
   keycloakHost = "auth.unspecified.systems";
+  adminHost = "auth.randomcat.gay";
   webfingerHost = "unspecified.systems";
-
-  tailscaleName = "bear";
-  tailscaleIP = config.randomcat.network.hosts.${config.networking.hostName}.tailscaleIP4;
-  tailscalePort = 82;
 in
 {
   config = {
@@ -46,7 +43,7 @@ in
 
             settings = {
               hostname = "https://${keycloakHost}";
-              hostname-admin = "http://${tailscaleName}:${toString tailscalePort}/";
+              hostname-admin = "https://${adminHost}";
               http-port = listenPort;
               proxy-headers = "xforwarded";
               http-enabled = true;
@@ -100,6 +97,11 @@ in
         ];
       };
     };
+
+    systemd.tmpfiles.rules = [
+      "d /var/lib/manual-certs 0750 root ${config.users.groups.nginx.name} -"
+      "Z /var/lib/manual-certs/* 0640 root ${config.users.groups.nginx.name} -"
+    ];
 
     services.nginx =
       let
@@ -175,13 +177,12 @@ in
             locations = (lib.genAttrs publicPaths (_: proxyConfig)) // webfingerConfig;
           };
 
-          "${tailscaleName}" = {
-            listen = [
-              {
-                addr = tailscaleIP;
-                port = tailscalePort;
-              }
-            ];
+          "${adminHost}" = {
+            forceSSL = true;
+            enableACME = false;
+
+            sslCertificate = "/var/lib/manual-certs/auth.randomcat.gay.crt";
+            sslCertificateKey = "/var/lib/manual-certs/auth.randomcat.gay.key";
 
             locations = {
               "/" = proxyConfig;
