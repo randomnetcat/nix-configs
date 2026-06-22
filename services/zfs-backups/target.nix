@@ -229,6 +229,12 @@ in
               ];
 
               LoadCredentialEncrypted = "sync-key:${cfg.encryptedSyncKey}";
+
+              # The SystemCallFilter from the built-in NixOS module was causing syncoid to just
+              # immediately fail.
+              #
+              # @system-service appears to work.
+              SystemCallFilter = lib.mkForce [ "@system-service" ];
             };
           };
         })
