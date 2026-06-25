@@ -20,6 +20,10 @@
       autoEnrollKeys = {
         enable = true;
         autoReboot = true;
+
+        # Framework says that Microsoft keys are not required for booting.
+        includeMicrosoftKeys = false;
+        allowBrickingMyMachine = true;
       };
     };
 
