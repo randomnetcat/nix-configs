@@ -54,7 +54,7 @@
     };
 
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/e8c096ade12ec9130ff931b0f0e25d2f1bc63607";
+      url = "github:nix-community/lanzaboote/7c9a54a7f87b4539ddbd8bda09a8a5f5f9361aa9"; # v1.1.0
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
