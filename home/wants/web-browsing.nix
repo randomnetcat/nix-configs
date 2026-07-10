@@ -1,5 +1,29 @@
 { config, lib, pkgs, nurPkgs, ... }:
 
+let
+  profileSettings = {
+    # Configuration
+    "browser.ctrlTab.sortByRecentlyUsed" = false;
+    "browser.startup.page" = 3;
+
+    # Privacy settings
+    "privacy.trackingprotection.enabled" = true;
+    "privacy.trackingprotection.emailtracking.enabled" = true;
+    "privacy.trackingprotection.socialtracking.enabled" = true;
+    "dom.private-attribution.submission.enabled" = false;
+
+    # AI settings
+    "browser.ml.enable" = false;
+    "browser.ml.chat.enabled" = false;
+  };
+  
+  addonsRepo = nurPkgs.nur.repos.rycee.firefox-addons;
+  
+  commonExtensions = [
+    addonsRepo.ublock-origin
+    addonsRepo.onepassword-password-manager
+  ];
+in
 {
   config = {
     programs.firefox = {
@@ -10,31 +34,20 @@
         isDefault = true;
         name = "randomcat";
 
-        settings = {
-          # Configuration
-          "browser.ctrlTab.sortByRecentlyUsed" = false;
-          "browser.startup.page" = 3;
+        settings = profileSettings;
 
-          # Privacy settings
-          "privacy.trackingprotection.enabled" = true;
-          "privacy.trackingprotection.emailtracking.enabled" = true;
-          "privacy.trackingprotection.socialtracking.enabled" = true;
-          "dom.private-attribution.submission.enabled" = false;
+        extensions.packages = commonExtensions ++ [
+          addonsRepo.wayback-machine
+        ];
+      };
 
-          # AI settings
-          "browser.ml.enable" = false;
-          "browser.ml.chat.enabled" = false;
-        };
+      profiles.linda = {
+        id = 1;
+        isDefault = false;
+        name = "Linda";
 
-        extensions.packages =
-          let
-            addons = nurPkgs.nur.repos.rycee.firefox-addons;
-          in
-          [
-            addons.ublock-origin
-            addons.onepassword-password-manager
-            addons.wayback-machine
-          ];
+        settings = profileSettings;
+        extensions.packages = commonExtensions;
       };
     };
   };
