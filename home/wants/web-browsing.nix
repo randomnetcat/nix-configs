@@ -50,5 +50,8 @@ in
         extensions.packages = commonExtensions;
       };
     };
+
+    # Unfortunately, sometimes necessary.
+    programs.chromium.enable = true;
   };
 }
