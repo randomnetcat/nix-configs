@@ -11,6 +11,10 @@
     services.nginx.virtualHosts."infinite.nomic.space" = {
       enableACME = true;
       forceSSL = true;
+
+      locations."= /" = {
+        return = "303 /wiki";
+      };
     };
   };
 }
