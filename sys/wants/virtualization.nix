@@ -8,6 +8,8 @@
       qemu.vhostUserPackages = [
         pkgs.virtiofsd
       ];
+
+      qemu.swtpm.enable = true;
     };
 
     programs.dconf.enable = true;
