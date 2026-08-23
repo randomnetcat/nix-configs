@@ -1,14 +1,14 @@
 {
   "CodeMirror": {
-    "url": "https://web.archive.org/web/https://extdist.wmflabs.org/dist/extensions/CodeMirror-REL1_45-88c98f3.tar.gz",
+    "url": "https://web.archive.org/web/20260822013833if_/https://extdist.wmflabs.org/dist/extensions/CodeMirror-REL1_45-88c98f3.tar.gz",
     "hash": "sha256-/AvoA6+Z4xpsTjr9R90eiloZJbsUYr9Zm8Son4/jMaY="
   },
   "DarkMode": {
-    "url": "https://web.archive.org/web/https://extdist.wmflabs.org/dist/extensions/DarkMode-REL1_45-05760df.tar.gz",
+    "url": "https://web.archive.org/web/20260822013840if_/https://extdist.wmflabs.org/dist/extensions/DarkMode-REL1_45-05760df.tar.gz",
     "hash": "sha256-fU3p9b6IFR/juOpwE2Tf0HDCA40pCJ8vlv/xXZdP9/E="
   },
   "MobileFrontend": {
-    "url": "https://web.archive.org/web/https://extdist.wmflabs.org/dist/extensions/MobileFrontend-REL1_45-4c988da.tar.gz",
+    "url": "https://web.archive.org/web/20260822013847if_/https://extdist.wmflabs.org/dist/extensions/MobileFrontend-REL1_45-4c988da.tar.gz",
     "hash": "sha256-Eg/yet0sTbPEnOruspyAFIkA/aUztj4/YW0fFcpiXko="
   }
 }
