@@ -6,7 +6,6 @@
 
     services.printing.drivers = [
       pkgs.hplipWithPlugin
-      pkgs.utsushi
       pkgs.epson-escpr
       pkgs.epson-escpr2
       pkgs.epsonscan2
@@ -18,7 +17,6 @@
       extraBackends = [
         pkgs.epsonscan2
         pkgs.epkowa
-        pkgs.utsushi
       ];
 
       # Add apartment Epson printer.
@@ -26,10 +24,6 @@
         192.168.3.10
       '';
     };
-
-    services.udev.packages = [
-      pkgs.utsushi
-    ];
 
     users.users.randomcat.extraGroups = [
       "scanner"
