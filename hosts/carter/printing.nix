@@ -5,24 +5,12 @@
     services.printing.enable = true;
 
     services.printing.drivers = [
+      pkgs.hplip
       pkgs.hplipWithPlugin
-      pkgs.epson-escpr
-      pkgs.epson-escpr2
-      pkgs.epsonscan2
     ];
 
     hardware.sane = {
       enable = true;
-
-      extraBackends = [
-        pkgs.epsonscan2
-        pkgs.epkowa
-      ];
-
-      # Add apartment Epson printer.
-      netConf = ''
-        192.168.3.10
-      '';
     };
 
     users.users.randomcat.extraGroups = [
