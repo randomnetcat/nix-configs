@@ -7,6 +7,21 @@
   ];
 
   config = {
+    services.mastodon.package = lib.mkIf (lib.versionOlder pkgs.mastodon.version "4.6.8") (
+      pkgs.mastodon.override {
+        srcOverride = pkgs.fetchFromGitHub {
+          owner = "mastodon";
+          repo = "mastodon";
+          rev = "v4.6.8";
+          hash = "sha256-fDbQunhcpnMnIufEX2oRH9vulsHjtlR95boj0M2O3CQ=";
+          passthru = {
+            version = "4.6.8";
+            yarnHash = "sha256-VlOG91ZuO+1UXTbtwIrYUbqHjmSfPSfLhrf4TxCJqJ0=";
+            yarnMissingHashes = pkgs.mastodon.src.passthru.yarnMissingHashes;
+          };
+        };
+      }
+    );
 
     randomcat.services.mastodon = {
       enable = true;
