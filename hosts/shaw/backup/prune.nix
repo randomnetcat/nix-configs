@@ -11,7 +11,7 @@
         yearly = 999999;
         monthly = 999999;
         weekly = 999999;
-        daily = 999999;
+        daily = 180;
         hourly = 0;
 
         autosnap = false;
