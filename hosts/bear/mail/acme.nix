@@ -187,7 +187,7 @@ in
           if [ -e "$LEGO_DIR/certificates/$DOMAIN.crt" ]; then
             echo "Attempting to renew..."
 
-            if lego ${lib.escapeShellArgs commonOpts} --csr request.pem renew; then
+            if lego run ${lib.escapeShellArgs commonOpts} --csr request.pem renew; then
               echo "Successfully renewed."
               RENEWED=1
             else
@@ -199,7 +199,7 @@ in
 
           if [ "$RENEWED" != 1 ]; then
             echo "Attempting to acquire new certificate..."
-            lego ${lib.escapeShellArgs commonOpts} --csr request.pem run
+            lego run ${lib.escapeShellArgs commonOpts} --csr request.pem run
           fi
 
           mkdir -p -m 750 -- "$OUT_DIR"
