@@ -16,7 +16,7 @@ in
     ./config.nix
   ];
 
-  config = {
+  config = lib.mkIf false {
     containers.agora-lists = {
       config = { pkgs, lib, ... }: {
         system.stateVersion = "23.11";
