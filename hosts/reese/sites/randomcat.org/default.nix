@@ -18,6 +18,10 @@ let
   proxyRawGithub = path: proxyRawGithub' { inherit path; };
 in
 {
+  imports = [
+    ./public.nix
+  ];
+
   config = {
     services.nginx.virtualHosts."randomcat.org" = {
       default = true;
