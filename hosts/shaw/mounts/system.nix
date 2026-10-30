@@ -10,7 +10,6 @@
     boot.initrd.luks.devices = {
       "cryptroot" = {
         device = "/dev/disk/by-partuuid/996f43f1-1fba-4e42-acd8-e5a17b110311";
-        preLVM = true;
       };
     };
 

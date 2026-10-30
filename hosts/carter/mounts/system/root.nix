@@ -10,7 +10,6 @@
     boot.initrd.luks.devices = {
       "rpool-0" = {
         device = "/dev/disk/by-partlabel/shaw-rpool-0";
-        preLVM = true;
       };
     };
 

@@ -10,12 +10,10 @@
     boot.initrd.luks.devices = {
       "rpool-1" = {
         device = "/dev/disk/by-partlabel/groves-rpool-1";
-        preLVM = true;
       };
 
       "rpool-2" = {
         device = "/dev/disk/by-partlabel/groves-rpool-2";
-        preLVM = true;
       };
     };
 
