@@ -6,7 +6,7 @@
     ./common.nix
   ];
 
-  config = {
+  config = lib.mkIf false {
     services.mastodon.package = lib.mkIf (lib.versionOlder pkgs.mastodon.version "4.6.8") (
       pkgs.mastodon.override {
         srcOverride = pkgs.fetchFromGitHub {
