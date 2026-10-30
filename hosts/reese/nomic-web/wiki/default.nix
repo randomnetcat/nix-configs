@@ -10,7 +10,7 @@ let
   runDir = "/run/wiki-nomic";
 in
 {
-  config = lib.mkIf false {
+  config = {
     networking.nat.internalInterfaces = [ "ve-wiki" ];
 
     containers.wiki = {
