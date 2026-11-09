@@ -203,8 +203,7 @@ in
           fi
 
           mkdir -p -m 750 -- "$OUT_DIR"
-          chmod 750 -- "$OUT_DIR"
-          chmod 640 -- "$OUT_DIR"/*
+          chmod -R u=rwX,g=rX,o= "$OUT_DIR"
 
           cp -v --preserve=timestamps -- "$LEGO_DIR/certificates/$DOMAIN.crt" "$OUT_DIR/fullchain.pem"
           cp -v --preserve=timestamps -- "$LEGO_DIR/certificates/$DOMAIN.issuer.crt" "$OUT_DIR/chain.pem"
@@ -215,7 +214,7 @@ in
           ln -sf -- fullchain.pem "$OUT_DIR/cert.pem"
           cat -- "$OUT_DIR/key.pem" "$OUT_DIR/fullchain.pem" > "$OUT_DIR/full.pem"
 
-          chmod 640 -- "$OUT_DIR"/*
+          chmod -R u=rwX,g=rX,o= "$OUT_DIR"
         '';
     };
 
