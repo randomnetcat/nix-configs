@@ -13,7 +13,7 @@
     ./web.nix
 
     ./mail
-    ./auth
+    # ./auth
 
     ./backup.nix
     ./networking.nix
