@@ -14,5 +14,9 @@
     };
 
     services.fprintd.enable = true;
+
+    # For YubiKey
+    services.udev.packages = [ pkgs.yubikey-personalization ];
+    services.pcscd.enable = true;
   };
 }
