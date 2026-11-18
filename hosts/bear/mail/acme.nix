@@ -6,7 +6,7 @@ let
   allDomains = [ primary ] ++ cfg.extraDomains;
 in
 {
-  config = {
+  config = lib.mkIf false {
     security.acme.acceptTerms = true;
     security.acme.defaults.email = "jason.e.cobb@gmail.com";
 
