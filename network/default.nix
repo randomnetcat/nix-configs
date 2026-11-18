@@ -26,10 +26,8 @@
 
         leon = {
           hostKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJCuMBdSMXPBTj00Z4oRcFuo/BEzbVogwYsvixhkBuU9";
-
-          # Outdated: not set up with unspecified.systems.
-          tailscaleIP4 = "100.94.148.11";
-          tailscaleIP6 = "fd7a:115c:a1e0::d401:940b";
+          tailscaleIP4 = "100.66.69.192";
+          tailscaleIP6 = "fd7a:115c:a1e0:b9e:bdd6:c21:2902:f3f6";
         };
 
         reese = {
