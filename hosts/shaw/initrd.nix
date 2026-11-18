@@ -7,10 +7,6 @@ in
 {
   config = {
     boot.initrd.systemd = {
-      # We want the ability to order units and the ability to pass credentials
-      # to sshd.
-      enable = true;
-
       # The host key credential will be encrypted with the TPM.
       tpm2.enable = true;
 

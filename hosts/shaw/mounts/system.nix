@@ -37,8 +37,8 @@
         "/nix" = zfsMount "local/nix";
       };
 
-    # If the initrd is systemd, we have to order the zpool import after the
-    # systemd-cryptsetup service (which loads the key for the boot device).
+    # We have to order the zpool import after the systemd-cryptsetup service
+    # (which loads the key for the boot device).
     #
     # If we don't do this, then the zfs-import service will continue trying to
     # import it until eventually timing out. This results in the zfs-import
@@ -49,7 +49,7 @@
     # generate the correct block device dependencies, but ZFS doesn't import
     # from any specific block device, so that's not possible, and we have to do
     # this.
-    boot.initrd.systemd.services."zfs-import-rpool_wbembv" = lib.mkIf (config.boot.initrd.systemd.enable) {
+    boot.initrd.systemd.services."zfs-import-rpool_wbembv" = {
       wants = [ "systemd-cryptsetup@cryptroot.service" ];
       after = [ "systemd-cryptsetup@cryptroot.service" ];
     };
