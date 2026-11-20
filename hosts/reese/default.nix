@@ -16,9 +16,9 @@
     ./remote-build.nix
     ./prometheus.nix
 
-    # ./mastodon/personal.nix
+    ./mastodon/personal.nix
 
-    # ./nomic-web
+    ./nomic-web
   ];
 
   nixpkgs.localSystem = {

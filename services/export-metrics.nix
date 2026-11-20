@@ -51,7 +51,7 @@ in
     };
   };
 
-  config = lib.mkIf false {
+  config = lib.mkIf cfg.enable {
     assertions =
       (
         map
