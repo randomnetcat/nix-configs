@@ -50,8 +50,5 @@
     security.sudo = {
       execWheelOnly = true;
     };
-
-    # Temporary mitigation
-    services.nginx.enable = lib.mkForce false;
   };
 }
