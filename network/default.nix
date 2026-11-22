@@ -14,6 +14,7 @@
       users = {
         randomcat.sshKeys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDHagOaeTR+/7FL9sErciMw30cmV/VW8HU7J3ZFU5nj9 janet@randomcat.org"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMVqpNjAyETKAJA2c+x2CGSivcEzO2hMd4EIVp9s0oh2 janet@unspecified.systems"
         ];
       };
 
