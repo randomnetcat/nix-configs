@@ -50,9 +50,7 @@ in
         ForceCommand ${lib.getExe' config.boot.initrd.systemd.package "systemd-tty-ask-password-agent"}
       '';
 
-      authorizedKeys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDHagOaeTR+/7FL9sErciMw30cmV/VW8HU7J3ZFU5nj9 janet@randomcat.org"
-      ];
+      authorizedKeys = config.randomcat.network.users.randomcat.sshKeys;
     };
 
     # Copy /boot mount from the normal system (either the ESP or XBOOTLDR).
