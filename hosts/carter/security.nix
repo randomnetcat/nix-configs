@@ -15,6 +15,12 @@
 
     services.fprintd.enable = true;
 
+    home-manager.users.randomcat = { config, ... }: {
+      home.sessionVariables = {
+        SSH_AUTH_SOCK = "${config.home.homeDirectory}/.1password/agent.sock";
+      };
+    };    
+
     # For YubiKey
     services.udev.packages = [ pkgs.yubikey-personalization ];
     services.pcscd.enable = true;
