@@ -39,6 +39,20 @@
       pkgs.fw-ectool
     ];
 
+    randomcat.notifications = {
+      discord = {
+        enable = true;
+        webhookUrlCredential = ./secrets/notify-discord-webhook;
+      };
+
+      mail = {
+        enable = true;
+        sender = "sys.carter@unspecified.systems";
+        recipient = "sys_carter@randomcat.org";
+        smtp.passwordEncryptedCredentialPath = ./secrets/notify-email-password;
+      };
+    };
+
     # Ensure that builds don't consume *all* of the available CPU.
     nix.settings.max-jobs = 12;
 
