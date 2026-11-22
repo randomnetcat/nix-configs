@@ -4,11 +4,18 @@
   imports = [
     ./options/hosts.nix
     ./options/backups.nix
+    ./options/users.nix
   ];
 
   config = {
     randomcat.network = {
       dns.hostBaseDomain = "birdsong.network";
+
+      users = {
+        randomcat.sshKeys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDHagOaeTR+/7FL9sErciMw30cmV/VW8HU7J3ZFU5nj9 janet@randomcat.org"
+        ];
+      };
 
       hosts = {
         bear = {
