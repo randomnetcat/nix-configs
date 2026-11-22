@@ -145,6 +145,7 @@ in
 
           unitConfig = {
             DefaultDependencies = false;
+            RequiresMountsFor = [ "/tmp" "/var/tmp" ];
           };
 
           serviceConfig = {
