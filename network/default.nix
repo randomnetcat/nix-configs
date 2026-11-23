@@ -49,12 +49,6 @@
           tailscaleIP4 = "100.109.173.202";
           tailscaleIP6 = "fd7a:115c:a1e0:9be9:6c5a:2f1d:db18:4d1a";
         };
-
-        groves = {
-          hostKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPQNZ/Q+x7mDYfYXftpZpWkfPByyMBbYmVFobM4vSDW2";
-          tailscaleIP4 = "100.107.165.89";
-          tailscaleIP6 = "fd7a:115c:a1e0:3b74:f0e9:bc73:50fa:134f";
-        };
       };
 
       backups = {
@@ -62,7 +56,6 @@
           reese = { };
           carter = { };
           bear = { };
-          groves = { };
         };
 
         targets = {
@@ -106,19 +99,6 @@
               {
                 source = "rpool_zpnzkc/bear";
                 target = "nas_oabrke/data/backups/bear";
-                datasetName = "safe";
-              }
-            ];
-          }
-
-          {
-            sourceHost = "groves";
-            targetHost = "shaw";
-
-            datasets = [
-              {
-                source = "rpool_fxooop/groves";
-                target = "nas_oabrke/data/backups/groves";
                 datasetName = "safe";
               }
             ];

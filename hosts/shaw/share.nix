@@ -10,14 +10,6 @@
 
     users.groups.randomcat = { };
 
-    users.users.sys-groves = {
-      isSystemUser = true;
-      group = "sys-groves";
-    };
-
-    users.groups.sys-groves = {
-    };
-
     services.samba = {
       enable = true;
       nmbd.enable = false;
@@ -40,7 +32,7 @@
           "directory mask" = "0755";
           "force user" = "archive";
           "force group" = "archive";
-          "valid users" = "randomcat sys-groves";
+          "valid users" = "randomcat";
           "write list" = "randomcat";
         };
       };
