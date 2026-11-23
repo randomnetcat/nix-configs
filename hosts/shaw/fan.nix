@@ -34,13 +34,13 @@
     boot.kernelPackages = lib.mkForce (pkgs.linuxPackages_6_18.extend (self: super: {
       it87 = super.it87.overrideAttrs (old: rec {
         name = "it87-${version}-${self.kernel.version}";
-        version = "unstable-2023-11-11";
+        version = "unstable-2026-11-23";
 
         src = pkgs.fetchFromGitHub {
           owner = "frankcrawford";
           repo = "it87";
-          rev = "6392311da76b4868efd7b6db8101e10f9e453c75";
-          sha256 = "bletkm02WDhhI9dXAPnxuS9uIr3rk4Af7GohwwSM+WQ=";
+          rev = "92bd27843ec7c27701cc97f9df0ea36094b42930";
+          sha256 = "L9t1fnjYVw4P53FtaCBULiWwSoMR5xFFMtH1rdz+4UA=";
         };
 
         makeFlags = (lib.filter (o: !(lib.hasPrefix "MODDESTDIR=" o)) old.makeFlags) ++ [
@@ -55,9 +55,5 @@
     ];
 
     boot.kernelModules = [ "it87" ];
-
-    boot.extraModprobeConfig = ''
-      options it87 fix_pwm_polarity=1
-    '';
   };
 }
