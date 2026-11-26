@@ -1,0 +1,13 @@
+diff --git a/prog/pwm/fancontrol b/prog/pwm/fancontrol
+index 5b6e5b48..da3d2b84 100755
+--- a/prog/pwm/fancontrol
++++ b/prog/pwm/fancontrol
+@@ -559,7 +559,7 @@ function pwmenable()
+ 		fi
+ 		# enable manual control by fancontrol
+ 		echo 1 > $ENABLE 2> /dev/null
+-		if [ "$(cat $ENABLE)" -ne 1 ]
++		if [ "$(cat $ENABLE)" -ne 1 ] && ! [ "$(cat -- "$(dirname -- "${1}")"/name)" = "it8625" ]
+ 		then
+ 			return 1
+ 		fi

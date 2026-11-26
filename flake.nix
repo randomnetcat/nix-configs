@@ -57,6 +57,11 @@
       url = "github:nix-community/lanzaboote/7c9a54a7f87b4539ddbd8bda09a8a5f5f9361aa9"; # v1.1.0
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    asustor-platform-driver = {
+      url = "github:randomnetcat/asustor-platform-driver";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgsSmall, home-manager, nur, colmena, flake-utils, lanzaboote, ... }@inputs:
@@ -132,7 +137,10 @@
         shaw = {
           pkgsFlake = nixpkgsSmall;
           system = "x86_64-linux";
-          modules = [ ./hosts/shaw ];
+          modules = [
+            ./hosts/shaw
+            inputs.asustor-platform-driver.nixosModules.default
+          ];
         };
 
         leon = {

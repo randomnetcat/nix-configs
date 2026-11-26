@@ -14,7 +14,7 @@
     ./initrd.nix
     ./networking.nix
     ./filesystem.nix
-    ./fan.nix
+    ./fan
 
     ./archive.nix
     ./backup

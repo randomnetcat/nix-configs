@@ -65,6 +65,26 @@
         "type": "github"
       }
     },
+    "asustor-platform-driver": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1795652466,
+        "narHash": "sha256-iAalK0l9Gc/DOdmpb/hTZfFEH7qxQ1tHMnDMU0pKlRw=",
+        "owner": "randomnetcat",
+        "repo": "asustor-platform-driver",
+        "rev": "b24e35c6dc397094416e49d41808efccada5db4b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "randomnetcat",
+        "repo": "asustor-platform-driver",
+        "type": "github"
+      }
+    },
     "colmena": {
       "inputs": {
         "nix-github-actions": "nix-github-actions",
@@ -765,6 +785,7 @@
       "inputs": {
         "agorabot-prod": "agorabot-prod",
         "assessor-thesis": "assessor-thesis",
+        "asustor-platform-driver": "asustor-platform-driver",
         "colmena": "colmena",
         "diplomacy-bot": "diplomacy-bot",
         "flake-utils": "flake-utils_5",
