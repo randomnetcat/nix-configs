@@ -22,6 +22,10 @@
 
     programs.tmux.enable = true;
 
+    environment.systemPackages = [
+      pkgs.btop
+    ];
+
     randomcat.services.configuration-time-metric.enable = true;
 
     # Prevent upgrade to broken kernel 6.19.4.
